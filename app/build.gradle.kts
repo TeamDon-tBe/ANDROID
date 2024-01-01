@@ -1,0 +1,38 @@
+@Suppress("DSL_SCOPE_VIOLATION")
+plugins {
+    id("com.example.dontbe.application")
+    id("com.example.dontbe.test")
+}
+
+android {
+    namespace = "com.example.dontbe"
+
+    defaultConfig {
+        applicationId = "com.example.dontbe"
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.appVersion.get()
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+}
+
+dependencies {
+    // AndroidX
+    implementation(libs.constraintlayout)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+    implementation(libs.fragment.ktx)
+    implementation(libs.splash.screen)
+
+    // Third Party
+    implementation(libs.coil.core)
+    implementation(libs.bundles.retrofit)
+}
