@@ -1,4 +1,4 @@
-package com.example.dontbe.plugin
+package com.teamdontbe.dontbe.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

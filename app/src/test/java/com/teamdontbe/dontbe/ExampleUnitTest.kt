@@ -1,4 +1,4 @@
-package com.example.dontbe
+package com.teamdontbe.dontbe
 
 import org.junit.Test
 

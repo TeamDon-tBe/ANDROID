@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "DontBe"
 include(":app")
+include(":core-ui")

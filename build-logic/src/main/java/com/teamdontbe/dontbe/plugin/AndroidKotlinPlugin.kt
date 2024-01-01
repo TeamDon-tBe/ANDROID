@@ -1,4 +1,4 @@
-package com.example.dontbe.plugin
+package com.teamdontbe.dontbe.plugin
 
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.JavaVersion
