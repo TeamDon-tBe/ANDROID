@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.example.dontbe.buildlogic"
+group = "com.teamdontbe.dontbe.buildlogic"
 
 dependencies {
     compileOnly(libs.agp)
@@ -12,28 +12,28 @@ dependencies {
 gradlePlugin {
     plugins {
         create("android-application") {
-            id = "com.example.dontbe.application"
-            implementationClass = "com.example.dontbe.plugin.AndroidApplicationPlugin"
+            id = "com.teamdontbe.dontbe.application"
+            implementationClass = "com.teamdontbe.dontbe.plugin.AndroidApplicationPlugin"
         }
         create("android-feature") {
-            id = "com.example.dontbe.feature"
-            implementationClass = "com.example.dontbe.plugin.AndroidFeaturePlugin"
+            id = "com.teamdontbe.dontbe.feature"
+            implementationClass = "com.teamdontbe.dontbe.plugin.AndroidFeaturePlugin"
         }
         create("android-kotlin") {
-            id = "com.example.dontbe.kotlin"
-            implementationClass = "com.example.dontbe.plugin.AndroidKotlinPlugin"
+            id = "com.teamdontbe.dontbe.kotlin"
+            implementationClass = "com.teamdontbe.dontbe.plugin.AndroidKotlinPlugin"
         }
         create("android-hilt") {
-            id = "com.example.dontbe.hilt"
-            implementationClass = "com.example.dontbe.plugin.AndroidHiltPlugin"
+            id = "com.teamdontbe.dontbe.hilt"
+            implementationClass = "com.teamdontbe.dontbe.plugin.AndroidHiltPlugin"
         }
         create("kotlin-serialization") {
-            id = "com.example.dontbe.serialization"
-            implementationClass = "com.example.dontbe.plugin.KotlinSerializationPlugin"
+            id = "com.teamdontbe.dontbe.serialization"
+            implementationClass = "com.teamdontbe.dontbe.plugin.KotlinSerializationPlugin"
         }
         create("android-test") {
-            id = "com.example.dontbe.test"
-            implementationClass = "com.example.dontbe.plugin.AndroidTestPlugin"
+            id = "com.teamdontbe.dontbe.test"
+            implementationClass = "com.teamdontbe.dontbe.plugin.AndroidTestPlugin"
         }
     }
 }

@@ -1,14 +1,14 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.example.dontbe.application")
-    id("com.example.dontbe.test")
+    id("com.teamdontbe.dontbe.application")
+    id("com.teamdontbe.dontbe.test")
 }
 
 android {
-    namespace = "com.example.dontbe"
+    namespace = "com.teamdontbe.dontbe"
 
     defaultConfig {
-        applicationId = "com.example.dontbe"
+        applicationId = "com.teamdontbe.dontbe"
         versionCode = libs.versions.versionCode.get().toInt()
         versionName = libs.versions.appVersion.get()
     }
