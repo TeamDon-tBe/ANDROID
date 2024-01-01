@@ -16,3 +16,6 @@ dependencyResolutionManagement {
 rootProject.name = "DontBe"
 include(":app")
 include(":core-ui")
+include(":data-local")
+include(":data-remote")
+include(":data")

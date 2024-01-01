@@ -21,6 +21,7 @@ dagger-hilt = "2.50"
 fragment-ktx = "1.6.2"
 splash-screen = "1.0.1"
 paging = "3.1.1"
+room = "2.5.0"
 
 # material + google
 material = "1.11.0"
@@ -69,6 +70,9 @@ navigation_fragment = { module = "androidx.navigation:navigation-fragment-ktx", 
 navigation_ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 # dagger-hilt
 hilt = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt" }
@@ -119,3 +123,4 @@ kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", vers
 lifecycle = ["lifecycle", "lifecycle-viewmodel", "lifecycle-livedata"]
 retrofit = ["retrofit", "retrofit-kotlin-serialization-converter"]
 androidx-android-test = ["androidx-test-espresso", "androidx-test-junit"]
+room = ["room-runtime", "room-compiler", "room-ktx"]
