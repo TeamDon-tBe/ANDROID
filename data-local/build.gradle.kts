@@ -16,9 +16,16 @@ android {
             )
         }
     }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
 dependencies {
+    implementation(project(":domain"))
+    implementation(project(":data"))
+
     //android
     implementation(libs.bundles.room)
 }

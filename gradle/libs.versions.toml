@@ -7,7 +7,7 @@ versionCode = "1"
 
 # kotlin
 kotlin = "1.9.10"
-kotlinx-serialization-json = "1.6.2"
+kotlinx-serialization-json = "1.6.1"
 kotlinx-serialization-converter = "1.0.0"
 kotlinx-coroutines = "1.7.3"
 
@@ -121,6 +121,6 @@ kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", vers
 
 [bundles]
 lifecycle = ["lifecycle", "lifecycle-viewmodel", "lifecycle-livedata"]
-retrofit = ["retrofit", "retrofit-kotlin-serialization-converter"]
+retrofit = ["retrofit", "retrofit-kotlin-serialization-converter", "okhttp-bom", "okhttp", "okhttp-logging-interceptor"]
 androidx-android-test = ["androidx-test-espresso", "androidx-test-junit"]
 room = ["room-runtime", "room-compiler", "room-ktx"]
