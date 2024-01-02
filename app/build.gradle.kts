@@ -7,6 +7,12 @@ plugins {
 android {
     namespace = "com.teamdontbe.dontbe"
 
+    configurations {
+        implementation {
+            exclude(group = "org.jetbrains", module = "annotations")
+        }
+    }
+
     defaultConfig {
         applicationId = "com.teamdontbe.dontbe"
         versionCode = libs.versions.versionCode.get().toInt()
@@ -22,9 +28,20 @@ android {
             )
         }
     }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
 dependencies {
+    implementation(project(":feature"))
+    implementation(project(":core-ui"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(project(":data-local"))
+    implementation(project(":data-remote"))
+
     // AndroidX
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)

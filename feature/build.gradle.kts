@@ -23,6 +23,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-ui"))
+    implementation(project(":domain"))
+
     // AndroidX
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)

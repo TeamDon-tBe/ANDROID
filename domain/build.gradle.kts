@@ -1,6 +1,6 @@
 plugins {
-    id("java-library")
-    id("org.jetbrains.kotlin.jvm")
+    `java-library`
+    kotlin("jvm")
 }
 
 java {
@@ -10,5 +10,6 @@ java {
 
 dependencies {
     implementation(libs.kotlin.coroutines)
+   // implementation(libs.paging)
 }
 

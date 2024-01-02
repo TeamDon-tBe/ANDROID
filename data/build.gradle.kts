@@ -16,11 +16,18 @@ android {
             )
         }
     }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
 dependencies {
+    implementation(project(":domain"))
+
     //android
     implementation(libs.bundles.room)
+    implementation(libs.paging)
 
     // Third Party
     implementation(libs.bundles.retrofit)
