@@ -1,23 +1,23 @@
 package com.teamdontbe.domain.entity
 
-data class ExampleEntity(
-    val adult: Boolean,
-    val backdropPath: String?,
-    val genreIds: List<Int>,
+data class UserEntity(
     val id: Int,
-    val originalLanguage: String,
-    val originalTitle: String,
-    val overview: String,
-    val popularity: Double,
-    val posterPath: String?,
-    val releaseDate: String,
-    val title: String,
-    val video: Boolean,
-    val voteAverage: Double,
-    val voteCount: Int,
+    val email: String,
+    val firstName: String,
+    val lastName: String,
+    val avatar: String,
 )
 
-data class ExampleListEntity(
-    val page: Int,
-    val results: List<ExampleEntity>,
+data class UserDataEntity(
+    val page: Int = 1,
+    val perPage: Int = 1,
+    val total: Int = 1,
+    val totalPages: Int = 1,
+    val data: List<UserEntity>,
+    val support: SupportEntity,
+)
+
+data class SupportEntity(
+    val url: String,
+    val text: String,
 )
