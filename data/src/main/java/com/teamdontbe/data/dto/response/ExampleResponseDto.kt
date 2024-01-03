@@ -1,49 +1,44 @@
 package com.teamdontbe.data.dto.response
 
-import com.teamdontbe.domain.entity.ExampleEntity
-import com.teamdontbe.domain.entity.ExampleListEntity
+import com.teamdontbe.domain.entity.SupportEntity
+import com.teamdontbe.domain.entity.UserDataEntity
+import com.teamdontbe.domain.entity.UserEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ExampleResponseDto(
-    @SerialName("adult") val adult: Boolean,
-    @SerialName("backdrop_path") val backdropPath: String?,
-    @SerialName("genre_ids") val genreIds: List<Int>,
+data class User(
     @SerialName("id") val id: Int,
-    @SerialName("original_language") val originalLanguage: String,
-    @SerialName("original_title") val originalTitle: String,
-    @SerialName("overview") val overview: String,
-    @SerialName("popularity") val popularity: Double,
-    @SerialName("poster_path") val posterPath: String?,
-    @SerialName("release_date") val releaseDate: String,
-    @SerialName("title") val title: String,
-    @SerialName("video") val video: Boolean,
-    @SerialName("vote_average") val voteAverage: Double,
-    @SerialName("vote_count") val voteCount: Int,
+    @SerialName("email") val email: String,
+    @SerialName("first_name") val firstName: String,
+    @SerialName("last_name") val lastName: String,
+    @SerialName("avatar") val avatar: String,
 ) {
-    fun toExampleEntity() = ExampleEntity(
-        adult,
-        backdropPath,
-        genreIds,
-        id,
-        originalLanguage,
-        originalTitle,
-        overview,
-        popularity,
-        posterPath,
-        releaseDate,
-        title,
-        video,
-        voteAverage,
-        voteCount
+    fun toUserEntity() = UserEntity(
+        id, email, firstName, lastName, avatar
     )
 }
 
 @Serializable
-data class ExampleListResponseDto(
+data class UserDataDto(
     @SerialName("page") val page: Int,
-    @SerialName("results") val results: List<ExampleResponseDto>,
+    @SerialName("per_page") val perPage: Int,
+    @SerialName("total") val total: Int,
+    @SerialName("total_pages") val totalPages: Int,
+    @SerialName("data") val data: List<User>,
+    @SerialName("support") val support: Support,
 ) {
-    fun toExampleListEntity() = ExampleListEntity(page, results.map { it.toExampleEntity() })
+    fun toUserDataEntity() = UserDataEntity(
+        page, perPage, total, totalPages, data.map { it.toUserEntity() }, support.toSupportEntity()
+    )
+}
+
+@Serializable
+data class Support(
+    @SerialName("url") val url: String,
+    @SerialName("text") val text: String,
+) {
+    fun toSupportEntity() = SupportEntity(
+        url, text
+    )
 }

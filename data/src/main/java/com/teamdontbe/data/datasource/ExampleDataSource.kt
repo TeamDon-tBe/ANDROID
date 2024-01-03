@@ -1,8 +1,7 @@
 package com.teamdontbe.data.datasource
 
-import com.teamdontbe.data.dto.response.ExampleListResponseDto
+import com.teamdontbe.data.dto.response.UserDataDto
 
 interface ExampleDataSource {
-
-    suspend fun getExample(page: Int): ExampleListResponseDto
+    suspend fun getExample(page: Int): UserDataDto
 }
