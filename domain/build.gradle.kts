@@ -1,3 +1,4 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     `java-library`
     kotlin("jvm")
@@ -10,6 +11,5 @@ java {
 
 dependencies {
     implementation(libs.kotlin.coroutines)
-   // implementation(libs.paging)
 }
 
