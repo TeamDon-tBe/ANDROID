@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_home_gray_20"
+        android:title="@string/menu_item_home" />
+    <item
+        android:id="@+id/postingFragment"
+        android:icon="@drawable/ic_posting_gray_20"
+        android:title="@string/menu_item_posting" />
+    <item
+        android:id="@+id/notificationFragment"
+        android:icon="@drawable/ic_notification_gray_20"
+        android:title="@string/menu_item_notification" />
+    <item
+        android:id="@+id/myPageFragment"
+        android:icon="@drawable/ic_my_page_gray_20"
+        android:title="@string/menu_item_my" />
+</menu>
