@@ -10,7 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/btn_home_example"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:text="예시 액티비티로 이동"
+            app:layout_constraintBottom_toTopOf="@id/tv_home" />
+
         <TextView
+            android:id="@+id/tv_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="홈"
