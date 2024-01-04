@@ -1,0 +1,7 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.DontBe.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowSplashScreenBackground">@color/white</item> <!-- 스플래시 화면 배경 색상 -->
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_symbol</item> <!-- 스플래시 화면 아이콘 -->
+        <item name="windowSplashScreenAnimationDuration">3000</item>
+    </style>
+</resources>
