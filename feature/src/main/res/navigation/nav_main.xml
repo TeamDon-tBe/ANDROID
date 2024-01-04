@@ -3,25 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/fragment_home">
 
     <fragment
-        android:id="@+id/homeFragment"
+        android:id="@+id/fragment_home"
         android:name="com.teamdontbe.feature.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/postingFragment"
+        android:id="@+id/fragment_posting"
         android:name="com.teamdontbe.feature.posting.PostingFragment"
         android:label="PostingFragment"
         tools:layout="@layout/fragment_posting" />
     <fragment
-        android:id="@+id/notificationFragment"
+        android:id="@+id/fragment_notification"
         android:name="com.teamdontbe.feature.notification.NotificationFragment"
         android:label="NotificationFragment"
         tools:layout="@layout/fragment_notification" />
     <fragment
-        android:id="@+id/myPageFragment"
+        android:id="@+id/fragment_my_page"
         android:name="com.teamdontbe.feature.mypage.MyPageFragment"
         android:label="MyPageFragment"
         tools:layout="@layout/fragment_my_page" />

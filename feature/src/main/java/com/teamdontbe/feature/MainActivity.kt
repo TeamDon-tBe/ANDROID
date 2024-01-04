@@ -25,9 +25,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private fun removeBadge(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.notificationFragment) {
+            if (destination.id == R.id.fragment_notification) {
+                val badgeDrawable = binding.bnvMain.getBadge(R.id.fragment_notification)
                 // notificationFragment 진입할때 없어짐
-                val badgeDrawable = binding.bnvMain.getBadge(R.id.notificationFragment)
                 badgeDrawable?.isVisible = false
                 badgeDrawable?.clearNumber() // or badgeDrawable?.clearText()
             }
@@ -35,7 +35,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun initMainBottomNaviBadge() {
-        val badge = binding.bnvMain.getOrCreateBadge(R.id.notificationFragment)
+        val badge = binding.bnvMain.getOrCreateBadge(R.id.fragment_notification)
         badge.isVisible = true
         // 없애면 빨강색 dot만 존재
         badge.number = 99 // or badge.text = "New"
