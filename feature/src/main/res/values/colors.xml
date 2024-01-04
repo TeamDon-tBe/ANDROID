@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--    임시 색상-->
+    <color name="primary">#57BF9C</color>
+    <color name="gray_9">#8F8F92</color>
+    <color name="background_white">#F7F7F9</color>
 </resources>

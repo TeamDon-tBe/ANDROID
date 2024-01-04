@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">DontBe</string>
+    <string name="menu_item_home">홈</string>
+    <string name="menu_item_posting">글쓰기</string>
+    <string name="menu_item_notification">알림</string>
+    <string name="menu_item_my">my</string>
 </resources>
