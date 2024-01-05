@@ -1,13 +1,13 @@
 ![돈비텍스트](https://github.com/Team-Motivoo/Motivoo-Android/assets/106955456/e37cb3f6-06a0-47cd-9df9-3a068be04a3b)
 
-# ANDROID
-온화한 커뮤니티를 만들어요 돈~비
-
-
 ## 📌 𝙋𝙧𝙤𝙟𝙚𝙘𝙩 𝙄𝙣𝙩𝙧𝙤𝙙𝙪𝙘𝙩𝙞𝙤𝙣
 <img src="https://github.com/TeamDon-tBe/ANDROID/assets/106955456/47a4305a-8994-46e0-a14f-6ef647a716d4" width =10% ><br>
 > SOPT 33th App Jam  
-  기간: 2023.12.17 ~ 2024.01.20
+프로덕트 이름 : Don't Be
+<br> 프로덕트 설명 : 비난·차별·혐오 표현의 글을 투명하게, 우리가 함께 만들어가는 온화한 익명 커뮤니티
+<br> 기간: 2023.12.17 ~ 2024.01.20
+
+
 
 ![kotlin](https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white) ![android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white) ![git](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)
 
@@ -18,25 +18,31 @@
 + `𝙆𝙤𝙩𝙡𝙞𝙣`
 + `𝘾𝙤𝙧𝙤𝙪𝙩𝙞𝙣𝙚`
 + `𝙐𝙞𝙎𝙩𝙖𝙩𝙚`
++ `𝙎𝙩𝙖𝙩𝙚𝙁𝙡𝙤𝙬 & 𝙎𝙝𝙖𝙧𝙚𝙙𝙁𝙡𝙤𝙬`
++ `𝙃𝙞𝙡𝙩`
++ `𝘾𝙡𝙚𝙖𝙣 𝘼𝙧𝙘𝙝𝙞𝙩𝙚𝙘𝙩𝙪𝙧𝙚`
++ `𝙅𝙚𝙩𝙥𝙖𝙘𝙠𝙉𝙖𝙫𝙞𝙜𝙖𝙩𝙞𝙤𝙣`
++ `𝙈𝙪𝙩𝙞 𝙈𝙤𝙙𝙪𝙡𝙚`
++ `𝙑𝙚𝙧𝙨𝙞𝙤𝙣 𝘾𝙖𝙩𝙖𝙡𝙤𝙜`
 
 <br>
 
 ## 📹 𝙎𝙘𝙧𝙚𝙚𝙣𝙨𝙝𝙤𝙩 & 𝙑𝙞𝙙𝙚𝙤
 
-### 𝙎𝙘𝙧𝙚𝙚𝙣𝙨𝙝𝙤𝙩
+### [𝙎𝙘𝙧𝙚𝙚𝙣𝙨𝙝𝙤𝙩]
 
-| home | posting | notificatoin | my |
+| 𝙃𝙤𝙢𝙚  | 𝙋𝙤𝙨𝙩𝙞𝙣𝙜 | 𝙉𝙤𝙩𝙞𝙛𝙞𝙘𝙖𝙩𝙤𝙞𝙣 |  𝙈𝙮 𝙋𝙖𝙜𝙚 |
 |--------|--------|--------|--------|
 |--------|--------|--------|--------| 
 
-### 𝙑𝙞𝙙𝙚𝙤
-#### [𝙚𝙭𝙥𝙡𝙤𝙧𝙚]
+### [𝙑𝙞𝙙𝙚𝙤]
+#### 𝙃𝙤𝙢𝙚
 
-#### [𝙬𝙝𝙚𝙧𝙚]
+#### 𝙋𝙤𝙨𝙩𝙞𝙣𝙜
 
-#### [𝙬𝙝𝙚𝙣]
+#### 𝙉𝙤𝙩𝙞𝙛𝙞𝙘𝙖𝙩𝙤𝙞𝙣
 
-#### [𝙬𝙝𝙤]
+#### 𝙈𝙮 𝙋𝙖𝙜𝙚
 
 
 
