@@ -28,7 +28,7 @@
             android:id="@+id/bnv_main"
             android:layout_width="0dp"
             android:layout_height="76dp"
-            android:background="@color/white"
+            android:background="@color/pure_white"
             android:paddingHorizontal="35dp"
             app:itemActiveIndicatorStyle="@null"
             app:itemBackground="@null"
