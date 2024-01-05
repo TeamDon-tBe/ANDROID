@@ -84,13 +84,18 @@
 ┃ ┣ 📂 api
 ┃ ┣ 📂 datasourceimpl
 ┣ 📂 data
-┃ ┣ 📂 service
-┃ ┣ 📂 model
-┣ 📂 presentation
-┃ ┣ 📂 explore
-┃ ┣ 📂 when
-┃ ┣ 📂 where
-┃ ┣ 📂 who
+┃ ┣ 📂 datasource
+┃ ┣ 📂 repositoryimpl
+┃ ┣ 📂 dto
+┣ 📂 domain
+┃ ┣ 📂 datasource
+┃ ┣ 📂 entity
+┣ 📂 feature
+┃ ┣ 📂 home
+┃ ┣ 📂 posting
+┃ ┣ 📂 mypage
+┃ ┣ 📂 notification
+┃ ┣ 📂 util
 ```
 <br>
 <br>
