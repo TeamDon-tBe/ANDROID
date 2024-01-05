@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-
-    <!--    임시 색상-->
-    <color name="primary">#57BF9C</color>
-    <color name="gray_9">#8F8F92</color>
-    <color name="background_white">#F7F7F9</color>
+    <!-- main color -->
+    <color name="primary">#FF57BF9C</color>
+    <color name="secondary">#FFECF6F3</color>
+    <color name="white">#FFFCFCFD</color>
+    <color name="black">#FF0E0E0E</color>
+    <!-- gray scale -->
+    <color name="gray_1">#FFF6F6F7</color>
+    <color name="gray_2">#FFEBEBEE</color>
+    <color name="gray_3">#FFE1E1E4</color>
+    <color name="gray_4">#FFD7D7DA</color>
+    <color name="gray_5">#FFCDCDD0</color>
+    <color name="gray_6">#FFC2C2C5</color>
+    <color name="gray_7">#FFB5B5B8</color>
+    <color name="gray_8">#FFA3A3A6</color>
+    <color name="gray_9">#FF8F8F92</color>
+    <color name="gray_10">#FF717174</color>
+    <color name="gray_11">#FF5D5D60</color>
+    <color name="gray_12">#FF49494C</color>
+    <!-- 디자인 시스템에는 없지만 피그마에는 존재하는 색상 -->
+    <color name="background_white">#FFF7F7F9</color>
+    <color name="pure_white">#FFFFFFFF</color>
 </resources>
