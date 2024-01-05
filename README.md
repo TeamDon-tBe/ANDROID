@@ -31,7 +31,7 @@
 
 ### [𝙎𝙘𝙧𝙚𝙚𝙣𝙨𝙝𝙤𝙩]
 
-| 𝙃𝙤𝙢𝙚  | 𝙋𝙤𝙨𝙩𝙞𝙣𝙜 | 𝙉𝙤𝙩𝙞𝙛𝙞𝙘𝙖𝙩𝙤𝙞𝙣 |  𝙈𝙮 𝙋𝙖𝙜𝙚 |
+| 𝙃𝙤𝙢𝙚 | 𝙋𝙤𝙨𝙩𝙞𝙣𝙜 | 𝙉𝙤𝙩𝙞𝙛𝙞𝙘𝙖𝙩𝙤𝙞𝙣 |  𝙈𝙮 𝙋𝙖𝙜𝙚 |
 |--------|--------|--------|--------|
 |--------|--------|--------|--------| 
 
@@ -51,33 +51,51 @@
 
 | SOPT 33th 안드로이드 | [sohyun127](https://github.com/sohyun127)  | [Eonji-sw](https://github.com/Eonji-sw) | [chanubc](https://github.com/chanubc) |
 |:------------------------------------:|:------------------------------------:|:-------------------------:|:------------------------------:|
-| [단체사진] | ![소현](https://github.com/Indipage/ANDROID/assets/46596035/c121edfe-3fd3-4854-b77c-76646c326cfc) | ![언지](https://github.com/DO-SOPT-APP3-Airbnb/Airbnb-Android/assets/98076050/f81a41e5-697b-403d-8c25-5beddcc1bfdc) | 나중에 넣을께요
-| Dontbe |     home         |         posting          |        my        |
+| ![단체사진](https://github.com/TeamDon-tBe/ANDROID/assets/98076050/4ff61b00-cdd0-4cd3-af0f-7a10666a7f51)| ![소현](https://github.com/TeamDon-tBe/ANDROID/assets/98076050/42121327-8aa8-4558-8f68-f628169f287c)| ![언지](https://github.com/TeamDon-tBe/ANDROID/assets/98076050/3ce8813a-7d27-4112-9e84-db787c47d7f9) | ![찬우](https://github.com/TeamDon-tBe/ANDROID/assets/98076050/6f49ac48-41e5-49d8-936f-3d46a0518e41)
+| 𝘿𝙤𝙣'𝙩 𝙗𝙚 |     𝙃𝙤𝙢𝙚       |         𝙋𝙤𝙨𝙩𝙞𝙣𝙜 & 𝙉𝙤𝙩𝙞𝙛𝙞𝙘𝙖𝙩𝙤𝙞𝙣       |       𝙈𝙮 𝙋𝙖𝙜𝙚      |
 
 <br>
 
 ## 💟 𝘾𝙤𝙣𝙫𝙚𝙣𝙩𝙞𝙤𝙣
-+ [Coding Convention](https://verbose-tablecloth-151.notion.site/ae82e193db66418bb19c10867eb67a50?v=c6aa612daa0144e696897ded71318ed9&pvs=4)
-+ [Branch Convention](https://verbose-tablecloth-151.notion.site/Branch-Convention-e610a396119a464bb7934daa70d32e22?pvs=4)
-+ [Github Convention](https://verbose-tablecloth-151.notion.site/Github-Convention-e333f3d8bce84aa6919adf1ce08da978?pvs=4)
++ [Coding Convention](https://joyous-ghost-8c7.notion.site/c6bf463531e54e138c3a60c97f4ba21c?v=a0eccb6fe6e743a1aa7107761540aba5&pvs=4)
++ [Branch Convention](https://joyous-ghost-8c7.notion.site/Branch-Convention-793193a4b8af4d9cadcea2f058604f45?pvs=4)
++ [Github Convention](https://joyous-ghost-8c7.notion.site/Github-Convention-29f2cd6cc90a4eb19f09c730c7268638?pvs=4)
+
+
+<br>
+
+## 💟 𝙆𝙖𝙣𝙗𝙖𝙣 𝘽𝙤𝙖𝙧𝙙
++ [Kanban Board](https://github.com/orgs/TeamDon-tBe/projects/1)
 
 <br>
 
 ## 📁 𝙁𝙤𝙡𝙙𝙚𝙧𝙞𝙣𝙜
 ```
-📂 com.airbnb
-┣ 📂 core
+📂 DontBe
+┣ 📂 build-logic
+┣ 📂 app
+┃ ┣ 📂 di
+┣ 📂 core-ui
 ┃ ┣ 📂 base
 ┃ ┣ 📂 util
 ┃ ┣ 📂 view
+┣ 📂 data-local
+┣ 📂 data-remote
+┃ ┣ 📂 api
+┃ ┣ 📂 datasourceimpl
 ┣ 📂 data
-┃ ┣ 📂 service
-┃ ┣ 📂 model
-┣ 📂 presentation
-┃ ┣ 📂 explore
-┃ ┣ 📂 when
-┃ ┣ 📂 where
-┃ ┣ 📂 who
+┃ ┣ 📂 datasource
+┃ ┣ 📂 repositoryimpl
+┃ ┣ 📂 dto
+┣ 📂 domain
+┃ ┣ 📂 datasource
+┃ ┣ 📂 entity
+┣ 📂 feature
+┃ ┣ 📂 home
+┃ ┣ 📂 posting
+┃ ┣ 📂 mypage
+┃ ┣ 📂 notification
+┃ ┣ 📂 util
 ```
 <br>
 <br>
