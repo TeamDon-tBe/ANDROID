@@ -23,10 +23,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun removeBadgeOnNotification(navController: NavController) {
-        val badgeDrawable = binding.bnvMain.getBadge(R.id.fragment_notification)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.fragment_notification) {
-                badgeDrawable?.apply {
+                binding.bnvMain.getBadge(R.id.fragment_notification)?.apply {
                     isVisible = false
                     clearNumber() // or badgeDrawable?.clearText()
                 }
