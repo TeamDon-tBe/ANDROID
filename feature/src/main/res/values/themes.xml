@@ -9,7 +9,7 @@
 
     <style name="Theme.DontBe.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white</item> <!-- 스플래시 화면 배경 색상 -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_symbol</item> <!-- 스플래시 화면 아이콘 -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_symbol_background</item> <!-- 스플래시 화면 아이콘 -->
         <item name="postSplashScreenTheme">@style/Base.Theme.DontBe</item> <!-- 스플래시 화면 이후 적용할 테마 지정 -->
     </style>
 </resources>
