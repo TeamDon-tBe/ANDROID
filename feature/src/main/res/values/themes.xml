@@ -3,7 +3,7 @@
     <style name="Base.Theme.DontBe" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:windowBackground">@color/background_white</item>
+        <item name="android:windowBackground">@color/gray_1</item>
     </style>
 
     <style name="Theme.DontBe" parent="Base.Theme.DontBe" />

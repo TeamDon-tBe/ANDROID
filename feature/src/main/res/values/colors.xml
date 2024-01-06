@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- main color -->
-    <color name="primary">#FF57BF9C</color>
+    <color name="primary">#FF7AEBA8</color>
     <color name="secondary">#FFECF6F3</color>
     <color name="white">#FFFCFCFD</color>
     <color name="black">#FF0E0E0E</color>
@@ -19,6 +19,4 @@
     <color name="gray_11">#FF5D5D60</color>
     <color name="gray_12">#FF49494C</color>
     <!-- 디자인 시스템에는 없지만 피그마에는 존재하는 색상 -->
-    <color name="background_white">#FFF7F7F9</color>
-    <color name="pure_white">#FFFFFFFF</color>
 </resources>
