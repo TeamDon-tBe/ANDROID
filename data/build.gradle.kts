@@ -7,15 +7,6 @@ plugins {
 android {
     namespace = "com.teamdontbe.data"
 
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
     buildFeatures {
         dataBinding = true
     }
