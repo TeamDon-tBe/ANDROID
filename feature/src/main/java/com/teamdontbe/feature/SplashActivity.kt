@@ -8,8 +8,8 @@ import com.teamdontbe.feature.login.LoginActivity
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         installSplashScreen()
+        super.onCreate(savedInstanceState)
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
