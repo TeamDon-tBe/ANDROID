@@ -19,15 +19,6 @@ android {
         versionName = libs.versions.appVersion.get()
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
     buildFeatures {
         dataBinding = true
     }
@@ -51,4 +42,5 @@ dependencies {
     // Third Party
     implementation(libs.coil.core)
     implementation(libs.bundles.retrofit)
+    implementation(libs.kakao.login)
 }
