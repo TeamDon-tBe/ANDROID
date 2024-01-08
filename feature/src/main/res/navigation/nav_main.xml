@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/fragment_home">
+    app:startDestination="@id/fragment_onboarding">
 
     <fragment
         android:id="@+id/fragment_home"
@@ -25,4 +25,9 @@
         android:name="com.teamdontbe.feature.mypage.MyPageFragment"
         android:label="MyPageFragment"
         tools:layout="@layout/fragment_my_page" />
+    <fragment
+        android:id="@+id/fragment_onboarding"
+        android:name="com.teamdontbe.feature.onboarding.OnboardingFragment"
+        android:label="OnboardingFragment"
+        tools:layout="@layout/fragment_onboarding" />
 </navigation>
