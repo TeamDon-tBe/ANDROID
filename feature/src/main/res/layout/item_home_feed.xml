@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_white_fill_radius8_rect"
         android:clickable="true"
-        android:focusable="true"
         android:paddingVertical="16dp">
 
         <androidx.constraintlayout.widget.Guideline
@@ -97,9 +96,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:padding="6dp"
-            android:src="@drawable/ic_home_kebab_33"
+            android:background="@drawable/ripple_home_kebab_gray_44"
+            android:clickable="true"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -108,47 +106,48 @@
             android:id="@+id/btn_home_heart"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
             android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_home_heart_default_gray_40_with_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
-            app:layout_constraintEnd_toStartOf="@id/btn_home_comment" />
+            app:layout_constraintEnd_toStartOf="@id/tv_home_heart_num"
+            app:layout_constraintHorizontal_chainStyle="packed" />
 
         <TextView
             android:id="@+id/tv_home_heart_num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
             android:gravity="start"
-            android:text="54"
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
             android:textColor="@color/gray_11"
             app:layout_constraintBottom_toBottomOf="@id/btn_home_heart"
-            app:layout_constraintStart_toEndOf="@id/btn_home_heart"
-            app:layout_constraintTop_toTopOf="@id/btn_home_heart" />
+            app:layout_constraintEnd_toStartOf="@id/btn_home_comment"
+            app:layout_constraintTop_toTopOf="@id/btn_home_heart"
+            tools:text="54" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_home_comment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
             android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_home_comment_default_gray_40_with_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toStartOf="@id/tv_home_comment_num" />
 
         <TextView
             android:id="@+id/tv_home_comment_num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
             android:gravity="start"
-            android:text="54"
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
             android:textColor="@color/gray_11"
             app:layout_constraintBottom_toBottomOf="@id/btn_home_comment"
-            app:layout_constraintStart_toEndOf="@id/btn_home_comment"
-            app:layout_constraintTop_toTopOf="@id/btn_home_comment" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_home_comment"
+            tools:text="54" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
