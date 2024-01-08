@@ -1,12 +1,15 @@
 package com.teamdontbe.feature
 
+import android.content.ContentValues
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.feature.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
