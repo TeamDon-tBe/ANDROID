@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -46,7 +47,15 @@ fun Context.dialogFragmentResize(dialogFragment: DialogFragment, horizontalMargi
     val deviceWidth = Resources.getSystem().displayMetrics.widthPixels
     dialogFragment.dialog?.window?.setLayout(
         deviceWidth - 2 * dialogHorizontalMarginInPixels,
-        WindowManager.LayoutParams.WRAP_CONTENT
+        WindowManager.LayoutParams.WRAP_CONTENT,
     )
     dialogFragment.dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+}
+
+fun Context.pxToDp(px: Int): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        px.toFloat(),
+        resources.displayMetrics,
+    ).toInt()
 }
