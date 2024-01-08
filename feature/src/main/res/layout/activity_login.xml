@@ -17,7 +17,7 @@
             android:id="@+id/iv_login_symbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="27dp"
+            android:layout_marginStart="27dp"
             android:layout_marginTop="62dp"
             android:src="@drawable/ic_login_symbol"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="26dp"
+            android:layout_marginStart="26dp"
             android:layout_marginTop="20dp"
             android:text="@string/login_description"
             android:textAppearance="@style/TextAppearance.DontBe.head_semi_24"
