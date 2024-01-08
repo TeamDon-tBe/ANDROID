@@ -4,4 +4,5 @@
     <string name="menu_item_posting">글쓰기</string>
     <string name="menu_item_notification">알림</string>
     <string name="menu_item_my">my</string>
+    <string name="login_description">온화한 커뮤니티\nDON\'T BE에서 만나요.</string>
 </resources>
