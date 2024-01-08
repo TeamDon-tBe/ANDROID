@@ -3,8 +3,10 @@
     <!-- main color -->
     <color name="primary">#FF7AEBA8</color>
     <color name="secondary">#FFECF6F3</color>
+    <color name="pale">#FFECF6F3</color>
     <color name="white">#FFFCFCFD</color>
     <color name="black">#FF0E0E0E</color>
+    <color name="error">#FFFF5E5E</color>
     <!-- gray scale -->
     <color name="gray_1">#FFF6F6F7</color>
     <color name="gray_2">#FFEBEBEE</color>
