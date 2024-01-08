@@ -10,6 +10,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
 import com.teamdontbe.feature.example.ExampleViewModel
 import com.teamdontbe.feature.mypage.adapter.MyPageFeedAdapter
+import com.teamdontbe.feature.mypage.adapter.MyPageFeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -32,6 +33,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                         adapter = MyPageFeedAdapter(requireContext()).apply {
                             submitList(it.data)
                         }
+                        addItemDecoration(MyPageFeedItemDecorator(requireContext()))
                     }
                 }
 
