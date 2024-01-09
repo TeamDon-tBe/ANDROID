@@ -4,6 +4,10 @@
     <string name="menu_item_posting">글쓰기</string>
     <string name="menu_item_notification">알림</string>
     <string name="menu_item_my">my</string>
+    <string name="login_description">온화한 커뮤니티\nDON\'T BE에서 만나요.</string>
+    <string name="posting_appbar_title">새로운 글</string>
+    <string name="notification_appbar_title">알림</string>
+    <string name="appbar_cancel">취소</string>
 
     <!--onboarding-->
     <string name="content_description_iv_onboarding_back">뒤로가기 입니다.</string>

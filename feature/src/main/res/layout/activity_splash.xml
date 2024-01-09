@@ -10,16 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/appbar_posting"
-            layout="@layout/view_appbar"
-            app:title="@{@string/posting_appbar_title}"/>
-
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="글쓰기"
-            android:textSize="20sp"
+            android:src="@drawable/ic_splash_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
