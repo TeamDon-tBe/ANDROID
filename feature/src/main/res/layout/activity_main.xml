@@ -31,7 +31,6 @@
             android:background="@color/white"
             app:itemActiveIndicatorStyle="@null"
             app:itemBackground="@null"
-            app:itemIconTint="@color/sel_main_color_bnv_menu"
             app:itemPaddingBottom="18dp"
             app:itemPaddingTop="16dp"
             app:itemRippleColor="@color/white"

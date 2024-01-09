@@ -37,7 +37,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private fun initMainBottomNavigation() {
         val navController =
             (supportFragmentManager.findFragmentById(R.id.fcv_main) as NavHostFragment).findNavController()
-        binding.bnvMain.setupWithNavController(navController)
+        binding.bnvMain.apply {
+            setupWithNavController(navController)
+            itemIconTintList = null
+        }
         // NotificationFragment 진입할 때 badge를 없애는 함수
         removeBadgeOnNotification(navController)
     }
