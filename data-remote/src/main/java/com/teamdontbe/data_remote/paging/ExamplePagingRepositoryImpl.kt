@@ -15,7 +15,7 @@ class ExamplePagingRepositoryImpl
     constructor(
         private val apiService: ExampleApiService,
     ) : ExamplePagingRepository {
-        override fun getPagingExample(page: Int): Flow<PagingData<UserEntity>> =
+        override fun getPagingExample(): Flow<PagingData<UserEntity>> =
             Pager(PagingConfig(6)) {
                 PagingSourceImpl(apiService)
             }.flow
