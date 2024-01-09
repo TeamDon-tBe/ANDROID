@@ -20,7 +20,6 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private fun initCancelBtnClickListener() {
         // 다이얼로그 추가 후 코드 변경 필요
         binding.appbarPosting.tvAppbarCancel.setOnClickListener {
-            binding.appbarPosting.tvAppbarCancel
             navigateToPreviousActivity()
         }
     }
