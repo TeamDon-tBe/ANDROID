@@ -6,24 +6,81 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <include
-            android:id="@+id/appbar_posting"
-            layout="@layout/view_appbar"
-            app:title="@{@string/posting_appbar_title}"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="글쓰기"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <include
+                android:id="@+id/appbar_posting"
+                layout="@layout/view_appbar"
+                app:title="@{@string/posting_appbar_title}" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_posting_profile_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginTop="32dp"
+                android:src="@drawable/img_posting_profile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appbar_posting"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+            <TextView
+                android:id="@+id/tv_posting_profile_nickname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="30dp"
+                android:text="뚜비요"
+                android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_posting_profile_img"
+                app:layout_constraintTop_toTopOf="@id/iv_posting_profile_img" />
+
+            <EditText
+                android:id="@+id/et_posting_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="30dp"
+                android:background="@null"
+                android:gravity="top|start"
+                android:hint="@string/posting_content_hint"
+                android:maxLength="500"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+                android:textCursorDrawable="@color/primary"
+                app:layout_constraintBottom_toTopOf="@id/view_posting_line"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_posting_profile_img"
+                app:layout_constraintTop_toBottomOf="@id/tv_posting_profile_nickname" />
+
+            <View
+                android:id="@+id/view_posting_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="58dp"
+                android:background="@color/gray_2"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btn_posting_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_posting_uploading_deactivate"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 </layout>

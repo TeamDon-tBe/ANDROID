@@ -14,7 +14,11 @@
         android:id="@+id/fragment_posting"
         android:name="com.teamdontbe.feature.posting.PostingFragment"
         android:label="PostingFragment"
-        tools:layout="@layout/fragment_posting" />
+        tools:layout="@layout/fragment_posting" >
+        <action
+            android:id="@+id/action_posting_to_home"
+            app:destination="@id/fragment_home" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_notification"
         android:name="com.teamdontbe.feature.notification.NotificationFragment"

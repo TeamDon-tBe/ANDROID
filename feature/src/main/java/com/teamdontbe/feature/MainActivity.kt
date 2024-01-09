@@ -72,7 +72,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 if (destination.id in
                     listOf(
                         R.id.fragment_home,
-                        R.id.fragment_posting,
                         R.id.fragment_notification,
                         R.id.fragment_my_page,
                     )
