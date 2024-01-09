@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/appbar_sign_up"
+            layout="@layout/view_appbar_with_back"
+            app:title="@{@string/sign_up_appbar_title}" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_sign_up_start_23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="23dp" />
+
+        <TextView
+            android:id="@+id/tv_sign_up_agree"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="46dp"
+            android:text="@string/sign_up_agree_title"
+            android:textAppearance="@style/TextAppearance.DontBe.head_semi_20"
+            app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_23"
+            app:layout_constraintTop_toBottomOf="@id/appbar_sign_up" />
+
+        <TextView
+            android:id="@+id/tv_sign_up_agree_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/sign_up_agree_description"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_16"
+            android:textColor="@color/gray_9"
+            app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_23"
+            app:layout_constraintTop_toBottomOf="@id/tv_sign_up_agree" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_sign_up_parent"
+            android:layout_width="24dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/sel_sign_up_checkbox"
+            android:button="@null"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_23"
+            app:layout_constraintTop_toBottomOf="@id/tv_sign_up_agree_text" />
+
+        <TextView
+            android:id="@+id/tv_sign_up_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/sign_up_agree_choose_all"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/cb_sign_up_parent"
+            app:layout_constraintStart_toEndOf="@id/cb_sign_up_parent"
+            app:layout_constraintTop_toTopOf="@id/cb_sign_up_parent" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_sign_up_child_1"
+            android:layout_width="24dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/sel_sign_up_checkbox"
+            android:button="@null"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_23"
+            app:layout_constraintTop_toBottomOf="@id/cb_sign_up_parent" />
+
+        <TextView
+            android:id="@+id/tv_sign_up_child_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/sign_up_agree_child_1"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_16"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/cb_sign_up_child_1"
+            app:layout_constraintStart_toEndOf="@id/cb_sign_up_child_1"
+            app:layout_constraintTop_toTopOf="@id/cb_sign_up_child_1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_radius6_rect"
+            android:backgroundTint="#59CD9C"
+            android:gravity="center"
+            android:paddingHorizontal="6dp"
+            android:paddingTop="2dp"
+            android:text="@string/sign_up_agree_must"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_child_1"
+            app:layout_constraintStart_toEndOf="@id/tv_sign_up_child_1"
+            app:layout_constraintTop_toTopOf="@id/tv_sign_up_child_1" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcv_sign_up_agree_green_child_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            app:cardBackgroundColor="#59CD9C"
+            app:cardCornerRadius="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_child_1"
+            app:layout_constraintStart_toEndOf="@id/tv_sign_up_child_1"
+            app:layout_constraintTop_toTopOf="@id/tv_sign_up_child_1"
+            app:strokeWidth="0dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:text="@string/sign_up_agree_must"
+                android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+                android:textColor="@color/white" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_sign_up_agree_child_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_sign_up_next_gray_24"
+            app:layout_constraintBottom_toBottomOf="@id/mcv_sign_up_agree_green_child_1"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toEndOf="@id/mcv_sign_up_agree_green_child_1"
+            app:layout_constraintTop_toTopOf="@id/mcv_sign_up_agree_green_child_1" />
+
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_sign_up_child_2"
+            android:layout_width="24dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/sel_sign_up_checkbox"
+            android:button="@null"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_23"
+            app:layout_constraintTop_toBottomOf="@id/cb_sign_up_child_1" />
+
+        <TextView
+            android:id="@+id/tv_sign_up_child_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/sign_up_agree_child_2"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_16"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/cb_sign_up_child_2"
+            app:layout_constraintStart_toEndOf="@id/cb_sign_up_child_2"
+            app:layout_constraintTop_toTopOf="@id/cb_sign_up_child_2" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcv_sign_up_agree_green_child_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            app:cardBackgroundColor="#59CD9C"
+            app:cardCornerRadius="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_child_2"
+            app:layout_constraintStart_toEndOf="@id/tv_sign_up_child_2"
+            app:layout_constraintTop_toTopOf="@id/tv_sign_up_child_2"
+            app:strokeWidth="0dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:text="@string/sign_up_agree_must"
+                android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+                android:textColor="@color/white" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_sign_up_agree_child_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_sign_up_next_gray_24"
+            app:layout_constraintBottom_toBottomOf="@id/mcv_sign_up_agree_green_child_2"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toEndOf="@id/mcv_sign_up_agree_green_child_2"
+            app:layout_constraintTop_toTopOf="@id/mcv_sign_up_agree_green_child_2" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_sign_up_child_3"
+            android:layout_width="24dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/sel_sign_up_checkbox"
+            android:button="@null"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_23"
+            app:layout_constraintTop_toBottomOf="@id/cb_sign_up_child_2" />
+
+        <TextView
+            android:id="@+id/tv_sign_up_child_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/sign_up_agree_child_3"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_16"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/cb_sign_up_child_3"
+            app:layout_constraintStart_toEndOf="@id/cb_sign_up_child_3"
+            app:layout_constraintTop_toTopOf="@id/cb_sign_up_child_3" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcv_sign_up_agree_green_child_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            app:cardBackgroundColor="#59CD9C"
+            app:cardCornerRadius="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_child_3"
+            app:layout_constraintStart_toEndOf="@id/tv_sign_up_child_3"
+            app:layout_constraintTop_toTopOf="@id/tv_sign_up_child_3"
+            app:strokeWidth="0dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:text="@string/sign_up_agree_must"
+                android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+                android:textColor="@color/white" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_sign_up_agree_child_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_sign_up_next_gray_24"
+            app:layout_constraintBottom_toBottomOf="@id/mcv_sign_up_agree_green_child_3"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toEndOf="@id/mcv_sign_up_agree_green_child_3"
+            app:layout_constraintTop_toTopOf="@id/mcv_sign_up_agree_green_child_3" />
+
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_sign_up_child_4"
+            android:layout_width="24dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/sel_sign_up_checkbox"
+            android:button="@null"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_23"
+            app:layout_constraintTop_toBottomOf="@id/cb_sign_up_child_3" />
+
+        <TextView
+            android:id="@+id/tv_sign_up_child_4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/sign_up_agree_child_4"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_16"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/cb_sign_up_child_4"
+            app:layout_constraintStart_toEndOf="@id/cb_sign_up_child_4"
+            app:layout_constraintTop_toTopOf="@id/cb_sign_up_child_4" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcv_sign_up_agree_green_child_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            app:cardBackgroundColor="@color/pale"
+            app:cardCornerRadius="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_child_4"
+            app:layout_constraintStart_toEndOf="@id/tv_sign_up_child_4"
+            app:layout_constraintTop_toTopOf="@id/tv_sign_up_child_4"
+            app:strokeWidth="0dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:text="@string/sign_up_agree_choose"
+                android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+                android:textColor="@color/secondary" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_sign_up_agree_child_4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_sign_up_next_gray_24"
+            app:layout_constraintBottom_toBottomOf="@id/mcv_sign_up_agree_green_child_4"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toEndOf="@id/mcv_sign_up_agree_green_child_4"
+            app:layout_constraintTop_toTopOf="@id/mcv_sign_up_agree_green_child_4" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_sign_up_agree_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="17dp"
+            android:layout_marginBottom="14dp"
+            android:background="@drawable/sel_sign_up_agree_btn_next"
+            android:clickable="true"
+            android:enabled="false"
+            android:focusable="true"
+            android:paddingVertical="14dp"
+            android:text="@string/btn_onboarding_next"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
