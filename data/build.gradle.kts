@@ -14,7 +14,6 @@ android {
 
 dependencies {
     implementation(project(":domain"))
-    implementation(project(":data-remote"))
 
     // android
     implementation(libs.bundles.room)
