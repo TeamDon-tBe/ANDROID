@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="39dp"
-            android:text="DON'T BE는"
+            android:text="@string/tv_onboarding_second_subtitle"
             android:textAppearance="@style/TextAppearance.DontBe.head_semi_18"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
             android:id="@+id/tv_onboarding_second_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="차별, 혐오, 비난에서\n 자유로운 커뮤니티예요."
+            android:text="@string/tv_onboarding_second_title"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.DontBe.head_semi_24"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +40,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_onboarding_second_title"
-            android:contentDescription="온보딩 두번째 사진입니다." />
+            android:contentDescription="@string/content_description_iv_onboarding_second" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
