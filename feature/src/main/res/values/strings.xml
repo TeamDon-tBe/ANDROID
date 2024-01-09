@@ -1,17 +1,21 @@
 <resources>
-    <!--    바텀 내비게이션 -->
+    <!-- 바텀 내비게이션 -->
     <string name="app_name">DontBe</string>
     <string name="menu_item_home">홈</string>
     <string name="menu_item_posting">글쓰기</string>
     <string name="menu_item_notification">알림</string>
     <string name="menu_item_my">마이</string>
-    <!--    로그인 화면-->
-    <string name="login_description">온화한 커뮤니티\nDON\'T BE에서 만나요.</string>
-    <string name="posting_appbar_title">새로운 글</string>
-    <string name="notification_appbar_title">알림</string>
+    <!-- 앱바 -->
     <string name="appbar_cancel">취소</string>
+    <!-- 로그인 화면 -->
+    <string name="login_description">온화한 커뮤니티\nDON\'T BE에서 만나요.</string>
+    <!-- 글 작성하기 화면 -->
+    <string name="posting_appbar_title">새로운 글</string>
+    <string name="posting_content_hint">무슨 고민이 있나요?...</string>
+    <!-- 노티 화면 -->
+    <string name="notification_appbar_title">알림</string>
 
-    <!--onboarding-->
+    <!-- onboarding -->
     <string name="content_description_iv_onboarding_back">뒤로가기 입니다.</string>
     <string name="btn_onboarding_next">다음으로</string>
     <string name="btn_onboarding_start">시작하기</string>
