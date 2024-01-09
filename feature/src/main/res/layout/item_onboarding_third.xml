@@ -15,22 +15,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="46dp"
-            android:text="표현의 자유를 남용하는 유저는\n점점 투명해져요."
+            android:text="표현의 자유를 남용하는 유저는"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.DontBe.head_semi_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/tv_onboarding_third_title_gradient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="점점 투명해져요."
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.DontBe.head_semi_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_onboarding_third_title" />
+
         <ImageView
             android:id="@+id/iv_onboarding_third"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="72dp"
+            android:contentDescription="온보딩 세번째 사진입니다."
             android:src="@drawable/img_onboarding_third"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_onboarding_third_title"
-            android:contentDescription="온보딩 세번째 사진입니다." />
+            app:layout_constraintTop_toBottomOf="@id/tv_onboarding_third_title" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
