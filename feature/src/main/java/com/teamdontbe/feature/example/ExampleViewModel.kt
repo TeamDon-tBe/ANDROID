@@ -14,5 +14,5 @@ class ExampleViewModel
     constructor(
         private val exampleRepository: ExamplePagingRepository,
     ) : ViewModel() {
-        fun getRecyclerviewTest(page: Int): Flow<PagingData<UserEntity>> = exampleRepository.getPagingExample(page)
+        fun getRecyclerviewTest(): Flow<PagingData<UserEntity>> = exampleRepository.getPagingExample()
     }

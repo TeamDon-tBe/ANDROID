@@ -8,14 +8,15 @@ import com.teamdontbe.domain.entity.UserEntity
 import com.teamdontbe.feature.databinding.ItemExampleBinding
 import com.teamdontbe.feature.example.viewholder.PagingDataViewHolder
 
-class PagingAdapter() : PagingDataAdapter<UserEntity, PagingDataViewHolder>(exampleDiffCallback) {
+class PagingAdapter(private val click: (UserEntity, Int) -> Unit = { _, _ -> }) :
+    PagingDataAdapter<UserEntity, PagingDataViewHolder>(exampleDiffCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
     ): PagingDataViewHolder {
         val binding =
             ItemExampleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PagingDataViewHolder(binding)
+        return PagingDataViewHolder(binding, click)
     }
 
     override fun onBindViewHolder(

@@ -12,6 +12,9 @@ class ExampleViewHolder(
         with(binding) {
             example = data
             executePendingBindings()
+            binding.root.setOnClickListener {
+                click(data, bindingAdapterPosition)
+            }
         }
     }
 }

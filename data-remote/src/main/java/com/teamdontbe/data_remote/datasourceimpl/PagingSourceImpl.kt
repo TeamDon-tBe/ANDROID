@@ -9,14 +9,12 @@ class PagingSourceImpl(private val exampleApiService: ExampleApiService) :
     PagingSource<Int, UserEntity>() {
     override fun getRefreshKey(state: PagingState<Int, UserEntity>): Int? {
         return state.anchorPosition?.let { position ->
-            // prevKey = null 첫번째, next = null 마지
             state.closestPageToPosition(position)?.prevKey?.plus(1) ?: state.closestPageToPosition(
                 position,
             )?.nextKey?.minus(1)
         }
     }
 
-    // position, size 변경해주기
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UserEntity> {
         val position = params.key ?: 1
         return runCatching {

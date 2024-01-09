@@ -4,7 +4,7 @@ import com.teamdontbe.data.datasource.ExampleDataSource
 import com.teamdontbe.data.repositoryimpl.ExampleRepositoryImpl
 import com.teamdontbe.data_remote.api.ExampleApiService
 import com.teamdontbe.data_remote.datasourceimpl.ExampleDataSourceImpl
-import com.teamdontbe.data_remote.datasourceimpl.ExamplePagingRepositoryImpl
+import com.teamdontbe.data_remote.paging.ExamplePagingRepositoryImpl
 import com.teamdontbe.domain.repository.ExamplePagingRepository
 import com.teamdontbe.domain.repository.ExampleRepository
 import dagger.Binds

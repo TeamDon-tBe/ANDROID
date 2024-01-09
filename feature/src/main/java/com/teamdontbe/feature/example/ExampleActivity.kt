@@ -9,16 +9,24 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ExampleActivity : BindingActivity<ActivityExampleBinding>(R.layout.activity_example) {
-    private val exampleAdapter = PagingAdapter()
+    private val exampleAdapter =
+        PagingAdapter(click = { data, position ->
+        })
 
     private val viewModel by viewModels<ExampleViewModel>()
 
     override fun initView() {
-        initAdapter(1)
+        initAdapter()
     }
 
-    private fun initAdapter(page: Int) {
+    private fun initAdapter() {
         binding.rvExample.adapter =
-            exampleAdapter.apply { pagingSubmitData(this@ExampleActivity, viewModel.getRecyclerviewTest(page), exampleAdapter) }
+            exampleAdapter.apply {
+                pagingSubmitData(
+                    this@ExampleActivity,
+                    viewModel.getRecyclerviewTest(),
+                    exampleAdapter,
+                )
+            }
     }
 }
