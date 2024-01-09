@@ -6,15 +6,14 @@ import com.teamdontbe.feature.databinding.ItemExampleBinding
 
 class ExampleViewHolder(
     private val binding: ItemExampleBinding,
-    private val click: (UserEntity, Int) -> Unit = { _, _ -> }
+    private val click: (UserEntity, Int) -> Unit = { _, _ -> },
 ) : RecyclerView.ViewHolder(binding.root) {
-
     fun bind(data: UserEntity) {
         with(binding) {
             example = data
             executePendingBindings()
             binding.root.setOnClickListener {
-                click(data, adapterPosition)
+                click(data, bindingAdapterPosition)
             }
         }
     }

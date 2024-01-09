@@ -66,6 +66,7 @@ fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragm
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 splash-screen = { module = "androidx.core:core-splashscreen", version.ref = "splash-screen" }
 paging = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
+paging-domain = { module = "androidx.paging:paging-common", version.ref = "paging" }
 navigation_fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation_ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }

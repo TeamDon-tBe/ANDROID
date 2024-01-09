@@ -15,7 +15,7 @@ android {
 dependencies {
     implementation(project(":domain"))
 
-    //android
+    // android
     implementation(libs.bundles.room)
     implementation(libs.paging)
 
