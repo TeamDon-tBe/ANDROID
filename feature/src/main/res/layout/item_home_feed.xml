@@ -49,12 +49,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="투명도 0% · 3분 전"
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
             android:textColor="@color/gray_9"
             app:layout_constraintBottom_toBottomOf="@id/iv_home_profile"
             app:layout_constraintStart_toStartOf="@id/tv_home_feed_user_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_home_feed_user_name" />
+            app:layout_constraintTop_toBottomOf="@id/tv_home_feed_user_name"
+            tools:text="투명도 0% · 3분 전" />
 
         <TextView
             android:id="@+id/tv_home_feed_content"
