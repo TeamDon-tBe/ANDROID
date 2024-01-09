@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -68,6 +69,21 @@
                 android:layout_marginBottom="58dp"
                 android:background="@color/gray_2"
                 app:layout_constraintBottom_toBottomOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/pb_posting_input"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="18dp"
+                android:background="@drawable/shape_gray_03_line_10_ring"
+                android:indeterminateOnly="false"
+                android:max="500"
+                android:progress="0"
+                android:progressDrawable="@drawable/shape_primary_line_10_ring"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_posting_upload"
+                tools:progress="200" />
 
             <ImageButton
                 android:id="@+id/btn_posting_upload"
