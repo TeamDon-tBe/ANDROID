@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.posting
 
 import android.content.Intent
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingFragment
@@ -50,13 +51,38 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         binding.run {
             etPostingContent.doAfterTextChanged {
                 val inputString = etPostingContent.text.toString()
+                val inputStringLen = inputString.length
 
-                if (inputString.length in 1..499) {
-                    btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_activate)
-                    initUploadingActivateBtnClickListener()
-                } else {
-                    btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_deactivate)
-                    initUploadingDeactivateBtnClickListener()
+                when {
+                    inputStringLen in 1..499 -> {
+                        pbPostingInput.progressDrawable = context?.let { it ->
+                            ContextCompat.getDrawable(
+                                it,
+                                R.drawable.shape_primary_line_10_ring
+                            )
+                        }
+                        pbPostingInput.progress = inputString.length
+                        btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_activate)
+                        initUploadingActivateBtnClickListener()
+                    }
+
+                    inputStringLen >= 500 -> {
+                        pbPostingInput.progressDrawable = context?.let { it ->
+                            ContextCompat.getDrawable(
+                                it,
+                                R.drawable.shape_error_line_10_ring
+                            )
+                        }
+                        pbPostingInput.progress = inputString.length
+                        btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_deactivate)
+                        initUploadingDeactivateBtnClickListener()
+                    }
+
+                    else -> {
+                        pbPostingInput.progress = 0
+                        btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_deactivate)
+                        initUploadingDeactivateBtnClickListener()
+                    }
                 }
                 postingDebouncer.setDelay(inputString, 1000L) {}
             }
