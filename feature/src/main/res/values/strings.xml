@@ -59,19 +59,6 @@
     <string name="tv_complaint_title">신고하기</string>
     <string name="tv_delete_title">삭제하기</string>
 
-    <!--    약관동의 화면-->
-    <string name="sign_up_agree_title">약관동의</string>
-    <string name="sign_up_agree_description">DON’T BE와 함께하기 전\n필요한 약관들을 확인해주세요!</string>
-    <string name="sign_up_agree_choose_all">전체선택</string>
-    <string name="sign_up_agree_child_1">이용약관 동의</string>
-    <string name="sign_up_agree_must">필수</string>
-    <string name="sign_up_agree_child_2">개인정보 수집 및 이용동의</string>
-    <string name="sign_up_agree_child_3">만 14세 이상입니다</string>
-    <string name="sign_up_agree_child_4">마케팅 활용 / 광고성 정보 수신동의</string>
-    <string name="sign_up_agree_choose">선택</string>
-
-    <!-- 홈 -->
-
     <!--    회원가입_프로필 화면-->
     <string name="sign_up_profile_nickname">닉네임</string>
     <string name="sign_up_profile_edit_hint">닉네임을 입력해주세요</string>
@@ -90,4 +77,14 @@
     <string name="delete_dialog_delete">삭제</string>
     <string name="tv_home_detail_appbar_title">게시글</string>
     <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
+    <!--    약관동의 화면-->
+    <string name="sign_up_agree_title">약관동의</string>
+    <string name="sign_up_agree_description">DON’T BE와 함께하기 전\n필요한 약관들을 확인해주세요!</string>
+    <string name="sign_up_agree_choose_all">전체선택</string>
+    <string name="sign_up_agree_child_1">이용약관 동의</string>
+    <string name="sign_up_agree_must">필수</string>
+    <string name="sign_up_agree_child_2">개인정보 수집 및 이용동의</string>
+    <string name="sign_up_agree_child_3">만 14세 이상입니다</string>
+    <string name="sign_up_agree_child_4">마케팅 활용 / 광고성 정보 수신동의</string>
+    <string name="sign_up_agree_choose">마케팅 활용 / 광고성 정보 수신동의</string>
 </resources>
