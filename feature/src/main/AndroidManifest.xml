@@ -25,15 +25,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.SignUpAgreeActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".MainActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".login.LoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.SignUpAgreeActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
