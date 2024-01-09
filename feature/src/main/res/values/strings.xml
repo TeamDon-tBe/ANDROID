@@ -7,4 +7,7 @@
     <string name="menu_item_my">마이</string>
     <!--    로그인 화면-->
     <string name="login_description">온화한 커뮤니티\nDON\'T BE에서 만나요.</string>
+    <string name="posting_appbar_title">새로운 글</string>
+    <string name="notification_appbar_title">알림</string>
+    <string name="appbar_cancel">취소</string>
 </resources>
