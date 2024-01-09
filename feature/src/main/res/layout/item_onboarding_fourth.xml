@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_onboarding_fourth_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="46dp"
+            android:text="@string/tv_onboarding_fourth_title"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.DontBe.head_semi_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view_onboarding_fourth_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="48dp"
+            android:background="@drawable/shape_gray03_line_6_rect"
+            app:layout_constraintBottom_toBottomOf="@id/tv_onboarding_fourth_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_onboarding_fourth_profile" />
+
+        <ImageView
+            android:id="@+id/iv_onboarding_fourth_profile"
+            android:layout_width="0dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="58dp"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="@id/view_onboarding_fourth_background"
+            app:layout_constraintStart_toStartOf="@id/view_onboarding_fourth_background"
+            app:layout_constraintTop_toBottomOf="@id/tv_onboarding_fourth_title"
+            tools:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/tv_onboarding_fourth_nickname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:maxLength="12"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.DontBe.head_semi_18"
+            app:layout_constraintEnd_toEndOf="@id/view_onboarding_fourth_background"
+            app:layout_constraintStart_toStartOf="@id/view_onboarding_fourth_background"
+            app:layout_constraintTop_toBottomOf="@id/iv_onboarding_fourth_profile"
+            tools:text="123456789123" />
+
+        <EditText
+            android:id="@+id/et_onboarding_fourth_introduction"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_gray03_line_6_rect"
+            android:backgroundTint="@color/gray_1"
+            android:hint="@string/et_onboarding_fourth_introduction"
+            android:maxLength="50"
+            android:paddingVertical="17dp"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/gray_10"
+            app:layout_constraintEnd_toEndOf="@id/view_onboarding_fourth_background"
+            app:layout_constraintStart_toStartOf="@id/view_onboarding_fourth_background"
+            app:layout_constraintTop_toBottomOf="@id/tv_onboarding_fourth_nickname" />
+
+        <TextView
+            android:id="@+id/tv_onboarding_fourth_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="22dp"
+            android:text="@string/tv_onboarding_fourth_description"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+            android:textColor="@color/gray_8"
+            app:layout_constraintEnd_toEndOf="@id/view_onboarding_fourth_background"
+            app:layout_constraintStart_toStartOf="@id/view_onboarding_fourth_background"
+            app:layout_constraintTop_toBottomOf="@id/et_onboarding_fourth_introduction" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
