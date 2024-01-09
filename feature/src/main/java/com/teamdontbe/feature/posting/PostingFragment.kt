@@ -41,7 +41,9 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     }
 
     private fun navigateToMainActivity() {
-        startActivity(Intent(context, MainActivity::class.java))
+        findNavController().navigate(
+            R.id.action_posting_to_home
+        )
     }
 
     private fun initEditText() {
