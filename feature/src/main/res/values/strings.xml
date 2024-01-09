@@ -15,6 +15,8 @@
     <string name="posting_content_hint">무슨 고민이 있나요?...</string>
     <!-- 노티 화면 -->
     <string name="notification_appbar_title">알림</string>
+    <string name="appbar_cancel">취소</string>
+    <string name="sign_up_appbar_title">회원가입</string>
     <string name="notification_feed_content_liked">님이 회원님의 글을 좋아합니다.</string>
     <string name="notification_feed_comment">님이 회원님의 글에 답글을 작성했습니다.</string>
     <string name="notification_feed_comment_liked">님이 회원님의 답글을 좋아합니다.</string>
