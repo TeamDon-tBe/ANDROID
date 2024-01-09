@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_home_feed_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_white_fill_radius8_rect"
+        android:clickable="true"
+        android:paddingVertical="16dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_home_start_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="10dp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_home_profile"
+            android:layout_width="44dp"
+            android:layout_height="0dp"
+            android:background="@color/gray_9"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="@id/guide_home_start_10"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+        <TextView
+            android:id="@+id/tv_home_feed_user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            app:layout_constraintBottom_toTopOf="@id/tv_home_feed_transparency"
+            app:layout_constraintStart_toEndOf="@id/iv_home_profile"
+            app:layout_constraintTop_toTopOf="@id/iv_home_profile"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="don't be master" />
+
+        <TextView
+            android:id="@+id/tv_home_feed_transparency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+            android:textColor="@color/gray_9"
+            app:layout_constraintBottom_toBottomOf="@id/iv_home_profile"
+            app:layout_constraintStart_toStartOf="@id/tv_home_feed_user_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_home_feed_user_name"
+            tools:text="투명도 0% · 3분 전" />
+
+        <TextView
+            android:id="@+id/tv_home_feed_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="14dp"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_home_feed_user_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_home_feed_transparency"
+            tools:text="돈비를 사용하면 진짜 돈비를 맞을 수 있나요?
+저 돈비 맞고 싶어요 돈벼락이 최고입니다. 그나저나 돈비 정말 흥미로운 서비스인 것 같아요 어떻게 이런 기획을 ? 대박 ㄷ ㄷ ㄷ돈비를 사용하면 진짜 돈비를 맞을 수 있나요?" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            app:dividerColor="@color/pale"
+            app:layout_constraintBottom_toTopOf="@id/iv_home_ghost_fill_green"
+            app:layout_constraintEnd_toEndOf="@id/iv_home_profile"
+            app:layout_constraintStart_toStartOf="@id/iv_home_profile"
+            app:layout_constraintTop_toBottomOf="@id/iv_home_profile" />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_home_ghost_fill_green"
+            android:layout_width="44dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_home_ghost_fill_green"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="@id/guide_home_start_10"
+            app:layout_constraintTop_toBottomOf="@id/tv_home_feed_content"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_home_kebab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ripple_home_kebab_gray_44"
+            android:clickable="true"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_home_heart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_home_heart_default_gray_40_with_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@id/tv_home_heart_num"
+            app:layout_constraintHorizontal_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tv_home_heart_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:gravity="start"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+            android:textColor="@color/gray_11"
+            app:layout_constraintBottom_toBottomOf="@id/btn_home_heart"
+            app:layout_constraintEnd_toStartOf="@id/btn_home_comment"
+            app:layout_constraintTop_toTopOf="@id/btn_home_heart"
+            tools:text="54" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_home_comment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_home_comment_default_gray_40_with_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@id/tv_home_comment_num" />
+
+        <TextView
+            android:id="@+id/tv_home_comment_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:gravity="start"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+            android:textColor="@color/gray_11"
+            app:layout_constraintBottom_toBottomOf="@id/btn_home_comment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_home_comment"
+            tools:text="54" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
