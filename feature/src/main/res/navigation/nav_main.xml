@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/fragment_home">
+    app:startDestination="@id/fragment_onboarding">
 
     <fragment
         android:id="@+id/fragment_home"
@@ -25,4 +25,33 @@
         android:name="com.teamdontbe.feature.mypage.MyPageFragment"
         android:label="MyPageFragment"
         tools:layout="@layout/fragment_my_page" />
+    <fragment
+        android:id="@+id/fragment_onboarding"
+        android:name="com.teamdontbe.feature.onboarding.OnboardingFragment"
+        android:label="OnboardingFragment"
+        tools:layout="@layout/fragment_onboarding" >
+        <action
+            android:id="@+id/action_onboarding_to_home"
+            app:destination="@id/fragment_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_onboarding_first_item"
+        android:name="com.teamdontbe.feature.onboarding.OnboardingFirstItemFragment"
+        android:label="OnboardingFirstItemFragment"
+        tools:layout="@layout/item_onboarding_first" />
+    <fragment
+        android:id="@+id/fragment_onboarding_second_item"
+        android:name="com.teamdontbe.feature.onboarding.OnboardingSecondItemFragment"
+        android:label="OnboardingSecondItemFragment"
+        tools:layout="@layout/item_onboarding_second" />
+    <fragment
+        android:id="@+id/fragment_onboarding_third_item"
+        android:name="com.teamdontbe.feature.onboarding.OnboardingThirdFragment"
+        android:label="OnboardingThirdFragment"
+        tools:layout="@layout/item_onboarding_third" />
+    <fragment
+        android:id="@+id/fragment_onboarding_fourth_item"
+        android:name="com.teamdontbe.feature.onboarding.OnboardingFourthFragment"
+        android:label="OnboardingFourthFragment"
+        tools:layout="@layout/item_onboarding_fourth" />
 </navigation>

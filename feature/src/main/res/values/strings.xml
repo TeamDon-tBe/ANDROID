@@ -8,4 +8,21 @@
     <string name="posting_appbar_title">새로운 글</string>
     <string name="notification_appbar_title">알림</string>
     <string name="appbar_cancel">취소</string>
+
+    <!--onboarding-->
+    <string name="content_description_iv_onboarding_back">뒤로가기 입니다.</string>
+    <string name="btn_onboarding_next">다음으로</string>
+    <string name="btn_onboarding_start">시작하기</string>
+    <string name="tv_onboarding_skip">건너뛰기</string>
+    <string name="tv_onboarding_first_title">DON\'T BE를\n 찾아주셔서 감사해요.</string>
+    <string name="content_description_iv_onboarding_first">온보딩 첫번째 사진입니다.</string>
+    <string name="tv_onboarding_second_subtitle">DON\'T BE는</string>
+    <string name="tv_onboarding_second_title">차별, 혐오, 비난에서\n 자유로운 커뮤니티예요.</string>
+    <string name="content_description_iv_onboarding_second">온보딩 두번째 사진입니다.</string>
+    <string name="tv_onboarding_third_title">표현의 자유를 남용하는 유저는</string>
+    <string name="tv_onboarding_third_title_gradient">점점 투명해져요.</string>
+    <string name="content_description_iv_onboarding_third">온보딩 세번째 사진입니다.</string>
+    <string name="tv_onboarding_fourth_title">DON\'T BE에\n 첫인사를 남겨볼까요?</string>
+    <string name="et_onboarding_fourth_introduction">한문장으로 소개를 남겨주세요!</string>
+    <string name="tv_onboarding_fourth_description">설정한 사진, 닉네임, 한줄소개는 설정에서 변경 가능해요!</string>
 </resources>
