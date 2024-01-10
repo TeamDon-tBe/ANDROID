@@ -33,4 +33,5 @@
     <string name="tv_onboarding_fourth_description">설정한 사진, 닉네임, 한줄소개는 설정에서 변경 가능해요!</string>
     <string name="tv_complaint_title">신고하기</string>
     <string name="tv_delete_title">삭제하기</string>
+    <string name="tv_home_detail_appbar_title">게시글</string>
 </resources>

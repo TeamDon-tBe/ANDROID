@@ -31,6 +31,7 @@
                 app:layout_scrollFlags="scroll|enterAlways">
 
                 <ImageView
+                    android:id="@+id/iv_home_detail_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -40,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="게시글"
+                    android:text="@string/tv_home_detail_appbar_title"
                     android:textAppearance="@style/TextAppearance.DontBe.body_semi_16" />
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
