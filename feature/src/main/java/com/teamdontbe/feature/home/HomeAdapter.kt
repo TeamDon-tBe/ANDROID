@@ -27,7 +27,7 @@ class HomeAdapter(
         holder: HomeViewHolder,
         position: Int,
     ) {
-        holder.bind(getItem(position))
+        holder.bind(currentList[position])
     }
 
     companion object {
