@@ -34,4 +34,5 @@
     <string name="tv_complaint_title">신고하기</string>
     <string name="tv_delete_title">삭제하기</string>
     <string name="tv_home_detail_appbar_title">게시글</string>
+    <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
 </resources>
