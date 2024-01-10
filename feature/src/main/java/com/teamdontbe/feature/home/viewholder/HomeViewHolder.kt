@@ -16,7 +16,7 @@ class HomeViewHolder(
             binding.tvHomeCommentNum.text = data.commentNumber.toString()
             feed = data
             executePendingBindings()
-            binding.root.setOnClickListener {
+            binding.btnHomeKebab.setOnClickListener {
                 click(data, adapterPosition)
             }
         }
