@@ -44,7 +44,7 @@
                     android:id="@+id/rv_home"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="16dp"
+                    android:paddingHorizontal="16dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_home_feed" />
             </androidx.constraintlayout.widget.ConstraintLayout>
