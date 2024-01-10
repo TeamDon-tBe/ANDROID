@@ -1,11 +1,14 @@
 package com.teamdontbe.feature.login
 
+import android.content.Intent
 import android.view.View
 import android.widget.CheckBox
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivitySignUpAgreeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpAgreeActivity :
     BindingActivity<ActivitySignUpAgreeBinding>(R.layout.activity_sign_up_agree) {
 
@@ -42,6 +45,17 @@ class SignUpAgreeActivity :
 
     private fun updateNextBtnState(childCheckBoxList: List<CheckBox>) {
         val allChecked = childCheckBoxList.all { it.isChecked }
-        binding.btnSignUpAgreeNext.isEnabled = allChecked
+        binding.btnSignUpAgreeNext.apply {
+            isEnabled = allChecked
+            if (isEnabled) {
+                setOnClickListener {
+                    navigateUpToSignUpProfileActivity()
+                }
+            }
+        }
+    }
+
+    private fun navigateUpToSignUpProfileActivity() {
+        startActivity(Intent(this, SignUpProfileActivity::class.java))
     }
 }
