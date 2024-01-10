@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.homedetail
 
 import android.os.Build
+import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.feature.R
@@ -10,7 +11,6 @@ import com.teamdontbe.feature.home.HomeAdapter
 import com.teamdontbe.feature.home.HomeBottomSheet
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.home.HomeFragment.Companion.KEY_FEED_DATA
-
 
 class HomeDetailFragment :
     BindingFragment<FragmentHomeDetailBinding>(R.layout.fragment_home_detail) {
@@ -25,6 +25,7 @@ class HomeDetailFragment :
         binding.rvHomeDetail.adapter =
             HomeDetailAdapter(onClickKebabBtn = { feedData, positoin ->
                 initBottomSheet()
+            }, onClickToNavigateToHomeDetail = { _, _ ->
             }).apply {
                 submitList(
                     listOf(
