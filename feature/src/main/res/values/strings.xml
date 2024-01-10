@@ -7,7 +7,7 @@
     <string name="menu_item_my">마이</string>
     <!-- 앱바 -->
     <string name="appbar_cancel">취소</string>
-    <!-- 로그인 화면 -->
+    <!-- 회원가입 화면 -->
     <string name="login_description">온화한 커뮤니티\nDON\'T BE에서 만나요.</string>
     <string name="sign_up_appbar_title">회원가입</string>
     <!-- 글 작성하기 화면 -->
