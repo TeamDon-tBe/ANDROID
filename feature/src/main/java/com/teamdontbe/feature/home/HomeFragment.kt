@@ -7,8 +7,6 @@ import com.teamdontbe.feature.databinding.FragmentHomeBinding
 import com.teamdontbe.feature.mypage.adapter.MyPageFeedItemDecorator
 
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
-    private var complaintAndDeleteBottomSheet: HomeBottomSheet? = null
-
     override fun initView() {
         initHomeAdapter()
     }
@@ -70,8 +68,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun initBottomSheet() {
-        complaintAndDeleteBottomSheet = HomeBottomSheet()
-        complaintAndDeleteBottomSheet?.show(parentFragmentManager, BOTTOM_SHEET)
+        HomeBottomSheet().show(parentFragmentManager, BOTTOM_SHEET)
     }
 
     companion object {
