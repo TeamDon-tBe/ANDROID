@@ -12,8 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="28dp">
+        android:layout_height="wrap_content"
+        android:background="@color/gray_1">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar_comment"
@@ -60,139 +60,122 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!--        <androidx.core.widget.NestedScrollView-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="500dp"-->
-        <!--            app:layout_constraintBottom_toTopOf="@id/layout_upload_bar"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/appbar_comment">-->
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="600dp"
-            app:layout_constraintBottom_toTopOf="@id/layout_upload_bar"
-            app:layout_constraintTop_toBottomOf="@id/appbar_comment">
+        <View
+            android:id="@+id/view_comment_feed_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_white_fill_8_rect"
+            app:layout_constraintBottom_toBottomOf="@id/tv_comment_feed_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_comment" />
 
-            <View
-                android:id="@+id/view_comment_feed_background"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/shape_white_fill_radius8_rect"
-                app:layout_constraintBottom_toBottomOf="@id/tv_comment_feed_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_comment_feed_user_profile"
+            android:layout_width="44dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/gray_9"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_comment_feed_background"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_comment_feed_user_profile"
-                android:layout_width="44dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
-                android:background="@color/gray_9"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/view_comment_feed_background"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+        <TextView
+            android:id="@+id/tv_comment_feed_user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{feed.memberNickname}"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            app:layout_constraintStart_toEndOf="@id/iv_comment_feed_user_profile"
+            app:layout_constraintTop_toTopOf="@id/iv_comment_feed_user_profile"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="don't be master" />
 
-            <TextView
-                android:id="@+id/tv_comment_feed_user_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@{feed.memberNickname}"
-                android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
-                app:layout_constraintStart_toEndOf="@id/iv_comment_feed_user_profile"
-                app:layout_constraintTop_toTopOf="@id/iv_comment_feed_user_profile"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:text="don't be master" />
-
-
-            <TextView
-                android:id="@+id/tv_comment_feed_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="16dp"
-                android:paddingBottom="18dp"
-                android:text="@{feed.contentText}"
-                android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@id/tv_comment_feed_user_name"
-                app:layout_constraintTop_toBottomOf="@id/tv_comment_feed_user_name"
-                tools:text="돈비를 사용하면 진짜 돈비를 맞을 수 있나요?
+        <TextView
+            android:id="@+id/tv_comment_feed_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:paddingBottom="18dp"
+            android:text="@{feed.contentText}"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/tv_comment_feed_user_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_feed_user_name"
+            tools:text="돈비를 사용하면 진짜 돈비를 맞을 수 있나요?
 저 돈비 맞고 싶어요 돈벼락이 최고입니다. 그나저나 돈비 정말 흥미로운 서비스인 것 같아요 어떻게 이런 기획을 ? 대박 ㄷ ㄷ ㄷ돈비를 사용하면 진짜 돈비를 맞을 수 있나요?" />
 
-            <View
-                android:id="@+id/view_comment_background"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/shape_white_fill_radius8_rect"
-                app:layout_constraintBottom_toBottomOf="@id/et_comment_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_comment_feed_background" />
+        <View
+            android:id="@+id/view_comment_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_white_fill_8_rect"
+            app:layout_constraintBottom_toBottomOf="@id/et_comment_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_comment_feed_background" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_comment_profile_img"
-                android:layout_width="40dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="16dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_posting_profile"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintStart_toStartOf="@id/view_comment_background"
-                app:layout_constraintTop_toBottomOf="@id/view_comment_feed_background"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_comment_profile_img"
+            android:layout_width="40dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_posting_profile"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="@id/view_comment_background"
+            app:layout_constraintTop_toBottomOf="@id/view_comment_feed_background"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
-            <TextView
-                android:id="@+id/tv_comment_profile_nickname"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="14dp"
-                android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
-                app:layout_constraintEnd_toEndOf="@id/view_comment_background"
-                app:layout_constraintStart_toEndOf="@id/iv_comment_profile_img"
-                app:layout_constraintTop_toTopOf="@id/iv_comment_profile_img"
-                tools:text="뚜비요" />
+        <TextView
+            android:id="@+id/tv_comment_profile_nickname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="14dp"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            app:layout_constraintEnd_toEndOf="@id/view_comment_background"
+            app:layout_constraintStart_toEndOf="@id/iv_comment_profile_img"
+            app:layout_constraintTop_toTopOf="@id/iv_comment_profile_img"
+            tools:text="뚜비요" />
 
-            <EditText
-                android:id="@+id/et_comment_content"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="14dp"
-                android:background="@null"
-                android:gravity="top|start"
-                android:hint="@string/et_home_detail_input"
-                android:maxLength="500"
-                android:paddingBottom="24dp"
-                android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
-                android:textCursorDrawable="@color/primary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/view_comment_background"
-                app:layout_constraintStart_toStartOf="@id/tv_comment_profile_nickname"
-                app:layout_constraintTop_toBottomOf="@id/tv_comment_profile_nickname">
+        <EditText
+            android:id="@+id/et_comment_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="14dp"
+            android:background="@null"
+            android:gravity="top|start"
+            android:hint="@string/et_home_detail_input"
+            android:maxLength="500"
+            android:paddingBottom="24dp"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textCursorDrawable="@color/primary"
+            app:layout_constraintEnd_toEndOf="@id/view_comment_background"
+            app:layout_constraintStart_toStartOf="@id/tv_comment_profile_nickname"
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_profile_nickname">
 
-                <requestFocus />
-            </EditText>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <!--        </androidx.core.widget.NestedScrollView>-->
+            <requestFocus />
+        </EditText>
 
         <include
             android:id="@+id/layout_upload_bar"
             layout="@layout/view_upload_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_comment_background" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

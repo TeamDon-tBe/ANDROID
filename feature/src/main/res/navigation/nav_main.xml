@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/fragment_home">
+    app:startDestination="@id/fragment_posting">
 
     <fragment
         android:id="@+id/fragment_home"
@@ -21,7 +21,10 @@
         tools:layout="@layout/fragment_posting">
         <action
             android:id="@+id/action_posting_to_home"
-            app:destination="@id/fragment_home" />
+            app:destination="@id/fragment_home"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_in_left"
+            app:popEnterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/fragment_notification"
