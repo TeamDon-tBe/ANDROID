@@ -14,7 +14,6 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
-
     override fun initView() {
         initKakaoUser()
         initMainBottomNavigation()

@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/fragment_posting">
+    app:startDestination="@id/fragment_home">
 
     <fragment
         android:id="@+id/fragment_home"
         android:name="com.teamdontbe.feature.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_home_to_home_detail"
             app:destination="@id/fragment_home_detail" />
@@ -40,8 +40,7 @@
         tools:layout="@layout/fragment_onboarding">
         <action
             android:id="@+id/action_onboarding_to_home"
-            app:destination="@id/fragment_home"
-            app:popUpToInclusive="true" />
+            app:destination="@id/fragment_home" />
     </fragment>
     <fragment
         android:id="@+id/fragment_onboarding_first_item"
