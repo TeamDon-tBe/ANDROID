@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="feed"
+            type="com.teamdontbe.domain.entity.FeedEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,6 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:text="@{feed.memberNickname}"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
             app:layout_constraintBottom_toTopOf="@id/tv_home_feed_transparency"
             app:layout_constraintStart_toEndOf="@id/iv_home_profile"
@@ -49,6 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:text="@{`투명도 -` + feed.memberGhost + `%  · ` + feed.time}"
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
             android:textColor="@color/gray_9"
             app:layout_constraintBottom_toBottomOf="@id/iv_home_profile"
@@ -62,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="14dp"
+            android:text="@{feed.contentText}"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
@@ -148,6 +154,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/btn_home_comment"
             tools:text="54" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
