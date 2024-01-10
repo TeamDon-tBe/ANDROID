@@ -9,7 +9,11 @@
         android:id="@+id/fragment_home"
         android:name="com.teamdontbe.feature.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home_to_home_detail"
+            app:destination="@id/fragment_home_detail" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_posting"
         android:name="com.teamdontbe.feature.posting.PostingFragment"
@@ -58,4 +62,9 @@
         android:name="com.teamdontbe.feature.onboarding.OnboardingFourthFragment"
         android:label="OnboardingFourthFragment"
         tools:layout="@layout/item_onboarding_fourth" />
+    <fragment
+        android:id="@+id/fragment_home_detail"
+        android:name="com.teamdontbe.feature.homedetail.HomeDetailFragment"
+        android:label="HomeDetailFragment"
+        tools:layout="@layout/fragment_home_detail"/>
 </navigation>

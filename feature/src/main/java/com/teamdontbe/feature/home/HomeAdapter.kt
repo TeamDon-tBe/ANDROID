@@ -9,7 +9,8 @@ import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 import com.teamdontbe.feature.home.viewholder.HomeViewHolder
 
 class HomeAdapter(
-    private val click: (FeedEntity, Int) -> Unit = { _, _ -> },
+    private val onClickKebabBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
+    private val onClickToNavigateToHomeDetail: (FeedEntity, Int) -> Unit = { _, _ -> },
 ) :
     ListAdapter<FeedEntity, HomeViewHolder>(
             HomeAdapterDiffCallback,
@@ -20,7 +21,7 @@ class HomeAdapter(
     ): HomeViewHolder {
         val binding =
             ItemHomeFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return HomeViewHolder(binding, click)
+        return HomeViewHolder(binding, onClickKebabBtn, onClickToNavigateToHomeDetail)
     }
 
     override fun onBindViewHolder(
