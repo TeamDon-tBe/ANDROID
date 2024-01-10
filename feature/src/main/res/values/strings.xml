@@ -31,4 +31,7 @@
     <string name="tv_onboarding_fourth_title">DON\'T BE에\n 첫인사를 남겨볼까요?</string>
     <string name="et_onboarding_fourth_introduction">한문장으로 소개를 남겨주세요!</string>
     <string name="tv_onboarding_fourth_description">설정한 사진, 닉네임, 한줄소개는 설정에서 변경 가능해요!</string>
+    <string name="delete_dialog_cancel">취소</string>
+    <string name="delete_dialog_delete">삭제</string>
+    <string name="posting_delete_dialog">작성한 글을 삭제하시겠어요?</string>
 </resources>
