@@ -25,11 +25,11 @@ class SignUpAgreeActivity :
 
     override fun initView() {
         binding.appbarSignUp.btnAppbarBack.visibility = View.INVISIBLE
-        initParentCheckBoxSignUpAgreeListener()
+        initParentCheckBoxSignUpAgreeClickListener()
         initChildCheckBoxSignUpAgreeListener()
     }
 
-    private fun initParentCheckBoxSignUpAgreeListener() = with(binding) {
+    private fun initParentCheckBoxSignUpAgreeClickListener() = with(binding) {
         cbSignUpParent.setOnCheckedChangeListener { _, isChecked ->
             childCheckBoxList.forEach { it.isChecked = isChecked }
         }

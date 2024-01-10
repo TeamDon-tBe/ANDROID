@@ -7,7 +7,7 @@
     <string name="menu_item_my">마이</string>
     <!-- 앱바 -->
     <string name="appbar_cancel">취소</string>
-    <!-- 로그인 화면 -->
+    <!-- 회원가입 화면 -->
     <string name="login_description">온화한 커뮤니티\nDON\'T BE에서 만나요.</string>
     <string name="sign_up_appbar_title">회원가입</string>
     <!-- 글 작성하기 화면 -->
@@ -32,6 +32,8 @@
     <string name="tv_onboarding_fourth_title">DON\'T BE에\n 첫인사를 남겨볼까요?</string>
     <string name="et_onboarding_fourth_introduction">한문장으로 소개를 남겨주세요!</string>
     <string name="tv_onboarding_fourth_description">설정한 사진, 닉네임, 한줄소개는 설정에서 변경 가능해요!</string>
+    <string name="tv_complaint_title">신고하기</string>
+    <string name="tv_delete_title">삭제하기</string>
     <!--    약관동의 화면-->
     <string name="sign_up_agree_title">약관동의</string>
     <string name="sign_up_agree_description">DON’T BE와 함께하기 전\n필요한 약관들을 확인해주세요!</string>

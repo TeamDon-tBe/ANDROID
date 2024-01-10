@@ -7,15 +7,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class ExampleRepositoryImpl @Inject constructor(
-    private val exampleDataSource: ExampleDataSource
-) : ExampleRepository {
-    override suspend fun getExample(page: Int): Flow<List<UserEntity>> {
-        return flow {
-            val result = runCatching {
-                exampleDataSource.getExample(page).data.map { it.toUserEntity() }
+class ExampleRepositoryImpl
+    @Inject
+    constructor(
+        private val exampleDataSource: ExampleDataSource,
+    ) : ExampleRepository {
+        override suspend fun getExample(page: Int): Flow<List<UserEntity>> {
+            return flow {
+                val result =
+                    runCatching {
+                        exampleDataSource.getExample(page).data.map { it.toUserEntity() }
+                    }
+                emit(result.getOrDefault(emptyList()))
             }
-            emit(result.getOrDefault(emptyList()))
         }
     }
-}
