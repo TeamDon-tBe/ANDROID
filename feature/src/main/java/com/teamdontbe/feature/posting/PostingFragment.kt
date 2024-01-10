@@ -1,10 +1,9 @@
 package com.teamdontbe.feature.posting
 
-import android.content.Intent
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingFragment
-import com.teamdontbe.feature.MainActivity
+import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentPostingBinding
 import com.teamdontbe.feature.util.Debouncer
@@ -49,16 +48,30 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private fun initEditText() {
         binding.run {
             etPostingContent.doAfterTextChanged {
-                val inputString = etPostingContent.text.toString()
+                when {
+                    etPostingContent.text.toString().length in 1..499 -> {
+                        pbPostingInput.progressDrawable =
+                            context?.drawableOf(R.drawable.shape_primary_line_10_ring)
+                        pbPostingInput.progress = etPostingContent.text.toString().length
+                        btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_activate)
+                        initUploadingActivateBtnClickListener()
+                    }
 
-                if (inputString.length in 1..499) {
-                    btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_activate)
-                    initUploadingActivateBtnClickListener()
-                } else {
-                    btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_deactivate)
-                    initUploadingDeactivateBtnClickListener()
+                    etPostingContent.text.toString().length >= 500 -> {
+                        pbPostingInput.progressDrawable =
+                            context?.drawableOf(R.drawable.shape_error_line_10_ring)
+                        pbPostingInput.progress = etPostingContent.text.toString().length
+                        btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_deactivate)
+                        initUploadingDeactivateBtnClickListener()
+                    }
+
+                    else -> {
+                        pbPostingInput.progress = 0
+                        btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_deactivate)
+                        initUploadingDeactivateBtnClickListener()
+                    }
                 }
-                postingDebouncer.setDelay(inputString, 1000L) {}
+                postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}
             }
         }
     }
