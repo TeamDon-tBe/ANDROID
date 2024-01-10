@@ -7,6 +7,8 @@ import com.teamdontbe.feature.databinding.FragmentHomeBinding
 import com.teamdontbe.feature.mypage.adapter.MyPageFeedItemDecorator
 
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+    private var complaintAndDeleteBottomSheet: HomeBottomSheet? = null
+
     override fun initView() {
         initHomeAdapter()
     }
@@ -14,6 +16,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initHomeAdapter() {
         binding.rvHome.adapter =
             HomeAdapter(click = { feedData, positoin ->
+                initBottomSheet()
             }).apply {
                 submitList(
                     listOf(
@@ -64,5 +67,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             }
 
         binding.rvHome.addItemDecoration(MyPageFeedItemDecorator(requireContext()))
+    }
+
+    private fun initBottomSheet() {
+        complaintAndDeleteBottomSheet = HomeBottomSheet()
+        complaintAndDeleteBottomSheet?.show(parentFragmentManager, BOTTOM_SHEET)
+    }
+
+    companion object {
+        const val BOTTOM_SHEET = "home_bottom_sheet"
     }
 }
