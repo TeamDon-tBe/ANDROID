@@ -34,7 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:background="@android:color/transparent"
                     android:src="@drawable/ic_sign_up_back_42" />
 
                 <TextView
