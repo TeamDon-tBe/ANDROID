@@ -86,4 +86,5 @@
     <string name="tv_posting_loading">게시 중...</string>
     <string name="delete_dialog_cancel">취소</string>
     <string name="delete_dialog_delete">삭제</string>
+    <string name="tv_home_detail_appbar_title">게시글</string>
 </resources>
