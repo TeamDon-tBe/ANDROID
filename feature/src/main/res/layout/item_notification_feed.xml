@@ -20,11 +20,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="12dp" />
+            app:layout_constraintGuide_begin="14dp" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_notification_profile"
-            android:layout_width="44dp"
+            android:layout_width="42dp"
             android:layout_height="0dp"
             android:src="@drawable/img_posting_profile"
             app:layout_constraintBottom_toBottomOf="parent"
