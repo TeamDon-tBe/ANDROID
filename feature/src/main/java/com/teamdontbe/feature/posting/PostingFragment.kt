@@ -41,7 +41,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun navigateToMainActivity() {
         findNavController().navigate(
-            R.id.action_posting_to_home
+            R.id.action_posting_to_home,
         )
     }
 
@@ -53,7 +53,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                         pbPostingInput.progressDrawable =
                             context?.drawableOf(R.drawable.shape_primary_line_10_ring)
                         pbPostingInput.progress = etPostingContent.text.toString().length
-                        btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_activate)
+                        btnPostingUpload.setImageResource(R.drawable.ic_uploading_activate)
                         initUploadingActivateBtnClickListener()
                     }
 
@@ -61,13 +61,13 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                         pbPostingInput.progressDrawable =
                             context?.drawableOf(R.drawable.shape_error_line_10_ring)
                         pbPostingInput.progress = etPostingContent.text.toString().length
-                        btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_deactivate)
+                        btnPostingUpload.setImageResource(R.drawable.ic_uploading_deactivate)
                         initUploadingDeactivateBtnClickListener()
                     }
 
                     else -> {
                         pbPostingInput.progress = 0
-                        btnPostingUpload.setImageResource(R.drawable.ic_posting_uploading_deactivate)
+                        btnPostingUpload.setImageResource(R.drawable.ic_uploading_deactivate)
                         initUploadingDeactivateBtnClickListener()
                     }
                 }
