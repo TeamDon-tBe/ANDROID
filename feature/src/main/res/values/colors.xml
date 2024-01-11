@@ -21,4 +21,5 @@
     <color name="gray_11">#FF5D5D60</color>
     <color name="gray_12">#FF49494C</color>
     <!-- 디자인 시스템에는 없지만 피그마에는 존재하는 색상 -->
+    <color name="sign_up_green_must">#59CD9C</color>
 </resources>
