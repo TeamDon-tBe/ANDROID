@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.teamdontbe.domain.entity.FeedEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_white_fill_radius8_rect"
+        android:paddingBottom="28dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_comment_feed_user_profile"
+            android:layout_width="44dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/gray_9"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+        <TextView
+            android:id="@+id/tv_comment_feed_user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{feed.memberNickname}"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            app:layout_constraintStart_toEndOf="@id/iv_comment_feed_user_profile"
+            app:layout_constraintTop_toTopOf="@id/iv_comment_feed_user_profile"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="don't be master" />
+
+        <TextView
+            android:id="@+id/tv_comment_feed_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:text="@{feed.contentText}"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_comment_feed_user_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_feed_user_name"
+            tools:text="돈비를 사용하면 진짜 돈비를 맞을 수 있나요?
+저 돈비 맞고 싶어요 돈벼락이 최고입니다. 그나저나 돈비 정말 흥미로운 서비스인 것 같아요 어떻게 이런 기획을 ? 대박 ㄷ ㄷ ㄷ돈비를 사용하면 진짜 돈비를 맞을 수 있나요?" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
