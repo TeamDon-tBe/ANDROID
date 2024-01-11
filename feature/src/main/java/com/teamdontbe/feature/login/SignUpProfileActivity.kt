@@ -28,16 +28,13 @@ class SignUpProfileActivity :
 
     private fun initNickNameExistObserving() {
         viewModel.isNickNameExist.observe(this) {
-            if (it) {
-                binding.tvSignUpAgreeMessage.apply {
-                    text = context.getString(R.string.sign_up_profile_use_posssible)
-                    setTextColor(colorOf(R.color.secondary))
-                }
-            } else {
-                binding.tvSignUpAgreeMessage.apply {
-                    text = context.getString(R.string.sign_up_profile_use_impossible)
-                    setTextColor(colorOf(R.color.error))
-                }
+            val messageResId =
+                if (it) R.string.sign_up_profile_use_posssible else R.string.sign_up_profile_use_impossible
+            val textColorResId = if (it) R.color.secondary else R.color.error
+
+            binding.tvSignUpAgreeMessage.apply {
+                text = context.getString(messageResId)
+                setTextColor(colorOf(textColorResId))
             }
         }
     }
