@@ -1,5 +1,7 @@
 package com.teamdontbe.feature.home
 
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
@@ -13,8 +15,23 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun initHomeAdapter() {
         binding.rvHome.adapter =
-            HomeAdapter(click = { feedData, positoin ->
+            HomeAdapter(onClickKebabBtn = { feedData, positoin ->
                 initBottomSheet()
+            }, onClickToNavigateToHomeDetail = { feedData, position ->
+                navigateToHomeDetailFragment(
+                    Feed(
+                        feedData.memberId,
+                        feedData.memberNickname,
+                        feedData.memberNickname,
+                        feedData.isLiked,
+                        feedData.isGhost,
+                        feedData.memberGhost,
+                        feedData.contentLikedNumber,
+                        feedData.commentNumber,
+                        feedData.contentText,
+                        feedData.time,
+                    ),
+                )
             }).apply {
                 submitList(
                     listOf(
@@ -71,7 +88,15 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         HomeBottomSheet().show(parentFragmentManager, BOTTOM_SHEET)
     }
 
+    private fun navigateToHomeDetailFragment(feedData: Feed) {
+        findNavController().navigate(
+            R.id.action_home_to_home_detail,
+            bundleOf(KEY_FEED_DATA to feedData),
+        )
+    }
+
     companion object {
         const val BOTTOM_SHEET = "home_bottom_sheet"
+        const val KEY_FEED_DATA = "key_feed_data"
     }
 }

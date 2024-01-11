@@ -6,14 +6,18 @@ import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 
 class HomeViewHolder(
     private val binding: ItemHomeFeedBinding,
-    private val click: (FeedEntity, Int) -> Unit = { _, _ -> },
+    private val onClickKebabBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
+    private val onClickToNavigateToHomeDetail: (FeedEntity, Int) -> Unit = { _, _ -> },
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FeedEntity) {
         with(binding) {
             feed = data
             executePendingBindings()
             btnHomeKebab.setOnClickListener {
-                click(data, adapterPosition)
+                onClickKebabBtn(data, bindingAdapterPosition)
+            }
+            binding.root.setOnClickListener {
+                onClickToNavigateToHomeDetail(data, bindingAdapterPosition)
             }
         }
     }
