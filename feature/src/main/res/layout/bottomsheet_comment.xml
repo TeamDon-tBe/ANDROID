@@ -12,7 +12,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/shape_white_fill_top8_rec">
 
         <include
             android:id="@+id/appbar_comment"
@@ -26,7 +28,8 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
-            android:layout_height="500dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/layout_upload_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appbar_comment">
@@ -34,7 +37,6 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <View
                     android:id="@+id/view_comment_feed_background"
                     android:layout_width="0dp"
@@ -93,7 +95,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/shape_white_fill_radius8_rect"
-                    app:layout_constraintBottom_toBottomOf="@id/et_comment_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/view_comment_feed_background" />
