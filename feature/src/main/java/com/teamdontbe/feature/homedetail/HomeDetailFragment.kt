@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.homedetail
 
 import android.os.Build
+import android.os.Bundle
 import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
@@ -25,6 +26,8 @@ class HomeDetailFragment :
         binding.rvHomeDetail.adapter =
             HomeDetailAdapter(onClickKebabBtn = { feedData, positoin ->
                 initBottomSheet()
+                val bundle = Bundle()
+                //  bundle.putParcelable(KEY_FEED_DATA,)
             }).apply {
                 submitList(
                     listOf(
@@ -59,7 +62,8 @@ class HomeDetailFragment :
     }
 
     private fun initInputEditTextClickListener() {
-        binding.etHomeDetailInput.setOnClickListener {
+        Bundle()
+        binding.tvHomeDetailInput.setOnClickListener {
             CommentBottomSheet().show(parentFragmentManager, HomeFragment.BOTTOM_SHEET)
         }
     }

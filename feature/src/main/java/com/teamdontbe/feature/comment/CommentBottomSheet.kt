@@ -1,5 +1,6 @@
 package com.teamdontbe.feature.comment
 
+import android.os.Build
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
@@ -7,6 +8,8 @@ import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.BottomsheetCommentBinding
+import com.teamdontbe.feature.home.Feed
+import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.util.Debouncer
 
 class CommentBottomSheet :
@@ -15,6 +18,11 @@ class CommentBottomSheet :
 
     override fun initView() {
         initEditText()
+        binding.feed = getHomeFeedData()?.toFeedEntity()
+    }
+
+    override fun onStart() {
+        super.onStart()
         requireContext().openKeyboard(View(requireContext()))
     }
 
@@ -65,6 +73,13 @@ class CommentBottomSheet :
     private fun initUploadingBtnClickListener() {
         binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {}
     }
+
+    private fun getHomeFeedData(): Feed? =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireArguments().getParcelable(HomeFragment.KEY_FEED_DATA, Feed::class.java)
+        } else {
+            requireArguments().getParcelable(HomeFragment.KEY_FEED_DATA) as? Feed
+        }
 
     companion object {
         const val DELAY = 1000L
