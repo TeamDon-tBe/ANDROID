@@ -1,8 +1,8 @@
 package com.teamdontbe.feature
 
+import android.content.ContentValues
 import android.view.View
 import androidx.core.view.isVisible
-import android.content.ContentValues
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -15,7 +15,6 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
-
     override fun initView() {
         initKakaoUser()
         initMainBottomNavigation()
@@ -62,7 +61,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private fun initMainBottomNaviBadge() {
         binding.bnvMain.getOrCreateBadge(R.id.fragment_notification).apply {
             isVisible = true
-            number = 99 // or badge.text = "New"
+            backgroundColor = resources.getColor(R.color.error)
         }
     }
 
