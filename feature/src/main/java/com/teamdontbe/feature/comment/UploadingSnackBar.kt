@@ -3,10 +3,14 @@ package com.teamdontbe.feature.comment
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.SnackbarPostingLoadingBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class UploadingSnackBar(view: View) {
     companion object {
@@ -14,7 +18,7 @@ class UploadingSnackBar(view: View) {
     }
 
     private val context = view.context
-    private val snackbar = Snackbar.make(view, "", 1000)
+    private val snackbar = Snackbar.make(view, "", 4000)
     private val snackbarLayout = snackbar.view as Snackbar.SnackbarLayout
 
     private val inflater = LayoutInflater.from(context)
@@ -34,7 +38,22 @@ class UploadingSnackBar(view: View) {
         }
     }
 
+    private fun setSnackbarToComplete() {
+        with(binding) {
+            ivSnackbarPostingLoadingCheck.isVisible = true
+            progressPostingLoading.isVisible = false
+            tvPostingLoading.text = "게시 완료!"
+            clSnackbarPostingLoading.setBackgroundColor(context.getColor(R.color.primary))
+        }
+    }
+
     fun show() {
         snackbar.show()
+        runBlocking {
+            launch {
+                delay(1000)
+                setSnackbarToComplete()
+            }
+        }
     }
 }
