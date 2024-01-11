@@ -44,6 +44,8 @@
     <string name="sign_up_agree_child_3">만 14세 이상입니다</string>
     <string name="sign_up_agree_child_4">마케팅 활용 / 광고성 정보 수신동의</string>
     <string name="sign_up_agree_choose">선택</string>
+    
+    <!-- 홈 화면 -->
     <string name="tv_home_detail_appbar_title">게시글</string>
     <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
 </resources>
