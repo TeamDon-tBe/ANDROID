@@ -20,7 +20,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private fun initCancelBtnClickListener() {
         binding.appbarPosting.tvAppbarCancel.setOnClickListener {
             val dialog = DeleteDialogFragment(getString(R.string.posting_delete_dialog))
-            dialog.show(childFragmentManager, "delete")
+            dialog.show(childFragmentManager, DELETE_POSTING)
         }
     }
 
@@ -71,5 +71,9 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}
             }
         }
+    }
+
+    companion object {
+        const val DELETE_POSTING = "delete_posting"
     }
 }
