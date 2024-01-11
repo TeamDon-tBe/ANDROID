@@ -27,14 +27,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:stateListAnimator="@null"
-                    app:layout_collapseMode="parallax">
+                    android:paddingBottom="14dp"
+                    android:stateListAnimator="@null">
 
                     <com.google.android.material.appbar.MaterialToolbar
                         android:id="@+id/toolbar_my_page"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@color/black"
+                        app:layout_collapseMode="pin"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -74,7 +75,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="12dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/image_profile"
+                        android:src="@drawable/ic_my_page_profile_3x"
                         app:layout_constraintDimensionRatio="1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -121,76 +122,108 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_my_page_title" />
 
+                    <TextView
+                        android:id="@+id/tv_my_page_transparency_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/ic_my_page_percentage_box"
+                        android:gravity="center"
+                        android:paddingBottom="7dp"
+                        android:text="-85%"
+                        android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+                        android:textColor="@color/primary"
+                        app:layout_constraintBottom_toTopOf="@id/pb_my_page_input"
+                        app:layout_constraintEnd_toEndOf="@id/pb_my_page_input"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_description" />
+
+
+                    <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                        android:id="@+id/pb_my_page_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_transparency_percentage"
+                        app:rcBackgroundColor="@color/gray_9"
+                        app:rcMax="100"
+                        app:rcProgress="50"
+                        app:rcProgressColors="@array/sample_progress_gradient"
+                        app:rcRadius="50dp" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center"
+                        android:text="투명도"
+                        android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+                        android:textColor="@color/gray_7"
+                        app:layout_constraintStart_toStartOf="@id/pb_my_page_input"
+                        app:layout_constraintTop_toBottomOf="@id/pb_my_page_input" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:src="@drawable/ic_my_page_info"
+                        app:layout_constraintDimensionRatio="1"
+                        app:layout_constraintStart_toEndOf="@id/tv_my_page_info"
+                        app:layout_constraintTop_toTopOf="@id/tv_my_page_info" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_main"
+                android:id="@+id/tab_my_page"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/error"
+                android:layout_height="56dp"
+                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_scrollFlags="scroll|enterAlways" />
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:tabIndicatorColor="@color/primary"
+                app:tabIndicatorFullWidth="true"
+                app:tabIndicatorHeight="2dp"
+                app:tabSelectedTextAppearance="@style/TextAppearance.DontBe.body_semi_16"
+                app:tabSelectedTextColor="@color/gray_12"
+                app:tabTextAppearance="@style/TextAppearance.DontBe.body_semi_16"
+                app:tabTextColor="@color/gray_7" />
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <!-- 나머지 내용들 -->
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="wrap_content"
+                <ProgressBar
+                    android:id="@+id/progressbar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_marginHorizontal="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vp_my_page"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/image_profile"
-                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/image_profile"
-                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/image_profile"
-                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/image_profile"
-                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/image_profile"
-                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/image_profile"
-                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
-
-
-            </LinearLayout>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
