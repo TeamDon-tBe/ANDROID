@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.feature.R
+import com.teamdontbe.feature.comment.CommentBottomSheet
 import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
 import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeAdapter
@@ -18,6 +19,7 @@ class HomeDetailFragment :
         statusBarColorOf(R.color.white)
         initHomeDetailAdapter()
         initBackBtnClickListener()
+        initInputEditTextClickListener()
     }
 
     private fun initHomeDetailAdapter() {
@@ -52,9 +54,15 @@ class HomeDetailFragment :
             requireArguments().getParcelable(KEY_FEED_DATA) as? Feed
         }
 
-    private fun initBackBtnClickListener()  {
+    private fun initBackBtnClickListener() {
         binding.ivHomeDetailBack.setOnClickListener {
             findNavController().popBackStack()
+        }
+    }
+
+    private fun initInputEditTextClickListener() {
+        binding.etHomeDetailInput.setOnClickListener {
+            CommentBottomSheet().show(parentFragmentManager, HomeFragment.BOTTOM_SHEET)
         }
     }
 }
