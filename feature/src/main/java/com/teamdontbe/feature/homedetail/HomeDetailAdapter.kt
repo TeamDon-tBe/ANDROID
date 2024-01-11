@@ -1,4 +1,4 @@
-package com.teamdontbe.feature.home
+package com.teamdontbe.feature.homedetail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,26 +6,25 @@ import androidx.recyclerview.widget.ListAdapter
 import com.teamdontbe.core_ui.view.ItemDiffCallback
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
-import com.teamdontbe.feature.home.viewholder.HomeViewHolder
+import com.teamdontbe.feature.homedetail.viewholder.HomeDetailViewHolder
 
-class HomeAdapter(
+class HomeDetailAdapter(
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
-    private val onClickToNavigateToHomeDetail: (FeedEntity, Int) -> Unit = { _, _ -> },
 ) :
-    ListAdapter<FeedEntity, HomeViewHolder>(
+    ListAdapter<FeedEntity, HomeDetailViewHolder>(
             HomeAdapterDiffCallback,
         ) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): HomeViewHolder {
+    ): HomeDetailViewHolder {
         val binding =
             ItemHomeFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return HomeViewHolder(binding, onClickKebabBtn, onClickToNavigateToHomeDetail)
+        return HomeDetailViewHolder(binding, onClickKebabBtn)
     }
 
     override fun onBindViewHolder(
-        holder: HomeViewHolder,
+        holder: HomeDetailViewHolder,
         position: Int,
     ) {
         holder.bind(currentList[position])

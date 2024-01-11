@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_white_fill_radius8_rect"
         android:clickable="true"
-        android:paddingVertical="16dp">
+        android:paddingVertical="16dp"
+        android:paddingEnd="5dp">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_home_start_10"
@@ -66,7 +67,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="14dp"
+            android:layout_marginEnd="9dp"
             android:text="@{feed.contentText}"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/black"
@@ -101,7 +102,7 @@
             android:id="@+id/btn_home_kebab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="3dp"
             android:background="@drawable/ripple_home_kebab_gray_44"
             android:clickable="true"
             app:layout_constraintDimensionRatio="1"
@@ -147,7 +148,7 @@
             android:id="@+id/tv_home_comment_num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="14dp"
+            android:layout_marginEnd="9dp"
             android:gravity="start"
             android:text="@{Integer.toString(feed.contentLikedNumber)}"
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"

@@ -1,8 +1,7 @@
 package com.teamdontbe.feature
 
-import android.view.View
-import androidx.core.view.isVisible
 import android.content.ContentValues
+import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -15,7 +14,6 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
-
     override fun initView() {
         initKakaoUser()
         initMainBottomNavigation()
@@ -74,6 +72,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                         R.id.fragment_home,
                         R.id.fragment_notification,
                         R.id.fragment_my_page,
+                        R.id.fragment_home_detail,
                     )
                 ) {
                     View.VISIBLE

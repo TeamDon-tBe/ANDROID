@@ -3,18 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/fragment_onboarding">
+    app:startDestination="@id/fragment_home">
 
     <fragment
         android:id="@+id/fragment_home"
         android:name="com.teamdontbe.feature.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_home_detail"
+            app:destination="@id/fragment_home_detail" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_posting"
         android:name="com.teamdontbe.feature.posting.PostingFragment"
         android:label="PostingFragment"
-        tools:layout="@layout/fragment_posting" >
+        tools:layout="@layout/fragment_posting">
         <action
             android:id="@+id/action_posting_to_home"
             app:destination="@id/fragment_home" />
@@ -33,10 +37,11 @@
         android:id="@+id/fragment_onboarding"
         android:name="com.teamdontbe.feature.onboarding.OnboardingFragment"
         android:label="OnboardingFragment"
-        tools:layout="@layout/fragment_onboarding" >
+        tools:layout="@layout/fragment_onboarding">
         <action
             android:id="@+id/action_onboarding_to_home"
-            app:destination="@id/fragment_home" />
+            app:destination="@id/fragment_home"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/fragment_onboarding_first_item"
@@ -58,4 +63,9 @@
         android:name="com.teamdontbe.feature.onboarding.OnboardingFourthFragment"
         android:label="OnboardingFourthFragment"
         tools:layout="@layout/item_onboarding_fourth" />
+    <fragment
+        android:id="@+id/fragment_home_detail"
+        android:name="com.teamdontbe.feature.homedetail.HomeDetailFragment"
+        android:label="HomeDetailFragment"
+        tools:layout="@layout/fragment_home_detail" />
 </navigation>
