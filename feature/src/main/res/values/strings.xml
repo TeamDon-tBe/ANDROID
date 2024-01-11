@@ -48,7 +48,7 @@
     <string name="sign_up_profile_nickname">닉네임</string>
     <string name="sign_up_profile_edit_hint">닉네임을 입력해주세요</string>
     <string name="sign_up_profile_double_check">중복확인</string>
-    <string name="sign_up_profile_check_text">*중복된 닉네임인지 확인해주세요</string>
+    <string name="sign_up_profile_check_text">*중복된 닉네임인지 확인해주세요.</string>
     <string name="sign_up_profile_use_posssible">*사용 가능한 닉네임입니다.</string>
     <string name="sign_up_profile_use_impossible">*사용 불가능한 닉네임입니다.</string>
 </resources>
