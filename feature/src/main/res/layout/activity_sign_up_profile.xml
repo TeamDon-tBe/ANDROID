@@ -67,7 +67,7 @@
             app:layout_constraintTop_toBottomOf="@id/iv_sign_up_profile" />
 
         <EditText
-            android:id="@+id/et_sign_up_agree_text"
+            android:id="@+id/et_sign_up_agree_nickname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -101,10 +101,10 @@
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
             android:textColor="@color/black"
             app:cornerRadius="4dp"
-            app:layout_constraintBottom_toBottomOf="@id/et_sign_up_agree_text"
+            app:layout_constraintBottom_toBottomOf="@id/et_sign_up_agree_nickname"
             app:layout_constraintEnd_toEndOf="@id/guide_sign_up_end_17"
-            app:layout_constraintStart_toEndOf="@id/et_sign_up_agree_text"
-            app:layout_constraintTop_toTopOf="@id/et_sign_up_agree_text" />
+            app:layout_constraintStart_toEndOf="@id/et_sign_up_agree_nickname"
+            app:layout_constraintTop_toTopOf="@id/et_sign_up_agree_nickname" />
 
         <TextView
             android:id="@+id/tv_sign_up_agree_message"
@@ -115,7 +115,7 @@
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
             android:textColor="@color/gray_8"
             app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_17"
-            app:layout_constraintTop_toBottomOf="@id/et_sign_up_agree_text" />
+            app:layout_constraintTop_toBottomOf="@id/et_sign_up_agree_nickname" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_sign_up_agree_next"

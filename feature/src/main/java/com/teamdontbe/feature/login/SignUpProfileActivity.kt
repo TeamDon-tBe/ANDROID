@@ -21,8 +21,7 @@ class SignUpProfileActivity :
 
     private fun initBtnSignUpProfileClickListner() {
         binding.btnSignUpProfileDoubleCheck.setOnClickListener {
-            val nickName = binding.etSignUpAgreeText.text.toString()
-            viewModel.validateNickName(nickName)
+            viewModel.validateNickName(binding.etSignUpAgreeNickname.text.toString())
         }
     }
 
