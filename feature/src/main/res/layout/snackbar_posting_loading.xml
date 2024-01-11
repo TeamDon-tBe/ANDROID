@@ -7,6 +7,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_snackbar_posting_loading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_gray03_fill_4_rect"
@@ -17,12 +18,23 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="18dp"
-            android:background="@drawable/shape_gray_03_line_10_ring"
-            android:backgroundTint="@color/white"
+            android:background="@drawable/shape_gray03_line_2_ring"
+            android:indeterminateTint="@color/primary"
             android:progressDrawable="@drawable/shape_primary_line_10_ring"
             app:layout_constraintBottom_toBottomOf="@id/tv_posting_loading"
             app:layout_constraintDimensionRatio="1"
-            android:indeterminateTint="@color/primary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_posting_loading" />
+
+        <ImageView
+            android:id="@+id/iv_snackbar_posting_loading_check"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="17dp"
+            android:src="@drawable/ic_snackbar_round_check"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/tv_posting_loading"
+            app:layout_constraintDimensionRatio="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_posting_loading" />
 
