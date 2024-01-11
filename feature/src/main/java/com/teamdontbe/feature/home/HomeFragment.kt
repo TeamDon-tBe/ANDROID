@@ -15,7 +15,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun initHomeAdapter() {
         binding.rvHome.adapter =
-            HomeAdapter(onClickKebabBtn = { feedData, positoin ->
+            HomeAdapter(onClickKebabBtn = { feedData, position ->
                 initBottomSheet()
             }, onClickToNavigateToHomeDetail = { feedData, position ->
                 navigateToHomeDetailFragment(
