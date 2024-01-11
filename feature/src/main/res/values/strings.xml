@@ -15,6 +15,9 @@
     <!-- 노티 화면 -->
     <string name="notification_appbar_title">알림</string>
 
+    <!-- (답)글 삭제하기 다이얼로그 -->
+    <string name="posting_delete_dialog">작성한 글을 삭제하시겠어요?</string>
+
     <!-- onboarding -->
     <string name="content_description_iv_onboarding_back">뒤로가기 입니다.</string>
     <string name="btn_onboarding_next">다음으로</string>
@@ -33,5 +36,4 @@
     <string name="tv_onboarding_fourth_description">설정한 사진, 닉네임, 한줄소개는 설정에서 변경 가능해요!</string>
     <string name="delete_dialog_cancel">취소</string>
     <string name="delete_dialog_delete">삭제</string>
-    <string name="posting_delete_dialog">작성한 글을 삭제하시겠어요?</string>
 </resources>
