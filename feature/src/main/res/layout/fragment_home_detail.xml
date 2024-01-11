@@ -76,17 +76,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <EditText
-                android:id="@+id/et_home_detail_input"
+            <TextView
+                android:id="@+id/tv_home_detail_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/shape_pale_fill_38_rect"
-                android:enabled="false"
-                android:hint="@string/et_home_detail_input"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
+                android:text="@string/et_home_detail_input"
                 android:textAppearance="@style/TextAppearance.DontBe.cap_regular_13"
                 android:textColor="@color/gray_9"
                 app:layout_constraintBottom_toBottomOf="parent"
