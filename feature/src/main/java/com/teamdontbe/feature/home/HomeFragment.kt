@@ -85,7 +85,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun initBottomSheet() {
-        HomeBottomSheet().show(parentFragmentManager, BOTTOM_SHEET)
+        HomeBottomSheet().show(parentFragmentManager, HOME_BOTTOM_SHEET)
     }
 
     private fun navigateToHomeDetailFragment(feedData: Feed) {
@@ -96,7 +96,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     companion object {
-        const val BOTTOM_SHEET = "home_bottom_sheet"
+        const val HOME_BOTTOM_SHEET = "home_bottom_sheet"
         const val KEY_FEED_DATA = "key_feed_data"
     }
 }

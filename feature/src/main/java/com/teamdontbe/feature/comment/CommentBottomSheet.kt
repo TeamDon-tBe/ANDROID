@@ -18,7 +18,8 @@ class CommentBottomSheet :
 
     override fun initView() {
         initEditText()
-        binding.feed = getHomeFeedData()?.toFeedEntity()
+        initFeedData()
+        // Timber.d(getHomeFeedData()?.toFeedEntity().toString())
     }
 
     override fun onStart() {
@@ -71,7 +72,9 @@ class CommentBottomSheet :
     }
 
     private fun initUploadingBtnClickListener() {
-        binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {}
+        binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
+            UploadingSnackBar.make(it).show()
+        }
     }
 
     private fun getHomeFeedData(): Feed? =
@@ -80,6 +83,10 @@ class CommentBottomSheet :
         } else {
             requireArguments().getParcelable(HomeFragment.KEY_FEED_DATA) as? Feed
         }
+
+    private fun initFeedData() {
+        binding.feed = getHomeFeedData()?.toFeedEntity()
+    }
 
     companion object {
         const val DELAY = 1000L

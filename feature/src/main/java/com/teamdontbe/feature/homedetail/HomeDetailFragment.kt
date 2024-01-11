@@ -11,7 +11,6 @@ import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
 import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeBottomSheet
 import com.teamdontbe.feature.home.HomeFragment
-import com.teamdontbe.feature.home.HomeFragment.Companion.KEY_FEED_DATA
 
 class HomeDetailFragment :
     BindingFragment<FragmentHomeDetailBinding>(R.layout.fragment_home_detail) {
@@ -19,15 +18,13 @@ class HomeDetailFragment :
         statusBarColorOf(R.color.white)
         initHomeDetailAdapter()
         initBackBtnClickListener()
-        initInputEditTextClickListener()
+        (getHomeFeedDetailData())?.let { initInputEditTextClickListener(it) }
     }
 
     private fun initHomeDetailAdapter() {
         binding.rvHomeDetail.adapter =
             HomeDetailAdapter(onClickKebabBtn = { feedData, positoin ->
                 initBottomSheet()
-                val bundle = Bundle()
-                //  bundle.putParcelable(KEY_FEED_DATA,)
             }).apply {
                 submitList(
                     listOf(
@@ -45,7 +42,7 @@ class HomeDetailFragment :
     }
 
     private fun initBottomSheet() {
-        HomeBottomSheet().show(parentFragmentManager, HomeFragment.BOTTOM_SHEET)
+        HomeBottomSheet().show(parentFragmentManager, HomeFragment.HOME_BOTTOM_SHEET)
     }
 
     private fun getHomeFeedDetailData(): Feed? =
@@ -61,10 +58,18 @@ class HomeDetailFragment :
         }
     }
 
-    private fun initInputEditTextClickListener() {
-        Bundle()
+    private fun initInputEditTextClickListener(data: Feed) {
         binding.tvHomeDetailInput.setOnClickListener {
-            CommentBottomSheet().show(parentFragmentManager, HomeFragment.BOTTOM_SHEET)
+            val bundle = Bundle()
+            bundle.putParcelable(KEY_FEED_DATA, data)
+            val comment = CommentBottomSheet()
+            comment.arguments = bundle
+            comment.show(parentFragmentManager, COMMENT_BOTTOM_SHEET)
         }
+    }
+
+    companion object {
+        const val COMMENT_BOTTOM_SHEET = "comment_bottom_sheet"
+        const val KEY_FEED_DATA = "key_feed_data"
     }
 }
