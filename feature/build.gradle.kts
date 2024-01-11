@@ -28,4 +28,7 @@ dependencies {
     implementation(libs.coil.core)
     implementation(libs.bundles.retrofit)
     implementation(libs.kakao.login)
+
+    // round corner progress bar
+    implementation("com.akexorcist:round-corner-progress-bar:2.2.1")
 }
