@@ -1,16 +1,18 @@
-package com.teamdontbe.feature.mypage.viewpager
+package com.teamdontbe.feature.mypage
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.teamdontbe.feature.mypage.comment.MyPageCommentFragment
+import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment
 
 class MyPageVpAdapter(fr: Fragment) : FragmentStateAdapter(fr) {
     override fun getItemCount(): Int = TOTAL_TAG_NUM
 
     override fun createFragment(position: Int): Fragment { // 포지션에 따라 어떤 프레그먼트를 보여줄것인지
         return when (position) {
-            0 -> MyPageCommentFragment()
+            0 -> MyPageFeedFragment()
             1 -> MyPageCommentFragment()
-            else -> MyPageCommentFragment()
+            else -> MyPageFeedFragment()
         }
     }
 
