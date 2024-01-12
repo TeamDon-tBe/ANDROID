@@ -12,7 +12,7 @@ class MyPageVpAdapter(fr: Fragment) : FragmentStateAdapter(fr) {
         return when (position) {
             0 -> MyPageFeedFragment()
             1 -> MyPageCommentFragment()
-            else -> MyPageFeedFragment()
+            else -> throw IllegalArgumentException("Invalid position")
         }
     }
 
