@@ -13,11 +13,11 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:paddingHorizontal="16dp"
             android:id="@+id/rv_my_page_posting"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingHorizontal="16dp"
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,7 +27,7 @@
             tools:listitem="@layout/item_home_feed" />
 
         <include
-            android:id="@+id/my_page_no_feed_nickname"
+            android:id="@+id/view_my_page_no_feed_nickname"
             layout="@layout/view_my_page_no_feed"
             android:visibility="gone" />
 
