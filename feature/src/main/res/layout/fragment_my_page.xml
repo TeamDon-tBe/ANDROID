@@ -122,11 +122,13 @@
 
                     <TextView
                         android:id="@+id/tv_my_page_description"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginHorizontal="42dp"
                         android:layout_marginTop="2dp"
                         android:gravity="center"
+                        android:maxLines="2"
                         android:text="@string/my_page_description"
                         android:textAppearance="@style/TextAppearance.DontBe.cap_regular_13"
                         android:textColor="@color/gray_7"
@@ -142,12 +144,12 @@
                         android:background="@drawable/ic_my_page_percentage_box"
                         android:gravity="center"
                         android:paddingBottom="7dp"
-                        tools:text="-85%"
                         android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
                         android:textColor="@color/primary"
                         app:layout_constraintBottom_toTopOf="@id/pb_my_page_input"
                         app:layout_constraintEnd_toEndOf="@id/pb_my_page_input"
-                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_description" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_description"
+                        tools:text="-85%" />
 
                     <ProgressBar
                         android:id="@+id/pb_my_page_input"
