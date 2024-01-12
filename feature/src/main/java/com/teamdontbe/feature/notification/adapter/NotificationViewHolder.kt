@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.NotiEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ItemNotificationFeedBinding
+import com.teamdontbe.feature.util.CalculateTime
 import timber.log.Timber
 
 class NotificationViewHolder(
@@ -17,21 +18,65 @@ class NotificationViewHolder(
         with(binding) {
             val spannableText =
                 when (data.notificationTriggerType) {
-                    "contentLiked" -> getSpannableText(data.triggerMemberNickname, R.string.notification_feed_content_liked)
-                    "comment" -> getSpannableText(data.triggerMemberNickname, R.string.notification_feed_comment)
-                    "commentLiked" -> getSpannableText(data.triggerMemberNickname, R.string.notification_feed_comment_liked)
-                    "actingContinue" -> getSpannableText(data.memberNickname, R.string.notification_feed_acting_continue)
-                    "beGhost" -> getSpannableText(data.memberNickname, R.string.notification_feed_be_ghost)
-                    "contentGhost" -> getSpannableText(data.memberNickname, R.string.notification_feed_content_ghost)
-                    "commentGhost" -> getSpannableText(data.memberNickname, R.string.notification_feed_comment_ghost)
-                    "userBan" -> getSpannableText(data.memberNickname, R.string.notification_feed_user_ban, 36)
+                    "contentLiked" ->
+                        getSpannableText(
+                            data.triggerMemberNickname,
+                            R.string.notification_feed_content_liked,
+                        )
+
+                    "comment" ->
+                        getSpannableText(
+                            data.triggerMemberNickname,
+                            R.string.notification_feed_comment,
+                        )
+
+                    "commentLiked" ->
+                        getSpannableText(
+                            data.triggerMemberNickname,
+                            R.string.notification_feed_comment_liked,
+                        )
+
+                    "actingContinue" ->
+                        getSpannableText(
+                            data.memberNickname,
+                            R.string.notification_feed_acting_continue,
+                        )
+
+                    "beGhost" ->
+                        getSpannableText(
+                            data.memberNickname,
+                            R.string.notification_feed_be_ghost,
+                        )
+
+                    "contentGhost" ->
+                        getSpannableText(
+                            data.memberNickname,
+                            R.string.notification_feed_content_ghost,
+                        )
+
+                    "commentGhost" ->
+                        getSpannableText(
+                            data.memberNickname,
+                            R.string.notification_feed_comment_ghost,
+                        )
+
+                    "userBan" ->
+                        getSpannableText(
+                            data.memberNickname,
+                            R.string.notification_feed_user_ban,
+                            36,
+                        )
+
                     else -> {
-                        Timber.tag("noti").e("등록되지 않은 노티가 감지되었습니다 : ${data.notificationTriggerType}")
+                        Timber.tag("noti")
+                            .e("등록되지 않은 노티가 감지되었습니다 : ${data.notificationTriggerType}")
                         SpannableString("")
                     }
                 }
 
             tvNotificationFeed.text = spannableText
+            val timeUtil = CalculateTime(binding.root.context)
+            tvNotificationTime.text = timeUtil.getCalculateTime(data.time)
         }
     }
 
