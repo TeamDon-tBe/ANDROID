@@ -16,6 +16,9 @@
     <!-- 노티 화면 -->
     <string name="notification_appbar_title">알림</string>
 
+    <!-- (답)글 삭제하기 다이얼로그 -->
+    <string name="posting_delete_dialog">작성한 글을 삭제하시겠어요?</string>
+
     <!-- onboarding -->
     <string name="content_description_iv_onboarding_back">뒤로가기 입니다.</string>
     <string name="btn_onboarding_next">다음으로</string>
@@ -51,4 +54,9 @@
     <string name="sign_up_profile_check_text">*중복된 닉네임인지 확인해주세요.</string>
     <string name="sign_up_profile_use_posssible">*사용 가능한 닉네임입니다.</string>
     <string name="sign_up_profile_use_impossible">*사용 불가능한 닉네임입니다.</string>
+    <!-- 홈 화면 -->
+    <string name="tv_home_detail_appbar_title">게시글</string>
+    <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
+    <string name="delete_dialog_cancel">취소</string>
+    <string name="delete_dialog_delete">삭제</string>
 </resources>
