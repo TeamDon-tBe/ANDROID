@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.mypage
 
 import android.content.res.Resources
+import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
@@ -16,13 +17,14 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
     override fun initView() {
-        initCollapseContentScrimColorToBlack()
+        initMyPageCollapseAppearance()
         initMyPageProgressBarUI()
         initMyPageTabLayout()
     }
 
-    private fun initCollapseContentScrimColorToBlack() {
-        binding.collapseMyPage.setContentScrimColor(requireContext().getColor(R.color.black))
+    private fun initMyPageCollapseAppearance() = with(binding) {
+        btnMyPageBack.visibility = View.INVISIBLE
+        collapseMyPage.setContentScrimColor(requireContext().getColor(R.color.black))
     }
 
     private fun initMyPageProgressBarUI() {
