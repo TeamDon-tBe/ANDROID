@@ -1,5 +1,6 @@
 package com.teamdontbe.feature.mypage.comment
 
+import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -18,7 +19,13 @@ class MyPageCommentFragment :
     private val mockDataViewModel by viewModels<MyPageViewModel>()
 
     override fun initView() {
+        updateNoCommentUI()
         initCommentRecyclerView()
+    }
+
+    private fun updateNoCommentUI() = with(binding) {
+        rvMyPageComment.visibility = View.GONE
+        tvMyPageCommentNoData.visibility = View.VISIBLE
     }
 
     private fun initCommentRecyclerView() {

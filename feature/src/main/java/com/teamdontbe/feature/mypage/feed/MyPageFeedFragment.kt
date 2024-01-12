@@ -19,8 +19,8 @@ class MyPageFeedFragment :
     private val mockDataViewModel by viewModels<MyPageViewModel>()
 
     override fun initView() {
+//        updateNoFeedUI()
         initFeedRecyclerView()
-        updateNoFeedUI()
     }
 
     private fun updateNoFeedUI() = with(binding) {
