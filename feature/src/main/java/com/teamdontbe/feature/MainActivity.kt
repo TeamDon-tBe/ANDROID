@@ -14,6 +14,7 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
+
     override fun initView() {
         initKakaoUser()
         initMainBottomNavigation()
@@ -60,7 +61,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private fun initMainBottomNaviBadge() {
         binding.bnvMain.getOrCreateBadge(R.id.fragment_notification).apply {
             isVisible = true
-            number = 99 // or badge.text = "New"
+            backgroundColor = resources.getColor(R.color.error)
         }
     }
 
