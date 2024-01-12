@@ -1,5 +1,8 @@
 package com.teamdontbe.feature.comment
 
+import android.content.res.ColorStateList
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -8,9 +11,6 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.SnackbarPostingLoadingBinding
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class UploadingSnackBar(view: View) {
     companion object {
@@ -43,17 +43,15 @@ class UploadingSnackBar(view: View) {
             ivSnackbarPostingLoadingCheck.isVisible = true
             progressPostingLoading.isVisible = false
             tvPostingLoading.text = "게시 완료!"
-            clSnackbarPostingLoading.setBackgroundColor(context.getColor(R.color.primary))
+            clSnackbarPostingLoading.backgroundTintList =
+                ColorStateList.valueOf(context.getColor(R.color.primary))
         }
     }
 
     fun show() {
         snackbar.show()
-        runBlocking {
-            launch {
-                delay(1000)
-                setSnackbarToComplete()
-            }
-        }
+        Handler(Looper.getMainLooper()).postDelayed({
+            setSnackbarToComplete()
+        }, 1000) // 1초 대기
     }
 }

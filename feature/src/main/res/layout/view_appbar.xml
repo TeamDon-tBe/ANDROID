@@ -40,23 +40,17 @@
                     android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
                     android:textColor="@color/gray_11" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/tv_appbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <TextView
-                        android:id="@+id/tv_appbar_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{title}"
-                        android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="테스트" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_gravity="center"
+                    android:text="@{title}"
+                    android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="테스트" />
             </androidx.appcompat.widget.Toolbar>
 
             <View

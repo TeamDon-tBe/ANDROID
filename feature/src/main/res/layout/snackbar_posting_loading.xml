@@ -46,7 +46,7 @@
             android:text="@string/tv_posting_loading"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/progress_posting_loading"
+            app:layout_constraintStart_toEndOf="@id/iv_snackbar_posting_loading_check"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

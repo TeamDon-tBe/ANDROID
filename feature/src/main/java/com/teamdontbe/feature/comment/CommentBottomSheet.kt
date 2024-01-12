@@ -8,8 +8,10 @@ import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.BottomsheetCommentBinding
+import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeFragment
+import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.util.Debouncer
 
 class CommentBottomSheet :
@@ -17,14 +19,10 @@ class CommentBottomSheet :
     private val commentDebouncer = Debouncer<String>()
 
     override fun initView() {
+        requireContext().openKeyboard(View(requireContext()))
         initEditText()
         initFeedData()
-        // Timber.d(getHomeFeedData()?.toFeedEntity().toString())
-    }
-
-    override fun onStart() {
-        super.onStart()
-        requireContext().openKeyboard(View(requireContext()))
+        initAppbarCancelClickListener()
     }
 
     private fun initEditText() {
@@ -74,6 +72,9 @@ class CommentBottomSheet :
     private fun initUploadingBtnClickListener() {
         binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
             UploadingSnackBar.make(it).show()
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                dismiss()
+//            }, 10) // 1초 대기
         }
     }
 
@@ -86,6 +87,13 @@ class CommentBottomSheet :
 
     private fun initFeedData() {
         binding.feed = getHomeFeedData()?.toFeedEntity()
+    }
+
+    private fun initAppbarCancelClickListener() {
+        binding.tvCommentAppbarCancel.setOnClickListener {
+            val dialog = DeleteDialogFragment("작성한 답글을 삭제하시겠어요?")
+            dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+        }
     }
 
     companion object {

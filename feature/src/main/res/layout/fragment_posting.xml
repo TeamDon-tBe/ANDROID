@@ -57,12 +57,16 @@
                 android:gravity="top|start"
                 android:hint="@string/posting_content_hint"
                 android:maxLength="500"
+                android:focusable="true"
                 android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
                 android:textCursorDrawable="@color/primary"
                 app:layout_constraintBottom_toTopOf="@id/view_posting_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_posting_profile_img"
-                app:layout_constraintTop_toBottomOf="@id/tv_posting_profile_nickname" />
+                app:layout_constraintTop_toBottomOf="@id/tv_posting_profile_nickname" >
+
+                <requestFocus/>
+            </EditText>
 
             <View
                 android:id="@+id/view_posting_line"
