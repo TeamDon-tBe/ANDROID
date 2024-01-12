@@ -15,6 +15,25 @@
     <string name="posting_content_hint">무슨 고민이 있나요?...</string>
     <!-- 노티 화면 -->
     <string name="notification_appbar_title">알림</string>
+    <string name="notification_feed_content_liked">님이 회원님의 글을 좋아합니다.</string>
+    <string name="notification_feed_comment">님이 회원님의 글에 답글을 작성했습니다.</string>
+    <string name="notification_feed_comment_liked">님이 회원님의 답글을 좋아합니다.</string>
+    <string name="notification_feed_acting_continue">님, 이제 다시 글을 작성할 수 있어요! 오랜만에 돈비에 인사를 남겨주세요!</string>
+    <string name="notification_feed_be_ghost">님, 투명해져서 당분간 글을 작성할 수 없어요.</string>
+    <string name="notification_feed_content_ghost">님, 작성하신 게시글로 인해 점점 투명해지고 있어요.</string>
+    <string name="notification_feed_comment_ghost">님, 작성하신 답글로 인해 점점 투명해지고 있어요.</string>
+    <string name="notification_feed_user_ban">님 커뮤니티 활동 정책 위반으로 더 이상 돈비를 이용할 수 없어요. 자세한 내용은 문의 사항을 남겨주세요.</string>
+    <!-- 홈, 노티, 마이페이지 화면 -->
+    <string name="feed_time_now">지금</string>
+    <string name="feed_time_minute">분 전</string>
+    <string name="feed_time_hour">시간 전</string>
+    <string name="feed_time_day">일 전</string>
+    <string name="feed_time_week">주 전</string>
+    <string name="feed_time_month">달 전</string>
+    <string name="feed_time_year">년 전</string>
+
+    <!-- (답)글 삭제하기 다이얼로그 -->
+    <string name="posting_delete_dialog">작성한 글을 삭제하시겠어요?</string>
 
     <!-- onboarding -->
     <string name="content_description_iv_onboarding_back">뒤로가기 입니다.</string>
@@ -44,8 +63,6 @@
     <string name="sign_up_agree_child_3">만 14세 이상입니다</string>
     <string name="sign_up_agree_child_4">마케팅 활용 / 광고성 정보 수신동의</string>
     <string name="sign_up_agree_choose">선택</string>
-    <string name="tv_home_detail_appbar_title">게시글</string>
-    <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
     <!--    회원가입_프로필 화면-->
     <string name="sign_up_profile_nickname">닉네임</string>
     <string name="sign_up_profile_edit_hint">닉네임을 입력해주세요</string>
@@ -53,6 +70,11 @@
     <string name="sign_up_profile_check_text">*중복된 닉네임인지 확인해주세요.</string>
     <string name="sign_up_profile_use_posssible">*사용 가능한 닉네임입니다.</string>
     <string name="sign_up_profile_use_impossible">*사용 불가능한 닉네임입니다.</string>
+    <!-- 홈 화면 -->
+    <string name="tv_home_detail_appbar_title">게시글</string>
+    <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
+    <string name="delete_dialog_cancel">취소</string>
+    <string name="delete_dialog_delete">삭제</string>
     <!--    마이 페이지 화면-->
     <string name="my_page_nickname">don’t be master</string>
     <string name="my_page_description">돈비 커뮤니티를 만드는 수호신입니다.</string>
