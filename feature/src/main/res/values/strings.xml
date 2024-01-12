@@ -1,14 +1,15 @@
 <resources>
-    <!-- 바텀 내비게이션 -->
     <string name="app_name">DontBe</string>
+    <!--    바텀 내비게이션 -->
     <string name="menu_item_home">홈</string>
     <string name="menu_item_posting">글쓰기</string>
     <string name="menu_item_notification">알림</string>
     <string name="menu_item_my">마이</string>
     <!-- 앱바 -->
     <string name="appbar_cancel">취소</string>
-    <!-- 로그인 화면 -->
+    <!-- 회원가입 화면 -->
     <string name="login_description">온화한 커뮤니티\nDON\'T BE에서 만나요.</string>
+    <string name="sign_up_appbar_title">회원가입</string>
     <!-- 글 작성하기 화면 -->
     <string name="posting_appbar_title">새로운 글</string>
     <string name="posting_content_hint">무슨 고민이 있나요?...</string>
@@ -31,6 +32,9 @@
     <string name="feed_time_month">달 전</string>
     <string name="feed_time_year">년 전</string>
 
+    <!-- (답)글 삭제하기 다이얼로그 -->
+    <string name="posting_delete_dialog">작성한 글을 삭제하시겠어요?</string>
+
     <!-- onboarding -->
     <string name="content_description_iv_onboarding_back">뒤로가기 입니다.</string>
     <string name="btn_onboarding_next">다음으로</string>
@@ -49,5 +53,20 @@
     <string name="tv_onboarding_fourth_description">설정한 사진, 닉네임, 한줄소개는 설정에서 변경 가능해요!</string>
     <string name="tv_complaint_title">신고하기</string>
     <string name="tv_delete_title">삭제하기</string>
+    <!--    약관동의 화면-->
+    <string name="sign_up_agree_title">약관동의</string>
+    <string name="sign_up_agree_description">DON’T BE와 함께하기 전\n필요한 약관들을 확인해주세요!</string>
+    <string name="sign_up_agree_choose_all">전체선택</string>
+    <string name="sign_up_agree_child_1">이용약관 동의</string>
+    <string name="sign_up_agree_must">필수</string>
+    <string name="sign_up_agree_child_2">개인정보 수집 및 이용동의</string>
+    <string name="sign_up_agree_child_3">만 14세 이상입니다</string>
+    <string name="sign_up_agree_child_4">마케팅 활용 / 광고성 정보 수신동의</string>
+    <string name="sign_up_agree_choose">선택</string>
 
+    <!-- 홈 화면 -->
+    <string name="tv_home_detail_appbar_title">게시글</string>
+    <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
+    <string name="delete_dialog_cancel">취소</string>
+    <string name="delete_dialog_delete">삭제</string>
 </resources>

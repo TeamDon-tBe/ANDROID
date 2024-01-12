@@ -10,9 +10,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExampleViewModel
-    @Inject
-    constructor(
-        private val exampleRepository: ExamplePagingRepository,
-    ) : ViewModel() {
-        fun getRecyclerviewTest(): Flow<PagingData<UserEntity>> = exampleRepository.getPagingExample()
-    }
+@Inject
+constructor(
+    private val exampleRepository: ExamplePagingRepository,
+) : ViewModel() {
+    fun getRecyclerviewTest(): Flow<PagingData<UserEntity>> = exampleRepository.getPagingExample()
+}
