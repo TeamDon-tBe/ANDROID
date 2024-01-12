@@ -21,7 +21,11 @@
         tools:layout="@layout/fragment_posting">
         <action
             android:id="@+id/action_posting_to_home"
-            app:destination="@id/fragment_home" />
+            app:destination="@id/fragment_home"
+            app:enterAnim="@anim/anim_posting_fragment_from_left"
+            app:exitAnim="@anim/anim_posting_fragment_to_right"
+            app:popEnterAnim="@anim/anim_posting_fragment_from_right"
+            app:popExitAnim="@anim/anim_posting_fragment_to_left" />
     </fragment>
     <fragment
         android:id="@+id/fragment_notification"
