@@ -1,20 +1,24 @@
-package com.teamdontbe.feature.mypage.adapter
+package com.teamdontbe.feature.mypage.feed
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.teamdontbe.core_ui.view.ItemDiffCallback
-import com.teamdontbe.domain.entity.UserEntity
+import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 
-class MyPageFeedAdapter(context: Context) :
-    ListAdapter<UserEntity, MyPageFeedViewHolder>(ExampleDiffCallback) {
+class MyPageFeedAdapter(
+    private val onClickKebabBtn: (FeedEntity) -> Unit,
+    private val onItemClicked: (FeedEntity) -> Unit,
+    context: Context,
+) :
+    ListAdapter<FeedEntity, MyPageFeedViewHolder>(ExampleDiffCallback) {
     private val inflater by lazy { LayoutInflater.from(context) }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPageFeedViewHolder {
         val binding = ItemHomeFeedBinding.inflate(inflater, parent, false)
-        return MyPageFeedViewHolder(binding)
+        return MyPageFeedViewHolder(binding, onClickKebabBtn, onItemClicked)
     }
 
     override fun onBindViewHolder(holder: MyPageFeedViewHolder, position: Int) {
@@ -23,8 +27,8 @@ class MyPageFeedAdapter(context: Context) :
 
     companion object {
         private val ExampleDiffCallback =
-            ItemDiffCallback<UserEntity>(
-                onItemsTheSame = { old, new -> old.id == new.id },
+            ItemDiffCallback<FeedEntity>(
+                onItemsTheSame = { old, new -> old.memberId == new.memberId },
                 onContentsTheSame = { old, new -> old == new },
             )
     }
