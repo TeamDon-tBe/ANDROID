@@ -18,24 +18,24 @@
             android:stateListAnimator="@null">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapse_my_page"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stateListAnimator="@null"
+                app:contentScrim="@null"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingBottom="14dp"
-                    android:stateListAnimator="@null">
+                    android:paddingBottom="14dp">
 
                     <com.google.android.material.appbar.MaterialToolbar
                         android:id="@+id/toolbar_my_page"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@color/black"
-                        app:layout_collapseMode="pin"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -137,21 +137,18 @@
                         app:layout_constraintEnd_toEndOf="@id/pb_my_page_input"
                         app:layout_constraintTop_toBottomOf="@id/tv_my_page_description" />
 
-
-                    <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                    <ProgressBar
                         android:id="@+id/pb_my_page_input"
+                        style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="10dp"
                         android:layout_marginHorizontal="16dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="7dp"
+                        android:progress="40"
+                        android:progressDrawable="@drawable/progress_bar_my_page_drawable"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_transparency_percentage"
-                        app:rcBackgroundColor="@color/gray_9"
-                        app:rcMax="100"
-                        app:rcProgress="50"
-                        app:rcProgressColors="@array/sample_progress_gradient"
-                        app:rcRadius="50dp" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_transparency_percentage" />
 
                     <TextView
                         android:id="@+id/tv_my_page_info"
@@ -199,21 +196,12 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <ProgressBar
-                    android:id="@+id/progressbar"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_marginHorizontal="20dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_my_page"
