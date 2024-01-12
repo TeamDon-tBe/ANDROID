@@ -18,6 +18,10 @@ class MyPageCommentFragment :
     private val mockDataViewModel by viewModels<MyPageViewModel>()
 
     override fun initView() {
+        initCommentRecyclerView()
+    }
+
+    private fun initCommentRecyclerView() {
         val myPageCommentAdapter = MyPageCommentAdapter(
             onClickKebabBtn = { feedEntity ->
                 // Kebab 버튼 클릭 이벤트 처리
@@ -28,7 +32,7 @@ class MyPageCommentFragment :
                 // RecyclerView 항목 클릭 이벤트 처리
                 // feedEntity를 사용하여 필요한 작업 수행
                 navigateToHomeDetailFragment(
-//                    feedEntity.memberId,
+//                        feedEntity.memberId,
                     Feed(
                         feedData.memberId,
                         feedData.memberNickname,
