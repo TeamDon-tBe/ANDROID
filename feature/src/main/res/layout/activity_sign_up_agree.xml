@@ -92,7 +92,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:background="@drawable/shape_radius6_rect"
+            android:background="@drawable/shape_6_rect"
             android:backgroundTint="#59CD9C"
             android:gravity="center"
             android:paddingHorizontal="6dp"

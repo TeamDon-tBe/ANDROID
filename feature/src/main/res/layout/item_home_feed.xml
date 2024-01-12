@@ -14,7 +14,7 @@
         android:id="@+id/cl_home_feed_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_white_fill_radius8_rect"
+        android:background="@drawable/shape_white_fill_8_rect"
         android:clickable="true"
         android:paddingVertical="16dp"
         android:paddingEnd="5dp">
