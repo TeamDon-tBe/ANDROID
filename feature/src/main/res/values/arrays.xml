@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <array name="sample_progress_gradient">
-        <item>#D90E0E0E</item>
-        <item>#7AEBA8</item>
-    </array>
-</resources>
