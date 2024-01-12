@@ -41,13 +41,12 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.appcompat.widget.AppCompatImageButton
-                            android:id="@+id/btn_appbar_back"
+                            android:id="@+id/btn_my_page_back"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_marginEnd="16dp"
+                            android:layout_marginStart="16dp"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/ic_sign_up_back_42"
+                            android:src="@drawable/ic_my_page_circle_back_gray_42"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -65,6 +64,19 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/btn_my_page_hamberger"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="16dp"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_my_page_hamberger_gray_42"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
 
                     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -87,9 +99,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="-6dp"
-                        android:background="?attr/selectableItemBackground"
+                        android:background="@android:color/transparent"
                         android:clickable="true"
-                        android:src="@drawable/ic_sign_up_profile_plus_34"
+                        android:src="@drawable/ic_my_page_edit_profile_gray_28"
                         app:layout_constraintBottom_toBottomOf="@id/iv_my_page_profile"
                         app:layout_constraintDimensionRatio="1"
                         app:layout_constraintEnd_toEndOf="@id/iv_my_page_profile" />
@@ -101,7 +113,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:text="don’t be master"
+                        android:text="@string/my_page_nickname"
                         android:textAppearance="@style/TextAppearance.DontBe.head_semi_18"
                         android:textColor="@color/white"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -115,7 +127,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="2dp"
                         android:gravity="center"
-                        android:text="돈비 커뮤니티를 만드는 수호신입니다."
+                        android:text="@string/my_page_description"
                         android:textAppearance="@style/TextAppearance.DontBe.cap_regular_13"
                         android:textColor="@color/gray_7"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -130,7 +142,7 @@
                         android:background="@drawable/ic_my_page_percentage_box"
                         android:gravity="center"
                         android:paddingBottom="7dp"
-                        android:text="-85%"
+                        tools:text="-85%"
                         android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
                         android:textColor="@color/primary"
                         app:layout_constraintBottom_toTopOf="@id/pb_my_page_input"
@@ -157,7 +169,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="6dp"
                         android:gravity="center"
-                        android:text="투명도"
+                        android:text="@string/my_page_transperency"
                         android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
                         android:textColor="@color/gray_7"
                         app:layout_constraintStart_toStartOf="@id/pb_my_page_input"
