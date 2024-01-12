@@ -58,13 +58,11 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                             context?.drawableOf(R.drawable.shape_error_line_10_ring)
                         pbPostingInput.progress = etPostingContent.text.toString().length
                         btnPostingUpload.setImageResource(R.drawable.ic_uploading_deactivate)
-                        initUploadingDeactivateBtnClickListener()
                     }
 
                     else -> {
                         pbPostingInput.progress = 0
                         btnPostingUpload.setImageResource(R.drawable.ic_uploading_deactivate)
-                        initUploadingDeactivateBtnClickListener()
                     }
                 }
                 postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}

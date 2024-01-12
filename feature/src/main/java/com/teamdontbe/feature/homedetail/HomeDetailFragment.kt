@@ -1,10 +1,12 @@
 package com.teamdontbe.feature.homedetail
 
 import android.os.Build
+import android.os.Bundle
 import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.feature.R
+import com.teamdontbe.feature.comment.CommentBottomSheet
 import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
 import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeBottomSheet
