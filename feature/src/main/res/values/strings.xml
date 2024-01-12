@@ -53,4 +53,8 @@
     <string name="sign_up_profile_check_text">*중복된 닉네임인지 확인해주세요.</string>
     <string name="sign_up_profile_use_posssible">*사용 가능한 닉네임입니다.</string>
     <string name="sign_up_profile_use_impossible">*사용 불가능한 닉네임입니다.</string>
+    <!--    마이 페이지 화면-->
+    <string name="my_page_nickname">don’t be master</string>
+    <string name="my_page_description">돈비 커뮤니티를 만드는 수호신입니다.</string>
+    <string name="my_page_transperency">투명도</string>
 </resources>
