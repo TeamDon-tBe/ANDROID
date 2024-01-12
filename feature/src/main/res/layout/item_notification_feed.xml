@@ -11,7 +11,7 @@
         android:id="@+id/layout_notification_feed_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_white_fill_radius8_rect"
+        android:background="@drawable/shape_white_fill_8_rect"
         android:clickable="true"
         android:paddingVertical="14dp">
 
