@@ -4,6 +4,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.drawableOf
+import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentPostingBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
@@ -13,6 +14,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private val postingDebouncer = Debouncer<String>()
 
     override fun initView() {
+        statusBarColorOf(R.color.white)
         initEditText()
         initCancelBtnClickListener()
     }

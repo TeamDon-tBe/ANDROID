@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.notification
 
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.domain.entity.NotiEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentNotificationBinding
@@ -10,6 +11,7 @@ import com.teamdontbe.feature.notification.adapter.NotificationItemDecorator
 class NotificationFragment :
     BindingFragment<FragmentNotificationBinding>(R.layout.fragment_notification) {
     override fun initView() {
+        statusBarColorOf(R.color.white)
         initNotificationAdapter()
     }
 
