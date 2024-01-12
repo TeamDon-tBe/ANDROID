@@ -57,4 +57,8 @@
     <string name="my_page_nickname">don’t be master</string>
     <string name="my_page_description">돈비 커뮤니티를 만드는 수호신입니다.</string>
     <string name="my_page_transperency">투명도</string>
+    <string name="my_page_no_feed_text">%s님 , 아직 글을 작성하지 않았네요!\n왠지 텅 빈 게시글이 허전하게 느껴져요.</string>
+    <string name="my_page_no_feed_first">첫 게시글 남기기</string>
+    <string name="my_page_comment_not_yet">아직 작성한 답글이 없어요.</string>
+
 </resources>
