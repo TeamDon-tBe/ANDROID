@@ -75,4 +75,9 @@ class MyPageFeedFragment :
             bundleOf(HomeFragment.KEY_FEED_DATA to id),
         )
     }
+
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
+    }
 }
