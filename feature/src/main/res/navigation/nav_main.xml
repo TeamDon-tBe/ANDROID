@@ -32,7 +32,11 @@
         android:id="@+id/fragment_my_page"
         android:name="com.teamdontbe.feature.mypage.MyPageFragment"
         android:label="MyPageFragment"
-        tools:layout="@layout/fragment_my_page" />
+        tools:layout="@layout/fragment_my_page">
+        <action
+            android:id="@+id/action_fragment_my_page_to_fragment_home_detail"
+            app:destination="@id/fragment_home_detail" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_onboarding"
         android:name="com.teamdontbe.feature.onboarding.OnboardingFragment"
