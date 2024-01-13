@@ -5,20 +5,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeCommentBinding
 
-class HomeDetailViewHolder(
+class HomeDetailCommentViewHolder(
     private val binding: ItemHomeCommentBinding,
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(data: FeedEntity) {
+    fun bind(
+        data: FeedEntity,
+        lastPosition: Int,
+    ) {
         with(binding) {
-            clCommentCard.isEnabled = false
-            ivCommentGhostFillGreen.isVisible = true
-            dividerComment.isVisible = true
             feed = data
             executePendingBindings()
             btnCommentKebab.setOnClickListener {
                 onClickKebabBtn(data, bindingAdapterPosition)
             }
+            if (lastPosition == position) dividerCommentDivideBottom.isVisible = false
         }
     }
 }

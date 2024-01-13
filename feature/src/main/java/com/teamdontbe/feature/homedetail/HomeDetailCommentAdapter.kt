@@ -6,28 +6,28 @@ import androidx.recyclerview.widget.ListAdapter
 import com.teamdontbe.core_ui.view.ItemDiffCallback
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeCommentBinding
-import com.teamdontbe.feature.homedetail.viewholder.HomeDetailViewHolder
+import com.teamdontbe.feature.homedetail.viewholder.HomeDetailCommentViewHolder
 
-class HomeDetailAdapter(
+class HomeDetailCommentAdapter(
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
 ) :
-    ListAdapter<FeedEntity, HomeDetailViewHolder>(
+    ListAdapter<FeedEntity, HomeDetailCommentViewHolder>(
             HomeAdapterDiffCallback,
         ) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): HomeDetailViewHolder {
+    ): HomeDetailCommentViewHolder {
         val binding =
             ItemHomeCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return HomeDetailViewHolder(binding, onClickKebabBtn)
+        return HomeDetailCommentViewHolder(binding, onClickKebabBtn)
     }
 
     override fun onBindViewHolder(
-        holder: HomeDetailViewHolder,
+        holder: HomeDetailCommentViewHolder,
         position: Int,
     ) {
-        holder.bind(currentList[position])
+        holder.bind(currentList[position], itemCount)
     }
 
     companion object {
