@@ -9,16 +9,36 @@ import androidx.navigation.ui.setupWithNavController
 import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.feature.databinding.ActivityMainBinding
+import com.teamdontbe.feature.dialog.HomePostingRestrictionDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
-
     override fun initView() {
         initKakaoUser()
         initMainBottomNavigation()
         initMainBottomNaviBadge()
+    }
+
+    private fun initBottomNavPostingClickListener(navController: NavController) {
+        if (true) {
+            binding.bnvMain.setOnItemSelectedListener {
+                when (it.itemId) {
+                    R.id.fragment_posting -> {
+                        initCheckBtnClickListener()
+                        false
+                    }
+
+                    else -> true
+                }
+            }
+        }
+    }
+
+    private fun initCheckBtnClickListener() {
+        val dialog = HomePostingRestrictionDialogFragment()
+        dialog.show(supportFragmentManager, RESTRICTION_POSTING)
     }
 
     private fun initKakaoUser() {
@@ -45,6 +65,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         // NotificationFragment 진입할 때 badge를 없애는 함수
         removeBadgeOnNotification(navController)
         setBottomNaviVisible(navController)
+
+        initBottomNavPostingClickListener(navController)
     }
 
     private fun removeBadgeOnNotification(navController: NavController) {
@@ -81,5 +103,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     View.GONE
                 }
         }
+    }
+
+    companion object {
+        const val RESTRICTION_POSTING = "restriction_posting"
     }
 }
