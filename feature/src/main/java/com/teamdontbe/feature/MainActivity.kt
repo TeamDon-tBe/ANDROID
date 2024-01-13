@@ -23,7 +23,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun initBottomNavPostingClickListener(navController: NavController) {
-        if (true) {
+        if (false) {
             binding.bnvMain.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.fragment_posting -> {
@@ -32,11 +32,54 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     }
 
                     else -> {
-                        true
                         it.onNavDestinationSelected(navController)
                     }
                 }
             }
+        } else {
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.setCustomAnimations(
+                R.anim.anim_posting_fragment_from_right,
+                R.anim.anim_posting_fragment_to_left,
+                R.anim.anim_posting_fragment_from_left,
+                R.anim.anim_posting_fragment_to_right,
+            )
+            fragmentTransaction.commit()
+
+//            binding.bnvMain.setOnItemSelectedListener {
+//                val rootView = findViewById<View>(android.R.id.content)
+//                when (it.itemId) {
+//                    R.id.fragment_posting -> {
+//                        val animation =
+//                            AnimationUtils.loadAnimation(
+//                                this,
+//                                R.anim.anim_posting_fragment_to_right,
+//                            )
+//                        rootView.startAnimation(animation)
+//
+//                        // PostingFragment로 이동하기 전에 애니메이션이 완료될 때까지 대기
+//                        animation.setAnimationListener(
+//                            object : Animation.AnimationListener {
+//                                override fun onAnimationStart(animation: Animation?) {
+//                                    it.onNavDestinationSelected(navController)
+//                                }
+//
+//                                override fun onAnimationEnd(animation: Animation?) {
+//                                }
+//
+//                                override fun onAnimationRepeat(animation: Animation?) {
+//                                }
+//                            },
+//                        )
+//
+//                        // true 반환하여 선택된 상태로 유지
+//                        true
+//                    }
+//                    else -> {
+//                        it.onNavDestinationSelected(navController)
+//                    }
+//                }
+//            }
         }
     }
 
