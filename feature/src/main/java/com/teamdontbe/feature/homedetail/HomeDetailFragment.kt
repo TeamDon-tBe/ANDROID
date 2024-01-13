@@ -4,6 +4,7 @@ import android.os.Build
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.drawableOf
@@ -16,6 +17,7 @@ import com.teamdontbe.feature.comment.UploadingSnackBar
 import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.home.Feed
+import com.teamdontbe.feature.home.HomeAdapter
 import com.teamdontbe.feature.home.HomeBottomSheet
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.posting.PostingFragment
@@ -28,7 +30,7 @@ class HomeDetailFragment :
 
     override fun initView() {
         statusBarColorOf(R.color.white)
-        initHomeDetailAdapter()
+        initHomeDetailCommentAdapter()
         initBackBtnClickListener()
         (getHomeFeedDetailData())?.let { initInputEditTextClickListener(it) }
         initEditText()
@@ -36,9 +38,9 @@ class HomeDetailFragment :
         initCommentBottomSheet()
     }
 
-    private fun initHomeDetailAdapter() {
-        binding.rvHomeDetail.adapter =
-            HomeDetailAdapter(onClickKebabBtn = { feedData, positoin ->
+    private fun initHomeDetailCommentAdapter() {
+        val commentAdapter =
+            HomeDetailCommentAdapter(onClickKebabBtn = { feedData, positoin ->
                 initBottomSheet()
             }).apply {
                 submitList(
@@ -53,6 +55,19 @@ class HomeDetailFragment :
                     ),
                 )
             }
+
+        val detailAdapter =
+            HomeAdapter(onClickKebabBtn = { feedData, positoin ->
+                initBottomSheet()
+            }).apply {
+                submitList(
+                    listOf(
+                        getHomeFeedDetailData()?.toFeedEntity(),
+                    ),
+                )
+            }
+
+        binding.rvHomeDetail.adapter = ConcatAdapter(detailAdapter, commentAdapter)
         binding.rvHomeDetail.addItemDecoration(HomeDetailFeedItemDecorator(requireContext()))
     }
 
