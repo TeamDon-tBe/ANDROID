@@ -79,7 +79,7 @@ class HomeDetailFragment :
             (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
                 View.GONE
             binding.bottomsheet.etCommentContent.requestFocus()
-            requireContext().openKeyboard(View(requireContext()))
+            requireContext().openKeyboard(binding.root)
         }
     }
 
@@ -133,7 +133,7 @@ class HomeDetailFragment :
     private fun initUploadingBtnClickListener() {
         binding.bottomsheet.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
             requireContext().hideKeyboard(binding.root)
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
                 View.VISIBLE
             UploadingSnackBar.make(binding.root).show()
@@ -154,7 +154,8 @@ class HomeDetailFragment :
         bottomSheetBehavior.expandedOffset = 28
         bottomSheetBehavior.peekHeight = 0
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        bottomSheetBehavior.skipCollapsed = false
+        bottomSheetBehavior.skipCollapsed = true
+        bottomSheetBehavior.isFitToContents = false
     }
 
     companion object {
