@@ -17,7 +17,8 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     override fun initView() {
         statusBarColorOf(R.color.white)
 
-        val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_posting_fragment_from_right)
+        val animation =
+            AnimationUtils.loadAnimation(requireContext(), R.anim.anim_posting_fragment_from_left)
         view?.startAnimation(animation)
 
         initEditText()
