@@ -49,13 +49,17 @@ fun Context.hideKeyboard(view: View) {
     inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
+fun Context.openKeyboard(view: View) {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.showSoftInput(view, 0)
+}
+
 fun Context.dialogFragmentResize(
     dialogFragment: DialogFragment,
     horizontalMargin: Float,
 ) {
     val dpToPixel = Resources.getSystem().displayMetrics.density
-    val dialogHorizontalMarginInPixels =
-        (dpToPixel * horizontalMargin + 0.5f).toInt() // 반올림 처리
+    val dialogHorizontalMarginInPixels = (dpToPixel * horizontalMargin + 0.5f).toInt() // 반올림 처리
     val deviceWidth = Resources.getSystem().displayMetrics.widthPixels
     dialogFragment.dialog?.window?.setLayout(
         deviceWidth - 2 * dialogHorizontalMarginInPixels,
