@@ -24,10 +24,6 @@ class HomeDetailFeedItemDecorator(val context: Context) : RecyclerView.ItemDecor
                 context.pxToDp(16),
                 context.pxToDp(20),
             )
-        } else {
-            outRect.left = context.pxToDp(16)
-            outRect.right = context.pxToDp(16)
         }
-        outRect.bottom = context.pxToDp(4)
     }
 }
