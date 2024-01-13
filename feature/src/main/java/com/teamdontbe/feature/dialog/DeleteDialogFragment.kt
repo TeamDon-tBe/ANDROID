@@ -41,9 +41,16 @@ class DeleteDialogFragment(private val content: String) :
 
     private fun initDeleteButtonClick() {
         binding.btnDeleteDialogDelete.setOnClickListener {
-            navigateToPreviousActivity()
+            // navigateToPreviousActivity()
+            navigateToMainActivity()
             dismiss()
         }
+    }
+
+    private fun navigateToMainActivity() {
+        findNavController().navigate(
+            R.id.action_posting_to_home,
+        )
     }
 
     private fun navigateToPreviousActivity() {
