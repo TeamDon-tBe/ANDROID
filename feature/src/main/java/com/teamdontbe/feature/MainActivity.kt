@@ -5,6 +5,7 @@ import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingActivity
@@ -30,7 +31,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                         false
                     }
 
-                    else -> true
+                    else -> {
+                        true
+                        it.onNavDestinationSelected(navController)
+                    }
                 }
             }
         }
