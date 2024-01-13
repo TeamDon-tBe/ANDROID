@@ -201,6 +201,7 @@
                 app:tabIndicatorColor="@color/primary"
                 app:tabIndicatorFullWidth="true"
                 app:tabIndicatorHeight="2dp"
+                app:tabRippleColor="@android:color/transparent"
                 app:tabSelectedTextAppearance="@style/TextAppearance.DontBe.body_semi_16"
                 app:tabSelectedTextColor="@color/gray_12"
                 app:tabTextAppearance="@style/TextAppearance.DontBe.body_semi_16"
@@ -210,17 +211,17 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_my_page"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
