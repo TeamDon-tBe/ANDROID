@@ -11,6 +11,7 @@ import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.context.statusBarColorOf
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
+import com.teamdontbe.feature.mypage.transperencyinfo.TransparencyInfoParentFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initMyPageCollapseAppearance()
         initMyPageProgressBarUI()
         initMyPageTabLayout()
+        initTransparencyInfoDialogBtnClickListener()
     }
 
     private fun initMyPageCollapseAppearance() = with(binding) {
@@ -74,8 +76,16 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }.attach()
     }
 
+    private fun initTransparencyInfoDialogBtnClickListener() {
+        binding.btnMyPageTransparencyInfo.setOnClickListener {
+            val transparencyInfoDialog = TransparencyInfoParentFragment()
+            transparencyInfoDialog.show(parentFragmentManager, TRANSPARENCY_INFO)
+        }
+    }
+
     companion object {
         const val POSTING = "게시글"
         const val COMMENT = "답글"
+        const val TRANSPARENCY_INFO = "TransparencyInfo"
     }
 }

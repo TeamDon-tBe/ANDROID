@@ -165,26 +165,40 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_my_page_transparency_percentage" />
 
-                    <TextView
-                        android:id="@+id/tv_my_page_info"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/btn_my_page_transparency_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:layout_marginTop="6dp"
-                        android:gravity="center"
-                        android:text="@string/my_page_transperency"
-                        android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
-                        android:textColor="@color/gray_7"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
                         app:layout_constraintStart_toStartOf="@id/pb_my_page_input"
-                        app:layout_constraintTop_toBottomOf="@id/pb_my_page_input" />
+                        app:layout_constraintTop_toBottomOf="@id/pb_my_page_input">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:src="@drawable/ic_my_page_info"
-                        app:layout_constraintDimensionRatio="1"
-                        app:layout_constraintStart_toEndOf="@id/tv_my_page_info"
-                        app:layout_constraintTop_toTopOf="@id/tv_my_page_info" />
+                        <TextView
+                            android:id="@+id/tv_my_page_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/my_page_transperency"
+                            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+                            android:textColor="@color/gray_7"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:src="@drawable/ic_my_page_info"
+                            app:layout_constraintDimensionRatio="1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/tv_my_page_info"
+                            app:layout_constraintTop_toTopOf="@id/tv_my_page_info" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
