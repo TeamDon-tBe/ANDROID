@@ -7,17 +7,226 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingHorizontal="16dp">
+        android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_my_page_feed"
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:stateListAnimator="@null">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapse_my_page"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stateListAnimator="@null"
+                app:contentScrim="@null"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="14dp">
+
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:id="@+id/toolbar_my_page"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/btn_my_page_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_my_page_circle_back_gray_42"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_my_page_appbar_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/menu_item_my"
+                            android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/btn_my_page_hamberger"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="16dp"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_my_page_hamberger_gray_42"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </com.google.android.material.appbar.MaterialToolbar>
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/iv_my_page_profile"
+                        android:layout_width="68dp"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_my_page_profile_3x"
+                        app:layout_constraintDimensionRatio="1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/toolbar_my_page"
+                        app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btn_my_page_profile_edit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="-6dp"
+                        android:background="@android:color/transparent"
+                        android:clickable="true"
+                        android:src="@drawable/ic_my_page_edit_profile_gray_28"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_my_page_profile"
+                        app:layout_constraintDimensionRatio="1"
+                        app:layout_constraintEnd_toEndOf="@id/iv_my_page_profile" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="@string/my_page_nickname"
+                        android:textAppearance="@style/TextAppearance.DontBe.head_semi_18"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btn_my_page_profile_edit" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_description"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="42dp"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:maxLines="2"
+                        android:text="@string/my_page_description"
+                        android:textAppearance="@style/TextAppearance.DontBe.cap_regular_13"
+                        android:textColor="@color/gray_7"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_title" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_transparency_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/ic_my_page_percentage_box"
+                        android:gravity="center"
+                        android:paddingBottom="7dp"
+                        android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+                        android:textColor="@color/primary"
+                        app:layout_constraintBottom_toTopOf="@id/pb_my_page_input"
+                        app:layout_constraintEnd_toEndOf="@id/pb_my_page_input"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_description"
+                        tools:text="-85%" />
+
+                    <ProgressBar
+                        android:id="@+id/pb_my_page_input"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="7dp"
+                        android:progress="40"
+                        android:progressDrawable="@drawable/progress_bar_my_page_drawable"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_transparency_percentage" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center"
+                        android:text="@string/my_page_transperency"
+                        android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+                        android:textColor="@color/gray_7"
+                        app:layout_constraintStart_toStartOf="@id/pb_my_page_input"
+                        app:layout_constraintTop_toBottomOf="@id/pb_my_page_input" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:src="@drawable/ic_my_page_info"
+                        app:layout_constraintDimensionRatio="1"
+                        app:layout_constraintStart_toEndOf="@id/tv_my_page_info"
+                        app:layout_constraintTop_toTopOf="@id/tv_my_page_info" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_my_page"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:tabIndicatorColor="@color/primary"
+                app:tabIndicatorFullWidth="true"
+                app:tabIndicatorHeight="2dp"
+                app:tabRippleColor="@android:color/transparent"
+                app:tabSelectedTextAppearance="@style/TextAppearance.DontBe.body_semi_16"
+                app:tabSelectedTextColor="@color/gray_12"
+                app:tabTextAppearance="@style/TextAppearance.DontBe.body_semi_16"
+                app:tabTextColor="@color/gray_7" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_home_feed" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vp_my_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
