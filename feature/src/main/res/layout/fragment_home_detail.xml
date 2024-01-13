@@ -46,26 +46,12 @@
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <include
-            layout
-
-            />
-
-
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider_comment"
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            app:dividerColor="@color/gray_3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/view_home_detail"
-            app:layout_constraintBaseline_toBottomOf="@id/view_home_detail"
-            app:layout_constraintBottom_toBottomOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_home_detail"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/view_home_detail"
             app:layout_constraintEnd_toEndOf="parent"
