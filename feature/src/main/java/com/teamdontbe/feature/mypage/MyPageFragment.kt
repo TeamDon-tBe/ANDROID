@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.pxToDp
@@ -22,7 +21,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initMyPageCollapseAppearance()
         initMyPageProgressBarUI()
         initMyPageTabLayout()
-        setupViewPagerCallback()
     }
 
     private fun initMyPageCollapseAppearance() = with(binding) {
@@ -74,15 +72,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         TabLayoutMediator(tabMyPage, vpMyPage) { tab, position ->
             tab.text = tabTitleArray[position]
         }.attach()
-    }
-
-    private fun setupViewPagerCallback() {
-        binding.vpMyPage.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                (binding.vpMyPage.adapter as? MyPageVpAdapter)?.notifyDataSetChanged()
-            }
-        })
     }
 
     companion object {
