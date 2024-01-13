@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.teamdontbe.core_ui.view.ItemDiffCallback
 import com.teamdontbe.domain.entity.FeedEntity
-import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
+import com.teamdontbe.feature.databinding.ItemHomeCommentBinding
 import com.teamdontbe.feature.homedetail.viewholder.HomeDetailViewHolder
 
 class HomeDetailAdapter(
@@ -19,7 +19,7 @@ class HomeDetailAdapter(
         viewType: Int,
     ): HomeDetailViewHolder {
         val binding =
-            ItemHomeFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemHomeCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HomeDetailViewHolder(binding, onClickKebabBtn)
     }
 
