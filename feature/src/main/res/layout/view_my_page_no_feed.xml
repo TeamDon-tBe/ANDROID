@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/no_feed_nickname"
+            android:id="@+id/tv_no_feed_nickname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="36dp"
@@ -44,7 +44,7 @@
             app:cornerRadius="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/no_feed_nickname"
+            app:layout_constraintTop_toBottomOf="@id/tv_no_feed_nickname"
             app:strokeColor="@color/secondary"
             app:strokeWidth="1dp" />
 
