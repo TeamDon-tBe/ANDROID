@@ -1,12 +1,11 @@
 package com.teamdontbe.feature.mypage.comment
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.FeedEntity
-import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
+import com.teamdontbe.feature.databinding.ItemCommentBinding
 
 class MyPageCommentViewHolder(
-    private val binding: ItemHomeFeedBinding,
+    private val binding: ItemCommentBinding,
     private val onClickKebabBtn: (FeedEntity) -> Unit,
     private val onItemClicked: (FeedEntity) -> Unit,
 ) :
@@ -18,22 +17,14 @@ class MyPageCommentViewHolder(
         binding.root.setOnClickListener {
             item?.let { onItemClicked(it) }
         }
-        binding.btnHomeKebab.setOnClickListener {
+        binding.btnCommentKebab.setOnClickListener {
             item?.let { onClickKebabBtn(it) }
         }
     }
 
     fun onBind(data: FeedEntity) = with(binding) {
-        setVisibility()
         feed = data
         item = data
         executePendingBindings()
-    }
-
-    private fun ItemHomeFeedBinding.setVisibility() {
-        ivHomeGhostFillGreen.visibility = View.INVISIBLE
-        ivHomeLinePale.visibility = View.INVISIBLE
-        btnHomeComment.visibility = View.GONE
-        tvHomeCommentNum.visibility = View.GONE
     }
 }
