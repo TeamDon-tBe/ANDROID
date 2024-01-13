@@ -23,6 +23,8 @@
     <string name="notification_feed_content_ghost">님, 작성하신 게시글로 인해 점점 투명해지고 있어요.</string>
     <string name="notification_feed_comment_ghost">님, 작성하신 답글로 인해 점점 투명해지고 있어요.</string>
     <string name="notification_feed_user_ban">님 커뮤니티 활동 정책 위반으로 더 이상 돈비를 이용할 수 없어요. 자세한 내용은 문의 사항을 남겨주세요.</string>
+    <string name="notification_empty_non">아직 받은 알림이 없어요.</string>
+    <string name="notification_empty_new">새로운 소식이 도착하면 알려드릴게요.</string>
     <!-- 홈, 노티, 마이페이지 화면 -->
     <string name="feed_time_now">지금</string>
     <string name="feed_time_minute">분 전</string>
@@ -34,6 +36,8 @@
 
     <!-- (답)글 삭제하기 다이얼로그 -->
     <string name="posting_delete_dialog">작성한 글을 삭제하시겠어요?</string>
+    <string name="delete_dialog_cancel">취소</string>
+    <string name="delete_dialog_delete">삭제</string>
 
     <!-- onboarding -->
     <string name="content_description_iv_onboarding_back">뒤로가기 입니다.</string>
@@ -53,31 +57,6 @@
     <string name="tv_onboarding_fourth_description">설정한 사진, 닉네임, 한줄소개는 설정에서 변경 가능해요!</string>
     <string name="tv_complaint_title">신고하기</string>
     <string name="tv_delete_title">삭제하기</string>
-
-    <!--    회원가입_프로필 화면-->
-    <string name="sign_up_profile_nickname">닉네임</string>
-    <string name="sign_up_profile_edit_hint">닉네임을 입력해주세요</string>
-    <string name="sign_up_profile_double_check">중복확인</string>
-    <string name="sign_up_profile_check_text">*중복된 닉네임인지 확인해주세요.</string>
-    <string name="sign_up_profile_use_posssible">*사용 가능한 닉네임입니다.</string>
-    <string name="sign_up_profile_use_impossible">*사용 불가능한 닉네임입니다.</string>
-    <!-- 홈 화면 -->
-    <string name="tv_home_detail_appbar_title">게시글</string>
-    <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
-
-    <!-- 답글 -->
-    <string name="tv_comment_appbar_title">답글 쓰기</string>
-    <string name="tv_posting_loading">게시 중...</string>
-    <string name="delete_dialog_cancel">취소</string>
-    <string name="delete_dialog_delete">삭제</string>
-    <!--    마이 페이지 화면-->
-    <string name="my_page_nickname">don’t be master</string>
-    <string name="my_page_description">돈비 커뮤니티를 만드는 수호신입니다.</string>
-    <string name="my_page_transperency">투명도</string>
-    <string name="my_page_no_feed_text">%s님, 아직 글을 작성하지 않았네요!\n왠지 텅 빈 게시글이 허전하게 느껴져요.</string>
-    <string name="my_page_no_feed_first">첫 게시글 남기기</string>
-    <string name="my_page_comment_not_yet">아직 작성한 답글이 없어요.</string>
-
     <!--    약관동의 화면-->
     <string name="sign_up_agree_title">약관동의</string>
     <string name="sign_up_agree_description">DON’T BE와 함께하기 전\n필요한 약관들을 확인해주세요!</string>
@@ -88,4 +67,42 @@
     <string name="sign_up_agree_child_3">만 14세 이상입니다</string>
     <string name="sign_up_agree_child_4">마케팅 활용 / 광고성 정보 수신동의</string>
     <string name="sign_up_agree_choose">선택</string>
+    <!--    회원가입_프로필 화면-->
+    <string name="sign_up_profile_nickname">닉네임</string>
+    <string name="sign_up_profile_edit_hint">닉네임을 입력해주세요</string>
+    <string name="sign_up_profile_double_check">중복확인</string>
+    <string name="sign_up_profile_check_text">*중복된 닉네임인지 확인해주세요.</string>
+    <string name="sign_up_profile_use_posssible">*사용 가능한 닉네임입니다.</string>
+    <string name="sign_up_profile_use_impossible">*사용 불가능한 닉네임입니다.</string>
+    <!-- 홈 화면 -->
+    <string name="tv_home_detail_appbar_title">게시글</string>
+    <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
+    <!-- 홈 -> 글 작성 block 유저 제한 다이얼로그 -->
+    <string name="home_posting_restriction_dialog_title">한동안 글을 쓸 수 없어요 :(</string>
+    <string name="home_posting_restriction_dialog_content">투명도가 -85%까지 떨어졌네요!\n투명도가 회복되기 전까지 글을 쓸 수 없어요.</string>
+    <string name="home_posting_restriction_dialog_caption">*회복 방법은 마이페이지 투명도 툴팁을 확인해보세요.</string>
+    <string name="home_posting_restriction_dialog_btn">확인 했어요</string>
+
+    <!-- 답글 -->
+    <string name="tv_comment_appbar_title">답글 쓰기</string>
+    <string name="tv_posting_loading">게시 중...</string>
+
+    <!--    마이 페이지 화면-->
+    <string name="my_page_nickname">don’t be master</string>
+    <string name="my_page_description">돈비 커뮤니티를 만드는 수호신입니다.</string>
+    <string name="my_page_transperency">투명도</string>
+    <string name="my_page_no_feed_text">%s님, 아직 글을 작성하지 않았네요!\n왠지 텅 빈 게시글이 허전하게 느껴져요.</string>
+    <string name="my_page_no_feed_first">첫 게시글 남기기</string>
+    <string name="my_page_comment_not_yet">아직 작성한 답글이 없어요.</string>
+    <!-- 마이 페이지 계정 정보 화면 -->
+    <string name="my_page_auth_info_appbar">계정 정보</string>
+    <string name="my_page_auth_info_social">소셜 로그인</string>
+    <string name="my_page_auth_info_version">버전 정보</string>
+    <string name="my_page_auth_info_id">아이디</string>
+    <string name="my_page_auth_info_date">가입일</string>
+    <string name="my_page_auth_info_conditions_title">이용약관</string>
+    <string name="my_page_auth_info_conditions_content">자세히보기</string>
+    <string name="my_page_auth_info_withdraw_title">아쉬워요, 돈비를 떠나시겠어요?</string>
+    <string name="my_page_auth_info_withdraw_content">회원탈퇴</string>
+
 </resources>
