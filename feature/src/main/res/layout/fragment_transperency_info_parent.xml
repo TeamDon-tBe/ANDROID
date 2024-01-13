@@ -29,6 +29,19 @@
             app:tabIndicatorHeight="0dp"
             app:tabPadding="8dp" />
 
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_transparency_info_close"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="22dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_transparency_info_close"
+            app:layout_constraintBottom_toBottomOf="@id/tab_transparency_info_indicator"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tab_transparency_info_indicator" />
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_my_page"
             android:layout_width="0dp"

@@ -20,13 +20,8 @@ class TransparencyInfoParentFragment :
     }
 
     override fun initView() {
-        /*  initContentText()
-          initCancelButtonClick()*/
+        initCancelButtonClick()
         initMyPageTabLayout()
-    }
-
-    private fun initContentText() {
-//        binding.tvDeleteDialogContent.text = content
     }
 
     override fun onResume() {
@@ -35,9 +30,9 @@ class TransparencyInfoParentFragment :
     }
 
     private fun initCancelButtonClick() {
-        /* binding.btnDeleteDialogCancel.setOnClickListener {
-             dismiss()
-         }*/
+        binding.btnTransparencyInfoClose.setOnClickListener {
+            dismiss()
+        }
     }
 
     private fun initMyPageTabLayout() = with(binding) {
