@@ -31,9 +31,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                         false
                     }
 
-                    else -> {
-                        it.onNavDestinationSelected(navController)
-                    }
+                    else -> it.onNavDestinationSelected(navController)
                 }
             }
         }
