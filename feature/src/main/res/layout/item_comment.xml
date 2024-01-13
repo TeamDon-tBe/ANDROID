@@ -11,99 +11,101 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_home_feed_card"
+        android:id="@+id/cl_comment_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_white_fill_8_rect"
         android:clickable="true"
-        android:paddingVertical="16dp"
-        android:paddingEnd="5dp">
+        android:paddingTop="16dp">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_home_start_10"
+            android:id="@+id/guide_comment_start_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="10dp" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_home_profile"
-            android:layout_width="44dp"
+            android:id="@+id/iv_comment_profile"
+            android:layout_width="42dp"
             android:layout_height="0dp"
             android:background="@color/gray_9"
+            android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio="1"
-            app:layout_constraintStart_toStartOf="@id/guide_home_start_10"
+            app:layout_constraintStart_toStartOf="@id/guide_comment_start_10"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
         <TextView
-            android:id="@+id/tv_home_feed_user_name"
+            android:id="@+id/tv_comment_user_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="6dp"
             android:text="@{feed.memberNickname}"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
-            app:layout_constraintBottom_toTopOf="@id/tv_home_feed_transparency"
-            app:layout_constraintStart_toEndOf="@id/iv_home_profile"
-            app:layout_constraintTop_toTopOf="@id/iv_home_profile"
+            app:layout_constraintBottom_toTopOf="@id/tv_comment_transparency"
+            app:layout_constraintStart_toEndOf="@id/iv_comment_profile"
+            app:layout_constraintTop_toTopOf="@id/iv_comment_profile"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="don't be master" />
 
         <TextView
-            android:id="@+id/tv_home_feed_transparency"
+            android:id="@+id/tv_comment_transparency"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="@{`투명도 -` + feed.memberGhost + `%  · ` + feed.time}"
+            android:text="@{feed.time}"
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
             android:textColor="@color/gray_9"
-            app:layout_constraintBottom_toBottomOf="@id/iv_home_profile"
-            app:layout_constraintStart_toStartOf="@id/tv_home_feed_user_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_home_feed_user_name"
-            tools:text="투명도 0% · 3분 전" />
+            app:layout_constraintBottom_toBottomOf="@id/iv_comment_profile"
+            app:layout_constraintStart_toStartOf="@id/tv_comment_user_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_user_name"
+            tools:text="3분 전" />
 
         <TextView
-            android:id="@+id/tv_home_feed_content"
+            android:id="@+id/tv_comment_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="9dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="11dp"
             android:text="@{feed.contentText}"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tv_home_feed_user_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_home_feed_transparency"
+            app:layout_constraintStart_toStartOf="@id/tv_comment_user_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_transparency"
             tools:text="돈비를 사용하면 진짜 돈비를 맞을 수 있나요?
 저 돈비 맞고 싶어요 돈벼락이 최고입니다. 그나저나 돈비 정말 흥미로운 서비스인 것 같아요 어떻게 이런 기획을 ? 대박 ㄷ ㄷ ㄷ돈비를 사용하면 진짜 돈비를 맞을 수 있나요?" />
 
         <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/iv_home_line_pale"
+            android:id="@+id/iv_comment_line_pale"
             android:layout_width="1dp"
             android:layout_height="0dp"
+            android:visibility="invisible"
             app:dividerColor="@color/pale"
-            app:layout_constraintBottom_toTopOf="@id/iv_home_ghost_fill_green"
-            app:layout_constraintEnd_toEndOf="@id/iv_home_profile"
-            app:layout_constraintStart_toStartOf="@id/iv_home_profile"
-            app:layout_constraintTop_toBottomOf="@id/iv_home_profile" />
-
+            app:layout_constraintBottom_toTopOf="@id/iv_comment_ghost_fill_green"
+            app:layout_constraintEnd_toEndOf="@id/iv_comment_profile"
+            app:layout_constraintStart_toStartOf="@id/iv_comment_profile"
+            app:layout_constraintTop_toBottomOf="@id/iv_comment_profile" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_home_ghost_fill_green"
+            android:id="@+id/iv_comment_ghost_fill_green"
             android:layout_width="44dp"
             android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
             android:src="@drawable/ic_home_ghost_fill_green"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
-            app:layout_constraintStart_toStartOf="@id/guide_home_start_10"
-            app:layout_constraintTop_toBottomOf="@id/tv_home_feed_content"
+            app:layout_constraintStart_toStartOf="@id/guide_comment_start_10"
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_content"
             app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btn_home_kebab"
+            android:id="@+id/btn_comment_kebab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
+            android:layout_marginEnd="6dp"
             android:background="@drawable/ripple_home_kebab_gray_44"
             android:clickable="true"
             app:layout_constraintDimensionRatio="1"
@@ -111,52 +113,28 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btn_home_heart"
+            android:id="@+id/btn_comment_heart"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/ic_home_heart_default_gray_40_with_padding"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/sel_home_heart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
-            app:layout_constraintEnd_toStartOf="@id/tv_home_heart_num"
-            app:layout_constraintHorizontal_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/tv_home_heart_num"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:gravity="start"
-            android:text="@{Integer.toString(feed.contentLikedNumber)}"
-            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
-            android:textColor="@color/gray_11"
-            app:layout_constraintBottom_toBottomOf="@id/btn_home_heart"
-            app:layout_constraintEnd_toStartOf="@id/btn_home_comment"
-            app:layout_constraintTop_toTopOf="@id/btn_home_heart"
-            tools:text="54" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btn_home_comment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/ic_home_comment_default_gray_40_with_padding"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1"
-            app:layout_constraintEnd_toStartOf="@id/tv_home_comment_num" />
-
-        <TextView
-            android:id="@+id/tv_home_comment_num"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="9dp"
-            android:gravity="start"
-            android:text="@{Integer.toString(feed.contentLikedNumber)}"
-            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
-            android:textColor="@color/gray_11"
-            app:layout_constraintBottom_toBottomOf="@id/btn_home_comment"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btn_home_comment"
+            app:layout_constraintEnd_toStartOf="@id/tv_comment_num" />
+
+        <TextView
+            android:id="@+id/tv_comment_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:gravity="start"
+            android:text="@{Integer.toString(feed.contentLikedNumber)}"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+            android:textColor="@color/gray_11"
+            app:layout_constraintBottom_toBottomOf="@id/btn_comment_heart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_comment_heart"
             tools:text="54" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
