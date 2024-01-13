@@ -10,99 +10,108 @@
             type="com.teamdontbe.domain.entity.FeedEntity" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar_home_detail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:minHeight="0dp"
-                app:contentInsetStart="0dp"
-                app:layout_scrollFlags="scroll|enterAlways">
-
-                <ImageView
-                    android:id="@+id/iv_home_detail_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_circle_back" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/tv_home_detail_appbar_title"
-                    android:textAppearance="@style/TextAppearance.DontBe.body_semi_16" />
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_home_detail"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="@id/view_home_detail"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbar_home_detail"
-            tools:listitem="@layout/item_home_feed" />
-
-        <View
-            android:id="@+id/view_home_detail"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/gray_2"
-            app:layout_constraintBottom_toTopOf="@id/cl_home_detail_input"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_home_detail_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:paddingVertical="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tv_home_detail_input"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar_home_detail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/shape_pale_fill_38_rect"
-                android:paddingHorizontal="14dp"
+                android:backgroundTint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:minHeight="0dp"
+                    app:contentInsetStart="0dp"
+                    app:layout_scrollFlags="scroll|enterAlways">
+
+                    <ImageView
+                        android:id="@+id/iv_home_detail_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_circle_back" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/tv_home_detail_appbar_title"
+                        android:textAppearance="@style/TextAppearance.DontBe.body_semi_16" />
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_home_detail"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="@id/view_home_detail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appbar_home_detail"
+                tools:listitem="@layout/item_home_feed" />
+
+            <View
+                android:id="@+id/view_home_detail"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/gray_2"
+                app:layout_constraintBottom_toTopOf="@id/cl_home_detail_input"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_home_detail_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:paddingVertical="8dp"
-                android:text="@string/et_home_detail_input"
-                android:textAppearance="@style/TextAppearance.DontBe.cap_regular_13"
-                android:textColor="@color/gray_9"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_home_detail_profile_img"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_home_detail_profile_img"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:src="@drawable/img_posting_profile"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+                <TextView
+                    android:id="@+id/tv_home_detail_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/shape_pale_fill_38_rect"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/et_home_detail_input"
+                    android:textAppearance="@style/TextAppearance.DontBe.cap_regular_13"
+                    android:textColor="@color/gray_9"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_home_detail_profile_img"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_home_detail_profile_img"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:src="@drawable/img_posting_profile"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/bottomsheet"
+            layout="@layout/bottomsheet_comment" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
