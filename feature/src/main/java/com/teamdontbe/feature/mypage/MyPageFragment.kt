@@ -1,39 +1,81 @@
 package com.teamdontbe.feature.mypage
 
-import androidx.fragment.app.viewModels
+import android.content.res.Resources
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.tabs.TabLayoutMediator
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.util.context.pxToDp
+import com.teamdontbe.core_ui.util.context.statusBarColorOf
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
-import com.teamdontbe.feature.example.ExampleViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
-    private val viewModel by viewModels<ExampleViewModel>()
-
     override fun initView() {
-        viewModel.getRecyclerviewTest()
-//        collectExample()
+        initMyPageCollapseAppearance()
+        initMyPageProgressBarUI()
+        initMyPageTabLayout()
     }
 
-    /*
-        private fun collectExample() {
-            viewModel.getExample.flowWithLifecycle(lifecycle).onEach {
-                when (it) {
-                    is UiState.Loading -> {}
-                    is UiState.Success -> {
-                        binding.rvMyPageFeed.apply {
-                            adapter = MyPageFeedAdapter(requireContext()).apply {
-                                submitList(it.data)
-                            }
-                            addItemDecoration(MyPageFeedItemDecorator(requireContext()))
-                        }
-                    }
+    private fun initMyPageCollapseAppearance() = with(binding) {
+        btnMyPageBack.visibility = View.INVISIBLE
+        collapseMyPage.setContentScrimColor(requireContext().getColor(R.color.black))
+        requireContext().statusBarColorOf(R.color.black)
+    }
 
-                    is UiState.Empty -> {}
-                    is UiState.Failure -> toast("실패")
-                }
-            }.launchIn(lifecycleScope)
+    private fun initMyPageProgressBarUI() {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            updateProgressWithLabel(
+                binding.pbMyPageInput,
+                30,
+                binding.tvMyPageTransparencyPercentage,
+                Resources.getSystem().displayMetrics.widthPixels,
+            )
         }
-    */
+    }
+
+    private fun updateProgressWithLabel(
+        progressBar: ProgressBar,
+        progressStatus: Int,
+        progressLabelTextView: TextView,
+        maxX: Int,
+    ) {
+        progressBar.progress = progressStatus
+
+        val textViewX = (
+            (progressStatus * (progressBar.width - 2)) / progressBar.max -
+                requireContext().pxToDp(12)
+            ) - (progressLabelTextView.width / 2)
+        val finalX =
+            if (progressLabelTextView.width + textViewX > maxX) (maxX - progressLabelTextView.width - 16) else textViewX + 16 /*your margin*/
+
+        progressLabelTextView.apply {
+            x = if (finalX < 0) 16.toFloat() else finalX.toFloat()
+            text = "-$progressStatus%"
+        }
+    }
+
+    private fun initMyPageTabLayout() = with(binding) {
+        vpMyPage.adapter = MyPageVpAdapter(this@MyPageFragment)
+
+        val tabTitleArray = arrayOf(
+            POSTING,
+            COMMENT,
+        )
+
+        TabLayoutMediator(tabMyPage, vpMyPage) { tab, position ->
+            tab.text = tabTitleArray[position]
+        }.attach()
+    }
+
+    companion object {
+        const val POSTING = "게시글"
+        const val COMMENT = "답글"
+    }
 }
