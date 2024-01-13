@@ -38,7 +38,8 @@
                         android:background="@color/black"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                         <androidx.appcompat.widget.AppCompatImageButton
                             android:id="@+id/btn_my_page_back"
@@ -197,7 +198,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_scrollFlags="scroll|enterAlways"
                 app:tabIndicatorColor="@color/primary"
                 app:tabIndicatorFullWidth="true"
                 app:tabIndicatorHeight="2dp"
