@@ -1,8 +1,10 @@
 package com.teamdontbe.feature.comment
 
 import android.os.Build
+import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
 import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.core_ui.util.context.openKeyboard
@@ -18,11 +20,21 @@ class CommentBottomSheet :
     BindingBottomSheetFragment<BottomsheetCommentBinding>(R.layout.bottomsheet_comment) {
     private val commentDebouncer = Debouncer<String>()
 
-    override fun initView() {
+    private lateinit var bottomSheetBehavior = BottomSheetBehavior<View>override fun initView() {
         requireContext().openKeyboard(View(requireContext()))
         initEditText()
         initFeedData()
         initAppbarCancelClickListener()
+    }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.root)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
     }
 
     private fun initEditText() {
@@ -77,6 +89,29 @@ class CommentBottomSheet :
 //            }, 10) // 1초 대기
         }
     }
+
+    private val bottomSheetCallback =
+        object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(
+                bottomSheet: View,
+                newState: Int,
+            ) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        // Bottom sheet is fully hidden, show Snackbar
+                        UploadingSnackBar.make(binding.root).show()
+                    }
+                    // Add more cases as needed
+                }
+            }
+
+            override fun onSlide(
+                bottomSheet: View,
+                slideOffset: Float,
+            ) {
+                // Not needed for this example
+            }
+        }
 
     private fun getHomeFeedData(): Feed? =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
