@@ -13,7 +13,27 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_comment_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp">
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider_comment_divide_top"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="3dp"
+            app:dividerColor="@color/gray_3"
+            app:layout_constraintBottom_toBottomOf="@id/iv_home_comment_divide"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider_comment_divide_bottom"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            app:dividerColor="@color/gray_3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_home_comment_divide" />
 
         <ImageView
             android:id="@+id/iv_home_comment_divide"
@@ -27,6 +47,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:background="@drawable/shape_white_fill_8_rect"
             android:paddingTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +90,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="@{feed.time}"
+                android:text="@{`투명도 -` + feed.memberGhost + `%  · ` + feed.time}"
                 android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
                 android:textColor="@color/gray_9"
                 app:layout_constraintBottom_toBottomOf="@id/iv_comment_profile"
@@ -118,7 +139,7 @@
                 android:id="@+id/btn_comment_kebab"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
+                android:layout_marginEnd="4dp"
                 android:background="@drawable/ripple_home_kebab_gray_44"
                 android:clickable="true"
                 app:layout_constraintDimensionRatio="1"
@@ -140,7 +161,7 @@
                 android:id="@+id/tv_comment_num"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
+                android:layout_marginEnd="10dp"
                 android:gravity="start"
                 android:text="@{Integer.toString(feed.contentLikedNumber)}"
                 android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
