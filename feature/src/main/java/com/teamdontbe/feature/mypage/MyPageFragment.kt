@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.pxToDp
+import com.teamdontbe.core_ui.util.context.statusBarColorOf
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +26,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun initMyPageCollapseAppearance() = with(binding) {
         btnMyPageBack.visibility = View.INVISIBLE
         collapseMyPage.setContentScrimColor(requireContext().getColor(R.color.black))
+        requireContext().statusBarColorOf(R.color.black)
     }
 
     private fun initMyPageProgressBarUI() {
