@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_home_heart_primary_active" android:state_pressed="true" android:state_selected="true" />
+    <item android:drawable="@drawable/ic_home_heart_default_gray_40_with_padding" />
+</selector>
