@@ -21,7 +21,11 @@
         tools:layout="@layout/fragment_posting">
         <action
             android:id="@+id/action_posting_to_home"
-            app:destination="@id/fragment_home" />
+            app:destination="@id/fragment_home"
+            app:enterAnim="@anim/anim_posting_fragment_from_right"
+            app:exitAnim="@anim/anim_posting_fragment_to_left"
+            app:popEnterAnim="@anim/anim_posting_fragment_from_right"
+            app:popExitAnim="@anim/anim_posting_fragment_to_right" />
     </fragment>
     <fragment
         android:id="@+id/fragment_notification"
@@ -32,7 +36,11 @@
         android:id="@+id/fragment_my_page"
         android:name="com.teamdontbe.feature.mypage.MyPageFragment"
         android:label="MyPageFragment"
-        tools:layout="@layout/fragment_my_page" />
+        tools:layout="@layout/fragment_my_page">
+        <action
+            android:id="@+id/action_fragment_my_page_to_fragment_home_detail"
+            app:destination="@id/fragment_home_detail" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_onboarding"
         android:name="com.teamdontbe.feature.onboarding.OnboardingFragment"

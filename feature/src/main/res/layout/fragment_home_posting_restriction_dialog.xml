@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_white_fill_10_rect"
+        android:minHeight="358dp">
+
+        <ImageView
+            android:id="@+id/iv_home_posting_restriction_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:src="@drawable/ic_home_posting_restriction"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_home_posting_restriction_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home_posting_restriction_dialog_title"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_home_posting_restriction_dialog" />
+
+        <TextView
+            android:id="@+id/tv_home_posting_restriction_dialog_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="@string/home_posting_restriction_dialog_content"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/gray_11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_home_posting_restriction_dialog_title" />
+
+        <TextView
+            android:id="@+id/tv_home_posting_restriction_dialog_caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/home_posting_restriction_dialog_caption"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+            android:textColor="@color/gray_7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_home_posting_restriction_dialog_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_home_posting_restriction_dialog_check"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="18dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/black"
+            android:paddingVertical="14dp"
+            android:text="@string/home_posting_restriction_dialog_btn"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            android:textColor="@color/white"
+            app:cornerRadius="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_home_posting_restriction_dialog_caption" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
