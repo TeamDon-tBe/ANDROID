@@ -36,6 +36,8 @@
 
     <!-- (답)글 삭제하기 다이얼로그 -->
     <string name="posting_delete_dialog">작성한 글을 삭제하시겠어요?</string>
+    <string name="delete_dialog_cancel">취소</string>
+    <string name="delete_dialog_delete">삭제</string>
 
     <!-- onboarding -->
     <string name="content_description_iv_onboarding_back">뒤로가기 입니다.</string>
@@ -75,6 +77,11 @@
     <!-- 홈 화면 -->
     <string name="tv_home_detail_appbar_title">게시글</string>
     <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
+    <!-- 홈 -> 글 작성 block 유저 제한 다이얼로그 -->
+    <string name="home_posting_restriction_dialog_title">한동안 글을 쓸 수 없어요 :(</string>
+    <string name="home_posting_restriction_dialog_content">투명도가 -85%까지 떨어졌네요!\n투명도가 회복되기 전까지 글을 쓸 수 없어요.</string>
+    <string name="home_posting_restriction_dialog_caption">*회복 방법은 마이페이지 투명도 툴팁을 확인해보세요.</string>
+    <string name="home_posting_restriction_dialog_btn">확인 했어요</string>
     <string name="delete_dialog_cancel">취소</string>
     <string name="delete_dialog_delete">삭제</string>
     <!--    마이 페이지 화면-->
