@@ -1,5 +1,6 @@
 package com.teamdontbe.feature.posting
 
+import android.view.animation.AnimationUtils
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingFragment
@@ -16,8 +17,9 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     override fun initView() {
         statusBarColorOf(R.color.white)
 
-//        val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_posting_fragment_from_left)
-//        view?.startAnimation(animation)
+        val animation =
+            AnimationUtils.loadAnimation(requireContext(), R.anim.anim_posting_fragment_from_left)
+        view?.startAnimation(animation)
 
         initEditText()
         initCancelBtnClickListener()
