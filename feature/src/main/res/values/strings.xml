@@ -82,5 +82,15 @@
     <string name="my_page_no_feed_text">%s님, 아직 글을 작성하지 않았네요!\n왠지 텅 빈 게시글이 허전하게 느껴져요.</string>
     <string name="my_page_no_feed_first">첫 게시글 남기기</string>
     <string name="my_page_comment_not_yet">아직 작성한 답글이 없어요.</string>
+    <!-- 마이 페이지 계정 정보 화면 -->
+    <string name="my_page_auth_info_appbar">계정 정보</string>
+    <string name="my_page_auth_info_social">소셜 로그인</string>
+    <string name="my_page_auth_info_version">버전 정보</string>
+    <string name="my_page_auth_info_id">아이디</string>
+    <string name="my_page_auth_info_date">가입일</string>
+    <string name="my_page_auth_info_conditions_title">이용약관</string>
+    <string name="my_page_auth_info_conditions_content">자세히보기</string>
+    <string name="my_page_auth_info_withdraw_title">아쉬워요, 돈비를 떠나시겠어요?</string>
+    <string name="my_page_auth_info_withdraw_content">회원탈퇴</string>
 
 </resources>
