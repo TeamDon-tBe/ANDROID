@@ -48,8 +48,7 @@
         tools:layout="@layout/fragment_onboarding">
         <action
             android:id="@+id/action_onboarding_to_home"
-            app:destination="@id/fragment_home"
-            app:popUpToInclusive="true" />
+            app:destination="@id/fragment_home" />
     </fragment>
     <fragment
         android:id="@+id/fragment_onboarding_first_item"
