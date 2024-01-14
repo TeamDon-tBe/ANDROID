@@ -1,9 +1,11 @@
 package com.teamdontbe.feature.mypage.bottomsheet
 
-import androidx.navigation.fragment.findNavController
+import android.content.Intent
 import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.BottomSheetMyPageHambergerBinding
+import com.teamdontbe.feature.login.SignUpProfileActivity
+import com.teamdontbe.feature.mypage.MyPageAuthInfoActivity
 
 class MyPageBottomSheet :
     BindingBottomSheetFragment<BottomSheetMyPageHambergerBinding>(R.layout.bottom_sheet_my_page_hamberger) {
@@ -21,19 +23,13 @@ class MyPageBottomSheet :
 
     private fun navigateToSignUpProfileActivity() {
         binding.tvMyPageBottomSheetEditProfile.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_fragment_my_page_to_signUpProfileActivity,
-            )
-            dismiss()
+            startActivity(Intent(requireContext(), SignUpProfileActivity::class.java))
         }
     }
 
     private fun navigateToMyPageAuthInfoFragment() {
         binding.tvMyPageBottomSheetAccountInfo.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_fragment_my_page_to_myPageAuthInfoFragment,
-            )
-            dismiss()
+            startActivity(Intent(requireContext(), MyPageAuthInfoActivity::class.java))
         }
     }
 }
