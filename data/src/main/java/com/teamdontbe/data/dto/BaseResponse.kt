@@ -12,17 +12,5 @@ data class BaseResponse<T>(
     @SerialName("message")
     val message: String,
     @SerialName("data")
-    val data: T,
-)
-
-@Serializable
-data class BaseResponseNullable<T>(
-    @SerialName("status")
-    val status: Int,
-    @SerialName("code")
-    val code: Boolean,
-    @SerialName("message")
-    val message: String,
-    @SerialName("data")
     val data: T? = null,
 )
