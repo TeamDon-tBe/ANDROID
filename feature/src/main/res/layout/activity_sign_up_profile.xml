@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -94,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:gravity="end"
-            android:text='@{String.format("(%d/12)", vm.nickNameNum)}'
+            android:text='@{String.format("(%d/12)", vm.nickName.length())}'
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
             android:textColor="@color/gray_7"
             app:layout_constraintBottom_toBottomOf="@id/et_sign_up_profile_nickname"
@@ -139,7 +140,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="한줄 소개"
+            android:text="@string/sign_up_profile_one_introduce"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_17"
@@ -150,11 +151,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:afterTextChanged="@{(text) -> vm.setIntroduce(text.toString())}"
             android:background="@drawable/shape_4_rect"
             android:backgroundTint="@color/gray_2"
             android:gravity="top|start"
-            android:hint="한줄로 자기 소개를 해주세요."
-            android:inputType="text"
+            android:hint="@string/sign_up_profile_description"
+            android:inputType="text|textMultiLine"
             android:maxLength="50"
             android:minHeight="150dp"
             android:paddingHorizontal="14dp"
@@ -164,6 +166,20 @@
             app:layout_constraintEnd_toEndOf="@id/guide_sign_up_end_17"
             app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_17"
             app:layout_constraintTop_toBottomOf="@id/tv_sign_up_profile" />
+
+        <TextView
+            android:id="@+id/tv_sign_up_profile_introduce_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="end"
+            android:text='@{String.format("(%d/50)", vm.introduceNum.length)}'
+            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+            android:textColor="@color/gray_7"
+            app:layout_constraintBottom_toBottomOf="@id/et_sign_up_agree_introduce"
+            app:layout_constraintEnd_toEndOf="@id/et_sign_up_agree_introduce"
+            tools:text="aaa" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_sign_up_agree_next"
@@ -178,7 +194,7 @@
             android:paddingVertical="14dp"
             android:text="@string/btn_onboarding_next"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
-            android:textColor="@{vm.isBtnSelected ? @color/gray_9 : @color/white}"
+            android:textColor="@{vm.isBtnSelected ? @color/white : @color/gray_9}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
