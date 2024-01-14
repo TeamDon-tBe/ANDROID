@@ -6,7 +6,7 @@ import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
-import com.teamdontbe.feature.mypage.adapter.MyPageFeedItemDecorator
+import com.teamdontbe.feature.util.FeedItemDecorator
 
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     override fun initView() {
@@ -81,7 +81,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 )
             }
 
-        binding.rvHome.addItemDecoration(MyPageFeedItemDecorator(requireContext()))
+        binding.rvHome.addItemDecoration(FeedItemDecorator(requireContext()))
     }
 
     private fun initBottomSheet() {
