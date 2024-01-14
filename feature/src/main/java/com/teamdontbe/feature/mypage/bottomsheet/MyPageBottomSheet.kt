@@ -9,29 +9,29 @@ class MyPageBottomSheet :
     BindingBottomSheetFragment<BottomSheetMyPageHambergerBinding>(R.layout.bottom_sheet_my_page_hamberger) {
     override fun initView() {
         initBottomSheetCloseClickListener()
-        navigateToMyPageAuthInfoFragment()
         navigateToSignUpProfileActivity()
+        navigateToMyPageAuthInfoFragment()
     }
 
     private fun initBottomSheetCloseClickListener() {
-        binding.ivComplaintDeleteClose.setOnClickListener {
-            dismiss()
-        }
-    }
-
-    private fun navigateToMyPageAuthInfoFragment() {
-        binding.tvDeleteTitle.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_fragment_my_page_to_myPageAuthInfoFragment,
-            )
+        binding.ivMyPageBottomSheetClose.setOnClickListener {
             dismiss()
         }
     }
 
     private fun navigateToSignUpProfileActivity() {
-        binding.tvComplaintTitle.setOnClickListener {
+        binding.tvMyPageBottomSheetEditProfile.setOnClickListener {
             findNavController().navigate(
                 R.id.action_fragment_my_page_to_signUpProfileActivity,
+            )
+            dismiss()
+        }
+    }
+
+    private fun navigateToMyPageAuthInfoFragment() {
+        binding.tvMyPageBottomSheetAccountInfo.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_fragment_my_page_to_myPageAuthInfoFragment,
             )
             dismiss()
         }

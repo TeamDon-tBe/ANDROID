@@ -12,7 +12,7 @@
         android:background="@drawable/bottom_sheet_top_corner_8">
 
         <ImageView
-            android:id="@+id/iv_complaint_delete_close"
+            android:id="@+id/iv_my_page_bottom_sheet_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_complaint_title"
+            android:id="@+id/tv_my_page_bottom_sheet_edit_profile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="14dp"
@@ -38,10 +38,10 @@
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_complaint_delete_close" />
+            app:layout_constraintTop_toBottomOf="@id/iv_my_page_bottom_sheet_close" />
 
         <TextView
-            android:id="@+id/tv_delete_title"
+            android:id="@+id/tv_my_page_bottom_sheet_account_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="14dp"
@@ -56,7 +56,7 @@
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_complaint_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_my_page_bottom_sheet_edit_profile" />
 
         <TextView
             android:id="@+id/tv_my_page_bottom_sheet_feedback"
@@ -74,7 +74,7 @@
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_delete_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_my_page_bottom_sheet_account_info" />
 
         <TextView
             android:id="@+id/tv_my_page_bottom_sheet_custom_service"
