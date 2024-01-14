@@ -82,6 +82,11 @@
     <string name="home_posting_restriction_dialog_content">투명도가 -85%까지 떨어졌네요!\n투명도가 회복되기 전까지 글을 쓸 수 없어요.</string>
     <string name="home_posting_restriction_dialog_caption">*회복 방법은 마이페이지 투명도 툴팁을 확인해보세요.</string>
     <string name="home_posting_restriction_dialog_btn">확인 했어요</string>
+
+    <!-- 답글 -->
+    <string name="tv_comment_appbar_title">답글 쓰기</string>
+    <string name="tv_posting_loading">게시 중...</string>
+
     <!--    마이 페이지 화면-->
     <string name="my_page_nickname">don’t be master</string>
     <string name="my_page_description">돈비 커뮤니티를 만드는 수호신입니다.</string>
