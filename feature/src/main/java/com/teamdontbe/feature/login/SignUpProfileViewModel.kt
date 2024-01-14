@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class SignUpProfileViewModel : ViewModel() {
-    private var _isBtnSelected = MutableLiveData<Boolean>()
+    private var _isBtnSelected = MutableLiveData<Boolean>(false)
     val isBtnSelected: LiveData<Boolean> get() = _isBtnSelected
 
     private val testNick = "aaa"
@@ -13,28 +13,28 @@ class SignUpProfileViewModel : ViewModel() {
     private var _isNickNameValid = MutableLiveData<Boolean>()
     val isNickNameValid: LiveData<Boolean> get() = _isNickNameValid
 
-    private val nickName = MutableLiveData<String>()
+    private val _nickName = MutableLiveData<String>()
+    val nickName: LiveData<String> get() = _nickName
 
-    private var _nickNameNum = MutableLiveData<Int>(0)
-    val nickNameNum = _nickNameNum
+    private var _introduceNum = MutableLiveData<String>()
+    val introduceNum = _introduceNum
 
     fun setNickName(input: String) {
-        this.nickName.value = input
+        this._nickName.value = input
         validateNickName(input)
-        updateNickNameBtnValidity(input)
-        updateNickNameNum()
+        updateNickNameBtnValidity()
+    }
+
+    fun setIntroduce(input: String) {
+        this._introduceNum.value = input
     }
 
     private fun validateNickName(nickName: String) {
         _isNickNameValid.value = nicknameRegex.matches(nickName)
     }
 
-    fun updateNickNameBtnValidity(nickName: String) {
-        _isBtnSelected.value = (testNick == nickName && _isNickNameValid.value == true)
-    }
-
-    fun updateNickNameNum() {
-        _nickNameNum.value = nickName.value?.length ?: 0
+    private fun updateNickNameBtnValidity() {
+        _isBtnSelected.value = (testNick == _nickName.value && _isNickNameValid.value == true)
     }
 
     companion object {
