@@ -11,6 +11,7 @@ import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.context.statusBarColorOf
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
+import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet
 import com.teamdontbe.feature.mypage.transperencyinfo.TransparencyInfoParentFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initMyPageProgressBarUI()
         initMyPageTabLayout()
         initTransparencyInfoDialogBtnClickListener()
+        initMyPageHambergerClickListner()
     }
 
     private fun initMyPageCollapseAppearance() = with(binding) {
@@ -78,8 +80,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initTransparencyInfoDialogBtnClickListener() {
         binding.btnMyPageTransparencyInfo.setOnClickListener {
-            val transparencyInfoDialog = TransparencyInfoParentFragment()
-            transparencyInfoDialog.show(parentFragmentManager, TRANSPARENCY_INFO)
+            TransparencyInfoParentFragment().show(parentFragmentManager, TRANSPARENCY_INFO)
+        }
+    }
+
+    private fun initMyPageHambergerClickListner() {
+        binding.btnMyPageHamberger.setOnClickListener {
+            MyPageBottomSheet().show(parentFragmentManager, MY_PAGE_BOTTOM_SHEET)
         }
     }
 
@@ -87,5 +94,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         const val POSTING = "게시글"
         const val COMMENT = "답글"
         const val TRANSPARENCY_INFO = "TransparencyInfo"
+        const val MY_PAGE_BOTTOM_SHEET = "MyPageBottomSheet"
     }
 }
