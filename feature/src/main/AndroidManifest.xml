@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.SignUpAgreeActivity"
+            android:name=".signup.SignUpAgreeActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -37,7 +37,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".login.SignUpProfileActivity"
+            android:name=".signup.SignUpProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

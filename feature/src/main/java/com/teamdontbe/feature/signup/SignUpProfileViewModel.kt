@@ -1,4 +1,4 @@
-package com.teamdontbe.feature.login
+package com.teamdontbe.feature.signup
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

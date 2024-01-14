@@ -1,4 +1,4 @@
-package com.teamdontbe.feature.login
+package com.teamdontbe.feature.signup
 
 import androidx.activity.viewModels
 import com.teamdontbe.core_ui.base.BindingActivity
@@ -10,7 +10,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignUpProfileActivity :
     BindingActivity<ActivitySignUpProfileBinding>(R.layout.activity_sign_up_profile) {
-
     private val viewModel by viewModels<SignUpProfileViewModel>()
 
     override fun initView() {
