@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_onboarding_fourth_title"
@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="50dp"
             android:background="@drawable/shape_gray03_line_6_rect"
             app:layout_constraintBottom_toBottomOf="@id/tv_onboarding_fourth_description"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,8 +38,8 @@
         <ImageView
             android:id="@+id/iv_onboarding_fourth_profile"
             android:layout_width="0dp"
-            android:layout_height="96dp"
-            android:layout_marginTop="58dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="73dp"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="@id/view_onboarding_fourth_background"
             app:layout_constraintStart_toStartOf="@id/view_onboarding_fourth_background"
@@ -70,6 +70,7 @@
             android:backgroundTint="@color/gray_1"
             android:hint="@string/et_onboarding_fourth_introduction"
             android:maxLength="50"
+            android:paddingHorizontal="20dp"
             android:paddingVertical="17dp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
