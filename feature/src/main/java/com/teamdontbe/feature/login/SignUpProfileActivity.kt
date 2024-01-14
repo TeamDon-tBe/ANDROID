@@ -15,39 +15,35 @@ class SignUpProfileActivity :
 
     override fun initView() {
         binding.vm = viewModel
-        initBtnSignUpProfileClickListner()
-//        initNickNameExistObserving()
         initUpdateErrorMessage()
-    }
-
-    private fun initBtnSignUpProfileClickListner() {
-        binding.btnSignUpProfileDoubleCheck.setOnClickListener {
-            viewModel.updateNickNameBtnValidity(binding.etSignUpProfileNickname.text.toString())
-        }
+        initDoubleBtnClickListener()
     }
 
     private fun initUpdateErrorMessage() {
         viewModel.isNickNameValid.observe(this) {
-//            val textColorResId = if (it) R.color.secondary else R.color.error
+            val messageResId =
+                if (it) R.string.sign_up_profile_please_double_check else R.string.sign_up_profile_correct_check
+            val textColorResId = if (it) R.color.gray_8 else R.color.error
 
-            if (it) {
-                binding.tvSignUpAgreeMessage.text = "사용 가능한 닉네임 입니다"
-            } else {
-                binding.tvSignUpAgreeMessage.text = "공백 없이 한글 영어 포함 12자 이내로 작성해 주세요"
-            }
+            updateAgreeMessage(messageResId, textColorResId)
         }
     }
 
-    private fun initNickNameExistObserving() {
-        viewModel.isBtnSelected.observe(this) {
+    private fun initDoubleBtnClickListener() {
+        binding.btnSignUpProfileDoubleCheck.setOnClickListener {
+            val doubleCheckFlag = viewModel.isBtnSelected.value
             val messageResId =
-                if (it) R.string.sign_up_profile_use_posssible else R.string.sign_up_profile_use_impossible
-            val textColorResId = if (it) R.color.secondary else R.color.error
+                if (doubleCheckFlag == true) R.string.sign_up_profile_use_posssible else R.string.sign_up_profile_use_impossible
+            val textColorResId = if (doubleCheckFlag == true) R.color.primary else R.color.error
 
-            binding.tvSignUpAgreeMessage.apply {
-                text = context.getString(messageResId)
-                setTextColor(colorOf(textColorResId))
-            }
+            updateAgreeMessage(messageResId, textColorResId)
+        }
+    }
+
+    private fun updateAgreeMessage(messageResId: Int, textColorResId: Int) {
+        binding.tvSignUpAgreeMessage.apply {
+            text = context.getString(messageResId)
+            setTextColor(colorOf(textColorResId))
         }
     }
 }
