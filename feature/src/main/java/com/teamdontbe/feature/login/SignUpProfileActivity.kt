@@ -22,7 +22,7 @@ class SignUpProfileActivity :
     private fun initUpdateErrorMessage() {
         viewModel.isNickNameValid.observe(this) {
             val messageResId =
-                if (it) R.string.sign_up_profile_please_double_check else R.string.sign_up_profile_correct_check
+                if (it) R.string.sign_up_profile_check_text else R.string.sign_up_profile_correct_check
             val textColorResId = if (it) R.color.gray_8 else R.color.error
 
             updateAgreeMessage(messageResId, textColorResId)
