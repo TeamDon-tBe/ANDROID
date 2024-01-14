@@ -40,12 +40,6 @@
         <action
             android:id="@+id/action_fragment_my_page_to_fragment_home_detail"
             app:destination="@id/fragment_home_detail" />
-        <action
-            android:id="@+id/action_fragment_my_page_to_myPageAuthInfoFragment"
-            app:destination="@id/myPageAuthInfoFragment" />
-        <action
-            android:id="@+id/action_fragment_my_page_to_signUpProfileActivity"
-            app:destination="@id/signUpProfileActivity" />
     </fragment>
     <fragment
         android:id="@+id/fragment_onboarding"
@@ -81,16 +75,4 @@
         android:name="com.teamdontbe.feature.homedetail.HomeDetailFragment"
         android:label="HomeDetailFragment"
         tools:layout="@layout/fragment_home_detail" />
-    <dialog
-        android:id="@+id/bindingBottomSheetFragment"
-        android:name="com.teamdontbe.core_ui.base.BindingBottomSheetFragment"
-        android:label="BindingBottomSheetFragment" />
-    <fragment
-        android:id="@+id/myPageAuthInfoFragment"
-        android:name="com.teamdontbe.feature.mypage.MyPageAuthInfoFragment"
-        android:label="MyPageAuthInfoFragment" />
-    <activity
-        android:id="@+id/signUpProfileActivity"
-        android:name="com.teamdontbe.feature.login.SignUpProfileActivity"
-        android:label="SignUpProfileActivity" />
 </navigation>
