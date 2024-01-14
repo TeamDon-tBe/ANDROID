@@ -22,7 +22,7 @@ class SignUpProfileViewModel : ViewModel() {
     fun setNickName(input: String) {
         this._nickName.value = input
         validateNickName(input)
-        updateNickNameBtnValidity()
+        updateNextNameBtnValidity()
     }
 
     fun setIntroduce(input: String) {
@@ -33,8 +33,8 @@ class SignUpProfileViewModel : ViewModel() {
         _isNickNameValid.value = nicknameRegex.matches(nickName)
     }
 
-    private fun updateNickNameBtnValidity() {
-        _isBtnSelected.value = (testNick == _nickName.value && _isNickNameValid.value == true)
+    private fun updateNextNameBtnValidity() {
+        _isBtnSelected.value = (testNick != _nickName.value && _isNickNameValid.value == true)
     }
 
     companion object {
