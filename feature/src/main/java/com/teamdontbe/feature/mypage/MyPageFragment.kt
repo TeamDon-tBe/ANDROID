@@ -23,8 +23,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initMyPageCollapseAppearance()
         initMyPageProgressBarUI()
         initMyPageTabLayout()
-        initTransparencyInfoDialogBtnClickListener()
-        initMyPageHambergerClickListner()
+        initBtnClickListener()
     }
 
     private fun initMyPageCollapseAppearance() = with(binding) {
@@ -76,6 +75,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         TabLayoutMediator(tabMyPage, vpMyPage) { tab, position ->
             tab.text = tabTitleArray[position]
         }.attach()
+    }
+
+    private fun initBtnClickListener() {
+        initTransparencyInfoDialogBtnClickListener()
+        initMyPageHambergerClickListner()
     }
 
     private fun initTransparencyInfoDialogBtnClickListener() {
