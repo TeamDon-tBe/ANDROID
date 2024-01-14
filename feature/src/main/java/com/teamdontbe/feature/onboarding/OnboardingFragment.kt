@@ -35,6 +35,7 @@ class OnboardingFragment :
                     if (position == 0) View.INVISIBLE else View.VISIBLE
                 binding.btnOnboardingNext.isVisible = position != 3
                 binding.btnOnboardingStart.isVisible = position == 3
+                binding.tvOnboardingSkip.text = if (position == 4) "한 줄 소개 나중에 작성하기" else "건너뛰기"
             }
         }
 
@@ -69,7 +70,7 @@ class OnboardingFragment :
         }
     }
 
-    private fun initBtnOnboardingStartClickListener()  {
+    private fun initBtnOnboardingStartClickListener() {
         binding.btnOnboardingStart.setOnClickListener {
             navigateToHomeFragment()
         }
