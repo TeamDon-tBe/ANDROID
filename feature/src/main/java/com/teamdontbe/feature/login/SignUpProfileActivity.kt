@@ -5,6 +5,7 @@ import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivitySignUpProfileBinding
+import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet.Companion.MY_PAGE_PROFILE
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,8 +16,17 @@ class SignUpProfileActivity :
 
     override fun initView() {
         binding.vm = viewModel
+
+        initMyPageProfileAppBarTitle()
         initUpdateErrorMessage()
         initDoubleBtnClickListener()
+    }
+
+    private fun initMyPageProfileAppBarTitle() {
+        intent.getStringExtra(MY_PAGE_PROFILE)?.let { myPageAppBarTitle ->
+            binding.appbarSignUp.tvAppbarTitle.text = myPageAppBarTitle
+            binding.btnSignUpAgreeNext.text = getString(R.string.my_page_profile_edit_completed)
+        }
     }
 
     private fun initUpdateErrorMessage() {
