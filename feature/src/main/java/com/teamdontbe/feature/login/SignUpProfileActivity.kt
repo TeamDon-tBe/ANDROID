@@ -16,17 +16,30 @@ class SignUpProfileActivity :
     override fun initView() {
         binding.vm = viewModel
         initBtnSignUpProfileClickListner()
-        initNickNameExistObserving()
+//        initNickNameExistObserving()
+        initUpdateErrorMessage()
     }
 
     private fun initBtnSignUpProfileClickListner() {
         binding.btnSignUpProfileDoubleCheck.setOnClickListener {
-            viewModel.validateNickName(binding.etSignUpAgreeNickname.text.toString())
+            viewModel.updateNickNameBtnValidity(binding.etSignUpProfileNickname.text.toString())
+        }
+    }
+
+    private fun initUpdateErrorMessage() {
+        viewModel.isNickNameValid.observe(this) {
+//            val textColorResId = if (it) R.color.secondary else R.color.error
+
+            if (it) {
+                binding.tvSignUpAgreeMessage.text = "사용 가능한 닉네임 입니다"
+            } else {
+                binding.tvSignUpAgreeMessage.text = "공백 없이 한글 영어 포함 12자 이내로 작성해 주세요"
+            }
         }
     }
 
     private fun initNickNameExistObserving() {
-        viewModel.isNickNameExist.observe(this) {
+        viewModel.isBtnSelected.observe(this) {
             val messageResId =
                 if (it) R.string.sign_up_profile_use_posssible else R.string.sign_up_profile_use_impossible
             val textColorResId = if (it) R.color.secondary else R.color.error
