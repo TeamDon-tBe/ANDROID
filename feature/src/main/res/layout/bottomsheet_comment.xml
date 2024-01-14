@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.teamdontbe.domain.entity.FeedEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_white_fill_top8_rec"
+        android:backgroundTint="@color/gray_1"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_comment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_white_fill_top8_rec"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:minHeight="0dp">
+
+                <TextView
+                    android:id="@+id/tv_comment_appbar_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:clickable="true"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="10dp"
+                    android:text="@string/appbar_cancel"
+                    android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+                    android:textColor="@color/gray_11" />
+
+                <TextView
+                    android:id="@+id/tv_comment_appbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="답글 쓰기"
+                    android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.appcompat.widget.Toolbar>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_2" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/layout_upload_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_comment">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp">
+
+                <View
+                    android:id="@+id/view_comment_feed_background"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/shape_white_fill_8_rect"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_comment_feed_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_comment_feed_user_profile"
+                    android:layout_width="44dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/gray_9"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/view_comment_feed_background"
+                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+                <TextView
+                    android:id="@+id/tv_comment_feed_user_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@{feed.memberNickname}"
+                    android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+                    app:layout_constraintStart_toEndOf="@id/iv_comment_feed_user_profile"
+                    app:layout_constraintTop_toTopOf="@id/iv_comment_feed_user_profile"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    tools:text="don't be master" />
+
+                <TextView
+                    android:id="@+id/tv_comment_feed_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingBottom="18dp"
+                    android:text="@{feed.contentText}"
+                    android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@id/tv_comment_feed_user_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_comment_feed_user_name"
+                    tools:text="돈비를 사용하면 진짜 돈비를 맞을 수 있나요?
+저 돈비 맞고 싶어요 돈벼락이 최고입니다. 그나저나 돈비 정말 흥미로운 서비스인 것 같아요 어떻게 이런 기획을 ? 대박 ㄷ ㄷ ㄷ돈비를 사용하면 진짜 돈비를 맞을 수 있나요?" />
+
+                <View
+                    android:id="@+id/view_comment_background"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape_white_fill_8_rect"
+                    app:layout_constraintBottom_toBottomOf="@id/et_comment_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_comment_feed_background" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_comment_profile_img"
+                    android:layout_width="40dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="16dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_posting_profile"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintStart_toStartOf="@id/view_comment_background"
+                    app:layout_constraintTop_toBottomOf="@id/view_comment_feed_background"
+                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+                <TextView
+                    android:id="@+id/tv_comment_profile_nickname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="14dp"
+                    android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+                    app:layout_constraintEnd_toEndOf="@id/view_comment_background"
+                    app:layout_constraintStart_toEndOf="@id/iv_comment_profile_img"
+                    app:layout_constraintTop_toTopOf="@id/iv_comment_profile_img"
+                    tools:text="뚜비요" />
+
+                <EditText
+                    android:id="@+id/et_comment_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="@null"
+                    android:focusable="true"
+                    android:gravity="top|start"
+                    android:hint="@string/et_home_detail_input"
+                    android:maxLength="500"
+                    android:paddingBottom="24dp"
+                    android:text="돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까? 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리를 자극하고 결국에는 돈비 과몰입, 돈비 사용자만 무진장 증가하는 지름길이 되는 것이 아닐까? 참 인생은 그렇네요.돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까? 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리를 자극하고 결국에는 돈비 과몰입, 돈비 사용자만 무진장 증가하는 지름길이 되는 것이 아닐까? 참 인생은 그렇네요.돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까? 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리"
+                    android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+                    android:textCursorDrawable="@color/primary"
+                    app:layout_constraintEnd_toEndOf="@id/view_comment_background"
+                    app:layout_constraintStart_toStartOf="@id/tv_comment_profile_nickname"
+                    app:layout_constraintTop_toBottomOf="@id/tv_comment_profile_nickname">
+
+                    <requestFocus />
+                </EditText>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/layout_upload_bar"
+            layout="@layout/view_upload_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

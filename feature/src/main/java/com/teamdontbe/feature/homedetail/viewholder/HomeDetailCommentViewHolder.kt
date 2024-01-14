@@ -3,22 +3,23 @@ package com.teamdontbe.feature.homedetail.viewholder
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.FeedEntity
-import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
+import com.teamdontbe.feature.databinding.ItemHomeCommentBinding
 
-class HomeDetailViewHolder(
-    private val binding: ItemHomeFeedBinding,
+class HomeDetailCommentViewHolder(
+    private val binding: ItemHomeCommentBinding,
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(data: FeedEntity) {
+    fun bind(
+        data: FeedEntity,
+        lastPosition: Int,
+    ) {
         with(binding) {
-            clHomeFeedCard.isEnabled = false
-            btnHomeComment.isVisible = bindingAdapterPosition == 0
-            tvHomeCommentNum.isVisible = bindingAdapterPosition == 0
             feed = data
             executePendingBindings()
-            btnHomeKebab.setOnClickListener {
+            btnCommentKebab.setOnClickListener {
                 onClickKebabBtn(data, bindingAdapterPosition)
             }
+            if (lastPosition == position) dividerCommentDivideBottom.isVisible = false
         }
     }
 }
