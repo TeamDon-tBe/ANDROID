@@ -24,10 +24,12 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_posting_profile_img"
                 android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="27dp"
                 android:layout_marginTop="32dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/img_posting_profile"
+                app:layout_constraintDimensionRatio="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/appbar_posting"
                 app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
@@ -55,12 +57,16 @@
                 android:gravity="top|start"
                 android:hint="@string/posting_content_hint"
                 android:maxLength="500"
+                android:focusable="true"
                 android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
                 android:textCursorDrawable="@color/primary"
                 app:layout_constraintBottom_toTopOf="@id/view_posting_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_posting_profile_img"
-                app:layout_constraintTop_toBottomOf="@id/tv_posting_profile_nickname" />
+                app:layout_constraintTop_toBottomOf="@id/tv_posting_profile_nickname" >
+
+                <requestFocus/>
+            </EditText>
 
             <View
                 android:id="@+id/view_posting_line"
@@ -91,10 +97,10 @@
                 android:id="@+id/btn_posting_upload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:layout_marginVertical="11dp"
+                android:layout_marginEnd="16dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_posting_uploading_deactivate"
+                android:src="@drawable/ic_uploading_deactivate"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
