@@ -1,6 +1,6 @@
 package com.teamdontbe.data.dto.response
 
-import com.teamdontbe.domain.entity.AuthEntity
+import com.teamdontbe.domain.entity.LoginEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -19,7 +19,7 @@ data class ResponseLoginDto(
     @SerialName("isNewUser")
     val isNewUser: Boolean,
 ) {
-    fun toAuthDataEntity() = AuthEntity(
+    fun toLoginDataEntity() = LoginEntity(
         nickname, memberId, accessToken, refreshToken, isNewUser
     )
 }
