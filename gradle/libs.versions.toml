@@ -22,6 +22,7 @@ fragment-ktx = "1.6.2"
 splash-screen = "1.0.1"
 paging = "3.1.1"
 room = "2.5.0"
+security = "1.1.0-alpha06"
 
 # material + google
 material = "1.11.0"
@@ -74,6 +75,7 @@ lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-ktx", ver
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+shared-security = { module = "androidx.security:security-crypto-ktx", version.ref = "security" }
 
 # dagger-hilt
 hilt = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt" }

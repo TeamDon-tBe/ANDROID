@@ -8,20 +8,22 @@ import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.feature.databinding.ActivitySplashBinding
 import com.teamdontbe.feature.login.LoginActivity
 import com.teamdontbe.feature.login.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_splash) {
     private val loginViewModel by viewModels<LoginViewModel>()
 
     override fun initView() {
         initSplash()
-        if (loginViewModel.checkLogin()) navigateTo<MainActivity>() else navigateTo<LoginActivity>()
     }
 
     private fun initSplash() {
         // 타이머가 끝나면 내부 실행
         Handler().postDelayed(
             Runnable {
-                startActivity(Intent(this, LoginActivity::class.java))
+                // if (loginViewModel.checkLogin()) navigateTo<MainActivity>() else
+                navigateTo<LoginActivity>()
                 // 현재 액티비티 닫기
                 finish()
             },
