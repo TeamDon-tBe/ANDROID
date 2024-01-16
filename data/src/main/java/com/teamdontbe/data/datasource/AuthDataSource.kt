@@ -5,5 +5,5 @@ import com.teamdontbe.data.dto.request.RequestLoginDto
 import com.teamdontbe.data.dto.response.ResponseLoginDto
 
 interface AuthDataSource {
-    suspend fun login(auth:String, requestLogin: RequestLoginDto): BaseResponse<ResponseLoginDto>
+    suspend fun login(requestLogin: RequestLoginDto): BaseResponse<ResponseLoginDto>
 }
