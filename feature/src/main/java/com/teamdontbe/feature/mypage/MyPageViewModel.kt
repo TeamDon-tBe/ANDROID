@@ -19,19 +19,21 @@ class MyPageViewModel
     ViewModel() {
     private val _getMyPageUserProfileState =
         MutableStateFlow<UiState<MyPageUserProfileEntity>>(UiState.Empty)
-    val getMyPageUserProfileStat: StateFlow<UiState<MyPageUserProfileEntity>> =
+    val getMyPageUserProfileState: StateFlow<UiState<MyPageUserProfileEntity>> =
         _getMyPageUserProfileState
 
-    fun getMyPageUserProfileInfo(viewMemberId: Int) = viewModelScope.launch {
-        myPageUserProfileRepository.getMyPageUserProfile(viewMemberId).collectLatest {
-            if (it != null) {
-                _getMyPageUserProfileState.value =
-                    UiState.Success(it)
-            } else {
-                UiState.Empty
+    fun getMyPageUserProfileInfo(viewMemberId: Int) {
+        viewModelScope.launch {
+            myPageUserProfileRepository.getMyPageUserProfile(viewMemberId).collectLatest {
+                if (it != null) {
+                    _getMyPageUserProfileState.value =
+                        UiState.Success(it)
+                } else {
+                    UiState.Empty
+                }
             }
+            _getMyPageUserProfileState.value = UiState.Loading
         }
-        _getMyPageUserProfileState.value = UiState.Loading
     }
 
     val mockDataList = listOf(
