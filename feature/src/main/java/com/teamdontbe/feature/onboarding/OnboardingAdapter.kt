@@ -3,7 +3,10 @@ package com.teamdontbe.feature.onboarding
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class OnboardingAdapter(fragmentFragment: OnboardingFragment) :
+class OnboardingAdapter(
+    fragmentFragment: OnboardingFragment,
+    private val click: (String) -> Unit = { _ -> },
+) :
     FragmentStateAdapter(fragmentFragment) {
     override fun getItemCount(): Int {
         return 4
@@ -13,7 +16,7 @@ class OnboardingAdapter(fragmentFragment: OnboardingFragment) :
         return when (position) {
             1 -> OnboardingSecondItemFragment()
             2 -> OnboardingThirdFragment()
-            3 -> OnboardingFourthFragment()
+            3 -> OnboardingFourthFragment(click)
             else -> OnboardingFirstItemFragment()
         }
     }
