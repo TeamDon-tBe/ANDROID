@@ -31,7 +31,17 @@
         android:id="@+id/fragment_notification"
         android:name="com.teamdontbe.feature.notification.NotificationFragment"
         android:label="NotificationFragment"
-        tools:layout="@layout/fragment_notification" />
+        tools:layout="@layout/fragment_notification" >
+        <action
+            android:id="@+id/action_notification_to_posting"
+            app:destination="@id/fragment_posting" />
+        <action
+            android:id="@+id/action_notification_to_my_page"
+            app:destination="@id/fragment_my_page" />
+        <action
+            android:id="@+id/action_notification_to_home_detail"
+            app:destination="@id/fragment_home_detail" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_my_page"
         android:name="com.teamdontbe.feature.mypage.MyPageFragment"

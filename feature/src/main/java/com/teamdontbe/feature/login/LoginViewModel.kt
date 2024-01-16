@@ -23,9 +23,9 @@ class LoginViewModel
         private val _postLogin = MutableStateFlow<UiState<LoginEntity>>(UiState.Empty)
         val postLogin: StateFlow<UiState<LoginEntity>> = _postLogin
 
-        fun login(socialType: String) =
+        fun postLogin(socialType: String) =
             viewModelScope.launch {
-                loginRepository.login(socialType).collectLatest {
+                loginRepository.postLogin(socialType).collectLatest {
                     if (it != null) _postLogin.value = UiState.Success(it) else UiState.Empty
                 }
                 _postLogin.value = UiState.Loading
