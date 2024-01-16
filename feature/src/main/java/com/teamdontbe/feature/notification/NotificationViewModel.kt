@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.NotiEntity
-import com.teamdontbe.domain.repository.NotificationListRepository
+import com.teamdontbe.domain.repository.NotificationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class NotificationViewModel
     @Inject
     constructor(
-        private val notificationListRepository: NotificationListRepository,
+        private val notificationRepository: NotificationRepository,
     ) : ViewModel() {
         init {
             getNotificationCount()
@@ -31,15 +31,15 @@ class NotificationViewModel
 
         private fun getNotificationCount() =
             viewModelScope.launch {
-                notificationListRepository.getNotificationCount().collectLatest {
+                notificationRepository.getNotificationCount().collectLatest {
                     if (it != null) _getNotiCount.value = UiState.Success(it) else UiState.Empty
                 }
                 _getNotiCount.value = UiState.Loading
             }
 
-        fun getNotificationList() =
+        private fun getNotificationList() =
             viewModelScope.launch {
-                notificationListRepository.getNotificationList().collectLatest {
+                notificationRepository.getNotificationList().collectLatest {
                     if (it != null) _getNotiList.value = UiState.Success(it) else UiState.Empty
                 }
                 _getNotiList.value = UiState.Loading
