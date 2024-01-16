@@ -10,7 +10,7 @@ import com.teamdontbe.feature.databinding.FragmentMyPageCommentBinding
 import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.mypage.MyPageViewModel
-import com.teamdontbe.feature.mypage.adapter.MyPageFeedItemDecorator
+import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -61,7 +61,7 @@ class MyPageCommentFragment :
 
         binding.rvMyPageComment.apply {
             adapter = myPageCommentAdapter
-            addItemDecoration(MyPageFeedItemDecorator(requireContext()))
+            addItemDecoration(FeedItemDecorator(requireContext()))
         }
     }
 

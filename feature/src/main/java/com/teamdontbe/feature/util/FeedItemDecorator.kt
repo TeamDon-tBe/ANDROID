@@ -1,4 +1,4 @@
-package com.teamdontbe.feature.mypage.adapter
+package com.teamdontbe.feature.util
 
 import android.content.Context
 import android.graphics.Rect
@@ -6,7 +6,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.core_ui.util.context.pxToDp
 
-class MyPageFeedItemDecorator(val context: Context) : RecyclerView.ItemDecoration() {
+class FeedItemDecorator(val context: Context) : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect,
         view: View,

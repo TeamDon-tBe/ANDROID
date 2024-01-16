@@ -23,7 +23,9 @@ class MyPageBottomSheet :
 
     private fun navigateToSignUpProfileActivity() {
         binding.tvMyPageBottomSheetEditProfile.setOnClickListener {
-            startActivity(Intent(requireContext(), SignUpProfileActivity::class.java))
+            val intent = Intent(requireContext(), SignUpProfileActivity::class.java)
+            intent.putExtra(MY_PAGE_PROFILE, APP_BAR_TITLE)
+            startActivity(intent)
         }
     }
 
@@ -31,5 +33,10 @@ class MyPageBottomSheet :
         binding.tvMyPageBottomSheetAccountInfo.setOnClickListener {
             startActivity(Intent(requireContext(), MyPageAuthInfoActivity::class.java))
         }
+    }
+
+    companion object {
+        const val MY_PAGE_PROFILE = "myPageProfile"
+        private const val APP_BAR_TITLE = "프로필 화면"
     }
 }
