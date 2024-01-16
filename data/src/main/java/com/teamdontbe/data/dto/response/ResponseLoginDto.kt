@@ -19,7 +19,12 @@ data class ResponseLoginDto(
     @SerialName("isNewUser")
     val isNewUser: Boolean,
 ) {
-    fun toAuthDataEntity() = AuthEntity(
-        nickname, memberId, accessToken, refreshToken, isNewUser
-    )
+    fun toAuthDataEntity() =
+        AuthEntity(
+            nickname,
+            memberId,
+            accessToken,
+            refreshToken,
+            isNewUser,
+        )
 }

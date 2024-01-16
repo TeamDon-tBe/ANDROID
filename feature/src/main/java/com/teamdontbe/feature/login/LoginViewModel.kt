@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.AuthEntity
-import com.teamdontbe.domain.repository.AuthRepository
+import com.teamdontbe.domain.repository.LoginRepository
 import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 class LoginViewModel
     @Inject
     constructor(
-        private val authRepository: AuthRepository,
+        private val authRepository: LoginRepository,
         private val userInfoRepository: UserInfoRepository,
     ) : ViewModel() {
         private val _postLogin = MutableStateFlow<UiState<AuthEntity>>(UiState.Empty)

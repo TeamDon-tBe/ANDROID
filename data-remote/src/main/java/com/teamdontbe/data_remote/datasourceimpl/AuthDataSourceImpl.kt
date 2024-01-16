@@ -1,6 +1,6 @@
 package com.teamdontbe.data_remote.datasourceimpl
 
-import com.teamdontbe.data.datasource.AuthDataSource
+import com.teamdontbe.data.datasource.LoginDataSource
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.request.RequestLoginDto
 import com.teamdontbe.data.dto.response.ResponseLoginDto
@@ -11,6 +11,6 @@ class AuthDataSourceImpl
     @Inject
     constructor(
         private val authApiService: AuthApiService,
-    ) : AuthDataSource {
+    ) : LoginDataSource {
         override suspend fun login(requestLogin: RequestLoginDto): BaseResponse<ResponseLoginDto> = authApiService.login(requestLogin)
     }
