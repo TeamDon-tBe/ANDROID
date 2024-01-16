@@ -6,6 +6,7 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.domain.entity.MyPageUserProfileEntity
 import com.teamdontbe.domain.repository.MyPageUserProfileDomainRepository
+import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,12 +16,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel
-@Inject constructor(private val myPageUserProfileRepository: MyPageUserProfileDomainRepository) :
-    ViewModel() {
+@Inject constructor(
+    private val myPageUserProfileRepository: MyPageUserProfileDomainRepository,
+    private val userInfoRepository: UserInfoRepository,
+
+) : ViewModel() {
     private val _getMyPageUserProfileState =
         MutableStateFlow<UiState<MyPageUserProfileEntity>>(UiState.Empty)
     val getMyPageUserProfileState: StateFlow<UiState<MyPageUserProfileEntity>> =
         _getMyPageUserProfileState
+
+    fun getMemberId() = userInfoRepository.getMemberId()
 
     fun getMyPageUserProfileInfo(viewMemberId: Int) {
         viewModelScope.launch {
