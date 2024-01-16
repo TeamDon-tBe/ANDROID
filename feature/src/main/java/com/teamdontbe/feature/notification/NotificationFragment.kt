@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.notification
 
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -48,13 +49,13 @@ class NotificationFragment :
             binding.rvNotification.adapter =
                 NotificationAdapter(click = { notiData, position ->
                     when (notiData.notificationTriggerType) {
-                        "contentLiked" -> Unit // 바꿔야 함
-                        "comment" -> Unit // 바꿔야 함
-                        "commentLiked" -> Unit // 바꿔야 함
+                        "contentLiked" -> navigateToHomeDetailFragment(notiData)
+                        "comment" -> navigateToHomeDetailFragment(notiData)
+                        "commentLiked" -> navigateToHomeDetailFragment(notiData)
                         "actingContinue" -> findNavController().navigate(R.id.action_notification_to_posting)
                         "beGhost" -> findNavController().navigate(R.id.action_notification_to_my_page)
-                        "contentGhost" -> Unit // 바꿔야 함
-                        "commentGhost" -> Unit // 바꿔야 함
+                        "contentGhost" -> navigateToHomeDetailFragment(notiData)
+                        "commentGhost" -> navigateToHomeDetailFragment(notiData)
                         "userBan" -> Unit
 
                         else ->
@@ -66,5 +67,16 @@ class NotificationFragment :
                 }
             binding.rvNotification.addItemDecoration(NotificationItemDecorator(requireContext()))
         }
+    }
+
+    private fun navigateToHomeDetailFragment(notiData: NotiEntity) {
+        findNavController().navigate(
+            R.id.action_notification_to_home_detail,
+            bundleOf(KEY_NOTI_DATA to notiData.notificationTriggerId)
+        )
+    }
+
+    companion object {
+        const val KEY_NOTI_DATA = "key_noti_data"
     }
 }
