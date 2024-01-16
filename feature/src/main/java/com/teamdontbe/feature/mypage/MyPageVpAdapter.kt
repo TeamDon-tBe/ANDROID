@@ -12,7 +12,7 @@ class MyPageVpAdapter(fr: Fragment, id: Int) : FragmentStateAdapter(fr) {
     override fun createFragment(position: Int): Fragment { // 포지션에 따라 어떤 프레그먼트를 보여줄것인지
         return when (position) {
             0 -> MyPageFeedFragment(memberId)
-            1 -> MyPageCommentFragment()
+            1 -> MyPageCommentFragment(memberId)
             else -> throw IllegalArgumentException("Invalid position")
         }
     }

@@ -3,24 +3,50 @@ package com.teamdontbe.feature.mypage.comment
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageCommentBinding
-import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeFragment
-import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class MyPageCommentFragment :
+class MyPageCommentFragment(id: Int) :
     BindingFragment<FragmentMyPageCommentBinding>(R.layout.fragment_my_page_comment) {
-    private val mockDataViewModel by viewModels<MyPageViewModel>()
+    private val mockDataViewModel by viewModels<MyPageCommentViewModel>()
+    private val memberId = id ?: -1
 
     override fun initView() {
-        updateNoCommentUI()
-        initCommentRecyclerView()
+//        updateNoCommentUI()
+//        initCommentRecyclerView()
+        initFeedObserve(memberId)
+    }
+
+    private fun initFeedObserve(memberId: Int) {
+        mockDataViewModel.getMyPageCommentList(memberId)
+        mockDataViewModel.getMyPageCommentListState.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> handleSuccessState(it.data)
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun handleSuccessState(feedList: List<MyPageCommentEntity>) {
+        if (feedList.isEmpty()) {
+            updateNoCommentUI()
+        } else {
+            initCommentRecyclerView(feedList)
+        }
     }
 
     private fun updateNoCommentUI() = with(binding) {
@@ -28,35 +54,20 @@ class MyPageCommentFragment :
         tvMyPageCommentNoData.visibility = View.VISIBLE
     }
 
-    private fun initCommentRecyclerView() {
+    private fun initCommentRecyclerView(commentData: List<MyPageCommentEntity>) {
         val myPageCommentAdapter = MyPageCommentAdapter(
-            onClickKebabBtn = { feedEntity ->
+            onClickKebabBtn = { commentData ->
                 // Kebab 버튼 클릭 이벤트 처리
-                // feedEntity를 사용하여 필요한 작업 수행
-                // 예: viewModel.getRecyclerviewTest()
             },
-            onItemClicked = { feedData ->
+            onItemClicked = { commentData ->
                 // RecyclerView 항목 클릭 이벤트 처리
-                // feedEntity를 사용하여 필요한 작업 수행
                 navigateToHomeDetailFragment(
-//                        feedEntity.memberId,
-                    Feed(
-                        feedData.memberId,
-                        feedData.memberNickname,
-                        feedData.memberNickname,
-                        feedData.isLiked,
-                        feedData.isGhost,
-                        feedData.memberGhost,
-                        feedData.contentLikedNumber,
-                        feedData.commentNumber,
-                        feedData.contentText,
-                        feedData.time,
-                    ),
+                    commentData.memberId,
                 )
             },
             context = requireContext(),
         ).apply {
-            submitList(mockDataViewModel.mockDataList.toMutableList())
+            submitList(commentData)
         }
 
         binding.rvMyPageComment.apply {
@@ -65,7 +76,7 @@ class MyPageCommentFragment :
         }
     }
 
-    private fun navigateToHomeDetailFragment(id: Feed) {
+    private fun navigateToHomeDetailFragment(id: Int) {
         findNavController().navigate(
             R.id.action_fragment_my_page_to_fragment_home_detail,
             bundleOf(HomeFragment.KEY_FEED_DATA to id),
