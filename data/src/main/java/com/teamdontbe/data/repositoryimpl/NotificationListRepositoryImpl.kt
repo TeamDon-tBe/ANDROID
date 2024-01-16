@@ -21,4 +21,14 @@ class NotificationListRepositoryImpl
                 emit(result.getOrDefault(emptyList()))
             }
         }
+
+        override suspend fun getNotificationCount(): Flow<Int?> {
+            return flow {
+                val result =
+                    runCatching {
+                        notificationListDataSource.getNotificationCount().data?.notificationNumber
+                    }
+                emit(result.getOrDefault(0))
+            }
+        }
     }
