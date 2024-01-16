@@ -4,6 +4,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.feature.databinding.ItemHomeCommentBinding
+import com.teamdontbe.feature.util.CalculateTime
 
 class HomeDetailCommentViewHolder(
     private val binding: ItemHomeCommentBinding,
@@ -14,6 +15,9 @@ class HomeDetailCommentViewHolder(
         lastPosition: Int,
     ) {
         with(binding) {
+            tvCommentTransparency.text = "투명도 + ${data.memberGhost}%  · ${
+                CalculateTime(binding.root.context).getCalculateTime(data.time)
+            }"
             comment = data
             executePendingBindings()
             btnCommentKebab.setOnClickListener {
