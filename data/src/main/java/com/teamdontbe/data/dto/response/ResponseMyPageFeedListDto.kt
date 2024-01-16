@@ -1,5 +1,6 @@
 package com.teamdontbe.data.dto.response
 
+import com.teamdontbe.domain.entity.MyPageFeeListEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -25,4 +26,17 @@ data class ResponseMyPageFeedListDto(
     val memberProfileUrl: String,
     @SerialName("time")
     val time: String,
-)
+) {
+    fun toMyPageFeedListEntity() = MyPageFeeListEntity(
+        memberId,
+        commentNumber,
+        contentLikedNumber,
+        contentText,
+        isGhost,
+        isLiked,
+        memberGhost,
+        memberNickname,
+        memberProfileUrl,
+        time,
+    )
+}
