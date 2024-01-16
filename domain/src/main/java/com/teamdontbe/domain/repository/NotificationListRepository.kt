@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface NotificationListRepository {
     suspend fun getNotificationList(): Flow<List<NotiEntity>?>
+
+    suspend fun getNotificationCount(): Flow<Int?>
 }
