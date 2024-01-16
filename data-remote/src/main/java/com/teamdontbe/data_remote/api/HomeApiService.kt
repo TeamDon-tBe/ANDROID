@@ -25,7 +25,7 @@ interface HomeApiService {
         @Path(value = CONTENT_ID) contentId: Int,
     ): BaseResponse<ResponseFeedDto>
 
-    @GET("$API/$V1/$CONTENT/{$CONTENT_ID}/$COMMENT")
+    @GET("$API/$V1/$CONTENT/{$CONTENT_ID}/$COMMENT/$ALL")
     suspend fun getCommentList(
         @Path(value = CONTENT_ID) contentId: Int,
     ): BaseResponse<List<ResponseCommentDto>>
