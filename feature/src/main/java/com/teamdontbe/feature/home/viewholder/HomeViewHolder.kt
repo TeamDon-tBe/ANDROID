@@ -3,6 +3,7 @@ package com.teamdontbe.feature.home.viewholder
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
+import com.teamdontbe.feature.util.CalculateTime
 
 class HomeViewHolder(
     private val binding: ItemHomeFeedBinding,
@@ -11,6 +12,10 @@ class HomeViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FeedEntity) {
         with(binding) {
+            tvHomeFeedTransparency.text = "투명도 ${data.memberGhost}% · ${
+                CalculateTime(binding.root.context).getCalculateTime(data.time)
+            }"
+
             feed = data
             executePendingBindings()
             btnHomeKebab.setOnClickListener {

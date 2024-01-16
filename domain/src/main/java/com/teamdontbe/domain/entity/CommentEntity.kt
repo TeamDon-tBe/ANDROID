@@ -1,15 +1,13 @@
 package com.teamdontbe.domain.entity
 
-data class FeedEntity(
+data class CommentEntity(
     val memberId: Int,
     val memberProfileUrl: String,
     val memberNickname: String,
-    val isLiked: Boolean,
     val isGhost: Boolean,
     val memberGhost: Int,
-    val contentLikedNumber: Int,
-    val commentNumber: Int,
+    val isLiked: Boolean,
+    val commentLikedNumber: Int,
     val contentText: String,
     val time: String,
-    val contentId: Int? = null,
 )

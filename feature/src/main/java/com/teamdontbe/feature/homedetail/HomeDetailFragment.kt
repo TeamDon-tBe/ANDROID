@@ -15,7 +15,6 @@ import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
-import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.comment.UploadingSnackBar
@@ -40,50 +39,73 @@ class HomeDetailFragment :
     private val commentDebouncer = Debouncer<String>()
     private val homeViewModel by viewModels<HomeViewModel>()
 
+    private lateinit var homeDetailFeedAdapter: HomeAdapter
+    private lateinit var homeDetailFeedCommentAdapter: HomeDetailCommentAdapter
+
     override fun initView() {
         homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
+        getHomeFeedDetailData()?.toFeedEntity()?.contentId?.let { homeViewModel.getCommentList(it) }
         statusBarColorOf(R.color.white)
         initBackBtnClickListener()
-        (getHomeFeedDetailData())?.let { initInputEditTextClickListener(it) }
+        initHomeDetailFeedAdapter()
+        (getHomeFeedDetailData())?.let { initInputEditTextClickListener() }
         initEditText()
         initAppbarCancelClickListener()
         initCommentBottomSheet()
         initObserve()
     }
 
-    private fun initHomeDetailCommentAdapter(data: FeedEntity) {
-        val commentAdapter =
-            HomeDetailCommentAdapter(onClickKebabBtn = { feedData, positoin ->
-                initBottomSheet()
-            }).apply {
-                submitList(
-                    listOf(
-                        data,
-                        data,
-                        data,
-                        data,
-                    ),
-                )
-            }
-
-        val detailAdapter =
+    private fun initHomeDetailFeedAdapter() {
+        homeDetailFeedAdapter =
             HomeAdapter(onClickKebabBtn = { feedData, positoin ->
                 initBottomSheet()
             }).apply {
                 submitList(
-                    listOf(data),
+                    listOf(getHomeFeedDetailData()?.toFeedEntity()),
                 )
             }
-
-        binding.rvHomeDetail.adapter = ConcatAdapter(detailAdapter, commentAdapter)
-        binding.rvHomeDetail.addItemDecoration(HomeDetailFeedItemDecorator(requireContext()))
     }
 
     private fun initObserve() {
         homeViewModel.getFeedDetail.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> initHomeDetailCommentAdapter(it.data)
+                is UiState.Success -> {
+                    homeDetailFeedAdapter =
+                        HomeAdapter(onClickKebabBtn = { feedData, positoin ->
+                            initBottomSheet()
+                        }).apply {
+                            submitList(
+                                listOf(it.data),
+                            )
+                        }
+                    homeDetailFeedAdapter.notifyDataSetChanged()
+                }
+
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+
+        homeViewModel.getCommentList.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> {
+                    homeDetailFeedCommentAdapter =
+                        HomeDetailCommentAdapter(onClickKebabBtn = { feedData, positoin ->
+                            initBottomSheet()
+                        }).apply {
+                            submitList(it.data)
+                        }
+
+                    binding.rvHomeDetail.adapter =
+                        ConcatAdapter(homeDetailFeedAdapter, homeDetailFeedCommentAdapter)
+                    binding.rvHomeDetail.addItemDecoration(
+                        HomeDetailFeedItemDecorator(
+                            requireContext(),
+                        ),
+                    )
+                }
 
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
@@ -108,7 +130,7 @@ class HomeDetailFragment :
         }
     }
 
-    private fun initInputEditTextClickListener(data: Feed) {
+    private fun initInputEditTextClickListener() {
         binding.tvHomeDetailInput.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
