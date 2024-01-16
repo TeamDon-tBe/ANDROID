@@ -19,8 +19,8 @@ class OnboardingFragment :
         initOnboardingAdapter()
         initBtnOnboardingNextClickListener()
         initIvOnboardingBackClickListener()
-        initBtnOnboardingSkipClickListener()
         initBtnOnboardingStartClickListener()
+        initSkipTextClickListener()
     }
 
     private val pageChangeCallback =
@@ -35,6 +35,14 @@ class OnboardingFragment :
                     if (position == 0) View.INVISIBLE else View.VISIBLE
                 binding.btnOnboardingNext.isVisible = position != 3
                 binding.btnOnboardingStart.isVisible = position == 3
+                binding.tvOnboardingSkip.text =
+                    if (position == 3) {
+                        getString(R.string.tv_onboarding_skip_introduction)
+                    } else {
+                        getString(
+                            R.string.tv_onboarding_skip,
+                        )
+                    }
             }
         }
 
@@ -63,15 +71,22 @@ class OnboardingFragment :
         }
     }
 
-    private fun initBtnOnboardingSkipClickListener() {
-        binding.tvOnboardingSkip.setOnClickListener {
+    private fun initBtnOnboardingStartClickListener() {
+        binding.btnOnboardingStart.setOnClickListener {
             navigateToHomeFragment()
         }
     }
 
-    private fun initBtnOnboardingStartClickListener()  {
-        binding.btnOnboardingStart.setOnClickListener {
-            navigateToHomeFragment()
+    private fun initSkipTextClickListener() {
+        binding.tvOnboardingSkip.setOnClickListener {
+            if (binding.tvOnboardingSkip.text == getString(R.string.tv_onboarding_skip_introduction)) {
+                navigateToHomeFragment()
+            } else {
+                binding.vpOnboarding.setCurrentItem(
+                    3,
+                    true,
+                )
+            }
         }
     }
 

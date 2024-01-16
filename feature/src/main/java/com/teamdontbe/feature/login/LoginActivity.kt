@@ -12,7 +12,6 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingActivity
-import com.teamdontbe.core_ui.util.context.toast
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
@@ -22,10 +21,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
-
 @AndroidEntryPoint
 class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_login) {
-    private val viewModel by viewModels<LoginViewModel>()
+    private val loginViewModel by viewModels<LoginViewModel>()
 
     // 카카오계정으로 로그인 공통 callback 구성
     // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용
@@ -46,7 +44,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
             Timber.e(ContentValues.TAG, errorMessage)
         } else if (token != null) {
             Timber.i(ContentValues.TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
-           // navigateToMainActivity()
+            loginViewModel.saveAccessToken(token.accessToken)
         }
     }
 
@@ -77,8 +75,8 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
                             token != null -> {
                                 Timber.tag("kakao").i("카카오톡으로 로그인 성공 %s", token.accessToken)
-                                viewModel.login("Bearer ${token.accessToken}", "KAKAO")
-                               //navigateToMainActivity()
+                                loginViewModel.saveAccessToken(token.accessToken)
+                                loginViewModel.login("KAKAO")
                             }
                         }
                     }
@@ -90,10 +88,19 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     }
 
     private fun initObserve() {
-        viewModel.postLogin.flowWithLifecycle(lifecycle).onEach {
+        loginViewModel.postLogin.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> toast(it.data.toString())
+                is UiState.Success -> {
+                    saveUserInfo(
+                        it.data.accessToken,
+                        it.data.refreshToken,
+                        it.data.memberId,
+                        it.data.nickname,
+                        true,
+                    )
+                    navigateToMainActivity()
+                }
 
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
@@ -101,11 +108,25 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         }.launchIn(lifecycleScope)
     }
 
+    private fun saveUserInfo(
+        accessToken: String,
+        refreshToken: String,
+        memberId: Int,
+        nickName: String,
+        checkLogin: Boolean,
+    ) {
+        loginViewModel.saveAccessToken(accessToken)
+        loginViewModel.saveRefreshToken(refreshToken)
+        loginViewModel.saveMemberId(memberId)
+        loginViewModel.saveNickName(nickName)
+        loginViewModel.saveCheckLogin(checkLogin)
+    }
+
     private fun setKakaoCallback() {
         // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
         UserApiClient.instance.loginWithKakaoAccount(
             this@LoginActivity,
-            callback = callback
+            callback = callback,
         )
     }
 

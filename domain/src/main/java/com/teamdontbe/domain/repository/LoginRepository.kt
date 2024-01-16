@@ -4,5 +4,5 @@ import com.teamdontbe.domain.entity.LoginEntity
 import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {
-    suspend fun login(auth:String, requestLogin: String): Flow<LoginEntity?>
+    suspend fun login(requestLogin: String): Flow<LoginEntity?>
 }
