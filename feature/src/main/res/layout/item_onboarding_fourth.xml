@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.teamdontbe.feature.posting.PostingViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

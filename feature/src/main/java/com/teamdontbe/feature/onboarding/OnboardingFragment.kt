@@ -16,6 +16,7 @@ import com.teamdontbe.feature.posting.PostingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class OnboardingFragment :
@@ -42,6 +43,11 @@ class OnboardingFragment :
                 is UiState.Failure -> Unit
             }
         }.launchIn(lifecycleScope)
+
+        postingViewModel.introduction.observe(this) {
+            Timber.tag("ttt").d(it)
+            initBtnOnboardingStartClickListener(it)
+        }
     }
 
     private val pageChangeCallback =
@@ -69,9 +75,7 @@ class OnboardingFragment :
 
     private fun initOnboardingAdapter() {
         _onboardingAdapter =
-            OnboardingAdapter(this, click = {
-                initBtnOnboardingStartClickListener(it)
-            })
+            OnboardingAdapter(this)
         binding.vpOnboarding.adapter = _onboardingAdapter
         binding.vpOnboarding.isUserInputEnabled = false
         binding.vpOnboarding.registerOnPageChangeCallback(pageChangeCallback)
