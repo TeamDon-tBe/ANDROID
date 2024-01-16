@@ -8,7 +8,7 @@ import com.teamdontbe.data_remote.api.LoginApiService.Companion.V1
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface MyPageUserProfileApiService {
+interface MyPageApiService {
     companion object {
         const val VIEW_MEMBER = "viewmember"
         const val VIEW_MEMBER_ID = "viewmemberId"

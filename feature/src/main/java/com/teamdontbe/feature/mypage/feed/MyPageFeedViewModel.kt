@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
-import com.teamdontbe.domain.repository.MyPageUserProfileDomainRepository
+import com.teamdontbe.domain.repository.MyPageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageFeedViewModel
-@Inject constructor(private val myPageUserProfileRepository: MyPageUserProfileDomainRepository) :
+@Inject constructor(private val myPageUserProfileRepository: MyPageRepository) :
     ViewModel() {
     private val _getMyPageFeedListState =
         MutableStateFlow<UiState<List<FeedEntity>>>(UiState.Empty)

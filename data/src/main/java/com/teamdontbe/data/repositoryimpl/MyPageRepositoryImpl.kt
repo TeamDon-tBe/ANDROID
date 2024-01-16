@@ -1,17 +1,17 @@
 package com.teamdontbe.data.repositoryimpl
 
-import com.teamdontbe.data.datasource.MyPageUserProfileDataSource
+import com.teamdontbe.data.datasource.MyPageDataSource
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.domain.entity.MyPageUserProfileEntity
-import com.teamdontbe.domain.repository.MyPageUserProfileDomainRepository
+import com.teamdontbe.domain.repository.MyPageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class MyPageUserProfileRepositoryImpl
+class MyPageRepositoryImpl
 @Inject constructor(
-    private val myPageUserProfileDataSource: MyPageUserProfileDataSource,
-) : MyPageUserProfileDomainRepository {
+    private val myPageUserProfileDataSource: MyPageDataSource,
+) : MyPageRepository {
     override suspend fun getMyPageUserProfile(viewMemberId: Int): Flow<MyPageUserProfileEntity?> {
         return flow {
             val result = kotlin.runCatching {
