@@ -22,8 +22,7 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         // 타이머가 끝나면 내부 실행
         Handler().postDelayed(
             Runnable {
-                // if (loginViewModel.checkLogin()) navigateTo<MainActivity>() else
-                navigateTo<LoginActivity>()
+                if (loginViewModel.checkLogin()) navigateTo<MainActivity>() else navigateTo<LoginActivity>()
                 // 현재 액티비티 닫기
                 finish()
             },
