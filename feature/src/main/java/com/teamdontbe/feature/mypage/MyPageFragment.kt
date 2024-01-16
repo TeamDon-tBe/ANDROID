@@ -29,9 +29,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private val viewModel by viewModels<MyPageViewModel>()
 
     override fun initView() {
+        val memberID = viewModel.getMemberId()
         initMyPageCollapseAppearance()
-        initMyPageStateObserve()
-        initMyPageTabLayout()
+        initMyPageStateObserve(memberID)
+        initMyPageTabLayout(memberID)
         initBtnClickListener()
     }
 
@@ -41,8 +42,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         statusBarColorOf(R.color.black)
     }
 
-    private fun initMyPageStateObserve() {
-        viewModel.getMyPageUserProfileInfo(testID)
+    private fun initMyPageStateObserve(memberID: Int) {
+        viewModel.getMyPageUserProfileInfo(memberID)
         viewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
@@ -94,8 +95,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun initMyPageTabLayout() = with(binding) {
-        vpMyPage.adapter = MyPageVpAdapter(this@MyPageFragment, testID)
+    private fun initMyPageTabLayout(memberID: Int) = with(binding) {
+        vpMyPage.adapter = MyPageVpAdapter(this@MyPageFragment, memberID)
 
         val tabTitleArray = arrayOf(
             POSTING,
@@ -129,6 +130,5 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         const val COMMENT = "답글"
         const val TRANSPARENCY_INFO = "TransparencyInfo"
         const val MY_PAGE_BOTTOM_SHEET = "MyPageBottomSheet"
-        const val testID = 2
     }
 }
