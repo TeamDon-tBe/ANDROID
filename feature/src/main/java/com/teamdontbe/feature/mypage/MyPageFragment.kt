@@ -12,10 +12,12 @@ import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.domain.entity.MyPageUserProfileEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet
 import com.teamdontbe.feature.mypage.transperencyinfo.TransparencyInfoParentFragment
+import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
@@ -27,25 +29,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private val viewModel by viewModels<MyPageViewModel>()
 
     override fun initView() {
-        initObserve()
         initMyPageCollapseAppearance()
+        initMyPageStateObserve()
         initMyPageTabLayout()
         initBtnClickListener()
-    }
-
-    private fun initObserve() {
-        viewModel.getMyPageUserProfileInfo(1)
-        viewModel.getMyPageUserProfileStat.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> {
-                    initMyPageProgressBarUI(it.data.memberGhost.toInt())
-                }
-
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
     }
 
     private fun initMyPageCollapseAppearance() = with(binding) {
@@ -54,11 +41,31 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         statusBarColorOf(R.color.black)
     }
 
-    private fun initMyPageProgressBarUI(progressTransperency: Int) {
+    private fun initMyPageStateObserve() {
+        viewModel.getMyPageUserProfileInfo(2)
+        viewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> handleSuccessState(it.data)
+
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun handleSuccessState(data: MyPageUserProfileEntity) = with(binding) {
+        initMyPageProgressBarUI(data.memberGhost)
+        tvMyPageTitle.text = data.nickname
+        tvMyPageDescription.text = data.memberIntro
+        loadImage(ivMyPageProfile, data.memberProfileUrl)
+    }
+
+    private fun initMyPageProgressBarUI(progressTransparency: Int) {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             updateProgressWithLabel(
                 binding.pbMyPageInput,
-                progressTransperency,
+                progressTransparency,
                 binding.tvMyPageTransparencyPercentage,
                 Resources.getSystem().displayMetrics.widthPixels,
             )
