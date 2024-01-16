@@ -4,24 +4,33 @@ import android.content.res.Resources
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
+import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.domain.entity.MyPageUserProfileEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet
 import com.teamdontbe.feature.mypage.transperencyinfo.TransparencyInfoParentFragment
+import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
+    private val viewModel by viewModels<MyPageViewModel>()
+
     override fun initView() {
         initMyPageCollapseAppearance()
-        initMyPageProgressBarUI()
+        initMyPageStateObserve()
         initMyPageTabLayout()
         initBtnClickListener()
     }
@@ -32,11 +41,31 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         statusBarColorOf(R.color.black)
     }
 
-    private fun initMyPageProgressBarUI() {
+    private fun initMyPageStateObserve() {
+        viewModel.getMyPageUserProfileInfo(2)
+        viewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> handleSuccessState(it.data)
+
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun handleSuccessState(data: MyPageUserProfileEntity) = with(binding) {
+        initMyPageProgressBarUI(data.memberGhost)
+        tvMyPageTitle.text = data.nickname
+        tvMyPageDescription.text = data.memberIntro
+        loadImage(ivMyPageProfile, data.memberProfileUrl)
+    }
+
+    private fun initMyPageProgressBarUI(progressTransparency: Int) {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             updateProgressWithLabel(
                 binding.pbMyPageInput,
-                30,
+                progressTransparency,
                 binding.tvMyPageTransparencyPercentage,
                 Resources.getSystem().displayMetrics.widthPixels,
             )
@@ -49,10 +78,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         progressLabelTextView: TextView,
         maxX: Int,
     ) {
-        progressBar.progress = progressStatus
+        val updateProgress = progressStatus + 100
+        progressBar.progress = updateProgress
 
         val textViewX = (
-            (progressStatus * (progressBar.width - 2)) / progressBar.max -
+            (updateProgress * (progressBar.width - 2)) / progressBar.max -
                 requireContext().pxToDp(12)
             ) - (progressLabelTextView.width / 2)
         val finalX =
@@ -60,7 +90,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         progressLabelTextView.apply {
             x = if (finalX < 0) 16.toFloat() else finalX.toFloat()
-            text = "-$progressStatus%"
+            text = "$progressStatus%"
         }
     }
 

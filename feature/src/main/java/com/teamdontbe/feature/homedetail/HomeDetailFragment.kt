@@ -25,6 +25,7 @@ import com.teamdontbe.feature.home.HomeAdapter
 import com.teamdontbe.feature.home.HomeBottomSheet
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.home.HomeViewModel
+import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.util.Debouncer
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,7 +43,7 @@ class HomeDetailFragment :
     private lateinit var homeDetailFeedCommentAdapter: HomeDetailCommentAdapter
 
     override fun initView() {
-        homeViewModel.getFeedDetail(1)
+        homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
         getHomeFeedDetailData()?.toFeedEntity()?.contentId?.let { homeViewModel.getCommentList(it) }
         statusBarColorOf(R.color.white)
         initBackBtnClickListener()

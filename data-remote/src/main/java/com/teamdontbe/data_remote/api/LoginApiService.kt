@@ -14,7 +14,7 @@ interface LoginApiService {
     }
 
     @POST("/$API/$V1/$AUTH")
-    suspend fun login(
+    suspend fun postLogin(
         @Body requestLogin: RequestLoginDto,
     ): BaseResponse<ResponseLoginDto>
 }
