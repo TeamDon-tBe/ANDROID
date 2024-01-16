@@ -14,14 +14,11 @@ class AuthRepositoryImpl
     constructor(
         private val authDataSource: AuthDataSource,
     ) : AuthRepository {
-        override suspend fun login(
-            auth: String,
-            socialType: String,
-        ): Flow<AuthEntity?> {
+        override suspend fun login(socialType: String): Flow<AuthEntity?> {
             return flow {
                 val result =
                     runCatching {
-                        authDataSource.login(auth, RequestLoginDto(socialType)).data?.toAuthDataEntity()
+                        authDataSource.login(RequestLoginDto(socialType)).data?.toAuthDataEntity()
                     }
 
                 Timber.d(result.toString())
