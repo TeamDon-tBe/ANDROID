@@ -4,7 +4,6 @@ import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.request.RequestLoginDto
 import com.teamdontbe.data.dto.response.ResponseLoginDto
 import retrofit2.http.Body
-import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface AuthApiService {
@@ -16,7 +15,6 @@ interface AuthApiService {
 
     @POST("/$API/$V1/$AUTH")
     suspend fun login(
-        @Header("Authorization") auth: String,
         @Body requestLogin: RequestLoginDto,
     ): BaseResponse<ResponseLoginDto>
 }
