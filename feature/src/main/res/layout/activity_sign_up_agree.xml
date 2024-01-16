@@ -12,8 +12,7 @@
 
         <include
             android:id="@+id/appbar_sign_up"
-            layout="@layout/view_appbar_with_back"
-            app:title="@{@string/sign_up_appbar_title}" />
+            layout="@layout/view_appbar_with_back" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_sign_up_start_23"
@@ -339,7 +338,7 @@
             android:enabled="false"
             android:focusable="true"
             android:paddingVertical="14dp"
-            android:text="@string/btn_onboarding_next"
+            android:text="@string/sign_up_profile_completed"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

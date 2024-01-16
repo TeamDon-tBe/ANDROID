@@ -10,7 +10,7 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
-import com.teamdontbe.feature.mypage.adapter.MyPageFeedItemDecorator
+import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -60,7 +60,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 submitList(feedData)
             }
 
-        binding.rvHome.addItemDecoration(MyPageFeedItemDecorator(requireContext()))
+        binding.rvHome.addItemDecoration(FeedItemDecorator(requireContext()))
     }
 
     private fun initBottomSheet() {
