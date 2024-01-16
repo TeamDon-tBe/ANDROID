@@ -26,7 +26,7 @@ class MyPageFeedViewHolder(
 
     fun onBind(data: FeedEntity) = with(binding) {
         setVisibility()
-        tvHomeFeedTransparency.text = "투명도 + ${data.memberGhost}% · ${
+        tvHomeFeedTransparency.text = "투명도 ${data.memberGhost}% · ${
             CalculateTime(root.context).getCalculateTime(data.time)
         }"
         feed = data

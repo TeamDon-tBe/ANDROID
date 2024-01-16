@@ -3,6 +3,7 @@ package com.teamdontbe.feature.mypage.comment
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.feature.databinding.ItemMyPageCommentBinding
+import com.teamdontbe.feature.util.CalculateTime
 
 class MyPageCommentViewHolder(
     private val binding: ItemMyPageCommentBinding,
@@ -23,6 +24,9 @@ class MyPageCommentViewHolder(
     }
 
     fun onBind(data: MyPageCommentEntity) = with(binding) {
+        tvCommentTransparency.text = "투명도 ${data.memberGhost}% · ${
+            CalculateTime(root.context).getCalculateTime(data.time)
+        }"
         feed = data
         item = data
         executePendingBindings()
