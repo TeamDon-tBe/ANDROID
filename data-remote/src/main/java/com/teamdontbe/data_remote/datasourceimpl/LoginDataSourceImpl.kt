@@ -12,6 +12,5 @@ class LoginDataSourceImpl
     constructor(
         private val loginApiService: LoginApiService,
     ) : LoginDataSource {
-        override suspend fun login(auth: String, requestLogin: RequestLoginDto): BaseResponse<ResponseLoginDto> =
-            loginApiService.login(auth, requestLogin)
+        override suspend fun login(requestLogin: RequestLoginDto): BaseResponse<ResponseLoginDto> = loginApiService.login(requestLogin)
     }

@@ -1,10 +1,14 @@
 package com.teamdontbe.dontbe.di
 
 import com.teamdontbe.data.datasource.LoginDataSource
+import com.teamdontbe.data.datasource.SharedPreferenceDataSource
 import com.teamdontbe.data.repositoryimpl.LoginRepositoryImpl
+import com.teamdontbe.data.repositoryimpl.UserInfoRepositoryImpl
+import com.teamdontbe.data_local.SharedPreferenceDataSourceImpl
 import com.teamdontbe.data_remote.api.LoginApiService
 import com.teamdontbe.data_remote.datasourceimpl.LoginDataSourceImpl
 import com.teamdontbe.domain.repository.LoginRepository
+import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -28,6 +32,10 @@ object LoginModule {
         @Binds
         @Singleton
         fun bindsLoginRepository(RepositoryImpl: LoginRepositoryImpl): LoginRepository
+
+        @Binds
+        @Singleton
+        fun bindUserInfoRepository(RepositoryImpl: UserInfoRepositoryImpl): UserInfoRepository
     }
 
     @Module
@@ -36,5 +44,9 @@ object LoginModule {
         @Singleton
         @Binds
         fun providesLoginDataSource(DataSourceImpl: LoginDataSourceImpl): LoginDataSource
+
+        @Singleton
+        @Binds
+        fun providesUserInfoDataSource(DataSourceImpl: SharedPreferenceDataSourceImpl): SharedPreferenceDataSource
     }
 }

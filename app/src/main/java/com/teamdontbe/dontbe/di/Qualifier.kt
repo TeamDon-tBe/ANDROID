@@ -6,3 +6,6 @@ import javax.inject.Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class DontbeRetrofit
 
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class AccessToken

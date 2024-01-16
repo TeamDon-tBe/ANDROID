@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.fragment.ktx)
     implementation(libs.splash.screen)
+    implementation(libs.shared.security)
 
     // Third Party
     implementation(libs.coil.core)
