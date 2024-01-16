@@ -8,6 +8,10 @@
         <variable
             name="feed"
             type="com.teamdontbe.domain.entity.FeedEntity" />
+
+        <variable
+            name="calculate"
+            type="com.teamdontbe.feature.util.CalculateTime" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,7 +58,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="@{`투명도 -` + feed.memberGhost + `%  · ` + feed.time}"
+            android:text="@{`투명도 ` + feed.memberGhost + `%  · ` + calculate.getCalculateTime(feed.time)}"
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
             android:textColor="@color/gray_9"
             app:layout_constraintBottom_toBottomOf="@id/iv_home_profile"
