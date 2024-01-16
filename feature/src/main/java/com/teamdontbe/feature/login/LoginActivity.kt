@@ -44,6 +44,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
             Timber.e(ContentValues.TAG, errorMessage)
         } else if (token != null) {
             Timber.i(ContentValues.TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+            loginViewModel.saveAccessToken(token.accessToken)
         }
     }
 
@@ -74,7 +75,8 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
                             token != null -> {
                                 Timber.tag("kakao").i("카카오톡으로 로그인 성공 %s", token.accessToken)
-                                loginViewModel.login("Bearer ${token.accessToken}", "KAKAO")
+                                loginViewModel.saveAccessToken(token.accessToken)
+                                loginViewModel.login("KAKAO")
                             }
                         }
                     }
