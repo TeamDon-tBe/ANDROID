@@ -42,7 +42,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initMyPageStateObserve() {
-        viewModel.getMyPageUserProfileInfo(2)
+        viewModel.getMyPageUserProfileInfo(testID)
         viewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
@@ -95,7 +95,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initMyPageTabLayout() = with(binding) {
-        vpMyPage.adapter = MyPageVpAdapter(this@MyPageFragment)
+        vpMyPage.adapter = MyPageVpAdapter(this@MyPageFragment, testID)
 
         val tabTitleArray = arrayOf(
             POSTING,
@@ -129,5 +129,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         const val COMMENT = "답글"
         const val TRANSPARENCY_INFO = "TransparencyInfo"
         const val MY_PAGE_BOTTOM_SHEET = "MyPageBottomSheet"
+        const val testID = 2
     }
 }
