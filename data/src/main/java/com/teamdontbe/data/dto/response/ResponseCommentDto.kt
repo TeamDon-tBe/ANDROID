@@ -13,7 +13,7 @@ data class ResponseCommentDto(
     @SerialName("memberGhost") val memberGhost: Int,
     @SerialName("isLiked") val isLiked: Boolean,
     @SerialName("commentLikedNumber") val commentLikedNumber: Int,
-    @SerialName("contentText") val contentText: String,
+    @SerialName("commentText") val commentText: String,
     @SerialName("time") val time: String,
 ) {
     fun toCommentEntity() =
@@ -25,7 +25,7 @@ data class ResponseCommentDto(
             memberGhost,
             isLiked,
             commentLikedNumber,
-            contentText,
+            commentText,
             time,
         )
 }
