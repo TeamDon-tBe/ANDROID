@@ -1,7 +1,7 @@
 package com.teamdontbe.data_remote.api
 
 import com.teamdontbe.data.dto.BaseResponse
-import com.teamdontbe.data.dto.response.ResponseMyPageFeedListDto
+import com.teamdontbe.data.dto.response.ResponseFeedDto
 import com.teamdontbe.data.dto.response.ResponseMyPageUserProfileDto
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -10,6 +10,7 @@ interface MyPageUserProfileApiService {
     companion object {
         const val VIEW_MEMBER = "viewmember"
         const val MEMBER = "member"
+        const val CONTENTS = "contents"
     }
 
     @GET("/${LoginApiService.API}/${LoginApiService.V1}/$VIEW_MEMBER/{viewmemberId}")
@@ -17,8 +18,8 @@ interface MyPageUserProfileApiService {
         @Path("viewmemberId") viewMemberID: Int,
     ): BaseResponse<ResponseMyPageUserProfileDto>
 
-    @GET("/${LoginApiService.API}/${LoginApiService.V1}/$MEMBER/{viewmemberId}/${HomeApiService.CONTENT}")
+    @GET("/${LoginApiService.API}/${LoginApiService.V1}/$MEMBER/{viewmemberId}/$CONTENTS")
     suspend fun getMyPageFeedList(
         @Path("viewmemberId") viewMemberID: Int,
-    ): BaseResponse<ResponseMyPageFeedListDto>
+    ): BaseResponse<List<ResponseFeedDto>>
 }
