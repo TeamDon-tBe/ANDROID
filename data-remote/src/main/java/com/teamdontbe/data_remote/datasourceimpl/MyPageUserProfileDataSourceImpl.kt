@@ -10,6 +10,6 @@ class MyPageUserProfileDataSourceImpl @Inject constructor(
     private val myPageUserProfileApiService: MyPageUserProfileApiService,
 ) :
     MyPageUserProfileDataSource {
-    override suspend fun getMyPageUserProfile(viewMemberId: Int): BaseResponse<ResponseMyPageUserProfileDto> =
+    override suspend fun getMyPageUserProfileSource(viewMemberId: Int): BaseResponse<ResponseMyPageUserProfileDto> =
         myPageUserProfileApiService.getMyPageUserProfile(viewMemberId)
 }
