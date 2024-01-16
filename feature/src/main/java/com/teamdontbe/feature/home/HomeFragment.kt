@@ -55,6 +55,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                         feedData.commentNumber,
                         feedData.contentText,
                         feedData.time,
+                        feedData.contentId,
                     ),
                 )
             }).apply {
