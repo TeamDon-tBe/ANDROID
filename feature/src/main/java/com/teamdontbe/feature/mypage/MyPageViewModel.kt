@@ -1,9 +1,39 @@
 package com.teamdontbe.feature.mypage
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.domain.entity.MyPageUserProfileEntity
+import com.teamdontbe.domain.repository.MyPageUserProfileDomainRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MyPageViewModel : ViewModel() {
+@HiltViewModel
+class MyPageViewModel
+@Inject constructor(private val myPageUserProfileRepository: MyPageUserProfileDomainRepository) :
+    ViewModel() {
+    private val _getMyPageUserProfileState =
+        MutableStateFlow<UiState<MyPageUserProfileEntity>>(UiState.Empty)
+    val getMyPageUserProfileStat: StateFlow<UiState<MyPageUserProfileEntity>> =
+        _getMyPageUserProfileState
+
+    fun getMyPageUserProfileInfo(viewMemberId: Int) = viewModelScope.launch {
+        myPageUserProfileRepository.getMyPageUserProfile(viewMemberId).collectLatest {
+            if (it != null) {
+                _getMyPageUserProfileState.value =
+                    UiState.Success(it)
+            } else {
+                UiState.Empty
+            }
+        }
+        _getMyPageUserProfileState.value = UiState.Loading
+    }
+
     val mockDataList = listOf(
         FeedEntity(
             3, "", "돈비돈비", false, false, 90, 200, 60, "돈비 사랑해", "2시간 전",
