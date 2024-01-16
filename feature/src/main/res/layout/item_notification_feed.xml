@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="noti"
+            type="com.teamdontbe.domain.entity.NotiEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,6 +29,7 @@
             android:id="@+id/iv_notification_profile"
             android:layout_width="42dp"
             android:layout_height="0dp"
+            imageUrl="@{noti.triggerMemberProfileUrl}"
             android:src="@drawable/img_posting_profile"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
