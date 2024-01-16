@@ -9,7 +9,7 @@ data class ResponseFeedDto(
     @SerialName("memberId") val memberId: Int,
     @SerialName("memberProfileUrl") val memberProfileUrl: String,
     @SerialName("memberNickname") val memberNickname: String,
-    @SerialName("contentId") val contentId: Int,
+    @SerialName("contentId") val contentId: Int? = null,
     @SerialName("contentText") val contentText: String,
     @SerialName("time") val time: String,
     @SerialName("isGhost") val isGhost: Boolean,

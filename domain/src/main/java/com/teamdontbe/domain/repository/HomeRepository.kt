@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
     suspend fun getFeedList(): Flow<List<FeedEntity>?>
+
+    suspend fun getFeedLDetail(contentId: Int): Flow<FeedEntity?>
 }
