@@ -16,6 +16,7 @@ data class Feed(
     val commentNumber: Int,
     val contentText: String,
     val time: String,
+    val contentId: Int? = null,
 ) : Parcelable {
     fun toFeedEntity() =
         FeedEntity(
@@ -29,5 +30,6 @@ data class Feed(
             commentNumber,
             contentText,
             time,
+            contentId,
         )
 }
