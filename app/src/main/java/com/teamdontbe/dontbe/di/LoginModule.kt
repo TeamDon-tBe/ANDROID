@@ -45,8 +45,8 @@ object LoginModule {
         @Binds
         fun providesLoginDataSource(DataSourceImpl: LoginDataSourceImpl): LoginDataSource
 
+        @Provides
         @Singleton
-        @Binds
-        fun providesUserInfoDataSource(DataSourceImpl: SharedPreferenceDataSourceImpl): SharedPreferenceDataSource
+        fun provideDataStore(DataStore: SharedPreferenceDataSourceImpl): SharedPreferenceDataSource = DataStore
     }
 }
