@@ -12,7 +12,7 @@ class HomeViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FeedEntity) {
         with(binding) {
-            tvHomeFeedTransparency.text = "투명도 + ${data.memberGhost}%  · ${
+            tvHomeFeedTransparency.text = "투명도 ${data.memberGhost}% · ${
                 CalculateTime(binding.root.context).getCalculateTime(data.time)
             }"
 

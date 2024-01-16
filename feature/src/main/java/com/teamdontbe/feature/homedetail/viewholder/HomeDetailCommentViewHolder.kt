@@ -15,7 +15,7 @@ class HomeDetailCommentViewHolder(
         lastPosition: Int,
     ) {
         with(binding) {
-            tvCommentTransparency.text = "투명도 + ${data.memberGhost}%  · ${
+            tvCommentTransparency.text = "투명도 ${data.memberGhost}% · ${
                 CalculateTime(binding.root.context).getCalculateTime(data.time)
             }"
             comment = data
