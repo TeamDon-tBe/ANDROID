@@ -3,10 +3,9 @@ package com.teamdontbe.feature.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
-import com.teamdontbe.domain.repository.LoginRepository
-import com.teamdontbe.domain.repository.UserInfoRepository
 import com.teamdontbe.domain.entity.LoginEntity
 import com.teamdontbe.domain.repository.LoginRepository
+import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,17 +23,9 @@ class LoginViewModel
         private val _postLogin = MutableStateFlow<UiState<LoginEntity>>(UiState.Empty)
         val postLogin: StateFlow<UiState<LoginEntity>> = _postLogin
 
-    fun login(socialType: String) =
-        viewModelScope.launch {
-            loginRepository.login(socialType).collectLatest {
-                if (it != null) _postLogin.value = UiState.Success(it) else UiState.Empty
-            }
-            _postLogin.value = UiState.Loading
-        }
-}
         fun login(socialType: String) =
             viewModelScope.launch {
-                authRepository.login(socialType).collectLatest {
+                loginRepository.login(socialType).collectLatest {
                     if (it != null) _postLogin.value = UiState.Success(it) else UiState.Empty
                 }
                 _postLogin.value = UiState.Loading

@@ -10,7 +10,7 @@ import javax.inject.Inject
 class LoginDataSourceImpl
     @Inject
     constructor(
-        private val authApiService: AuthApiService,
+        private val loginApiService: LoginApiService,
     ) : LoginDataSource {
-        override suspend fun login(requestLogin: RequestLoginDto): BaseResponse<ResponseLoginDto> = authApiService.login(requestLogin)
+        override suspend fun login(requestLogin: RequestLoginDto): BaseResponse<ResponseLoginDto> = loginApiService.login(requestLogin)
     }
