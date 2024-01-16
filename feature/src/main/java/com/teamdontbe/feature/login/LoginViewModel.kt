@@ -37,7 +37,7 @@ class LoginViewModel
 
         fun getRefreshToken() = userInfoRepository.getRefreshToken()
 
-        fun saveRefreshToken(refreshToken: String) = userInfoRepository.saveAccessToken(refreshToken)
+        fun saveRefreshToken(refreshToken: String) = userInfoRepository.saveRefreshToken(refreshToken)
 
         fun getMemberId() = userInfoRepository.getMemberId()
 
