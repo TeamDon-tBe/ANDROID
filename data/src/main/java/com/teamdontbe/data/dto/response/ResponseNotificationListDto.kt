@@ -25,7 +25,7 @@ data class ResponseNotificationListDto(
     @SerialName("isNotificationChecked")
     val isNotificationChecked: Boolean,
 ) {
-    fun toNotificationListEntity() =
+    fun toNotificationEntity() =
         NotiEntity(
             memberId,
             memberNickname,

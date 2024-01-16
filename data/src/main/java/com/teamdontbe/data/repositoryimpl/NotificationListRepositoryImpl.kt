@@ -16,7 +16,7 @@ class NotificationListRepositoryImpl
             return flow {
                 val result =
                     runCatching {
-                        notificationListDataSource.getNotificationList().data?.map { it.toNotificationListEntity() }
+                        notificationListDataSource.getNotificationList().data?.map { it.toNotificationEntity() }
                     }
                 emit(result.getOrDefault(emptyList()))
             }
