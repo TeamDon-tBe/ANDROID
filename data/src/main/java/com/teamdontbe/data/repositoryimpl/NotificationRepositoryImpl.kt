@@ -28,7 +28,7 @@ class NotificationRepositoryImpl
                     runCatching {
                         notificationDataSource.getNotificationCount().data?.notificationNumber
                     }
-                emit(result.getOrDefault(0))
+                emit(result.getOrDefault(-1))
             }
         }
     }
