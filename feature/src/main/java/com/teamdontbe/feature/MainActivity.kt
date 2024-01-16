@@ -40,6 +40,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     if (it.data > 0) {
                         initMainBottomNaviBadge()
                     }
+                    else if (it.data == -1) {
+                        Timber.tag("noti").e("알맞지 않은 noti count get : ${it.data}")
+                    }
                 }
 
                 is UiState.Empty -> Unit
