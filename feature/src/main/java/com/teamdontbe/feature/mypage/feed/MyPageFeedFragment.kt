@@ -18,13 +18,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class MyPageFeedFragment(data: Int) :
+class MyPageFeedFragment(id: Int) :
     BindingFragment<FragmentMyPageFeedBinding>(R.layout.fragment_my_page_feed) {
     private val mockDataViewModel by viewModels<MyPageFeedViewModel>()
-    private val testId = data ?: -1
+    private val memberId = id ?: -1
 
     override fun initView() {
-        initFeedObserve(testId)
+        initFeedObserve(memberId)
     }
 
     private fun initFeedObserve(testId: Int) {
