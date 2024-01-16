@@ -2,6 +2,9 @@ package com.teamdontbe.feature.login
 
 import android.content.ContentValues
 import android.content.Intent
+import androidx.activity.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
@@ -9,13 +12,21 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingActivity
+import com.teamdontbe.core_ui.util.context.toast
+import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivityLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 
+@AndroidEntryPoint
 class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_login) {
+    private val viewModel by viewModels<LoginViewModel>()
+
     // 카카오계정으로 로그인 공통 callback 구성
     // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용
     val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -35,13 +46,14 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
             Timber.e(ContentValues.TAG, errorMessage)
         } else if (token != null) {
             Timber.i(ContentValues.TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
-            navigateToMainActivity()
+           // navigateToMainActivity()
         }
     }
 
     override fun initView() {
         initKeyHash()
         initKakaoLoginBtnClickListener()
+        initObserve()
     }
 
     private fun initKakaoLoginBtnClickListener() {
@@ -65,7 +77,8 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
                             token != null -> {
                                 Timber.tag("kakao").i("카카오톡으로 로그인 성공 %s", token.accessToken)
-                                navigateToMainActivity()
+                                viewModel.login("Bearer ${token.accessToken}", "KAKAO")
+                               //navigateToMainActivity()
                             }
                         }
                     }
@@ -74,6 +87,18 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                 }
             }
         }
+    }
+
+    private fun initObserve() {
+        viewModel.postLogin.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> toast(it.data.toString())
+
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
     }
 
     private fun setKakaoCallback() {
