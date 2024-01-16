@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.teamdontbe.core_ui.view.ItemDiffCallback
-import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.feature.databinding.ItemHomeCommentBinding
 import com.teamdontbe.feature.homedetail.viewholder.HomeDetailCommentViewHolder
 
 class HomeDetailCommentAdapter(
-    private val onClickKebabBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
+    private val onClickKebabBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
 ) :
-    ListAdapter<FeedEntity, HomeDetailCommentViewHolder>(
+    ListAdapter<CommentEntity, HomeDetailCommentViewHolder>(
             HomeAdapterDiffCallback,
         ) {
     override fun onCreateViewHolder(
@@ -32,7 +32,7 @@ class HomeDetailCommentAdapter(
 
     companion object {
         private val HomeAdapterDiffCallback =
-            ItemDiffCallback<FeedEntity>(
+            ItemDiffCallback<CommentEntity>(
                 onItemsTheSame = { old, new -> old.memberId == new.memberId },
                 onContentsTheSame = { old, new -> old == new },
             )

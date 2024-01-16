@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="feed"
-            type="com.teamdontbe.domain.entity.FeedEntity" />
+            name="comment"
+            type="com.teamdontbe.domain.entity.CommentEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,7 +77,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:text="@{feed.memberNickname}"
+                android:text="@{comment.memberNickname}"
                 android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
                 app:layout_constraintBottom_toTopOf="@id/tv_comment_transparency"
                 app:layout_constraintStart_toEndOf="@id/iv_comment_profile"
@@ -90,7 +90,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="@{`투명도 -` + feed.memberGhost + `%  · ` + feed.time}"
+                android:text="@{`투명도 -` + comment.memberGhost + `%  · ` + comment.time}"
                 android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
                 android:textColor="@color/gray_9"
                 app:layout_constraintBottom_toBottomOf="@id/iv_comment_profile"
@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="11dp"
                 android:layout_marginEnd="11dp"
-                android:text="@{feed.contentText}"
+                android:text="@{comment.contentText}"
                 android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -163,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:gravity="start"
-                android:text="@{Integer.toString(feed.contentLikedNumber)}"
+                android:text="@{Integer.toString(comment.commentLikedNumber)}"
                 android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
                 android:textColor="@color/gray_11"
                 app:layout_constraintBottom_toBottomOf="@id/btn_comment_heart"
