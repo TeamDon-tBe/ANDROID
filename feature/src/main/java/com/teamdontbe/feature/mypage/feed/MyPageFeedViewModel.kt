@@ -14,16 +14,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageFeedViewModel
-@Inject constructor(private val myPageUserProfileRepository: MyPageRepository) :
+@Inject constructor(private val myPageRepository: MyPageRepository) :
     ViewModel() {
     private val _getMyPageFeedListState =
         MutableStateFlow<UiState<List<FeedEntity>>>(UiState.Empty)
     val getMyPageFeedListState: StateFlow<UiState<List<FeedEntity>>> =
         _getMyPageFeedListState
 
-    fun getMyPageUserProfileInfo(viewMemberId: Int) {
+    fun getMyPageFeedList(viewMemberId: Int) {
         viewModelScope.launch {
-            myPageUserProfileRepository.getMyPageFeedList(viewMemberId).collectLatest {
+            myPageRepository.getMyPageFeedList(viewMemberId).collectLatest {
                 if (it != null) {
                     _getMyPageFeedListState.value =
                         UiState.Success(it)

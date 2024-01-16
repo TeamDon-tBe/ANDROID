@@ -28,7 +28,7 @@ class MyPageFeedFragment(id: Int) :
     }
 
     private fun initFeedObserve(testId: Int) {
-        mockDataViewModel.getMyPageUserProfileInfo(testId)
+        mockDataViewModel.getMyPageFeedList(testId)
         mockDataViewModel.getMyPageFeedListState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
@@ -56,8 +56,6 @@ class MyPageFeedFragment(id: Int) :
         val myPageFeedAdapter = MyPageFeedAdapter(
             onClickKebabBtn = { feedEntity ->
                 // Kebab 버튼 클릭 이벤트 처리
-                // feedEntity를 사용하여 필요한 작업 수행
-                // 예: viewModel.getRecyclerviewTest()
             },
             onItemClicked = { feedEntity ->
                 // RecyclerView 항목 클릭 이벤트 처리
