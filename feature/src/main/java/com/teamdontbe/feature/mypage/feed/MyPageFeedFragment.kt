@@ -11,7 +11,7 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
-import com.teamdontbe.feature.home.HomeFragment
+import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -81,7 +81,7 @@ class MyPageFeedFragment(id: Int) :
     private fun navigateToHomeDetailFragment(id: Int) {
         findNavController().navigate(
             R.id.action_fragment_my_page_to_fragment_home_detail,
-            bundleOf(HomeFragment.KEY_FEED_DATA to id),
+            bundleOf(KEY_NOTI_DATA to id),
         )
     }
 
