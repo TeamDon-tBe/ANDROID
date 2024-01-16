@@ -23,15 +23,13 @@ class LoginViewModel
         private val _postLogin = MutableStateFlow<UiState<AuthEntity>>(UiState.Empty)
         val postLogin: StateFlow<UiState<AuthEntity>> = _postLogin
 
-        fun login(
-            auth: String,
-            socialType: String,
-        ) = viewModelScope.launch {
-            authRepository.login(auth, socialType).collectLatest {
-                if (it != null) _postLogin.value = UiState.Success(it) else UiState.Empty
+        fun login(socialType: String) =
+            viewModelScope.launch {
+                authRepository.login(socialType).collectLatest {
+                    if (it != null) _postLogin.value = UiState.Success(it) else UiState.Empty
+                }
+                _postLogin.value = UiState.Loading
             }
-            _postLogin.value = UiState.Loading
-        }
 
         fun getAccessToken() = userInfoRepository.getAccessToken()
 
