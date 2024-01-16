@@ -1,4 +1,4 @@
-package com.teamdontbe.feature.login
+package com.teamdontbe.feature.signup
 
 import android.content.Intent
 import android.view.View
@@ -11,7 +11,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignUpAgreeActivity :
     BindingActivity<ActivitySignUpAgreeBinding>(R.layout.activity_sign_up_agree) {
-
     private val childCheckBoxList by lazy {
         with(binding) {
             listOf(
@@ -29,11 +28,12 @@ class SignUpAgreeActivity :
         initChildCheckBoxSignUpAgreeListener()
     }
 
-    private fun initParentCheckBoxSignUpAgreeClickListener() = with(binding) {
-        cbSignUpParent.setOnCheckedChangeListener { _, isChecked ->
-            childCheckBoxList.forEach { it.isChecked = isChecked }
+    private fun initParentCheckBoxSignUpAgreeClickListener() =
+        with(binding) {
+            cbSignUpParent.setOnCheckedChangeListener { _, isChecked ->
+                childCheckBoxList.forEach { it.isChecked = isChecked }
+            }
         }
-    }
 
     private fun initChildCheckBoxSignUpAgreeListener() {
         childCheckBoxList.forEach { checkBox ->
