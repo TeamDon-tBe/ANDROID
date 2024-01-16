@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.pxToDp
-import com.teamdontbe.core_ui.util.context.statusBarColorOf
+import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet
@@ -29,7 +29,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun initMyPageCollapseAppearance() = with(binding) {
         btnMyPageBack.visibility = View.INVISIBLE
         collapseMyPage.setContentScrimColor(requireContext().getColor(R.color.black))
-        requireContext().statusBarColorOf(R.color.black)
+        statusBarColorOf(R.color.black)
     }
 
     private fun initMyPageProgressBarUI() {
@@ -84,13 +84,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initTransparencyInfoDialogBtnClickListener() {
         binding.btnMyPageTransparencyInfo.setOnClickListener {
-            TransparencyInfoParentFragment().show(parentFragmentManager, TRANSPARENCY_INFO)
+            TransparencyInfoParentFragment().show(childFragmentManager, TRANSPARENCY_INFO)
         }
     }
 
     private fun initMyPageHambergerClickListner() {
         binding.btnMyPageHamberger.setOnClickListener {
-            MyPageBottomSheet().show(parentFragmentManager, MY_PAGE_BOTTOM_SHEET)
+            MyPageBottomSheet().show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
         }
     }
 
