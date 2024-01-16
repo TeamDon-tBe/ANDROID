@@ -8,4 +8,6 @@ interface NotificationDataSource {
     suspend fun getNotificationList(): BaseResponse<List<ResponseNotificationListDto>>
 
     suspend fun getNotificationCount(): BaseResponse<ResponseNotificationCountDto>
+
+    suspend fun patchNotificationCheck(): BaseResponse<Unit>
 }
