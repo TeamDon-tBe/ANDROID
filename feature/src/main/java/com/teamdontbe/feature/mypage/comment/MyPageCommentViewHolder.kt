@@ -2,10 +2,10 @@ package com.teamdontbe.feature.mypage.comment
 
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.MyPageCommentEntity
-import com.teamdontbe.feature.databinding.ItemCommentBinding
+import com.teamdontbe.feature.databinding.ItemMyPageCommentBinding
 
 class MyPageCommentViewHolder(
-    private val binding: ItemCommentBinding,
+    private val binding: ItemMyPageCommentBinding,
     private val onClickKebabBtn: (MyPageCommentEntity) -> Unit,
     private val onItemClicked: (MyPageCommentEntity) -> Unit,
 ) :

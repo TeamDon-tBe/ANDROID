@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.teamdontbe.core_ui.view.ItemDiffCallback
 import com.teamdontbe.domain.entity.MyPageCommentEntity
-import com.teamdontbe.feature.databinding.ItemCommentBinding
+import com.teamdontbe.feature.databinding.ItemMyPageCommentBinding
 
 class MyPageCommentAdapter(
     private val onClickKebabBtn: (MyPageCommentEntity) -> Unit,
@@ -17,7 +17,7 @@ class MyPageCommentAdapter(
     private val inflater by lazy { LayoutInflater.from(context) }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPageCommentViewHolder {
-        val binding = ItemCommentBinding.inflate(inflater, parent, false)
+        val binding = ItemMyPageCommentBinding.inflate(inflater, parent, false)
         return MyPageCommentViewHolder(binding, onClickKebabBtn, onItemClicked)
     }
 
