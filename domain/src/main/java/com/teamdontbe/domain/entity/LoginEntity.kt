@@ -1,6 +1,6 @@
 package com.teamdontbe.domain.entity
 
-data class AuthEntity(
+data class LoginEntity(
     val nickname: String,
     val memberId: Int,
     val accessToken: String,

@@ -1,14 +1,10 @@
 package com.teamdontbe.dontbe.di
 
 import com.teamdontbe.data.datasource.LoginDataSource
-import com.teamdontbe.data.datasource.SharedPreferenceDataSource
 import com.teamdontbe.data.repositoryimpl.LoginRepositoryImpl
-import com.teamdontbe.data.repositoryimpl.UserInfoRepositoryImpl
-import com.teamdontbe.data_local.SharedPreferenceDataSourceImpl
-import com.teamdontbe.data_remote.api.AuthApiService
-import com.teamdontbe.data_remote.datasourceimpl.AuthDataSourceImpl
+import com.teamdontbe.data_remote.api.LoginApiService
+import com.teamdontbe.data_remote.datasourceimpl.LoginDataSourceImpl
 import com.teamdontbe.domain.repository.LoginRepository
-import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -24,7 +20,7 @@ object LoginModule {
     @Singleton
     fun provideLoginService(
         @DontbeRetrofit retrofit: Retrofit,
-    ): AuthApiService = retrofit.create(AuthApiService::class.java)
+    ): LoginApiService = retrofit.create(LoginApiService::class.java)
 
     @Module
     @InstallIn(SingletonComponent::class)
@@ -43,10 +39,11 @@ object LoginModule {
     interface DataSourceModule {
         @Singleton
         @Binds
-        fun providesLoginDataSource(DataSourceImpl: AuthDataSourceImpl): LoginDataSource
+        fun providesLoginDataSource(DataSourceImpl: LoginDataSourceImpl): LoginDataSource
 
         @Singleton
         @Binds
         fun providesUserInfoDataSource(DataSourceImpl: SharedPreferenceDataSourceImpl): SharedPreferenceDataSource
+
     }
 }

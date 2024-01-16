@@ -6,7 +6,7 @@ import com.teamdontbe.data.dto.response.ResponseLoginDto
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface AuthApiService {
+interface LoginApiService {
     companion object {
         const val API = "api"
         const val V1 = "v1"

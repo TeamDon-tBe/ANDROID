@@ -1,8 +1,8 @@
 package com.teamdontbe.domain.repository
 
-import com.teamdontbe.domain.entity.AuthEntity
+import com.teamdontbe.domain.entity.LoginEntity
 import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {
-    suspend fun login(requestLogin: String): Flow<AuthEntity?>
+    suspend fun login(requestLogin: String): Flow<LoginEntity?>
 }
