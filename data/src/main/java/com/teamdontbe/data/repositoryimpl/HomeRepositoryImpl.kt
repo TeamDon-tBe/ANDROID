@@ -26,8 +26,9 @@ class HomeRepositoryImpl
             return flow {
                 val result =
                     runCatching {
-                        homeDataSource.getFeedDetail(contentId)
+                        homeDataSource.getFeedDetail(contentId).data?.toFeedEntity()
                     }
+                emit(result.getOrDefault(FeedEntity(-1, "", "", false, false, -1, -1, -1, "", "")))
             }
         }
     }
