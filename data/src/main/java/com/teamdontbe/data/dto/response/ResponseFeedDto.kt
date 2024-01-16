@@ -30,5 +30,6 @@ data class ResponseFeedDto(
             commentNumber,
             contentText,
             time,
+            contentId,
         )
 }
