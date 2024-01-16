@@ -7,7 +7,7 @@
 
         <variable
             name="feed"
-            type="com.teamdontbe.domain.entity.FeedEntity" />
+            type="com.teamdontbe.domain.entity.MyPageCommentEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
             android:layout_marginEnd="11dp"
-            android:text="@{feed.contentText}"
+            android:text="@{feed.commentText}"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
@@ -129,7 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:gravity="start"
-            android:text="@{Integer.toString(feed.contentLikedNumber)}"
+            android:text="@{Integer.toString(feed.commentLikedNumber)}"
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
             android:textColor="@color/gray_11"
             app:layout_constraintBottom_toBottomOf="@id/btn_comment_heart"
