@@ -77,6 +77,10 @@ class NotificationViewHolder(
             tvNotificationFeed.text = spannableText
             val timeUtil = CalculateTime(binding.root.context)
             tvNotificationTime.text = timeUtil.getCalculateTime(data.time)
+
+            binding.root.setOnClickListener {
+                click(data, bindingAdapterPosition)
+            }
         }
     }
 
