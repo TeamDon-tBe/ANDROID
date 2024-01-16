@@ -28,6 +28,7 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_home_profile"
+            imageUrl="@{feed.memberProfileUrl}"
             android:layout_width="44dp"
             android:layout_height="0dp"
             android:background="@color/gray_9"
