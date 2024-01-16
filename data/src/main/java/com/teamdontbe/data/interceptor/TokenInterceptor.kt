@@ -34,7 +34,7 @@ class TokenInterceptor
                 // 기존 request가 401 : access token 이상
                 401 -> {
                     response.close()
-
+                    // access token 재발급 request
                     val accessTokenRequest =
                         chain.request().newBuilder().get()
                             .url("${BuildConfig.DONTBE_BASE_URL}/api/v1/token")
@@ -65,16 +65,7 @@ class TokenInterceptor
                             return chain.proceed(newRequest)
                         }
 
-//                    "access, refreshToken 모두 만료되었습니다. 재로그인이 필요합니다." -> {
-//                        with(context) {
-//                            CoroutineScope(Dispatchers.Main).launch {
-//                                startActivity(Intent(context, LoginActivity::class.java))
-//
-//                                userInfoDataSource.clear()
-//                            }
-//                        }
-//                    }
-
+                        // access token, refresh token 둘 다 만료되면
                         else -> {
                             with(context) {
                                 CoroutineScope(Dispatchers.Main).launch {
