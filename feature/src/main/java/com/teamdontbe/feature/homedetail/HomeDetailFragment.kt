@@ -3,6 +3,9 @@ package com.teamdontbe.feature.homedetail
 import android.os.Build
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -11,6 +14,8 @@ import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
+import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.comment.UploadingSnackBar
@@ -20,38 +25,42 @@ import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeAdapter
 import com.teamdontbe.feature.home.HomeBottomSheet
 import com.teamdontbe.feature.home.HomeFragment
+import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.util.Debouncer
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class HomeDetailFragment :
     BindingFragment<FragmentHomeDetailBinding>(R.layout.fragment_home_detail) {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private val commentDebouncer = Debouncer<String>()
+    private val homeViewModel by viewModels<HomeViewModel>()
 
     override fun initView() {
+        homeViewModel.getFeedDetail(1)
         statusBarColorOf(R.color.white)
-        initHomeDetailCommentAdapter()
         initBackBtnClickListener()
         (getHomeFeedDetailData())?.let { initInputEditTextClickListener(it) }
         initEditText()
         initAppbarCancelClickListener()
         initCommentBottomSheet()
+        initObserve()
     }
 
-    private fun initHomeDetailCommentAdapter() {
+    private fun initHomeDetailCommentAdapter(data: FeedEntity) {
         val commentAdapter =
             HomeDetailCommentAdapter(onClickKebabBtn = { feedData, positoin ->
                 initBottomSheet()
             }).apply {
                 submitList(
                     listOf(
-                        getHomeFeedDetailData()?.toFeedEntity(),
-                        getHomeFeedDetailData()?.toFeedEntity(),
-                        getHomeFeedDetailData()?.toFeedEntity(),
-                        getHomeFeedDetailData()?.toFeedEntity(),
-                        getHomeFeedDetailData()?.toFeedEntity(),
-                        getHomeFeedDetailData()?.toFeedEntity(),
-                        getHomeFeedDetailData()?.toFeedEntity(),
+                        data,
+                        data,
+                        data,
+                        data,
                     ),
                 )
             }
@@ -61,14 +70,24 @@ class HomeDetailFragment :
                 initBottomSheet()
             }).apply {
                 submitList(
-                    listOf(
-                        getHomeFeedDetailData()?.toFeedEntity(),
-                    ),
+                    listOf(data),
                 )
             }
 
         binding.rvHomeDetail.adapter = ConcatAdapter(detailAdapter, commentAdapter)
         binding.rvHomeDetail.addItemDecoration(HomeDetailFeedItemDecorator(requireContext()))
+    }
+
+    private fun initObserve() {
+        homeViewModel.getFeedDetail.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> initHomeDetailCommentAdapter(it.data)
+
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
     }
 
     private fun initBottomSheet() {
