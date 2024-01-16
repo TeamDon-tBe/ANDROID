@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResponseLoginDto(
-    @SerialName("nickname")
-    val nickname: String,
+    @SerialName("nickName")
+    val nickName: String,
     @SerialName("memberId")
     val memberId: Int,
     @SerialName("accessToken")
@@ -19,7 +19,12 @@ data class ResponseLoginDto(
     @SerialName("isNewUser")
     val isNewUser: Boolean,
 ) {
-    fun toLoginDataEntity() = LoginEntity(
-        nickname, memberId, accessToken, refreshToken, isNewUser
-    )
+    fun toLoginDataEntity() =
+        LoginEntity(
+            nickName,
+            memberId,
+            accessToken,
+            refreshToken,
+            isNewUser,
+        )
 }

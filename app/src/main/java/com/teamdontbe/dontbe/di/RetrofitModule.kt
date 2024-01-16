@@ -1,7 +1,9 @@
 package com.teamdontbe.dontbe.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.teamdontbe.data.datasource.SharedPreferenceDataSource
 import com.teamdontbe.data.interceptor.TokenInterceptor
+import com.teamdontbe.data_local.SharedPreferenceDataSourceImpl
 import com.teamdontbe.dontbe.BuildConfig.DONTBE_BASE_URL
 import com.velogandroid.di.extension.isJsonArray
 import com.velogandroid.di.extension.isJsonObject
@@ -45,6 +47,10 @@ object RetrofitModule {
             .addInterceptor(loggingInterceptor)
             .addInterceptor(tokenInterceptor)
             .build()
+
+    @Provides
+    @Singleton
+    fun provideDataStore(DataStore: SharedPreferenceDataSourceImpl): SharedPreferenceDataSource = DataStore
 
     @Provides
     @Singleton
