@@ -5,4 +5,6 @@ import com.teamdontbe.data.dto.response.ResponseFeedDto
 
 interface HomeDataSource {
     suspend fun getFeedList(): BaseResponse<List<ResponseFeedDto>>
+
+    suspend fun getFeedDetail(contentId: Int): BaseResponse<ResponseFeedDto>
 }

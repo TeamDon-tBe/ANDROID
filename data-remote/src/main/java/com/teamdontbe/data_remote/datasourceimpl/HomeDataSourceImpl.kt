@@ -14,4 +14,8 @@ class HomeDataSourceImpl
         override suspend fun getFeedList(): BaseResponse<List<ResponseFeedDto>> {
             return homeApiService.getFeedList()
         }
+
+        override suspend fun getFeedDetail(contentId: Int): BaseResponse<ResponseFeedDto> {
+            return homeApiService.getFeedDetail(contentId)
+        }
     }

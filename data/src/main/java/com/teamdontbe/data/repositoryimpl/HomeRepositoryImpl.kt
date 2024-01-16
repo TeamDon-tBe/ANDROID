@@ -21,4 +21,14 @@ class HomeRepositoryImpl
                 emit(result.getOrDefault(emptyList()))
             }
         }
+
+        override suspend fun getFeedLDetail(contentId: Int): Flow<FeedEntity?> {
+            return flow {
+                val result =
+                    runCatching {
+                        homeDataSource.getFeedDetail(contentId).data?.toFeedEntity()
+                    }
+                emit(result.getOrDefault(FeedEntity(-1, "", "", false, false, -1, -1, -1, "", "")))
+            }
+        }
     }
