@@ -1,10 +1,8 @@
 package com.teamdontbe.dontbe.di
 
 import com.teamdontbe.data.datasource.LoginDataSource
-import com.teamdontbe.data.datasource.SharedPreferenceDataSource
 import com.teamdontbe.data.repositoryimpl.LoginRepositoryImpl
 import com.teamdontbe.data.repositoryimpl.UserInfoRepositoryImpl
-import com.teamdontbe.data_local.SharedPreferenceDataSourceImpl
 import com.teamdontbe.data_remote.api.LoginApiService
 import com.teamdontbe.data_remote.datasourceimpl.LoginDataSourceImpl
 import com.teamdontbe.domain.repository.LoginRepository
@@ -44,9 +42,5 @@ object LoginModule {
         @Singleton
         @Binds
         fun providesLoginDataSource(DataSourceImpl: LoginDataSourceImpl): LoginDataSource
-
-        @Provides
-        @Singleton
-        fun provideDataStore(DataStore: SharedPreferenceDataSourceImpl): SharedPreferenceDataSource = DataStore
     }
 }
