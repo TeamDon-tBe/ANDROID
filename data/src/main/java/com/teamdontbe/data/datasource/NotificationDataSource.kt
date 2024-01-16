@@ -4,7 +4,7 @@ import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.response.ResponseNotificationCountDto
 import com.teamdontbe.data.dto.response.ResponseNotificationListDto
 
-interface NotificationListDataSource {
+interface NotificationDataSource {
     suspend fun getNotificationList(): BaseResponse<List<ResponseNotificationListDto>>
 
     suspend fun getNotificationCount(): BaseResponse<ResponseNotificationCountDto>
