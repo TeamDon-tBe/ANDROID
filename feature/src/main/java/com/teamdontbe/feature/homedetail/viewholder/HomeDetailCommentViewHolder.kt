@@ -19,7 +19,7 @@ class HomeDetailCommentViewHolder(
             btnCommentKebab.setOnClickListener {
                 onClickKebabBtn(data, bindingAdapterPosition)
             }
-            if (lastPosition == bindingAdapterPosition) dividerCommentDivideBottom.isVisible = false
+            if (lastPosition == position) dividerCommentDivideBottom.isVisible = false
         }
     }
 }
