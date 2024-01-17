@@ -9,6 +9,7 @@ import com.teamdontbe.feature.util.CalculateTime
 class HomeDetailCommentViewHolder(
     private val binding: ItemHomeCommentBinding,
     private val onClickKebabBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
+    private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(
         data: CommentEntity,
@@ -20,10 +21,18 @@ class HomeDetailCommentViewHolder(
                     CalculateTime(binding.root.context).getCalculateTime(data.time)
                 }"
             }
+            btnCommentHeart.isSelected = data.isLiked
             comment = data
             executePendingBindings()
             btnCommentKebab.setOnClickListener {
                 onClickKebabBtn(data, bindingAdapterPosition)
+            }
+            btnCommentHeart.setOnClickListener {
+                onClickLikedBtn(data.commentId, btnCommentHeart.isSelected)
+                val likeNumber = tvCommentLikeNum.text.toString()
+                tvCommentLikeNum.text =
+                    if (btnCommentHeart.isSelected) (likeNumber.toInt() - 1).toString() else (likeNumber.toInt() + 1).toString()
+                btnCommentHeart.isSelected = !btnCommentHeart.isSelected
             }
             if (lastPosition == position) dividerCommentDivideBottom.isVisible = false
         }

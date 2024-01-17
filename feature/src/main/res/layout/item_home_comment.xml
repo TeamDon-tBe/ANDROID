@@ -155,10 +155,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_comment_num" />
+                app:layout_constraintEnd_toStartOf="@id/tv_comment_like_num" />
 
             <TextView
-                android:id="@+id/tv_comment_num"
+                android:id="@+id/tv_comment_like_num"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"

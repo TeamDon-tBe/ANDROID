@@ -144,4 +144,10 @@ class HomeViewModel
                 homeRepository.postCommentLiked(commentId).collectLatest {
                 }
             }
+
+        fun deleteCommentLiKED(commentId: Int) =
+            viewModelScope.launch {
+                homeRepository.deleteCommentLiked(commentId).collectLatest {
+                }
+            }
     }
