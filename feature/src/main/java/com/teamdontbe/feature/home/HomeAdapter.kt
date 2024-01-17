@@ -11,6 +11,7 @@ import com.teamdontbe.feature.home.viewholder.HomeViewHolder
 class HomeAdapter(
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
     private val onClickToNavigateToHomeDetail: (FeedEntity, Int) -> Unit = { _, _ -> },
+    private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
 ) :
     ListAdapter<FeedEntity, HomeViewHolder>(
             HomeAdapterDiffCallback,
@@ -21,7 +22,12 @@ class HomeAdapter(
     ): HomeViewHolder {
         val binding =
             ItemHomeFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return HomeViewHolder(binding, onClickKebabBtn, onClickToNavigateToHomeDetail)
+        return HomeViewHolder(
+            binding,
+            onClickKebabBtn,
+            onClickToNavigateToHomeDetail,
+            onClickLikedBtn,
+        )
     }
 
     override fun onBindViewHolder(
@@ -29,6 +35,10 @@ class HomeAdapter(
         position: Int,
     ) {
         holder.bind(currentList[position])
+    }
+
+    fun deleteItem(position: Int) {
+        submitList(currentList.toMutableList().apply { removeAt(position) })
     }
 
     companion object {

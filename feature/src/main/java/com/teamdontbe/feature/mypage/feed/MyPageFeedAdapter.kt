@@ -12,13 +12,14 @@ class MyPageFeedAdapter(
     private val onClickKebabBtn: (FeedEntity) -> Unit,
     private val onItemClicked: (FeedEntity) -> Unit,
     context: Context,
+    private val idFlag: Boolean,
 ) :
     ListAdapter<FeedEntity, MyPageFeedViewHolder>(ExampleDiffCallback) {
     private val inflater by lazy { LayoutInflater.from(context) }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPageFeedViewHolder {
         val binding = ItemHomeFeedBinding.inflate(inflater, parent, false)
-        return MyPageFeedViewHolder(binding, onClickKebabBtn, onItemClicked)
+        return MyPageFeedViewHolder(binding, onClickKebabBtn, onItemClicked, idFlag)
     }
 
     override fun onBindViewHolder(holder: MyPageFeedViewHolder, position: Int) {

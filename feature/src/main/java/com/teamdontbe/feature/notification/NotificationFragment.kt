@@ -1,229 +1,98 @@
 package com.teamdontbe.feature.notification
 
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
+import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.NotiEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentNotificationBinding
 import com.teamdontbe.feature.notification.adapter.NotificationAdapter
 import com.teamdontbe.feature.notification.adapter.NotificationItemDecorator
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
+@AndroidEntryPoint
 class NotificationFragment :
     BindingFragment<FragmentNotificationBinding>(R.layout.fragment_notification) {
+    private val notiViewModel by viewModels<NotificationViewModel>()
+
     override fun initView() {
         statusBarColorOf(R.color.white)
         binding.appbarNotification.tvAppbarCancel.visibility = View.INVISIBLE
-        initNotificationAdapter()
+
+        notiViewModel.getNotificationList()
+        initObserveList()
+        initObserveCheck()
     }
 
-    private fun initNotificationAdapter() {
-        if (notificationFeedList.isEmpty()) {
+    private fun initObserveCheck() {
+        notiViewModel.patchNotiCheck.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> Timber.tag("noti").i("patch 성공 : ${it.data}")
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun initObserveList() {
+        notiViewModel.getNotiList.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> {
+                    initNotificationAdapter(it.data)
+                    notiViewModel.patchNotificationCheck()
+                }
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun initNotificationAdapter(notiData: List<NotiEntity>) {
+        if (notiData.isEmpty()) {
             binding.layoutNotificationEmpty.visibility = View.VISIBLE
         } else {
             binding.rvNotification.adapter =
                 NotificationAdapter(click = { notiData, position ->
+                    when (notiData.notificationTriggerType) {
+                        "contentLiked" -> navigateToHomeDetailFragment(notiData)
+                        "comment" -> navigateToHomeDetailFragment(notiData)
+                        "commentLiked" -> navigateToHomeDetailFragment(notiData)
+                        "actingContinue" -> findNavController().navigate(R.id.action_notification_to_posting)
+                        "beGhost" -> findNavController().navigate(R.id.action_notification_to_my_page)
+                        "contentGhost" -> navigateToHomeDetailFragment(notiData)
+                        "commentGhost" -> navigateToHomeDetailFragment(notiData)
+                        "userBan" -> Unit
+
+                        else ->
+                            Timber.tag("noti")
+                                .e("등록되지 않은 노티가 감지되었습니다 : ${notiData.notificationTriggerType}")
+                    }
                 }).apply {
-                    submitList(notificationFeedList)
+                    submitList(notiData)
                 }
             binding.rvNotification.addItemDecoration(NotificationItemDecorator(requireContext()))
         }
     }
 
-    private val notificationFeedList: List<NotiEntity> =
-        listOf(
-            NotiEntity(
-                // 게시물 좋아요에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "돈비최고",
-                "example",
-                "contentLiked",
-                "2024-01-11 02:44:07",
-                3,
-                "",
-                false,
-            ),
-            NotiEntity(
-                // 답글 작성에 대한 노티
-                1,
-                "",
-                "돈비최고",
-                "example",
-                "comment",
-                "2023-01-11 02:44:07",
-                3,
-                "상대방이 작성한 답글 내용",
-                false,
-            ),
-            NotiEntity(
-                // 답글 좋아요에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "돈비최고",
-                "example",
-                "commentLiked",
-                "2023-01-12 20:44:07",
-                3,
-                "",
-                false,
-            ),
-            NotiEntity(
-                // 활동 재개 안내에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "",
-                "ghost image url",
-                "actingContinue",
-                "2000-01-11 02:44:07",
-                0,
-                "",
-                false,
-            ),
-            NotiEntity(
-                // 활동 제한 안내에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "",
-                "ghost image url",
-                "beGhost",
-                "2024-01-01 02:44:07",
-                0,
-                "",
-                false,
-            ),
-            NotiEntity(
-                // 게시글 투명도에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "",
-                "ghost image url",
-                "contentGhost",
-                "2023-12-11 02:44:07",
-                0,
-                "",
-                false,
-            ),
-            NotiEntity(
-                // 답글 투명도에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "",
-                "ghost image url",
-                "commentGhost",
-                "2023-06-11 02:44:07",
-                0,
-                "",
-                false,
-            ),
-            NotiEntity(
-                // 유저 벤에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "",
-                "ghost image url",
-                "userBan",
-                "2020-06-11 02:44:07",
-                0,
-                "",
-                false,
-            ),
-            // 한 번 더!
-            NotiEntity(
-                // 게시물 좋아요에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "돈비최고",
-                "example",
-                "contentLiked",
-                "2024-01-12 02:44:07",
-                3,
-                "",
-                false,
-            ),
-            NotiEntity(
-                // 답글 작성에 대한 노티
-                1,
-                "",
-                "돈비최고",
-                "example",
-                "comment",
-                "2024-01-12 17:24:07",
-                3,
-                "상대방이 작성한 답글 내용",
-                false,
-            ),
-            NotiEntity(
-                // 답글 좋아요에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "돈비최고",
-                "example",
-                "commentLiked",
-                "2024-01-12 17:23:07",
-                3,
-                "",
-                false,
-            ),
-            NotiEntity(
-                // 활동 재개 안내에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "",
-                "ghost image url",
-                "actingContinue",
-                "2024-01-11 17:44:07",
-                0,
-                "",
-                false,
-            ),
-            NotiEntity(
-                // 활동 제한 안내에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "",
-                "ghost image url",
-                "beGhost",
-                "2024-01-11 17:27:07",
-                0,
-                "",
-                false,
-            ),
-            NotiEntity(
-                // 게시글 투명도에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "",
-                "ghost image url",
-                "contentGhost",
-                "2024-01-11 17:26:07",
-                0,
-                "",
-                false,
-            ),
-            NotiEntity(
-                // 답글 투명도에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "",
-                "ghost image url",
-                "commentGhost",
-                "2024-01-11 17:28:07",
-                0,
-                "",
-                false,
-            ),
-            NotiEntity(
-                // 유저 벤에 대한 노티
-                1,
-                "돈비짱짱맨",
-                "",
-                "ghost image url",
-                "userBan",
-                "2024-01-12 17:33:07",
-                0,
-                "",
-                false,
-            ),
+    private fun navigateToHomeDetailFragment(notiData: NotiEntity) {
+        findNavController().navigate(
+            R.id.action_notification_to_home_detail,
+            bundleOf(KEY_NOTI_DATA to notiData.notificationTriggerId)
         )
+    }
+
+    companion object {
+        const val KEY_NOTI_DATA = "key_noti_data"
+    }
 }

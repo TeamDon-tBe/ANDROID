@@ -109,11 +109,13 @@
 
                     <TextView
                         android:id="@+id/tv_my_page_title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginHorizontal="89dp"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
+                        android:maxLines="1"
                         android:text="@string/my_page_nickname"
                         android:textAppearance="@style/TextAppearance.DontBe.head_semi_18"
                         android:textColor="@color/white"

@@ -14,6 +14,14 @@ class NotificationViewHolder(
     private val binding: ItemNotificationFeedBinding,
     private val click: (NotiEntity, Int) -> Unit = { _, _ -> },
 ) : RecyclerView.ViewHolder(binding.root) {
+    private var item: NotiEntity? = null
+
+    init {
+        binding.root.setOnClickListener {
+            item?.let { it -> click(it, bindingAdapterPosition) }
+        }
+    }
+
     fun bind(data: NotiEntity) {
         with(binding) {
             val spannableText =
@@ -77,6 +85,9 @@ class NotificationViewHolder(
             tvNotificationFeed.text = spannableText
             val timeUtil = CalculateTime(binding.root.context)
             tvNotificationTime.text = timeUtil.getCalculateTime(data.time)
+
+            noti = data
+            executePendingBindings()
         }
     }
 

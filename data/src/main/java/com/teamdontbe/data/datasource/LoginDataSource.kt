@@ -5,5 +5,7 @@ import com.teamdontbe.data.dto.request.RequestLoginDto
 import com.teamdontbe.data.dto.response.ResponseLoginDto
 
 interface LoginDataSource {
-    suspend fun login(requestLogin: RequestLoginDto): BaseResponse<ResponseLoginDto>
+    suspend fun postLogin(requestLogin: RequestLoginDto): BaseResponse<ResponseLoginDto>
+
+    suspend fun getNickNameDoubleCheck(nickname: String): BaseResponse<Unit>
 }

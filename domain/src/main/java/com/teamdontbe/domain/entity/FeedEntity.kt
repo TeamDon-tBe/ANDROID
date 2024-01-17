@@ -11,4 +11,5 @@ data class FeedEntity(
     val commentNumber: Int,
     val contentText: String,
     val time: String,
+    val contentId: Int? = null,
 )

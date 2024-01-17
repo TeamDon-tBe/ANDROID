@@ -2,6 +2,10 @@ package com.teamdontbe.feature
 
 import android.content.ContentValues
 import android.view.View
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -9,17 +13,43 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingActivity
+import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.databinding.ActivityMainBinding
 import com.teamdontbe.feature.dialog.HomePostingRestrictionDialogFragment
+import com.teamdontbe.feature.notification.NotificationViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
+    private val notiViewModel by viewModels<NotificationViewModel>()
+
     override fun initView() {
         initKakaoUser()
         initMainBottomNavigation()
-        initMainBottomNaviBadge()
+        notiViewModel.getNotificationCount()
+        initObserve()
+    }
+
+    private fun initObserve() {
+        notiViewModel.getNotiCount.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> {
+                    if (it.data > 0) {
+                        initMainBottomNaviBadge()
+                    }
+                    else if (it.data == -1) {
+                        Timber.tag("noti").e("알맞지 않은 noti count get : ${it.data}")
+                    }
+                }
+
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
     }
 
     private fun initBottomNavPostingClickListener(navController: NavController) {

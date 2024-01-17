@@ -28,6 +28,7 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_home_profile"
+            imageUrl="@{feed.memberProfileUrl}"
             android:layout_width="44dp"
             android:layout_height="0dp"
             android:background="@color/gray_9"
@@ -54,7 +55,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="@{`투명도 -` + feed.memberGhost + `%  · ` + feed.time}"
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
             android:textColor="@color/gray_9"
             app:layout_constraintBottom_toBottomOf="@id/iv_home_profile"
@@ -110,36 +110,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btn_home_heart"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/ic_home_heart_default_gray_40_with_padding"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1"
-            app:layout_constraintEnd_toStartOf="@id/tv_home_heart_num"
-            app:layout_constraintHorizontal_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/tv_home_heart_num"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:gravity="start"
-            android:text="@{Integer.toString(feed.contentLikedNumber)}"
-            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
-            android:textColor="@color/gray_11"
-            app:layout_constraintBottom_toBottomOf="@id/btn_home_heart"
-            app:layout_constraintEnd_toStartOf="@id/btn_home_comment"
-            app:layout_constraintTop_toTopOf="@id/btn_home_heart"
-            tools:text="54" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
+        <ImageView
             android:id="@+id/btn_home_comment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
+            android:clickable="false"
             android:src="@drawable/ic_home_comment_default_gray_40_with_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
@@ -156,6 +131,31 @@
             android:textColor="@color/gray_11"
             app:layout_constraintBottom_toBottomOf="@id/btn_home_comment"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_home_comment"
+            tools:text="54" />
+
+        <ImageView
+            android:id="@+id/btn_home_heart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sel_home_heart"
+            app:layout_constraintBottom_toBottomOf="@id/tv_home_heart_num"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@id/tv_home_heart_num"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="@id/tv_home_heart_num" />
+
+        <TextView
+            android:id="@+id/tv_home_heart_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="@{Integer.toString(feed.contentLikedNumber)}"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+            android:textColor="@color/gray_11"
+            app:layout_constraintBottom_toBottomOf="@id/btn_home_comment"
+            app:layout_constraintEnd_toStartOf="@id/btn_home_comment"
             app:layout_constraintTop_toTopOf="@id/btn_home_comment"
             tools:text="54" />
     </androidx.constraintlayout.widget.ConstraintLayout>

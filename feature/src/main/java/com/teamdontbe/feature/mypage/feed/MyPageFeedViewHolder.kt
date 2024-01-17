@@ -4,11 +4,13 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
+import com.teamdontbe.feature.util.CalculateTime
 
 class MyPageFeedViewHolder(
     private val binding: ItemHomeFeedBinding,
     private val onClickKebabBtn: (FeedEntity) -> Unit,
     private val onItemClicked: (FeedEntity) -> Unit,
+    private val idFlag: Boolean,
 ) :
     RecyclerView.ViewHolder(binding.root) {
 
@@ -24,7 +26,12 @@ class MyPageFeedViewHolder(
     }
 
     fun onBind(data: FeedEntity) = with(binding) {
-        setVisibility()
+        if (idFlag) {
+            setVisibility()
+        }
+        tvHomeFeedTransparency.text = "투명도 ${data.memberGhost}% · ${
+            CalculateTime(root.context).getCalculateTime(data.time)
+        }"
         feed = data
         item = data
         executePendingBindings()

@@ -1,6 +1,7 @@
 package com.teamdontbe.data.repositoryimpl
 
 import com.teamdontbe.data.datasource.HomeDataSource
+import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.domain.repository.HomeRepository
 import kotlinx.coroutines.flow.Flow
@@ -19,6 +20,56 @@ class HomeRepositoryImpl
                         homeDataSource.getFeedList().data?.map { it.toFeedEntity() }
                     }
                 emit(result.getOrDefault(emptyList()))
+            }
+        }
+
+        override suspend fun getFeedLDetail(contentId: Int): Flow<FeedEntity?> {
+            return flow {
+                val result =
+                    runCatching {
+                        homeDataSource.getFeedDetail(contentId).data?.toFeedEntity()
+                    }
+                emit(result.getOrDefault(FeedEntity(-1, "", "", false, false, -1, -1, -1, "", "")))
+            }
+        }
+
+        override suspend fun getCommentList(contentId: Int): Flow<List<CommentEntity>?> {
+            return flow {
+                val result =
+                    runCatching {
+                        homeDataSource.getCommentList(contentId).data?.map { it.toCommentEntity() }
+                    }
+                emit(result.getOrDefault(emptyList()))
+            }
+        }
+
+        override suspend fun deleteFeed(contentId: Int): Flow<Boolean> {
+            return flow {
+                val result =
+                    runCatching {
+                        homeDataSource.deleteFeed(contentId).success
+                    }
+                emit(result.getOrDefault(false))
+            }
+        }
+
+        override suspend fun postFeedLiked(contentId: Int): Flow<Boolean> {
+            return flow {
+                val result =
+                    runCatching {
+                        homeDataSource.postFeedLiked(contentId).success
+                    }
+                emit(result.getOrDefault(false))
+            }
+        }
+
+        override suspend fun deleteFeedLiked(contentId: Int): Flow<Boolean> {
+            return flow {
+                val result =
+                    runCatching {
+                        homeDataSource.deleteFeedLiked(contentId).success
+                    }
+                emit(result.getOrDefault(false))
             }
         }
     }
