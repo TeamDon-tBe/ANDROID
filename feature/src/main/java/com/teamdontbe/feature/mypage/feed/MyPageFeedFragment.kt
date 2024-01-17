@@ -51,7 +51,7 @@ class MyPageFeedFragment(private val memberProfile: MyPageModel) :
         rvMyPagePosting.visibility = View.GONE
         viewMyPageNoFeedNickname.clNoFeed.visibility = View.VISIBLE
         viewMyPageNoFeedNickname.tvNoFeedNickname.text =
-            memberProfile.nickName ?: getString(R.string.my_page_nickname)
+            getString(R.string.my_page_no_feed_text, memberProfile.nickName)
     }
 
     private fun initFeedRecyclerView(feedEntity: List<FeedEntity>) {
