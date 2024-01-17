@@ -18,7 +18,7 @@ class MyPageRepositoryImpl
             val result = kotlin.runCatching {
                 myPageDataSource.getMyPageUserProfileSource(viewMemberId).data?.toMyPageUserProfileEntity()
             }
-            emit(result.getOrDefault(MyPageUserProfileEntity(0, "", "", "", 0)))
+            emit(result.getOrDefault(MyPageUserProfileEntity(-1, "", "", "", -1)))
         }
     }
 
