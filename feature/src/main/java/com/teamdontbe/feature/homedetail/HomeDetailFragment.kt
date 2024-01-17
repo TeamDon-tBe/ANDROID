@@ -122,9 +122,9 @@ class HomeDetailFragment :
                             deleteCommentPosition = position
                         }, onClickLikedBtn = { contentId, status ->
                             if (status) {
-                                homeViewModel.deleteFeedLiKED(contentId)
+                                homeViewModel.deleteCommentLiked(contentId)
                             } else {
-                                homeViewModel.postFeedLiKED(
+                                homeViewModel.postCommentLiked(
                                     contentId,
                                 )
                             }

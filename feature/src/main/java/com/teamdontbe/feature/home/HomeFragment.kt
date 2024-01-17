@@ -113,9 +113,9 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 )
             }, onClickLikedBtn = { contentId, status ->
                 if (status) {
-                    homeViewModel.deleteFeedLiKED(contentId)
+                    homeViewModel.deleteFeedLiked(contentId)
                 } else {
-                    homeViewModel.postFeedLiKED(
+                    homeViewModel.postFeedLiked(
                         contentId,
                     )
                 }
