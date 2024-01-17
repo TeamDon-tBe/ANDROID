@@ -58,4 +58,9 @@ interface HomeApiService {
         @Path(value = CONTENT_ID) contentId: Int,
         @Body request: RequestCommentPostingDto,
     ): BaseResponse<Unit>
+
+    @DELETE("/$API/$V1/$CONTENT/{$CONTENT_ID}")
+    suspend fun deleteComment(
+        @Path(value = CONTENT_ID) contentId: Int,
+    ): BaseResponse<Unit>
 }
