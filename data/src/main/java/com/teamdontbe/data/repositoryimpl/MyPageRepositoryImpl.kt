@@ -3,6 +3,7 @@ package com.teamdontbe.data.repositoryimpl
 import com.teamdontbe.data.datasource.MyPageDataSource
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.domain.entity.MyPageCommentEntity
+import com.teamdontbe.domain.entity.MyPageUserAccountInfoEntity
 import com.teamdontbe.domain.entity.MyPageUserProfileEntity
 import com.teamdontbe.domain.repository.MyPageRepository
 import kotlinx.coroutines.flow.Flow
@@ -44,6 +45,25 @@ class MyPageRepositoryImpl
             }
             emit(
                 result.getOrDefault(result.getOrDefault(emptyList())),
+            )
+        }
+    }
+
+    override suspend fun getMyPageUserAccountInfo(): Flow<MyPageUserAccountInfoEntity?> {
+        return flow {
+            val result = kotlin.runCatching {
+                myPageDataSource.getMyPageUserAccountInfo().data?.toMyPageUserAccountInfoEntity()
+            }
+            emit(
+                result.getOrDefault(
+                    MyPageUserAccountInfoEntity(
+                        "",
+                        -1,
+                        "",
+                        "",
+                        "",
+                    ),
+                ),
             )
         }
     }
