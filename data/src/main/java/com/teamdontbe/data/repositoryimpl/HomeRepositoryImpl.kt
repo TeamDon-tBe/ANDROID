@@ -62,4 +62,14 @@ class HomeRepositoryImpl
                 emit(result.getOrDefault(false))
             }
         }
+
+        override suspend fun deleteFeedLiked(contentId: Int): Flow<Boolean> {
+            return flow {
+                val result =
+                    runCatching {
+                        homeDataSource.deleteFeedLiked(contentId).success
+                    }
+                emit(result.getOrDefault(false))
+            }
+        }
     }
