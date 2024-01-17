@@ -3,7 +3,6 @@ package com.teamdontbe.feature
 import android.content.ContentValues
 import android.view.View
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -13,10 +12,13 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingActivity
+import com.teamdontbe.core_ui.util.intent.getParcelable
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.databinding.ActivityMainBinding
 import com.teamdontbe.feature.dialog.HomePostingRestrictionDialogFragment
 import com.teamdontbe.feature.notification.NotificationViewModel
+import com.teamdontbe.feature.signup.SignUpAgreeActivity.Companion.SIGN_UP_AGREE
+import com.teamdontbe.feature.signup.UserProfileModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,6 +33,15 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         initMainBottomNavigation()
         notiViewModel.getNotificationCount()
         initObserve()
+        initGetUserProfile()
+    }
+
+    private fun initGetUserProfile() {
+        val userProfileInfo =
+            intent.getParcelable(SIGN_UP_AGREE, UserProfileModel::class.java)
+
+        if (userProfileInfo != null) {
+        }
     }
 
     private fun initObserve() {
@@ -40,8 +51,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 is UiState.Success -> {
                     if (it.data > 0) {
                         initMainBottomNaviBadge()
-                    }
-                    else if (it.data == -1) {
+                    } else if (it.data == -1) {
                         Timber.tag("noti").e("알맞지 않은 noti count get : ${it.data}")
                     }
                 }
