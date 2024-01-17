@@ -43,7 +43,9 @@ class HomeDetailFragment :
     private lateinit var homeDetailFeedCommentAdapter: HomeDetailCommentAdapter
 
     override fun initView() {
-        homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
+        if ((requireArguments().getInt(KEY_NOTI_DATA)) > 0) {
+            homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
+        }
         getHomeFeedDetailData()?.toFeedEntity()?.contentId?.let { homeViewModel.getCommentList(it) }
         statusBarColorOf(R.color.white)
         initBackBtnClickListener()
