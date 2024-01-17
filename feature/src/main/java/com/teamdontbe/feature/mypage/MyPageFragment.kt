@@ -29,8 +29,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private val viewModel by viewModels<MyPageViewModel>()
 
     override fun initView() {
-        val memberID = 2
-//        val memberID = viewModel.getMemberId() ?: -1
+//        val memberID = 2
+        val memberID = viewModel.getMemberId() ?: -1
         initMyPageCollapseAppearance()
         initMyPageStateObserve(memberID)
         initMyPageTabLayout(memberID)
