@@ -3,7 +3,7 @@ package com.teamdontbe.feature.homedetail
 import android.os.Build
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -19,6 +19,7 @@ import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.comment.UploadingSnackBar
 import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
+import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
 import com.teamdontbe.feature.home.Feed
@@ -29,6 +30,7 @@ import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.util.Debouncer
+import com.teamdontbe.feature.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -38,8 +40,10 @@ class HomeDetailFragment :
     BindingFragment<FragmentHomeDetailBinding>(R.layout.fragment_home_detail) {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private val commentDebouncer = Debouncer<String>()
-    private val homeViewModel by viewModels<HomeViewModel>()
+    private val homeViewModel by activityViewModels<HomeViewModel>()
     private var contentId: Int = -1
+
+    private var deleteCommentPosition: Int = -1
 
     private lateinit var homeDetailFeedAdapter: HomeAdapter
     private lateinit var homeDetailFeedCommentAdapter: HomeDetailCommentAdapter
@@ -65,7 +69,7 @@ class HomeDetailFragment :
                 feedData.contentId?.let {
                     initBottomSheet(
                         feedData.memberId == homeViewModel.getMemberId(),
-                        it,
+                        it, false,
                     )
                 }
             }).apply {
@@ -87,7 +91,7 @@ class HomeDetailFragment :
                             feedData.contentId?.let {
                                 initBottomSheet(
                                     feedData.memberId == homeViewModel.getMemberId(),
-                                    it,
+                                    it, false,
                                 )
                             }
                         }).apply {
@@ -109,11 +113,12 @@ class HomeDetailFragment :
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
                     homeDetailFeedCommentAdapter =
-                        HomeDetailCommentAdapter(onClickKebabBtn = { feedData, positoin ->
+                        HomeDetailCommentAdapter(onClickKebabBtn = { feedData, position ->
                             initBottomSheet(
                                 feedData.memberId == homeViewModel.getMemberId(),
-                                contentId,
+                                contentId, true,
                             )
+                            deleteCommentPosition = position
                         }).apply {
                             submitList(it.data)
                         }
@@ -140,6 +145,30 @@ class HomeDetailFragment :
                 is UiState.Failure -> Unit
             }
         }.launchIn(lifecycleScope)
+
+        homeViewModel.openDeleteCommentDialog.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                initDeleteCommentDialog(it)
+            },
+        )
+
+        homeViewModel.deleteComment.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> {
+                    if (deleteCommentPosition != -1) {
+                        homeDetailFeedCommentAdapter.deleteItem(deleteCommentPosition)
+                        deleteCommentPosition = -1
+                    }
+                    val dialog = DeleteCompleteDialogFragment()
+                    dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+                }
+
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
     }
 
     private fun handleCommentPostingSuccess() {
@@ -154,8 +183,9 @@ class HomeDetailFragment :
     private fun initBottomSheet(
         isMember: Boolean,
         contentId: Int,
+        isComment: Boolean,
     ) {
-        HomeBottomSheet(isMember, contentId).show(
+        HomeBottomSheet(isMember, contentId, isComment).show(
             parentFragmentManager,
             HomeFragment.HOME_BOTTOM_SHEET,
         )
@@ -266,17 +296,19 @@ class HomeDetailFragment :
                 getString(R.string.tv_delete_with_title_dialog_comment),
                 false,
                 contentId,
+                true,
             )
         dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
     }
 
-    private fun initDeleteDialog(contentId: Int) {
+    private fun initDeleteCommentDialog(contentId: Int) {
         val dialog =
             DeleteWithTitleDialogFragment(
-                getString(R.string.tv_delete_with_title_delete_dialog),
-                getString(R.string.tv_delete_with_title_delete_content_dialog),
+                getString(R.string.tv_delete_with_title_delete_comment_dialog),
+                getString(R.string.tv_delete_with_title_delete_comment_content_dialog),
                 true,
                 contentId,
+                true,
             )
         dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
     }

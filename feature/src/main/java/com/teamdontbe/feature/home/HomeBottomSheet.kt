@@ -8,7 +8,11 @@ import com.teamdontbe.feature.databinding.BottomsheetComplaintDeleteBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeBottomSheet(private val isMember: Boolean, private val contentId: Int) :
+class HomeBottomSheet(
+    private val isMember: Boolean,
+    private val contentId: Int,
+    private val isComment: Boolean,
+) :
     BindingBottomSheetFragment<BottomsheetComplaintDeleteBinding>(R.layout.bottomsheet_complaint_delete) {
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
@@ -38,7 +42,13 @@ class HomeBottomSheet(private val isMember: Boolean, private val contentId: Int)
 
     private fun initBottomSheetDeleteClickListener() {
         binding.tvDeleteTitle.setOnClickListener {
-            homeViewModel.openDeleteDialog(contentId)
+            if (isComment) {
+                //  homeViewModel.openCommentDeleteDialog(contentId)
+            } else {
+                homeViewModel.openDeleteDialog(
+                    contentId,
+                )
+            }
             dismiss()
         }
     }

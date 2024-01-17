@@ -44,6 +44,9 @@ class HomeViewModel
         private val _openDeleteDialog = MutableLiveData<Event<Int>>()
         val openDeleteDialog: LiveData<Event<Int>> get() = _openDeleteDialog
 
+        private val _openDeleteCommentDialog = MutableLiveData<Event<Int>>()
+        val openDeleteCommentDialog: LiveData<Event<Int>> get() = _openDeleteCommentDialog
+
         private val _postFeedLiked = MutableSharedFlow<UiState<Boolean>>()
         val postFeedLiked: SharedFlow<UiState<Boolean>> get() = _postFeedLiked
 
@@ -98,6 +101,10 @@ class HomeViewModel
             _openDeleteDialog.value = Event(contentId)
         }
 
+        fun openCommentDeleteDialog(contentId: Int) {
+            _openDeleteDialog.value = Event(contentId)
+        }
+
         fun postFeedLiKED(contentId: Int) =
             viewModelScope.launch {
                 homeRepository.postFeedLiked(contentId).collectLatest {
@@ -130,5 +137,11 @@ class HomeViewModel
                     _deleteComment.value = UiState.Success(it)
                 }
                 _deleteComment.value = UiState.Loading
+            }
+
+        fun postCommentLiKED(commentId: Int) =
+            viewModelScope.launch {
+                homeRepository.postCommentLiked(commentId).collectLatest {
+                }
             }
     }

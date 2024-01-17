@@ -30,6 +30,10 @@ class HomeDetailCommentAdapter(
         holder.bind(currentList[position], itemCount)
     }
 
+    fun deleteItem(position: Int) {
+        submitList(currentList.toMutableList().apply { removeAt(position) })
+    }
+
     companion object {
         private val HomeAdapterDiffCallback =
             ItemDiffCallback<CommentEntity>(

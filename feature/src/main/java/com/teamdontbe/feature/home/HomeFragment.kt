@@ -82,7 +82,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 feedData.contentId?.let {
                     initBottomSheet(
                         feedData.memberId == homeViewModel.getMemberId(),
-                        it,
+                        it, false,
                     )
                     deleteFeedPosition = positoin
                 }
@@ -114,14 +114,22 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 submitList(feedData)
             }
         binding.rvHome.adapter = homeAdapter
-        if (binding.rvHome.itemDecorationCount == 0) binding.rvHome.addItemDecoration(FeedItemDecorator(requireContext()))
+        if (binding.rvHome.itemDecorationCount == 0) {
+            binding.rvHome.addItemDecoration(
+                FeedItemDecorator(requireContext()),
+            )
+        }
     }
 
     private fun initBottomSheet(
         isMember: Boolean,
         contentId: Int,
+        isComment: Boolean,
     ) {
-        HomeBottomSheet(isMember, contentId).show(parentFragmentManager, HOME_BOTTOM_SHEET)
+        HomeBottomSheet(isMember, contentId, isComment).show(
+            parentFragmentManager,
+            HOME_BOTTOM_SHEET,
+        )
     }
 
     private fun navigateToHomeDetailFragment(feedData: Feed) {
@@ -138,6 +146,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 getString(R.string.tv_delete_with_title_dialog_content),
                 false,
                 contentId,
+                false,
             )
         dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
     }
@@ -149,6 +158,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 getString(R.string.tv_delete_with_title_delete_content_dialog),
                 true,
                 contentId,
+                false,
             )
         dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
     }
