@@ -24,4 +24,5 @@
     <color name="sign_up_green_must">#59CD9C</color>
     <color name="progress_start">#7AEBA8</color>
     <color name="progress_end">#D90E0E0E</color>
+    <color name="gray_1_90per">#E6F6F6F7</color>
 </resources>
