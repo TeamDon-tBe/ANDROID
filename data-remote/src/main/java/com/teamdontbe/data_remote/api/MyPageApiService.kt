@@ -1,5 +1,6 @@
 package com.teamdontbe.data_remote.api
 
+import ResponseMyPageUserAccountInfoDto
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.response.ResponseFeedDto
 import com.teamdontbe.data.dto.response.ResponseMyPageCommentDto
@@ -16,6 +17,7 @@ interface MyPageApiService {
         const val MEMBER = "member"
         const val CONTENTS = "contents"
         const val COMMENTS = "comments"
+        const val MEMBER_DATA = "member-data"
     }
 
     @GET("/$API/$V1/$VIEW_MEMBER/{$VIEW_MEMBER_ID}")
@@ -32,4 +34,7 @@ interface MyPageApiService {
     suspend fun getMyPageCommentList(
         @Path(VIEW_MEMBER_ID) viewMemberID: Int,
     ): BaseResponse<List<ResponseMyPageCommentDto>>
+
+    @GET("/$API/$V1/$MEMBER_DATA")
+    suspend fun getMyPageUserAccountInfo(): BaseResponse<ResponseMyPageUserAccountInfoDto>
 }
