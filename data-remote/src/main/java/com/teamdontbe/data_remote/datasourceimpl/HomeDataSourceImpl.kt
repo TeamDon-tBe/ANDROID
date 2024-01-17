@@ -55,4 +55,8 @@ class HomeDataSourceImpl
                 RequestCommentLikedDto("test", "commentLiked"),
             )
         }
+
+        override suspend fun deleteCommentLiked(commentId: Int): BaseResponse<Unit> {
+            return homeApiService.deleteCommentLiked(commentId)
+        }
     }
