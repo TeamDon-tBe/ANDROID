@@ -16,15 +16,24 @@
             layout="@layout/view_appbar"
             app:title="@{@string/notification_appbar_title}" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_notification"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingHorizontal="16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbar_notification"
-            tools:listitem="@layout/item_notification_feed" />
+            app:layout_constraintTop_toBottomOf="@id/appbar_notification">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_notification"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingHorizontal="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appbar_notification"
+                tools:listitem="@layout/item_notification_feed" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <LinearLayout
             android:id="@+id/layout_notification_empty"

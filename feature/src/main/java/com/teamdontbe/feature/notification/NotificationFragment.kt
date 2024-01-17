@@ -31,6 +31,15 @@ class NotificationFragment :
         notiViewModel.getNotificationList()
         initObserveList()
         initObserveCheck()
+
+        initSwipeRefreshData()
+    }
+
+    private fun initSwipeRefreshData() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            notiViewModel.getNotificationList()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun initObserveCheck() {
@@ -81,14 +90,18 @@ class NotificationFragment :
                 }).apply {
                     submitList(notiData)
                 }
-            binding.rvNotification.addItemDecoration(NotificationItemDecorator(requireContext()))
+            if (binding.rvNotification.itemDecorationCount == 0) {
+                binding.rvNotification.addItemDecoration(
+                    NotificationItemDecorator(requireContext()),
+                )
+            }
         }
     }
 
     private fun navigateToHomeDetailFragment(notiData: NotiEntity) {
         findNavController().navigate(
             R.id.action_notification_to_home_detail,
-            bundleOf(KEY_NOTI_DATA to notiData.notificationTriggerId)
+            bundleOf(KEY_NOTI_DATA to notiData.notificationTriggerId),
         )
     }
 

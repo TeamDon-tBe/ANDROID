@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.fragment.ktx)
     implementation(libs.splash.screen)
     implementation(libs.paging)
+    implementation(libs.swipe.refresh.layout)
 
     // Third Party
     implementation(libs.coil.core)
