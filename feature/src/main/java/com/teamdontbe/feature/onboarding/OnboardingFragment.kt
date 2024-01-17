@@ -2,7 +2,7 @@ package com.teamdontbe.feature.onboarding
 
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -16,12 +16,11 @@ import com.teamdontbe.feature.posting.PostingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 @AndroidEntryPoint
 class OnboardingFragment :
     BindingFragment<FragmentOnboardingBinding>(R.layout.fragment_onboarding) {
-    private val postingViewModel by viewModels<PostingViewModel>()
+    private val postingViewModel by activityViewModels<PostingViewModel>()
     private var _onboardingAdapter: OnboardingAdapter? = null
     private val onboardingAdapter
         get() = requireNotNull(_onboardingAdapter) { "adapter 초기화 안됨" }
@@ -44,8 +43,7 @@ class OnboardingFragment :
             }
         }.launchIn(lifecycleScope)
 
-        postingViewModel.introduction.observe(this) {
-            Timber.tag("ttt").d(it)
+        postingViewModel.introduction.observe(viewLifecycleOwner) {
             initBtnOnboardingStartClickListener(it)
         }
     }
