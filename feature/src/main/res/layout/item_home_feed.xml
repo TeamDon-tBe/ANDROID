@@ -111,31 +111,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/btn_home_heart"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/sel_home_heart"
-            app:layout_constraintBottom_toBottomOf="@id/tv_home_heart_num"
-            app:layout_constraintDimensionRatio="1"
-            app:layout_constraintEnd_toStartOf="@id/tv_home_heart_num"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintTop_toTopOf="@id/tv_home_heart_num" />
-
-        <TextView
-            android:id="@+id/tv_home_heart_num"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingEnd="6dp"
-            android:text="@{Integer.toString(feed.contentLikedNumber)}"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
-            android:textColor="@color/gray_11"
-            app:layout_constraintBottom_toBottomOf="@id/btn_home_comment"
-            app:layout_constraintEnd_toStartOf="@id/btn_home_comment"
-            app:layout_constraintTop_toTopOf="@id/btn_home_comment"
-            tools:text="54" />
-
-        <ImageView
             android:id="@+id/btn_home_comment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -156,6 +131,31 @@
             android:textColor="@color/gray_11"
             app:layout_constraintBottom_toBottomOf="@id/btn_home_comment"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_home_comment"
+            tools:text="54" />
+
+        <ImageView
+            android:id="@+id/btn_home_heart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sel_home_heart"
+            app:layout_constraintBottom_toBottomOf="@id/tv_home_heart_num"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@id/tv_home_heart_num"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="@id/tv_home_heart_num" />
+
+        <TextView
+            android:id="@+id/tv_home_heart_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="@{Integer.toString(feed.contentLikedNumber)}"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+            android:textColor="@color/gray_11"
+            app:layout_constraintBottom_toBottomOf="@id/btn_home_comment"
+            app:layout_constraintEnd_toStartOf="@id/btn_home_comment"
             app:layout_constraintTop_toTopOf="@id/btn_home_comment"
             tools:text="54" />
     </androidx.constraintlayout.widget.ConstraintLayout>
