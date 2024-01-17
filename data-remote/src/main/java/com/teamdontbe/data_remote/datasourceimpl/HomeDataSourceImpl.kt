@@ -31,4 +31,8 @@ class HomeDataSourceImpl
         override suspend fun postFeedLiked(contentId: Int): BaseResponse<Unit> {
             return homeApiService.postLiked(contentId)
         }
+
+        override suspend fun deleteFeedLiked(contentId: Int): BaseResponse<Unit> {
+            return homeApiService.deleteLiked(contentId)
+        }
     }
