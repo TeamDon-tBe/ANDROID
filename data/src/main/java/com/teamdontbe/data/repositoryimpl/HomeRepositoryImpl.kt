@@ -52,4 +52,14 @@ class HomeRepositoryImpl
                 emit(result.getOrDefault(false))
             }
         }
+
+        override suspend fun postFeedLiked(contentId: Int): Flow<Boolean> {
+            return flow {
+                val result =
+                    runCatching {
+                        homeDataSource.postFeedLiked(contentId).success
+                    }
+                emit(result.getOrDefault(false))
+            }
+        }
     }
