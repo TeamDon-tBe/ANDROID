@@ -105,11 +105,13 @@ class SignUpProfileActivity :
 
     private fun nextBtnObserve(inputNickName: String, flag: Int) {
         binding.btnSignUpAgreeNext.setOnClickListener {
+            val allowedCheck = intent.getBooleanExtra(SIGN_UP_AGREE, false)
+//            val inputNickName = binding.etSignUpAgreeIntroduce.text.toString()
             viewModel.isBtnSelected.observe(this) {
                 if (it) {
                     viewModel.patchUserProfileEdit(
                         inputNickName,
-                        intent.getBooleanExtra(SIGN_UP_AGREE, false),
+                        allowedCheck,
                         binding.etSignUpAgreeIntroduce.text.toString(),
                         "",
                     )
@@ -119,10 +121,34 @@ class SignUpProfileActivity :
                 0 -> finish()
 
                 1 -> {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                    viewModel.setUserNickName(inputNickName)
+
+                    val userProfile = setUpUserProfile(
+                        inputNickName,
+                        allowedCheck,
+                    )
+                    navigateToMainAcitivity(userProfile)
                 }
             }
         }
+    }
+
+    private fun setUpUserProfile(
+        inputNickName: String,
+        allowedCheck: Boolean,
+    ): UserProfileModel {
+        return UserProfileModel(
+            inputNickName,
+            allowedCheck,
+            inputNickName,
+            "",
+        )
+    }
+
+    private fun navigateToMainAcitivity(userProfile: UserProfileModel) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra(SIGN_UP_AGREE, userProfile)
+        startActivity(intent)
+        finish()
     }
 }
