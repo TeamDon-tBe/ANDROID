@@ -12,4 +12,8 @@ interface HomeRepository {
     suspend fun getCommentList(contentId: Int): Flow<List<CommentEntity>?>
 
     suspend fun deleteFeed(contentId: Int): Flow<Boolean>
+
+    suspend fun postFeedLiked(contentId: Int): Flow<Boolean>
+
+    suspend fun deleteFeedLiked(contentId: Int): Flow<Boolean>
 }
