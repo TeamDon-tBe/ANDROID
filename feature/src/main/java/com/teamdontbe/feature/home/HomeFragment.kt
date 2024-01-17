@@ -1,7 +1,7 @@
 package com.teamdontbe.feature.home
 
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,15 +13,18 @@ import com.teamdontbe.feature.databinding.FragmentHomeBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
 import com.teamdontbe.feature.posting.PostingFragment
+import com.teamdontbe.feature.util.EventObserver
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
-    private val homeViewModel by viewModels<HomeViewModel>()
+    private val homeViewModel by activityViewModels<HomeViewModel>()
+
+    private lateinit var homeAdapter: HomeAdapter
+    private var deleteFeedPosition: Int = -1
 
     override fun initView() {
         homeViewModel.getFeedList()
@@ -45,6 +48,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
+                    if (deleteFeedPosition != -1) {
+                        homeAdapter.deleteItem(deleteFeedPosition)
+                        deleteFeedPosition = -1
+                    }
                     val dialog = DeleteCompleteDialogFragment()
                     dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
                 }
@@ -54,41 +61,30 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             }
         }.launchIn(lifecycleScope)
 
-        homeViewModel.openComplaintDialog.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> {
-                    initComplaintDialog(it.data)
-                    Timber.d("ttt", it)
-                }
+        homeViewModel.openDeleteDialog.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                initDeleteDialog(it)
+            },
+        )
 
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
-
-        homeViewModel.openDeleteDialog.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> {
-                    initDeleteDialog(it.data)
-                    Timber.d("ttt", it)
-                }
-
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
+        homeViewModel.openComplaintDialog.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                initComplaintDialog(it)
+            },
+        )
     }
 
     private fun initHomeAdapter(feedData: List<FeedEntity>) {
-        binding.rvHome.adapter =
+        homeAdapter =
             HomeAdapter(onClickKebabBtn = { feedData, positoin ->
                 feedData.contentId?.let {
                     initBottomSheet(
                         feedData.memberId == homeViewModel.getMemberId(),
                         it,
                     )
+                    deleteFeedPosition = positoin
                 }
             }, onClickToNavigateToHomeDetail = { feedData, position ->
                 navigateToHomeDetailFragment(
@@ -109,7 +105,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             }).apply {
                 submitList(feedData)
             }
-
+        binding.rvHome.adapter = homeAdapter
         binding.rvHome.addItemDecoration(FeedItemDecorator(requireContext()))
     }
 
@@ -130,8 +126,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initComplaintDialog(contentId: Int) {
         val dialog =
             DeleteWithTitleDialogFragment(
-                "신고하시겠어요?",
-                "해당 유저 혹은 게시글을 신고하시려면 신고하기 버튼을 눌러주세요.",
+                getString(R.string.tv_delete_with_title_complain_dialog),
+                getString(R.string.tv_delete_with_title_dialog_content),
                 false,
                 contentId,
             )
@@ -141,8 +137,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initDeleteDialog(contentId: Int) {
         val dialog =
             DeleteWithTitleDialogFragment(
-                "게시글을 삭제하시겠어요?",
-                "삭제된 게시글은 영구히 사라져요.",
+                getString(R.string.tv_delete_with_title_delete_dialog),
+                getString(R.string.tv_delete_with_title_delete_content_dialog),
                 true,
                 contentId,
             )

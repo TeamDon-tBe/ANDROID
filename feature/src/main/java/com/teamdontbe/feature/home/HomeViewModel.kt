@@ -1,5 +1,7 @@
 package com.teamdontbe.feature.home
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
@@ -7,6 +9,7 @@ import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.domain.repository.HomeRepository
 import com.teamdontbe.domain.repository.UserInfoRepository
+import com.teamdontbe.feature.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +17,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,11 +38,11 @@ class HomeViewModel
         private val _deleteFeed = MutableSharedFlow<UiState<Boolean>>()
         val deleteFeed: SharedFlow<UiState<Boolean>> = _deleteFeed
 
-        private val _openComplaintDialog = MutableSharedFlow<UiState<Int>>()
-        val openComplaintDialog: SharedFlow<UiState<Int>> = _openComplaintDialog
+        private val _openComplaintDialog = MutableLiveData<Event<Int>>()
+        val openComplaintDialog: LiveData<Event<Int>> get() = _openComplaintDialog
 
-        private val _openDeleteDialog = MutableSharedFlow<UiState<Int>>()
-        val openDeleteDialog: SharedFlow<UiState<Int>> = _openComplaintDialog
+        private val _openDeleteDialog = MutableLiveData<Event<Int>>()
+        val openDeleteDialog: LiveData<Event<Int>> get() = _openDeleteDialog
 
         fun getFeedList() =
             viewModelScope.launch {
@@ -77,17 +79,10 @@ class HomeViewModel
         fun getMemberId() = userInfoRepository.getMemberId()
 
         fun openComplaintDialog(contentId: Int) {
-            Timber.tag("ttt").d("찍힘")
-            viewModelScope.launch {
-                _openComplaintDialog.emit(UiState.Success(contentId))
-                Timber.tag("ttt").d(contentId.toString())
-            }
+            _openComplaintDialog.value = Event(contentId)
         }
 
         fun openDeleteDialog(contentId: Int) {
-            Timber.tag("ttt").d("찍힘")
-            viewModelScope.launch {
-                _openDeleteDialog.emit(UiState.Success(contentId))
-            }
+            _openDeleteDialog.value = Event(contentId)
         }
     }

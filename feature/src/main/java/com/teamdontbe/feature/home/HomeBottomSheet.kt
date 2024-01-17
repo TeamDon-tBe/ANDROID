@@ -1,7 +1,7 @@
 package com.teamdontbe.feature.home
 
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.BottomsheetComplaintDeleteBinding
@@ -10,7 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeBottomSheet(private val isMember: Boolean, private val contentId: Int) :
     BindingBottomSheetFragment<BottomsheetComplaintDeleteBinding>(R.layout.bottomsheet_complaint_delete) {
-    private val homeViewModel by viewModels<HomeViewModel>()
+    private val homeViewModel by activityViewModels<HomeViewModel>()
 
     override fun initView() {
         setBottomSheetType()

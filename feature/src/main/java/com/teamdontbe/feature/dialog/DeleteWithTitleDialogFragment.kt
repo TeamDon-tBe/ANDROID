@@ -2,9 +2,7 @@ package com.teamdontbe.feature.dialog
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.teamdontbe.core_ui.base.BindingDialogFragment
 import com.teamdontbe.core_ui.util.context.dialogFragmentResize
 import com.teamdontbe.feature.R
@@ -18,16 +16,8 @@ class DeleteWithTitleDialogFragment(
     val content: String,
     private val isMember: Boolean,
     private val contentId: Int,
-) :
-    BindingDialogFragment<FragmentDeleteWithTitleDialogBinding>(R.layout.fragment_delete_with_title_dialog) {
-    private val homeViewModel by viewModels<HomeViewModel>()
-
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
-        super.onViewCreated(view, savedInstanceState)
-    }
+) : BindingDialogFragment<FragmentDeleteWithTitleDialogBinding>(R.layout.fragment_delete_with_title_dialog) {
+    private val homeViewModel by activityViewModels<HomeViewModel>()
 
     override fun initView() {
         initText()
@@ -37,7 +27,11 @@ class DeleteWithTitleDialogFragment(
 
     private fun initText() {
         binding.tvDeleteWithTitleDialog.text = title
-        binding.tvDeleteWithTitleDialog.text = content
+        binding.tvDeleteWithTitleDialogContent.text = content
+        if (!isMember) {
+            binding.btnDeleteWithTitleDialogDelete.text =
+                getString(R.string.tv_complaint_title)
+        }
     }
 
     override fun onResume() {
@@ -53,14 +47,9 @@ class DeleteWithTitleDialogFragment(
 
     private fun initDeleteButtonClickListener() {
         binding.btnDeleteWithTitleDialogDelete.setOnClickListener {
-            if (isMember) {
-                homeViewModel.deleteFeed(contentId)
-            } else {
-                binding.btnDeleteWithTitleDialogDelete.text = "신고하기"
-                navigateToComplaintWeb()
-            }
+            if (isMember) homeViewModel.deleteFeed(contentId) else navigateToComplaintWeb()
+            dismiss()
         }
-        dismiss()
     }
 
     private fun navigateToComplaintWeb() {
