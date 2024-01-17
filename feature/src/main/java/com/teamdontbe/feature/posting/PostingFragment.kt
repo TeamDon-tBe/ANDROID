@@ -1,6 +1,9 @@
 package com.teamdontbe.feature.posting
 
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -84,6 +87,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         )
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun initEditTextBtn() {
         binding.run {
             etPostingContent.doAfterTextChanged {
@@ -92,7 +96,20 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                         pbPostingInput.progressDrawable =
                             context?.drawableOf(R.drawable.shape_primary_line_10_ring)
                         pbPostingInput.progress = etPostingContent.text.toString().length
-                        btnPostingUpload.setImageResource(R.drawable.ic_uploading_activate)
+
+                        btnPostingUpload.backgroundTintList =
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    binding.root.context,
+                                    R.color.primary,
+                                ),
+                            )
+                        btnPostingUpload.setTextColor(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.black,
+                            ),
+                        )
                         initUploadingActivateBtnClickListener()
                     }
 
@@ -100,13 +117,38 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                         pbPostingInput.progressDrawable =
                             context?.drawableOf(R.drawable.shape_error_line_10_ring)
                         pbPostingInput.progress = etPostingContent.text.toString().length
-                        btnPostingUpload.setImageResource(R.drawable.ic_uploading_deactivate)
+
+                        btnPostingUpload.backgroundTintList =
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    binding.root.context,
+                                    R.color.gray_3,
+                                ),
+                            )
+                        btnPostingUpload.setTextColor(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.gray_9,
+                            ),
+                        )
                         initUploadingDeactivateBtnClickListener()
                     }
 
                     else -> {
                         pbPostingInput.progress = 0
-                        btnPostingUpload.setImageResource(R.drawable.ic_uploading_deactivate)
+                        btnPostingUpload.backgroundTintList =
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    binding.root.context,
+                                    R.color.gray_3,
+                                ),
+                            )
+                        btnPostingUpload.setTextColor(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.gray_9,
+                            ),
+                        )
                         initUploadingDeactivateBtnClickListener()
                     }
                 }

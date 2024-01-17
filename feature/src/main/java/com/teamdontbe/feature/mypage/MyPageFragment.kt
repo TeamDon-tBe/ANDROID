@@ -78,7 +78,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             initMyPageProgressBarUI(data.memberGhost)
             tvMyPageTitle.text = data.nickname
             tvMyPageDescription.text = data.memberIntro
-            loadImage(ivMyPageProfile, data.memberProfileUrl)
+            if (data.memberProfileUrl == "") {
+                ivMyPageProfile.setImageResource(R.drawable.ic_sign_up_profile_person)
+            } else {
+                loadImage(ivMyPageProfile, data.memberProfileUrl)
+            }
 
             memberProfile.nickName = data.nickname
         }
@@ -153,5 +157,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         const val COMMENT = "답글"
         const val TRANSPARENCY_INFO = "TransparencyInfo"
         const val MY_PAGE_BOTTOM_SHEET = "MyPageBottomSheet"
+    }
+
+    override fun onResume() {
+        val memberProfile: MyPageModel = setUpMemberProfile()
+        initMyPageStateObserve(memberProfile)
+        initMyPageTabLayout(memberProfile)
+        super.onResume()
     }
 }

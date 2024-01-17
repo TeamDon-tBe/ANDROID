@@ -13,10 +13,11 @@ class HomeViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FeedEntity) {
         with(binding) {
-            tvHomeFeedTransparency.text = "투명도 ${data.memberGhost}% · ${
-                CalculateTime(binding.root.context).getCalculateTime(data.time)
-            }"
-
+            if (data.time.isNotEmpty()) {
+                tvHomeFeedTransparency.text = "투명도 ${data.memberGhost}% · ${
+                    CalculateTime(binding.root.context).getCalculateTime(data.time)
+                }"
+            }
             btnHomeHeart.isSelected = data.isLiked
             feed = data
             executePendingBindings()

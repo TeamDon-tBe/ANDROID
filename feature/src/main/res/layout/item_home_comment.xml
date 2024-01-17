@@ -63,14 +63,15 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_comment_profile"
+                imageUrl="@{comment.memberProfileUrl}"
                 android:layout_width="42dp"
                 android:layout_height="0dp"
-                android:background="@color/gray_9"
                 android:scaleType="centerCrop"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintStart_toStartOf="@id/guide_comment_start_10"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                tools:background="@color/gray_9" />
 
             <TextView
                 android:id="@+id/tv_comment_user_name"
@@ -154,10 +155,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_comment_num" />
+                app:layout_constraintEnd_toStartOf="@id/tv_comment_like_num" />
 
             <TextView
-                android:id="@+id/tv_comment_num"
+                android:id="@+id/tv_comment_like_num"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"

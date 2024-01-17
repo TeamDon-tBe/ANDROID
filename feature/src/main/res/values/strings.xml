@@ -13,6 +13,7 @@
     <!-- 글 작성하기 화면 -->
     <string name="posting_appbar_title">새로운 글</string>
     <string name="posting_content_hint">무슨 고민이 있나요?...</string>
+    <string name="posting_btn">게시</string>
     <!-- 노티 화면 -->
     <string name="notification_appbar_title">알림</string>
     <string name="notification_feed_content_liked">님이 회원님의 글을 좋아합니다.</string>
@@ -133,13 +134,14 @@
     <string name="tv_complete_dialog">삭제 완료</string>
     <string name="tv_delete_with_title_complain_dialog">신고하시겠어요?</string>
     <string name="tv_delete_with_title_dialog_content">해당 유저 혹은 게시글을 신고하시려면\n신고하기 버튼을 눌러주세요.</string>
+    <string name="tv_delete_with_title_dialog_comment">"해당 유저 혹은 댓글을 신고하시려면\n 신고하기 버튼을 눌러주세요."</string>
     <string name="tv_complaint_title">신고하기</string>
     <string name="tv_delete_title">삭제하기</string>
     <string name="tv_delete_with_title_delete_dialog">게시글을 삭제하시겠어요?</string>
+    <string name="tv_delete_with_title_delete_comment_dialog">댓글을 삭제하시겠어요?</string>
     <string name="tv_delete_with_title_delete_content_dialog">삭제된 게시글은 영구히 사라져요.</string>
     <string name="tv_transparent_dialog_title">투명도 주기</string>
     <string name="tv_transparent_dialog_content">지금 누르신 투명도 기능이 Don\'t be를\n 더 온화한 커뮤니티를 만들기 위한 만들기 위한 일이겠죠?</string>
     <string name="btn_transparent_dialog_no">조금 더 고민하기</string>
-
-
+    <string name="tv_delete_with_title_delete_comment_content_dialog">삭제된 댓글은 영구히 사라져요.</string>
 </resources>

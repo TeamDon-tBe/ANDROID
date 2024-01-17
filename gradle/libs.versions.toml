@@ -23,6 +23,7 @@ splash-screen = "1.0.1"
 paging = "3.1.1"
 room = "2.5.0"
 security = "1.1.0-alpha06"
+swipe-refresh-layout = "1.1.0"
 
 # material + google
 material = "1.11.0"
@@ -76,6 +77,7 @@ room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 shared-security = { module = "androidx.security:security-crypto-ktx", version.ref = "security" }
+swipe-refresh-layout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swipe-refresh-layout" }
 
 # dagger-hilt
 hilt = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt" }
