@@ -12,4 +12,6 @@ interface HomeDataSource {
     suspend fun getCommentList(contentId: Int): BaseResponse<List<ResponseCommentDto>>
 
     suspend fun deleteFeed(contentId: Int): BaseResponse<Unit>
+
+    suspend fun postFeedLiked(contentId: Int): BaseResponse<Unit>
 }
