@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_gray_02_line_10_rec"
             android:paddingVertical="26dp"
-            android:text="삭제 완료"
+            android:text="@string/tv_complete_dialog"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.DontBe.head_semi_18"
             app:layout_constraintEnd_toEndOf="parent"

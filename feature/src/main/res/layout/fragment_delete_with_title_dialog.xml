@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
-            android:text="신고하시겠어요?"
+            android:text="@string/tv_delete_with_title_complain_dialog"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,17 +27,18 @@
 
         <TextView
             android:id="@+id/tv_delete_with_title_dialog_content"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="12dp"
+            android:paddingHorizontal="10dp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/gray_11"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_delete_with_title_dialog"
-            tools:text="해당 유저 혹은 게시글을 신고하려면\n 신고하기 버튼을 눌러주세요." />
+            tools:text="@string/tv_delete_with_title_dialog_content" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_delete_with_title_dialog_cancel"
