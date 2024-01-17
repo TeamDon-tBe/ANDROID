@@ -111,4 +111,14 @@ class HomeRepositoryImpl
                 emit(result.getOrDefault(false))
             }
         }
+
+        override suspend fun deleteCommentLiked(commentId: Int): Flow<Boolean> {
+            return flow {
+                val result =
+                    runCatching {
+                        homeDataSource.deleteCommentLiked(commentId).success
+                    }
+                emit(result.getOrDefault(false))
+            }
+        }
     }
