@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.onboarding
 
 import android.view.View
+import android.view.WindowManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -36,6 +37,7 @@ class OnboardingFragment :
         initIvOnboardingBackClickListener()
         initObserve()
         initSkipTextClickListener()
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
     }
 
     private fun checkIsNewUser() {
@@ -134,6 +136,7 @@ class OnboardingFragment :
 
     override fun onDestroyView() {
         _onboardingAdapter = null
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         super.onDestroyView()
     }
 }
