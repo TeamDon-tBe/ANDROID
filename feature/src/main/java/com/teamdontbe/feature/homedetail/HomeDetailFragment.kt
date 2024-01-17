@@ -147,7 +147,7 @@ class HomeDetailFragment :
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
             View.VISIBLE
-        homeDetailFeedCommentAdapter.notifyCommentItem()
+        homeViewModel.getCommentList(contentId)
         UploadingSnackBar.make(binding.root).show()
     }
 

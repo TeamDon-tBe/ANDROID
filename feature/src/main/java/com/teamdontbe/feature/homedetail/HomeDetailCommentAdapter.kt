@@ -30,10 +30,6 @@ class HomeDetailCommentAdapter(
         holder.bind(currentList[position], itemCount)
     }
 
-    fun notifyCommentItem() {
-        submitList(currentList.toMutableList().apply { notifyItemInserted(currentList.size - 1) })
-    }
-
     companion object {
         private val HomeAdapterDiffCallback =
             ItemDiffCallback<CommentEntity>(
