@@ -38,6 +38,7 @@ class HomeDetailFragment :
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private val commentDebouncer = Debouncer<String>()
     private val homeViewModel by viewModels<HomeViewModel>()
+    private var contentId: Int = -1
 
     private lateinit var homeDetailFeedAdapter: HomeAdapter
     private lateinit var homeDetailFeedCommentAdapter: HomeDetailCommentAdapter
@@ -71,6 +72,8 @@ class HomeDetailFragment :
                     listOf(getHomeFeedDetailData()?.toFeedEntity()),
                 )
             }
+
+        contentId = getHomeFeedDetailData()?.contentId ?: -1
     }
 
     private fun initObserve() {
@@ -92,6 +95,7 @@ class HomeDetailFragment :
                             )
                         }
                     homeDetailFeedAdapter.notifyDataSetChanged()
+                    contentId = result.data.contentId ?: -1
                 }
 
                 is UiState.Empty -> Unit
@@ -122,6 +126,24 @@ class HomeDetailFragment :
                 is UiState.Failure -> Unit
             }
         }.launchIn(lifecycleScope)
+
+        homeViewModel.postCommentPosting.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> handleCommentPostingSuccess()
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun handleCommentPostingSuccess() {
+        requireContext().hideKeyboard(binding.root)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
+            View.VISIBLE
+        homeDetailFeedCommentAdapter.notifyCommentItem()
+        UploadingSnackBar.make(binding.root).show()
     }
 
     private fun initBottomSheet(
@@ -149,6 +171,7 @@ class HomeDetailFragment :
 
     private fun initInputEditTextClickListener() {
         binding.tvHomeDetailInput.setOnClickListener {
+            binding.bottomsheet.etCommentContent.text.clear()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
                 View.GONE
@@ -206,11 +229,10 @@ class HomeDetailFragment :
 
     private fun initUploadingBtnClickListener() {
         binding.bottomsheet.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
-            requireContext().hideKeyboard(binding.root)
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
-                View.VISIBLE
-            UploadingSnackBar.make(binding.root).show()
+            homeViewModel.postCommentPosting(
+                contentId,
+                binding.bottomsheet.etCommentContent.text.toString(),
+            )
         }
     }
 

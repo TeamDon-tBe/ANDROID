@@ -114,10 +114,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 submitList(feedData)
             }
         binding.rvHome.adapter = homeAdapter
-        val itemDecorator = FeedItemDecorator(requireContext())
-        if (binding.rvHome.itemDecorationCount == 0) {
-            binding.rvHome.addItemDecoration(itemDecorator)
-        }
+        if (binding.rvHome.itemDecorationCount == 0) binding.rvHome.addItemDecoration(FeedItemDecorator(requireContext()))
     }
 
     private fun initBottomSheet(

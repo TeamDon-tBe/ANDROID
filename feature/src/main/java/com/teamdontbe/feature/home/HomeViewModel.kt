@@ -50,6 +50,9 @@ class HomeViewModel
         private val _deleteFeedLiked = MutableSharedFlow<UiState<Boolean>>()
         val deleteFeedLiked: SharedFlow<UiState<Boolean>> get() = _deleteFeedLiked
 
+        private val _postCommentPosting = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+        val postCommentPosting: StateFlow<UiState<Boolean>> get() = _postCommentPosting
+
         fun getFeedList() =
             viewModelScope.launch {
                 homeRepository.getFeedList().collectLatest {
@@ -107,4 +110,14 @@ class HomeViewModel
                 }
                 _deleteFeedLiked.emit(UiState.Loading)
             }
+
+        fun postCommentPosting(
+            contentId: Int,
+            commentText: String,
+        ) = viewModelScope.launch {
+            homeRepository.postCommentPosting(contentId, commentText).collectLatest {
+                if (it != null) _postCommentPosting.value = UiState.Success(it) else UiState.Empty
+            }
+            _getFeedList.value = UiState.Loading
+        }
     }
