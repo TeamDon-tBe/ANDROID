@@ -1,6 +1,7 @@
 package com.teamdontbe.data_remote.api
 
 import com.teamdontbe.data.dto.BaseResponse
+import com.teamdontbe.data.dto.request.RequestCommentPostingDto
 import com.teamdontbe.data.dto.request.RequestFeedLikedDto
 import com.teamdontbe.data.dto.response.ResponseCommentDto
 import com.teamdontbe.data.dto.response.ResponseFeedDto
@@ -50,5 +51,11 @@ interface HomeApiService {
     @DELETE("/$API/$V1/$CONTENT/{$CONTENT_ID}/$UNLIKED")
     suspend fun deleteLiked(
         @Path(value = CONTENT_ID) contentId: Int,
+    ): BaseResponse<Unit>
+
+    @POST("/$API/$V1/$CONTENT/{$CONTENT_ID}/$COMMENT")
+    suspend fun postCommentPosting(
+        @Path(value = CONTENT_ID) contentId: Int,
+        @Body request: RequestCommentPostingDto,
     ): BaseResponse<Unit>
 }
