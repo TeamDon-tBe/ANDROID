@@ -26,4 +26,6 @@ interface HomeDataSource {
     suspend fun deleteComment(commentId: Int): BaseResponse<Unit>
 
     suspend fun postCommentLiked(commentId: Int): BaseResponse<Unit>
+
+    suspend fun deleteCommentLiked(commentId: Int): BaseResponse<Unit>
 }
