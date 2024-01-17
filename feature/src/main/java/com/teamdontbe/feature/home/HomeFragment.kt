@@ -102,6 +102,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                         feedData.contentId,
                     ),
                 )
+            }, onClickLikedBtn = { contentId, status ->
+                if (status) {
+                    homeViewModel.deleteFeedLiKED(contentId)
+                } else {
+                    homeViewModel.postFeedLiKED(
+                        contentId,
+                    )
+                }
             }).apply {
                 submitList(feedData)
             }
