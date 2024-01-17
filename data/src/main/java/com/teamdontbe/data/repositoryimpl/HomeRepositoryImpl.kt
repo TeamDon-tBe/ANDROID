@@ -1,6 +1,7 @@
 package com.teamdontbe.data.repositoryimpl
 
 import com.teamdontbe.data.datasource.HomeDataSource
+import com.teamdontbe.data.dto.request.RequestCommentPostingDto
 import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.domain.repository.HomeRepository
@@ -68,6 +69,22 @@ class HomeRepositoryImpl
                 val result =
                     runCatching {
                         homeDataSource.deleteFeedLiked(contentId).success
+                    }
+                emit(result.getOrDefault(false))
+            }
+        }
+
+        override suspend fun postCommentPosting(
+            contentId: Int,
+            commentText: String,
+        ): Flow<Boolean> {
+            return flow {
+                val result =
+                    runCatching {
+                        homeDataSource.postCommentPosting(
+                            contentId,
+                            RequestCommentPostingDto(commentText),
+                        ).success
                     }
                 emit(result.getOrDefault(false))
             }
