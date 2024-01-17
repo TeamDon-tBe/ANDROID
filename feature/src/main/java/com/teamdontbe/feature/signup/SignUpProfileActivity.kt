@@ -1,14 +1,18 @@
 package com.teamdontbe.feature.signup
 
+import android.content.Intent
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivitySignUpProfileBinding
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet.Companion.MY_PAGE_PROFILE
+import com.teamdontbe.feature.signup.SignUpAgreeActivity.Companion.SIGN_UP_AGREE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -21,16 +25,30 @@ class SignUpProfileActivity :
     override fun initView() {
         binding.vm = viewModel
 
-        initMyPageProfileAppBarTitle()
+        val flag = initMyPageProfileAppBarTitle()
         initUpdateErrorMessage()
-        initDoubleBtnClickListener()
+        initDoubleBtnClickListener(flag)
         initMyPageStateObserve()
     }
 
-    private fun initMyPageProfileAppBarTitle() {
-        intent.getStringExtra(MY_PAGE_PROFILE)?.let { myPageAppBarTitle ->
-            binding.appbarSignUp.tvAppbarTitle.text = myPageAppBarTitle
-            binding.btnSignUpAgreeNext.text = getString(R.string.my_page_profile_edit_completed)
+    private fun initMyPageProfileAppBarTitle(): Int {
+        return when {
+            intent.getStringExtra(MY_PAGE_PROFILE) != null -> {
+                val myPageAppBarTitle =
+                    intent.getStringExtra(MY_PAGE_PROFILE) ?: getString(R.string.my_page_nickname)
+                binding.appbarSignUp.tvAppbarTitle.text = myPageAppBarTitle
+                binding.btnSignUpAgreeNext.text = getString(R.string.my_page_profile_edit_completed)
+                0
+            }
+
+            intent.hasExtra(SIGN_UP_AGREE) -> {
+                binding.etSignUpAgreeIntroduce.visibility = View.INVISIBLE
+                binding.tvSignUpProfile.visibility = View.INVISIBLE
+                binding.tvSignUpProfileIntroduceNum.visibility = View.INVISIBLE
+                1
+            }
+
+            else -> 1
         }
     }
 
@@ -44,9 +62,11 @@ class SignUpProfileActivity :
         }
     }
 
-    private fun initDoubleBtnClickListener() {
+    private fun initDoubleBtnClickListener(flag: Int) {
         binding.btnSignUpProfileDoubleCheck.setOnClickListener {
-            viewModel.getNickNameDoubleCheck(binding.etSignUpProfileNickname.text.toString())
+            val inputNickName = binding.etSignUpProfileNickname.text.toString()
+            viewModel.getNickNameDoubleCheck(inputNickName)
+            nextBtnObserve(inputNickName, flag)
         }
     }
 
@@ -80,6 +100,29 @@ class SignUpProfileActivity :
         binding.tvSignUpAgreeMessage.apply {
             text = context.getString(messageResId)
             setTextColor(colorOf(textColorResId))
+        }
+    }
+
+    private fun nextBtnObserve(inputNickName: String, flag: Int) {
+        binding.btnSignUpAgreeNext.setOnClickListener {
+            viewModel.isBtnSelected.observe(this) {
+                if (it) {
+                    viewModel.patchUserProfileEdit(
+                        inputNickName,
+                        intent.getBooleanExtra(SIGN_UP_AGREE, false),
+                        binding.etSignUpAgreeIntroduce.text.toString(),
+                        "",
+                    )
+                }
+            }
+            when (flag) {
+                0 -> finish()
+
+                1 -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ package com.teamdontbe.data_remote.datasourceimpl
 import com.teamdontbe.data.datasource.LoginDataSource
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.request.RequestLoginDto
+import com.teamdontbe.data.dto.request.RequestProfileEditDto
 import com.teamdontbe.data.dto.response.ResponseLoginDto
 import com.teamdontbe.data_remote.api.LoginApiService
 import javax.inject.Inject
@@ -17,4 +18,7 @@ constructor(
 
     override suspend fun getNickNameDoubleCheck(nickname: String): BaseResponse<Unit> =
         loginApiService.nickNameDoubleCheck(nickname)
+
+    override suspend fun patchProfileEdit(requestProfileEdit: RequestProfileEditDto): BaseResponse<Unit> =
+        loginApiService.patchUserProfile(requestProfileEdit)
 }

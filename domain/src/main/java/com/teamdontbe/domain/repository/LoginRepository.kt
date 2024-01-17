@@ -7,4 +7,11 @@ interface LoginRepository {
     suspend fun postLogin(requestLogin: String): Flow<LoginEntity?>
 
     suspend fun getNickNameDoubleCheck(nickName: String): Flow<String>
+
+    suspend fun patchProfileEdit(
+        nickName: String,
+        allowed: Boolean,
+        intro: String,
+        url: String,
+    ): Flow<Boolean>
 }

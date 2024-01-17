@@ -44,7 +44,7 @@ class SignUpAgreeActivity :
     }
 
     private fun updateNextBtnState(childCheckBoxList: List<CheckBox>) {
-        val allChecked = childCheckBoxList.all { it.isChecked }
+        val allChecked = childCheckBoxList.take(3).all { it.isChecked }
         binding.btnSignUpAgreeNext.apply {
             isEnabled = allChecked
             if (isEnabled) {
@@ -56,6 +56,14 @@ class SignUpAgreeActivity :
     }
 
     private fun navigateUpToSignUpProfileActivity() {
-        startActivity(Intent(this, SignUpProfileActivity::class.java))
+        val intent = Intent(this, SignUpProfileActivity::class.java)
+        val isChild4Checked = binding.cbSignUpChild4.isChecked
+        intent.putExtra(SIGN_UP_AGREE, isChild4Checked)
+        startActivity(intent)
+        finish()
+    }
+
+    companion object {
+        const val SIGN_UP_AGREE = "signUpAgree"
     }
 }

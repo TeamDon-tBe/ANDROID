@@ -194,6 +194,7 @@
             android:text="@string/btn_onboarding_next"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
             android:textColor="@{vm.isBtnSelected ? @color/white : @color/gray_9}"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

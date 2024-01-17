@@ -2,6 +2,7 @@ package com.teamdontbe.data.repositoryimpl
 
 import com.teamdontbe.data.datasource.LoginDataSource
 import com.teamdontbe.data.dto.request.RequestLoginDto
+import com.teamdontbe.data.dto.request.RequestProfileEditDto
 import com.teamdontbe.domain.entity.LoginEntity
 import com.teamdontbe.domain.repository.LoginRepository
 import kotlinx.coroutines.flow.Flow
@@ -33,6 +34,28 @@ constructor(
                     loginDataSource.getNickNameDoubleCheck(nickName).message
                 }
             emit(result.getOrDefault(""))
+        }
+    }
+
+    override suspend fun patchProfileEdit(
+        nickName: String,
+        allowed: Boolean,
+        intro: String,
+        url: String,
+    ): Flow<Boolean> {
+        return flow {
+            val result =
+                runCatching {
+                    loginDataSource.patchProfileEdit(
+                        RequestProfileEditDto(
+                            nickName,
+                            allowed,
+                            intro,
+                            url,
+                        ),
+                    ).success
+                }
+            emit(result.getOrDefault(false))
         }
     }
 }
