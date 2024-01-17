@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpProfileViewModel
 @Inject constructor(private val loginRepository: LoginRepository) : ViewModel() {
-    private var _isBtnSelected = MutableLiveData<Boolean>(false)
+    private var _isBtnSelected = MutableLiveData<Boolean>()
     val isBtnSelected: LiveData<Boolean> get() = _isBtnSelected
 
     private var _isNickNameValid = MutableLiveData<Boolean>()
@@ -31,13 +31,31 @@ class SignUpProfileViewModel
     private val _nickNameDoubleState = MutableStateFlow<UiState<String>>(UiState.Empty)
     val nickNameDoubleState: StateFlow<UiState<String>> = _nickNameDoubleState
 
-    private var flag = false
+    private val _profileEditSuccess = MutableLiveData<Boolean>()
+    val profileEditSuccess: LiveData<Boolean> get() = _profileEditSuccess
+
+    init {
+        _isBtnSelected.value = false
+    }
+
+    fun patchUserProfileEdit(nickName: String, allowed: Boolean, intro: String, url: String) {
+        viewModelScope.launch {
+            loginRepository.patchProfileEdit(
+                nickName,
+                allowed,
+                intro,
+                url,
+            ).collectLatest {
+                _profileEditSuccess.value = it
+            }
+        }
+    }
 
     fun getNickNameDoubleCheck(nickName: String) {
         viewModelScope.launch {
             loginRepository.getNickNameDoubleCheck(nickName).collectLatest {
                 _nickNameDoubleState.value = UiState.Success(it)
-                flag = it.isEmpty()
+                _profileEditSuccess.value = it.isEmpty()
                 updateNextNameBtnValidity()
             }
             _nickNameDoubleState.value = UiState.Empty
@@ -59,7 +77,8 @@ class SignUpProfileViewModel
     }
 
     private fun updateNextNameBtnValidity() {
-        _isBtnSelected.value = (!flag && _isNickNameValid.value == true)
+        _isBtnSelected.value =
+            (!(_profileEditSuccess.value ?: false) && _isNickNameValid.value == true)
     }
 
     companion object {
