@@ -28,14 +28,30 @@ class NotificationFragment :
         statusBarColorOf(R.color.white)
         binding.appbarNotification.tvAppbarCancel.visibility = View.INVISIBLE
 
-        initObserve()
+        notiViewModel.getNotificationList()
+        initObserveList()
+        initObserveCheck()
     }
 
-    private fun initObserve() {
+    private fun initObserveCheck() {
+        notiViewModel.patchNotiCheck.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> Timber.tag("noti").i("patch 성공 : ${it.data}")
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun initObserveList() {
         notiViewModel.getNotiList.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> initNotificationAdapter(it.data)
+                is UiState.Success -> {
+                    initNotificationAdapter(it.data)
+                    notiViewModel.patchNotificationCheck()
+                }
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
