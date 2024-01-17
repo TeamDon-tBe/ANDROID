@@ -14,4 +14,6 @@ interface HomeDataSource {
     suspend fun deleteFeed(contentId: Int): BaseResponse<Unit>
 
     suspend fun postFeedLiked(contentId: Int): BaseResponse<Unit>
+
+    suspend fun deleteFeedLiked(contentId: Int): BaseResponse<Unit>
 }
