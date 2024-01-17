@@ -44,11 +44,20 @@ class HomeViewModel
         private val _openDeleteDialog = MutableLiveData<Event<Int>>()
         val openDeleteDialog: LiveData<Event<Int>> get() = _openDeleteDialog
 
+        private val _openDeleteCommentDialog = MutableLiveData<Event<Int>>()
+        val openDeleteCommentDialog: LiveData<Event<Int>> get() = _openDeleteCommentDialog
+
         private val _postFeedLiked = MutableSharedFlow<UiState<Boolean>>()
         val postFeedLiked: SharedFlow<UiState<Boolean>> get() = _postFeedLiked
 
         private val _deleteFeedLiked = MutableSharedFlow<UiState<Boolean>>()
         val deleteFeedLiked: SharedFlow<UiState<Boolean>> get() = _deleteFeedLiked
+
+        private val _postCommentPosting = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+        val postCommentPosting: StateFlow<UiState<Boolean>> get() = _postCommentPosting
+
+        private val _deleteComment = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+        val deleteComment: StateFlow<UiState<Boolean>> get() = _deleteComment
 
         fun getFeedList() =
             viewModelScope.launch {
@@ -92,6 +101,10 @@ class HomeViewModel
             _openDeleteDialog.value = Event(contentId)
         }
 
+        fun openCommentDeleteDialog(contentId: Int) {
+            _openDeleteDialog.value = Event(contentId)
+        }
+
         fun postFeedLiKED(contentId: Int) =
             viewModelScope.launch {
                 homeRepository.postFeedLiked(contentId).collectLatest {
@@ -106,5 +119,35 @@ class HomeViewModel
                     _deleteFeedLiked.emit(UiState.Success(it))
                 }
                 _deleteFeedLiked.emit(UiState.Loading)
+            }
+
+        fun postCommentPosting(
+            contentId: Int,
+            commentText: String,
+        ) = viewModelScope.launch {
+            homeRepository.postCommentPosting(contentId, commentText).collectLatest {
+                _postCommentPosting.value = UiState.Success(it)
+            }
+            _getFeedList.value = UiState.Loading
+        }
+
+        fun deleteComment(commentId: Int) =
+            viewModelScope.launch {
+                homeRepository.deleteComment(commentId).collectLatest {
+                    _deleteComment.value = UiState.Success(it)
+                }
+                _deleteComment.value = UiState.Loading
+            }
+
+        fun postCommentLiKED(commentId: Int) =
+            viewModelScope.launch {
+                homeRepository.postCommentLiked(commentId).collectLatest {
+                }
+            }
+
+        fun deleteCommentLiKED(commentId: Int) =
+            viewModelScope.launch {
+                homeRepository.deleteCommentLiked(commentId).collectLatest {
+                }
             }
     }

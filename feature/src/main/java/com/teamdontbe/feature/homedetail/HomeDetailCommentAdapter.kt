@@ -10,6 +10,7 @@ import com.teamdontbe.feature.homedetail.viewholder.HomeDetailCommentViewHolder
 
 class HomeDetailCommentAdapter(
     private val onClickKebabBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
+    private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
 ) :
     ListAdapter<CommentEntity, HomeDetailCommentViewHolder>(
             HomeAdapterDiffCallback,
@@ -20,7 +21,7 @@ class HomeDetailCommentAdapter(
     ): HomeDetailCommentViewHolder {
         val binding =
             ItemHomeCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return HomeDetailCommentViewHolder(binding, onClickKebabBtn)
+        return HomeDetailCommentViewHolder(binding, onClickKebabBtn, onClickLikedBtn)
     }
 
     override fun onBindViewHolder(
@@ -28,6 +29,10 @@ class HomeDetailCommentAdapter(
         position: Int,
     ) {
         holder.bind(currentList[position], itemCount)
+    }
+
+    fun deleteItem(position: Int) {
+        submitList(currentList.toMutableList().apply { removeAt(position) })
     }
 
     companion object {
