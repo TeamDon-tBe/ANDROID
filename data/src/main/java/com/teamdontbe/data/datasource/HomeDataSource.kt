@@ -22,4 +22,6 @@ interface HomeDataSource {
         contentId: Int,
         commentText: RequestCommentPostingDto,
     ): BaseResponse<Unit>
+
+    suspend fun deleteComment(contentId: Int): BaseResponse<Unit>
 }
