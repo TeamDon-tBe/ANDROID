@@ -83,7 +83,7 @@ class HomeRepositoryImpl
                     runCatching {
                         homeDataSource.postCommentPosting(
                             contentId,
-                            RequestCommentPostingDto(commentText),
+                            RequestCommentPostingDto(commentText, "comment"),
                         ).success
                     }
                 emit(result.getOrDefault(false))
