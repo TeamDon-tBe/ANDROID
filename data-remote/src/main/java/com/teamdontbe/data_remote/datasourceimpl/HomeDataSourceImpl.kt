@@ -43,4 +43,8 @@ class HomeDataSourceImpl
         ): BaseResponse<Unit> {
             return homeApiService.postCommentPosting(contentId, commentText)
         }
+
+        override suspend fun deleteComment(contentId: Int): BaseResponse<Unit> {
+            return homeApiService.deleteComment(contentId)
+        }
     }
