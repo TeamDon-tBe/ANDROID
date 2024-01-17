@@ -119,7 +119,7 @@ class HomeViewModel
             commentText: String,
         ) = viewModelScope.launch {
             homeRepository.postCommentPosting(contentId, commentText).collectLatest {
-                if (it != null) _postCommentPosting.value = UiState.Success(it) else UiState.Empty
+                _postCommentPosting.value = UiState.Success(it)
             }
             _getFeedList.value = UiState.Loading
         }
@@ -127,7 +127,7 @@ class HomeViewModel
         fun deleteComment(commentId: Int) =
             viewModelScope.launch {
                 homeRepository.deleteComment(commentId).collectLatest {
-                    if (it != null) _deleteComment.value = UiState.Success(it) else UiState.Empty
+                    _deleteComment.value = UiState.Success(it)
                 }
                 _deleteComment.value = UiState.Loading
             }
