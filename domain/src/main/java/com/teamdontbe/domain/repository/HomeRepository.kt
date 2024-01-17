@@ -14,4 +14,6 @@ interface HomeRepository {
     suspend fun deleteFeed(contentId: Int): Flow<Boolean>
 
     suspend fun postFeedLiked(contentId: Int): Flow<Boolean>
+
+    suspend fun deleteFeedLiked(contentId: Int): Flow<Boolean>
 }
