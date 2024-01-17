@@ -1,5 +1,6 @@
 package com.teamdontbe.data_remote.datasourceimpl
 
+import ResponseMyPageUserAccountInfoDto
 import com.teamdontbe.data.datasource.MyPageDataSource
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.response.ResponseFeedDto
@@ -20,4 +21,7 @@ class MyPageDataSourceImpl @Inject constructor(
 
     override suspend fun getMyPageUserCommentListSource(viewMemberId: Int): BaseResponse<List<ResponseMyPageCommentDto>> =
         myPageApiService.getMyPageCommentList(viewMemberId)
+
+    override suspend fun getMyPageUserAccountInfo(): BaseResponse<ResponseMyPageUserAccountInfoDto> =
+        myPageApiService.getMyPageUserAccountInfo()
 }
