@@ -1,14 +1,16 @@
 package com.teamdontbe.feature.util
 
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.RoundedCornersTransformation
+import com.teamdontbe.feature.R
 
 @BindingAdapter("imageUrl")
 fun loadImage(view: ImageView, url: String?) {
-    view.load(url)
+    view.load(url) {
+        placeholder(R.drawable.ic_sign_up_profile_person) // 기본 이미지 설정
+    }
 }
 
 @BindingAdapter("setCircleImage")

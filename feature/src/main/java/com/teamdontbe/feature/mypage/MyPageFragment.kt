@@ -17,6 +17,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet
 import com.teamdontbe.feature.mypage.transperencyinfo.TransparencyInfoParentFragment
+import com.teamdontbe.feature.notification.NotificationFragment
 import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -29,11 +30,28 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private val viewModel by viewModels<MyPageViewModel>()
 
     override fun initView() {
-        val memberID = viewModel.getMemberId()
+        val memberProfile: MyPageModel = setUpMemberProfile()
+
         initMyPageCollapseAppearance()
-        initMyPageStateObserve(memberID)
-        initMyPageTabLayout(memberID)
+        initMyPageStateObserve(memberProfile)
+        initMyPageTabLayout(memberProfile)
         initBtnClickListener()
+    }
+
+    private fun setUpMemberProfile(): MyPageModel {
+        val memberProfile = MyPageModel(
+            id = viewModel.getMemberId() ?: -1,
+            nickName = getString(R.string.my_page_nickname),
+            idFlag = true,
+        )
+        arguments?.let {
+            val parentData = it.getInt(NotificationFragment.KEY_NOTI_DATA, -1)
+            if (memberProfile.id != parentData) {
+                memberProfile.idFlag = false
+                memberProfile.id = parentData
+            }
+        }
+        return memberProfile
     }
 
     private fun initMyPageCollapseAppearance() = with(binding) {
@@ -42,12 +60,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         statusBarColorOf(R.color.black)
     }
 
-    private fun initMyPageStateObserve(memberID: Int) {
-        viewModel.getMyPageUserProfileInfo(memberID)
+    private fun initMyPageStateObserve(memberProfile: MyPageModel) {
+        viewModel.getMyPageUserProfileInfo(memberProfile.id)
         viewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> handleSuccessState(it.data)
+                is UiState.Success -> handleSuccessState(it.data, memberProfile)
 
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
@@ -55,12 +73,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }.launchIn(lifecycleScope)
     }
 
-    private fun handleSuccessState(data: MyPageUserProfileEntity) = with(binding) {
-        initMyPageProgressBarUI(data.memberGhost)
-        tvMyPageTitle.text = data.nickname
-        tvMyPageDescription.text = data.memberIntro
-        loadImage(ivMyPageProfile, data.memberProfileUrl)
-    }
+    private fun handleSuccessState(data: MyPageUserProfileEntity, memberProfile: MyPageModel) =
+        with(binding) {
+            initMyPageProgressBarUI(data.memberGhost)
+            tvMyPageTitle.text = data.nickname
+            tvMyPageDescription.text = data.memberIntro
+            loadImage(ivMyPageProfile, data.memberProfileUrl)
+
+            memberProfile.nickName = data.nickname
+        }
 
     private fun initMyPageProgressBarUI(progressTransparency: Int) {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
@@ -82,10 +103,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         val updateProgress = progressStatus + 100
         progressBar.progress = updateProgress
 
-        val textViewX = (
-            (updateProgress * (progressBar.width - 2)) / progressBar.max -
-                requireContext().pxToDp(12)
-            ) - (progressLabelTextView.width / 2)
+        val textViewX =
+            (
+                (updateProgress * (progressBar.width - 2)) / progressBar.max - requireContext().pxToDp(
+                    12,
+                )
+                ) - (progressLabelTextView.width / 2)
         val finalX =
             if (progressLabelTextView.width + textViewX > maxX) (maxX - progressLabelTextView.width - 16) else textViewX + 16 /*your margin*/
 
@@ -95,8 +118,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun initMyPageTabLayout(memberID: Int) = with(binding) {
-        vpMyPage.adapter = MyPageVpAdapter(this@MyPageFragment, memberID)
+    private fun initMyPageTabLayout(memberProfile: MyPageModel) = with(binding) {
+        vpMyPage.adapter = MyPageVpAdapter(this@MyPageFragment, memberProfile)
 
         val tabTitleArray = arrayOf(
             POSTING,

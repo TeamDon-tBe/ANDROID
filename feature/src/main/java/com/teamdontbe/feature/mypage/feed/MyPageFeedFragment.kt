@@ -11,24 +11,24 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
-import com.teamdontbe.feature.home.HomeFragment
+import com.teamdontbe.feature.mypage.MyPageModel
+import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class MyPageFeedFragment(id: Int) :
+class MyPageFeedFragment(private val memberProfile: MyPageModel) :
     BindingFragment<FragmentMyPageFeedBinding>(R.layout.fragment_my_page_feed) {
     private val mockDataViewModel by viewModels<MyPageFeedViewModel>()
-    private val memberId = id ?: -1
 
     override fun initView() {
-        initFeedObserve(memberId)
+        initFeedObserve()
     }
 
-    private fun initFeedObserve(testId: Int) {
-        mockDataViewModel.getMyPageUserProfileInfo(testId)
+    private fun initFeedObserve() {
+        mockDataViewModel.getMyPageFeedList(memberProfile.id)
         mockDataViewModel.getMyPageFeedListState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
@@ -50,22 +50,21 @@ class MyPageFeedFragment(id: Int) :
     private fun updateNoFeedUI() = with(binding) {
         rvMyPagePosting.visibility = View.GONE
         viewMyPageNoFeedNickname.clNoFeed.visibility = View.VISIBLE
+        viewMyPageNoFeedNickname.tvNoFeedNickname.text =
+            getString(R.string.my_page_no_feed_text, memberProfile.nickName)
     }
 
     private fun initFeedRecyclerView(feedEntity: List<FeedEntity>) {
         val myPageFeedAdapter = MyPageFeedAdapter(
             onClickKebabBtn = { feedEntity ->
                 // Kebab 버튼 클릭 이벤트 처리
-                // feedEntity를 사용하여 필요한 작업 수행
-                // 예: viewModel.getRecyclerviewTest()
             },
             onItemClicked = { feedEntity ->
                 // RecyclerView 항목 클릭 이벤트 처리
-                navigateToHomeDetailFragment(
-                    feedEntity.memberId,
-                )
+                navigateToHomeDetailFragment(feedEntity.memberId)
             },
             context = requireContext(),
+            memberProfile.idFlag,
         ).apply {
             submitList(feedEntity)
         }
@@ -83,7 +82,7 @@ class MyPageFeedFragment(id: Int) :
     private fun navigateToHomeDetailFragment(id: Int) {
         findNavController().navigate(
             R.id.action_fragment_my_page_to_fragment_home_detail,
-            bundleOf(HomeFragment.KEY_FEED_DATA to id),
+            bundleOf(KEY_NOTI_DATA to id),
         )
     }
 
