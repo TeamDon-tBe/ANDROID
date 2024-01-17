@@ -2,6 +2,8 @@ package com.teamdontbe.data_remote.datasourceimpl
 
 import com.teamdontbe.data.datasource.HomeDataSource
 import com.teamdontbe.data.dto.BaseResponse
+import com.teamdontbe.data.dto.request.RequestCommentLikedDto
+import com.teamdontbe.data.dto.request.RequestCommentPostingDto
 import com.teamdontbe.data.dto.response.ResponseCommentDto
 import com.teamdontbe.data.dto.response.ResponseFeedDto
 import com.teamdontbe.data_remote.api.HomeApiService
@@ -34,5 +36,27 @@ class HomeDataSourceImpl
 
         override suspend fun deleteFeedLiked(contentId: Int): BaseResponse<Unit> {
             return homeApiService.deleteLiked(contentId)
+        }
+
+        override suspend fun postCommentPosting(
+            contentId: Int,
+            commentText: RequestCommentPostingDto,
+        ): BaseResponse<Unit> {
+            return homeApiService.postCommentPosting(contentId, commentText)
+        }
+
+        override suspend fun deleteComment(commentId: Int): BaseResponse<Unit> {
+            return homeApiService.deleteComment(commentId)
+        }
+
+        override suspend fun postCommentLiked(commentId: Int): BaseResponse<Unit> {
+            return homeApiService.postCommentLiked(
+                commentId,
+                RequestCommentLikedDto("test", "commentLiked"),
+            )
+        }
+
+        override suspend fun deleteCommentLiked(commentId: Int): BaseResponse<Unit> {
+            return homeApiService.deleteCommentLiked(commentId)
         }
     }

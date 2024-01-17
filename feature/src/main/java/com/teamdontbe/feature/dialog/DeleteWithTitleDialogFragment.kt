@@ -16,6 +16,7 @@ class DeleteWithTitleDialogFragment(
     val content: String,
     private val isMember: Boolean,
     private val contentId: Int,
+    private val isContent: Boolean,
 ) : BindingDialogFragment<FragmentDeleteWithTitleDialogBinding>(R.layout.fragment_delete_with_title_dialog) {
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
@@ -47,7 +48,13 @@ class DeleteWithTitleDialogFragment(
 
     private fun initDeleteButtonClickListener() {
         binding.btnDeleteWithTitleDialogDelete.setOnClickListener {
-            if (isMember) homeViewModel.deleteFeed(contentId) else navigateToComplaintWeb()
+            if (isMember && !isContent) {
+                homeViewModel.deleteFeed(contentId)
+            } else if (isMember && isContent) {
+                homeViewModel.deleteComment(contentId)
+            } else {
+                navigateToComplaintWeb()
+            }
             dismiss()
         }
     }

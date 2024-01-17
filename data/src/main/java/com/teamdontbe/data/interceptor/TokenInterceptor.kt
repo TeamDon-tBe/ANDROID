@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.RequestBody.Companion.toRequestBody
+import timber.log.Timber
 import javax.inject.Inject
 
 class TokenInterceptor
@@ -29,6 +30,7 @@ class TokenInterceptor
             val request =
                 chain.request().newBuilder().addHeader("Authorization", "Bearer $accessToken").build()
             val response = chain.proceed(request)
+            Timber.tag("interceptor").d(accessToken)
 
             when (response.code) {
                 // 기존 request가 401 : access token 이상

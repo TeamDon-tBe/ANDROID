@@ -10,4 +10,5 @@ data class CommentEntity(
     val commentLikedNumber: Int,
     val contentText: String,
     val time: String,
+    val commentId: Int,
 )
