@@ -20,6 +20,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.comment.UploadingSnackBar
 import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
+import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
 import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeAdapter
 import com.teamdontbe.feature.home.HomeBottomSheet
@@ -109,6 +110,10 @@ class HomeDetailFragment :
                 is UiState.Success -> {
                     homeDetailFeedCommentAdapter =
                         HomeDetailCommentAdapter(onClickKebabBtn = { feedData, positoin ->
+                            initBottomSheet(
+                                feedData.memberId == homeViewModel.getMemberId(),
+                                contentId,
+                            )
                         }).apply {
                             submitList(it.data)
                         }
@@ -252,6 +257,28 @@ class HomeDetailFragment :
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         bottomSheetBehavior.skipCollapsed = true
         bottomSheetBehavior.isFitToContents = false
+    }
+
+    private fun initComplaintDialog(contentId: Int) {
+        val dialog =
+            DeleteWithTitleDialogFragment(
+                getString(R.string.tv_delete_with_title_complain_dialog),
+                getString(R.string.tv_delete_with_title_dialog_comment),
+                false,
+                contentId,
+            )
+        dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+    }
+
+    private fun initDeleteDialog(contentId: Int) {
+        val dialog =
+            DeleteWithTitleDialogFragment(
+                getString(R.string.tv_delete_with_title_delete_dialog),
+                getString(R.string.tv_delete_with_title_delete_content_dialog),
+                true,
+                contentId,
+            )
+        dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
     }
 
     companion object {
