@@ -20,6 +20,7 @@ interface HomeApiService {
         const val DETAIL = "detail"
         const val CONTENT_ID = "contentId"
         const val LIKED = "liked"
+        const val UNLIKED = "unliked"
     }
 
     @GET("/$API/$V1/$CONTENT/$ALL")
@@ -44,5 +45,10 @@ interface HomeApiService {
     suspend fun postLiked(
         @Path(value = CONTENT_ID) contentId: Int,
         @Body request: RequestFeedLikedDto = RequestFeedLikedDto("Content"),
+    ): BaseResponse<Unit>
+
+    @DELETE("/$API/$V1/$CONTENT/{$CONTENT_ID}/$UNLIKED")
+    suspend fun deleteLiked(
+        @Path(value = CONTENT_ID) contentId: Int,
     ): BaseResponse<Unit>
 }
