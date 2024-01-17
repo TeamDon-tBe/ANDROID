@@ -17,6 +17,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet
 import com.teamdontbe.feature.mypage.transperencyinfo.TransparencyInfoParentFragment
+import com.teamdontbe.feature.notification.NotificationFragment
 import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -27,40 +28,60 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
     private val viewModel by viewModels<MyPageViewModel>()
+    private lateinit var memberProfile: MyPageModel
 
     override fun initView() {
-//        val memberID = 2
-        val memberID = viewModel.getMemberId() ?: -1
+        initMemberProfile()
         initMyPageCollapseAppearance()
-        initMyPageStateObserve(memberID)
-        initMyPageTabLayout(memberID)
+        initMyPageStateObserve()
+        initMyPageTabLayout()
         initBtnClickListener()
     }
 
-    private fun initMyPageCollapseAppearance() = with(binding) {
-        btnMyPageBack.visibility = View.INVISIBLE
-        collapseMyPage.setContentScrimColor(requireContext().getColor(R.color.black))
-        statusBarColorOf(R.color.black)
+    private fun initMemberProfile() {
+        memberProfile = MyPageModel(
+            id = viewModel.getMemberId() ?: -1,
+            nickName = getString(R.string.my_page_nickname),
+            idFlag = true,
+        )
+
+        arguments?.let {
+            val parentData = it.getInt(NotificationFragment.KEY_NOTI_DATA, -1)
+            if (memberProfile.id != parentData) {
+                memberProfile.idFlag = false
+                memberProfile.id = parentData
+            }
+        }
     }
 
-    private fun initMyPageStateObserve(memberID: Int) {
-        viewModel.getMyPageUserProfileInfo(memberID)
+    private fun initMyPageCollapseAppearance() {
+        with(binding) {
+            btnMyPageBack.visibility = View.INVISIBLE
+            collapseMyPage.setContentScrimColor(requireContext().getColor(R.color.black))
+            statusBarColorOf(R.color.black)
+        }
+    }
+
+    private fun initMyPageStateObserve() {
+        viewModel.getMyPageUserProfileInfo(memberProfile.id)
         viewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> handleSuccessState(it.data)
-
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
         }.launchIn(lifecycleScope)
     }
 
-    private fun handleSuccessState(data: MyPageUserProfileEntity) = with(binding) {
-        initMyPageProgressBarUI(data.memberGhost)
-        tvMyPageTitle.text = data.nickname
-        tvMyPageDescription.text = data.memberIntro
-        loadImage(ivMyPageProfile, data.memberProfileUrl)
+    private fun handleSuccessState(data: MyPageUserProfileEntity) {
+        with(binding) {
+            initMyPageProgressBarUI(data.memberGhost)
+            tvMyPageTitle.text = data.nickname
+            tvMyPageDescription.text = data.memberIntro
+            loadImage(ivMyPageProfile, data.memberProfileUrl)
+            memberProfile.nickName = data.nickname // 넘겨줄 nickname 추가
+        }
     }
 
     private fun initMyPageProgressBarUI(progressTransparency: Int) {
@@ -96,22 +117,24 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun initMyPageTabLayout(memberID: Int) = with(binding) {
-        vpMyPage.adapter = MyPageVpAdapter(this@MyPageFragment, memberID)
+    private fun initMyPageTabLayout() {
+        with(binding) {
+            vpMyPage.adapter = MyPageVpAdapter(this@MyPageFragment, memberProfile)
 
-        val tabTitleArray = arrayOf(
-            POSTING,
-            COMMENT,
-        )
+            val tabTitleArray = arrayOf(
+                POSTING,
+                COMMENT,
+            )
 
-        TabLayoutMediator(tabMyPage, vpMyPage) { tab, position ->
-            tab.text = tabTitleArray[position]
-        }.attach()
+            TabLayoutMediator(tabMyPage, vpMyPage) { tab, position ->
+                tab.text = tabTitleArray[position]
+            }.attach()
+        }
     }
 
     private fun initBtnClickListener() {
         initTransparencyInfoDialogBtnClickListener()
-        initMyPageHambergerClickListner()
+        initMyPageHamburgerClickListener()
     }
 
     private fun initTransparencyInfoDialogBtnClickListener() {
@@ -120,7 +143,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun initMyPageHambergerClickListner() {
+    private fun initMyPageHamburgerClickListener() {
         binding.btnMyPageHamberger.setOnClickListener {
             MyPageBottomSheet().show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
         }
