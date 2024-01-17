@@ -71,4 +71,9 @@ interface HomeApiService {
         @Path(value = COMMENT_ID) commentId: Int,
         @Body request: RequestCommentLikedDto,
     ): BaseResponse<Unit>
+
+    @DELETE("/$API/$V1/$CONTENT/{$COMMENT_ID}/$UNLIKED")
+    suspend fun deleteCommentLiked(
+        @Path(value = COMMENT_ID) commentId: Int,
+    ): BaseResponse<Unit>
 }
