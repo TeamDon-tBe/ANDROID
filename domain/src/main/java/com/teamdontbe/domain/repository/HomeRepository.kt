@@ -21,4 +21,6 @@ interface HomeRepository {
         contentId: Int,
         commentText: String,
     ): Flow<Boolean>
+
+    suspend fun deleteComment(commentId: Int): Flow<Boolean>
 }

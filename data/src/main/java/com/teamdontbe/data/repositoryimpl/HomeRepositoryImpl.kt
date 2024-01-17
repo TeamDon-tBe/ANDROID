@@ -89,4 +89,16 @@ class HomeRepositoryImpl
                 emit(result.getOrDefault(false))
             }
         }
+
+        override suspend fun deleteComment(commentId: Int): Flow<Boolean> {
+            return flow {
+                val result =
+                    runCatching {
+                        homeDataSource.deleteComment(
+                            commentId,
+                        ).success
+                    }
+                emit(result.getOrDefault(false))
+            }
+        }
     }

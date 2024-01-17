@@ -53,6 +53,9 @@ class HomeViewModel
         private val _postCommentPosting = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
         val postCommentPosting: StateFlow<UiState<Boolean>> get() = _postCommentPosting
 
+        private val _deleteComment = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+        val deleteComment: StateFlow<UiState<Boolean>> get() = _deleteComment
+
         fun getFeedList() =
             viewModelScope.launch {
                 homeRepository.getFeedList().collectLatest {
@@ -120,4 +123,12 @@ class HomeViewModel
             }
             _getFeedList.value = UiState.Loading
         }
+
+        fun deleteComment(commentId: Int) =
+            viewModelScope.launch {
+                homeRepository.deleteComment(commentId).collectLatest {
+                    if (it != null) _deleteComment.value = UiState.Success(it) else UiState.Empty
+                }
+                _deleteComment.value = UiState.Loading
+            }
     }

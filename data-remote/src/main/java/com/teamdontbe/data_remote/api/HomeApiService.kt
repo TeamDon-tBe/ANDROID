@@ -22,6 +22,7 @@ interface HomeApiService {
         const val CONTENT_ID = "contentId"
         const val LIKED = "liked"
         const val UNLIKED = "unliked"
+        const val COMMENT_ID = "commentId"
     }
 
     @GET("/$API/$V1/$CONTENT/$ALL")
@@ -59,8 +60,8 @@ interface HomeApiService {
         @Body request: RequestCommentPostingDto,
     ): BaseResponse<Unit>
 
-    @DELETE("/$API/$V1/$CONTENT/{$CONTENT_ID}")
+    @DELETE("/$API/$V1/$CONTENT/{$COMMENT_ID}")
     suspend fun deleteComment(
-        @Path(value = CONTENT_ID) contentId: Int,
+        @Path(value = COMMENT_ID) commentId: Int,
     ): BaseResponse<Unit>
 }
