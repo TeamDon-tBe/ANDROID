@@ -13,7 +13,6 @@ import com.teamdontbe.feature.databinding.FragmentHomeBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
 import com.teamdontbe.feature.posting.PostingFragment
-import com.teamdontbe.feature.util.EventObserver
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -55,21 +54,31 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             }
         }.launchIn(lifecycleScope)
 
-        homeViewModel.openComplaintDialog.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                initComplaintDialog(it)
-                Timber.d("ttt", it)
-            },
-        )
+        homeViewModel.openComplaintDialog.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> {
+                    initComplaintDialog(it.data)
+                    Timber.d("ttt", it)
+                }
 
-        homeViewModel.openDeleteDialog.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                initDeleteDialog(it)
-                Timber.d("ttt", it)
-            },
-        )
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+
+        homeViewModel.openDeleteDialog.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> {
+                    initDeleteDialog(it.data)
+                    Timber.d("ttt", it)
+                }
+
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
     }
 
     private fun initHomeAdapter(feedData: List<FeedEntity>) {

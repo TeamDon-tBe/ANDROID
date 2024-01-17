@@ -2,6 +2,8 @@ package com.teamdontbe.feature.dialog
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import com.teamdontbe.core_ui.base.BindingDialogFragment
 import com.teamdontbe.core_ui.util.context.dialogFragmentResize
@@ -19,6 +21,13 @@ class DeleteWithTitleDialogFragment(
 ) :
     BindingDialogFragment<FragmentDeleteWithTitleDialogBinding>(R.layout.fragment_delete_with_title_dialog) {
     private val homeViewModel by viewModels<HomeViewModel>()
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+    }
 
     override fun initView() {
         initText()
