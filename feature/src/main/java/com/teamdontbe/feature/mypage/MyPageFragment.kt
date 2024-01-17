@@ -48,7 +48,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         arguments?.let {
             val parentData = it.getInt(NotificationFragment.KEY_NOTI_DATA, -1)
             if (memberProfile.id != parentData) {
-                memberProfile.idFlag = false
+                memberProfile.idFlag = false // 다른 유저 프로필인경우 flag == flse
                 memberProfile.id = parentData
             }
         }

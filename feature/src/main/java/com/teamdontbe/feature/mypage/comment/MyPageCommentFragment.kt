@@ -11,6 +11,7 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageCommentBinding
+import com.teamdontbe.feature.mypage.MyPageModel
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,13 +19,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class MyPageCommentFragment(id: Int) :
+class MyPageCommentFragment(id: MyPageModel) :
     BindingFragment<FragmentMyPageCommentBinding>(R.layout.fragment_my_page_comment) {
     private val mockDataViewModel by viewModels<MyPageCommentViewModel>()
-    private val memberId = id ?: -1
+    private val memberId = id
 
     override fun initView() {
-        initFeedObserve(memberId)
+        initFeedObserve(memberId.id)
     }
 
     private fun initFeedObserve(memberId: Int) {
