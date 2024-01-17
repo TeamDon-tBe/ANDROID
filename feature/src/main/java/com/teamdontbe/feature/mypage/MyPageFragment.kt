@@ -28,61 +28,60 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
     private val viewModel by viewModels<MyPageViewModel>()
-    private lateinit var memberProfile: MyPageModel
 
     override fun initView() {
-        initMemberProfile()
+        val memberProfile: MyPageModel = setUpMemberProfile()
+
         initMyPageCollapseAppearance()
-        initMyPageStateObserve()
-        initMyPageTabLayout()
+        initMyPageStateObserve(memberProfile)
+        initMyPageTabLayout(memberProfile)
         initBtnClickListener()
     }
 
-    private fun initMemberProfile() {
-        memberProfile = MyPageModel(
+    private fun setUpMemberProfile(): MyPageModel {
+        val memberProfile = MyPageModel(
             id = viewModel.getMemberId() ?: -1,
             nickName = getString(R.string.my_page_nickname),
             idFlag = true,
         )
-
         arguments?.let {
             val parentData = it.getInt(NotificationFragment.KEY_NOTI_DATA, -1)
             if (memberProfile.id != parentData) {
-                memberProfile.idFlag = false // 다른 유저 프로필인경우 flag == flse
+                memberProfile.idFlag = false
                 memberProfile.id = parentData
             }
         }
+        return memberProfile
     }
 
-    private fun initMyPageCollapseAppearance() {
-        with(binding) {
-            btnMyPageBack.visibility = View.INVISIBLE
-            collapseMyPage.setContentScrimColor(requireContext().getColor(R.color.black))
-            statusBarColorOf(R.color.black)
-        }
+    private fun initMyPageCollapseAppearance() = with(binding) {
+        btnMyPageBack.visibility = View.INVISIBLE
+        collapseMyPage.setContentScrimColor(requireContext().getColor(R.color.black))
+        statusBarColorOf(R.color.black)
     }
 
-    private fun initMyPageStateObserve() {
+    private fun initMyPageStateObserve(memberProfile: MyPageModel) {
         viewModel.getMyPageUserProfileInfo(memberProfile.id)
         viewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> handleSuccessState(it.data)
+                is UiState.Success -> handleSuccessState(it.data, memberProfile)
+
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
         }.launchIn(lifecycleScope)
     }
 
-    private fun handleSuccessState(data: MyPageUserProfileEntity) {
+    private fun handleSuccessState(data: MyPageUserProfileEntity, memberProfile: MyPageModel) =
         with(binding) {
             initMyPageProgressBarUI(data.memberGhost)
             tvMyPageTitle.text = data.nickname
             tvMyPageDescription.text = data.memberIntro
             loadImage(ivMyPageProfile, data.memberProfileUrl)
-            memberProfile.nickName = data.nickname // 넘겨줄 nickname 추가
+
+            memberProfile.nickName = data.nickname
         }
-    }
 
     private fun initMyPageProgressBarUI(progressTransparency: Int) {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
@@ -104,10 +103,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         val updateProgress = progressStatus + 100
         progressBar.progress = updateProgress
 
-        val textViewX = (
-            (updateProgress * (progressBar.width - 2)) / progressBar.max -
-                requireContext().pxToDp(12)
-            ) - (progressLabelTextView.width / 2)
+        val textViewX =
+            (
+                (updateProgress * (progressBar.width - 2)) / progressBar.max - requireContext().pxToDp(
+                    12,
+                )
+                ) - (progressLabelTextView.width / 2)
         val finalX =
             if (progressLabelTextView.width + textViewX > maxX) (maxX - progressLabelTextView.width - 16) else textViewX + 16 /*your margin*/
 
@@ -117,24 +118,22 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun initMyPageTabLayout() {
-        with(binding) {
-            vpMyPage.adapter = MyPageVpAdapter(this@MyPageFragment, memberProfile)
+    private fun initMyPageTabLayout(memberProfile: MyPageModel) = with(binding) {
+        vpMyPage.adapter = MyPageVpAdapter(this@MyPageFragment, memberProfile)
 
-            val tabTitleArray = arrayOf(
-                POSTING,
-                COMMENT,
-            )
+        val tabTitleArray = arrayOf(
+            POSTING,
+            COMMENT,
+        )
 
-            TabLayoutMediator(tabMyPage, vpMyPage) { tab, position ->
-                tab.text = tabTitleArray[position]
-            }.attach()
-        }
+        TabLayoutMediator(tabMyPage, vpMyPage) { tab, position ->
+            tab.text = tabTitleArray[position]
+        }.attach()
     }
 
     private fun initBtnClickListener() {
         initTransparencyInfoDialogBtnClickListener()
-        initMyPageHamburgerClickListener()
+        initMyPageHambergerClickListner()
     }
 
     private fun initTransparencyInfoDialogBtnClickListener() {
@@ -143,7 +142,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun initMyPageHamburgerClickListener() {
+    private fun initMyPageHambergerClickListner() {
         binding.btnMyPageHamberger.setOnClickListener {
             MyPageBottomSheet().show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
         }
