@@ -29,6 +29,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     override fun initView() {
         initKakaoUser()
         initMainBottomNavigation()
+        notiViewModel.getNotificationCount()
         initObserve()
     }
 
