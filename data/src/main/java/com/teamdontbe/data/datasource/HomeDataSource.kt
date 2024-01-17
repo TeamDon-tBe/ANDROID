@@ -10,4 +10,6 @@ interface HomeDataSource {
     suspend fun getFeedDetail(contentId: Int): BaseResponse<ResponseFeedDto>
 
     suspend fun getCommentList(contentId: Int): BaseResponse<List<ResponseCommentDto>>
+
+    suspend fun deleteFeed(contentId: Int): BaseResponse<Unit>
 }

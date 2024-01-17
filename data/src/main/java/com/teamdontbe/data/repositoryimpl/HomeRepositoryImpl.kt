@@ -42,4 +42,14 @@ class HomeRepositoryImpl
                 emit(result.getOrDefault(emptyList()))
             }
         }
+
+        override suspend fun deleteFeed(contentId: Int): Flow<Boolean> {
+            return flow {
+                val result =
+                    runCatching {
+                        homeDataSource.deleteFeed(contentId).success
+                    }
+                emit(result.getOrDefault(false))
+            }
+        }
     }

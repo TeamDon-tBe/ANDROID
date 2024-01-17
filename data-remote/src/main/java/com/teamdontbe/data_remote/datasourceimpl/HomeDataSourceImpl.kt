@@ -23,4 +23,8 @@ class HomeDataSourceImpl
         override suspend fun getCommentList(contentId: Int): BaseResponse<List<ResponseCommentDto>> {
             return homeApiService.getCommentList(contentId)
         }
+
+        override suspend fun deleteFeed(contentId: Int): BaseResponse<Unit> {
+            return homeApiService.deleteFeed(contentId)
+        }
     }

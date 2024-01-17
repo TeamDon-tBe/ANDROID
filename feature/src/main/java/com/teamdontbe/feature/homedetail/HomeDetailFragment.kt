@@ -58,7 +58,12 @@ class HomeDetailFragment :
     private fun initHomeDetailFeedAdapter() {
         homeDetailFeedAdapter =
             HomeAdapter(onClickKebabBtn = { feedData, positoin ->
-                initBottomSheet()
+                feedData.contentId?.let {
+                    initBottomSheet(
+                        feedData.memberId == homeViewModel.getMemberId(),
+                        it,
+                    )
+                }
             }).apply {
                 submitList(
                     listOf(getHomeFeedDetailData()?.toFeedEntity()),
@@ -67,16 +72,21 @@ class HomeDetailFragment :
     }
 
     private fun initObserve() {
-        homeViewModel.getFeedDetail.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
+        homeViewModel.getFeedDetail.flowWithLifecycle(lifecycle).onEach { result ->
+            when (result) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
                     homeDetailFeedAdapter =
                         HomeAdapter(onClickKebabBtn = { feedData, positoin ->
-                            initBottomSheet()
+                            feedData.contentId?.let {
+                                initBottomSheet(
+                                    feedData.memberId == homeViewModel.getMemberId(),
+                                    it,
+                                )
+                            }
                         }).apply {
                             submitList(
-                                listOf(it.data),
+                                listOf(result.data),
                             )
                         }
                     homeDetailFeedAdapter.notifyDataSetChanged()
@@ -93,7 +103,6 @@ class HomeDetailFragment :
                 is UiState.Success -> {
                     homeDetailFeedCommentAdapter =
                         HomeDetailCommentAdapter(onClickKebabBtn = { feedData, positoin ->
-                            initBottomSheet()
                         }).apply {
                             submitList(it.data)
                         }
@@ -113,8 +122,14 @@ class HomeDetailFragment :
         }.launchIn(lifecycleScope)
     }
 
-    private fun initBottomSheet() {
-        HomeBottomSheet().show(parentFragmentManager, HomeFragment.HOME_BOTTOM_SHEET)
+    private fun initBottomSheet(
+        isMember: Boolean,
+        contentId: Int,
+    ) {
+        HomeBottomSheet(isMember, contentId).show(
+            parentFragmentManager,
+            HomeFragment.HOME_BOTTOM_SHEET,
+        )
     }
 
     private fun getHomeFeedDetailData(): Feed? =
