@@ -31,4 +31,14 @@ class NotificationRepositoryImpl
                 emit(result.getOrDefault(-1))
             }
         }
+
+        override suspend fun patchNotificationCheck(): Flow<Boolean> {
+            return flow {
+                val result =
+                    runCatching {
+                        notificationDataSource.patchNotificationCheck().success
+                    }
+                emit(result.getOrDefault(false))
+            }
+        }
     }
