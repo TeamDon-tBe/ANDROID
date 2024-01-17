@@ -24,7 +24,7 @@ class PostingViewModel
         private val _postPosting = MutableSharedFlow<UiState<Boolean>>()
         val postPosting: SharedFlow<UiState<Boolean>> = _postPosting
 
-        private val _introduction = MutableLiveData<String>()
+        private val _introduction = MutableLiveData("")
         val introduction: LiveData<String> get() = _introduction
 
         fun posting(contentText: String) =

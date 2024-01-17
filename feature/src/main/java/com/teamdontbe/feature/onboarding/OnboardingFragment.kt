@@ -26,6 +26,7 @@ class OnboardingFragment :
         get() = requireNotNull(_onboardingAdapter) { "adapter 초기화 안됨" }
 
     override fun initView() {
+        binding.vm = postingViewModel
         initOnboardingAdapter()
         initBtnOnboardingNextClickListener()
         initIvOnboardingBackClickListener()
@@ -72,8 +73,7 @@ class OnboardingFragment :
         }
 
     private fun initOnboardingAdapter() {
-        _onboardingAdapter =
-            OnboardingAdapter(this)
+        _onboardingAdapter = OnboardingAdapter(this)
         binding.vpOnboarding.adapter = _onboardingAdapter
         binding.vpOnboarding.isUserInputEnabled = false
         binding.vpOnboarding.registerOnPageChangeCallback(pageChangeCallback)
