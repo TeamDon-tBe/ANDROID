@@ -44,6 +44,12 @@ class HomeViewModel
         private val _openDeleteDialog = MutableLiveData<Event<Int>>()
         val openDeleteDialog: LiveData<Event<Int>> get() = _openDeleteDialog
 
+        private val _postFeedLiked = MutableSharedFlow<UiState<Boolean>>()
+        val postFeedLiked: SharedFlow<UiState<Boolean>> get() = _postFeedLiked
+
+        private val _deleteFeedLiked = MutableSharedFlow<UiState<Boolean>>()
+        val deleteFeedLiked: SharedFlow<UiState<Boolean>> get() = _deleteFeedLiked
+
         fun getFeedList() =
             viewModelScope.launch {
                 homeRepository.getFeedList().collectLatest {
@@ -73,7 +79,7 @@ class HomeViewModel
                 homeRepository.deleteFeed(contentId).collectLatest {
                     _deleteFeed.emit(UiState.Success(it))
                 }
-                _getFeedList.value = UiState.Loading
+                _deleteFeed.emit(UiState.Loading)
             }
 
         fun getMemberId() = userInfoRepository.getMemberId()
@@ -85,4 +91,20 @@ class HomeViewModel
         fun openDeleteDialog(contentId: Int) {
             _openDeleteDialog.value = Event(contentId)
         }
+
+        fun postFeedLiKED(contentId: Int) =
+            viewModelScope.launch {
+                homeRepository.postFeedLiked(contentId).collectLatest {
+                    _postFeedLiked.emit(UiState.Success(it))
+                }
+                _postFeedLiked.emit(UiState.Loading)
+            }
+
+        fun deleteFeedLiKED(contentId: Int) =
+            viewModelScope.launch {
+                homeRepository.deleteFeedLiked(contentId).collectLatest {
+                    _deleteFeedLiked.emit(UiState.Success(it))
+                }
+                _deleteFeedLiked.emit(UiState.Loading)
+            }
     }
