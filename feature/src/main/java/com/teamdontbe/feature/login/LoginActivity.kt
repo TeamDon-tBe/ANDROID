@@ -49,7 +49,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     }
 
     override fun initView() {
-        initKeyHash()
         initKakaoLoginBtnClickListener()
         initObserve()
     }
@@ -128,12 +127,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
             this@LoginActivity,
             callback = callback,
         )
-    }
-
-    private fun initKeyHash() {
-        // 해시키 구하기
-        val keyHash = Utility.getKeyHash(this)
-        Timber.tag("Hash").d(keyHash)
     }
 
     private fun navigateToMainActivity() {
