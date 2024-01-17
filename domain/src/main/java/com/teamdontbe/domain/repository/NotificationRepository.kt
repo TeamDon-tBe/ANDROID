@@ -7,4 +7,6 @@ interface NotificationRepository {
     suspend fun getNotificationList(): Flow<List<NotiEntity>?>
 
     suspend fun getNotificationCount(): Flow<Int?>
+
+    suspend fun patchNotificationCheck(): Flow<Boolean>
 }

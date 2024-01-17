@@ -47,7 +47,7 @@ interface HomeApiService {
     @POST("/$API/$V1/$CONTENT/{$CONTENT_ID}/$LIKED")
     suspend fun postLiked(
         @Path(value = CONTENT_ID) contentId: Int,
-        @Body request: RequestFeedLikedDto = RequestFeedLikedDto("Content"),
+        @Body request: RequestFeedLikedDto = RequestFeedLikedDto("contentLiked"),
     ): BaseResponse<Unit>
 
     @DELETE("/$API/$V1/$CONTENT/{$CONTENT_ID}/$UNLIKED")

@@ -17,4 +17,6 @@ class NotificationDataSourceImpl
 
         override suspend fun getNotificationCount(): BaseResponse<ResponseNotificationCountDto> =
             notificationApiService.getNotificationCount()
+
+        override suspend fun patchNotificationCheck(): BaseResponse<Unit> = notificationApiService.patchNotificationCheck()
     }

@@ -2,25 +2,51 @@ package com.teamdontbe.feature.onboarding
 
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentOnboardingBinding
+import com.teamdontbe.feature.posting.PostingViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class OnboardingFragment :
     BindingFragment<FragmentOnboardingBinding>(R.layout.fragment_onboarding) {
+    private val postingViewModel by activityViewModels<PostingViewModel>()
     private var _onboardingAdapter: OnboardingAdapter? = null
     private val onboardingAdapter
         get() = requireNotNull(_onboardingAdapter) { "adapter 초기화 안됨" }
 
     override fun initView() {
+        binding.vm = postingViewModel
         initOnboardingAdapter()
         initBtnOnboardingNextClickListener()
         initIvOnboardingBackClickListener()
-        initBtnOnboardingStartClickListener()
+        initObserve()
         initSkipTextClickListener()
+    }
+
+    private fun initObserve() {
+        postingViewModel.postPosting.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> navigateToHomeFragment()
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+
+        postingViewModel.introduction.observe(viewLifecycleOwner) {
+            initBtnOnboardingStartClickListener(it)
+        }
     }
 
     private val pageChangeCallback =
@@ -71,9 +97,9 @@ class OnboardingFragment :
         }
     }
 
-    private fun initBtnOnboardingStartClickListener() {
+    private fun initBtnOnboardingStartClickListener(introduction: String) {
         binding.btnOnboardingStart.setOnClickListener {
-            navigateToHomeFragment()
+            postingViewModel.posting(introduction)
         }
     }
 
