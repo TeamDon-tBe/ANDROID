@@ -9,7 +9,6 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.view.UiState
@@ -97,6 +96,8 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                         it.data.memberId,
                         it.data.nickname,
                         true,
+                        it.data.memberProfileUrl,
+                        it.data.isNewUser,
                     )
                     navigateToMainActivity()
                 }
@@ -113,12 +114,16 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         memberId: Int,
         nickName: String,
         checkLogin: Boolean,
+        memberProfileUrl: String,
+        isNewUser: Boolean,
     ) {
         loginViewModel.saveAccessToken(accessToken)
         loginViewModel.saveRefreshToken(refreshToken)
         loginViewModel.saveMemberId(memberId)
         loginViewModel.saveNickName(nickName)
         loginViewModel.saveCheckLogin(checkLogin)
+        loginViewModel.saveMemberProfileUrl(memberProfileUrl)
+        loginViewModel.saveIsNewUser(isNewUser)
     }
 
     private fun setKakaoCallback() {

@@ -29,7 +29,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     override fun initView() {
         homeViewModel.getFeedList()
         initObserve()
-
         initSwipeRefreshData()
     }
 

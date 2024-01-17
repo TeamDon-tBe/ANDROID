@@ -26,6 +26,13 @@ class SharedPreferenceDataSourceImpl
         override var nickName: String?
             get() = sharedPreferences.getString("NickName", null)
             set(value) = sharedPreferences.edit { putString("NickName", value) }
+        override var memberProfileUrl: String?
+            get() = sharedPreferences.getString("MemberProfileUrl", null)
+            set(value) = sharedPreferences.edit { putString("MemberProfileUrl", value) }
+
+        override var isNewUser: Boolean
+            get() = sharedPreferences.getBoolean("IsNewUser", false)
+            set(value) = sharedPreferences.edit { putBoolean("IsNewUser", value) }
 
         override fun clear() {
             sharedPreferences.edit {
