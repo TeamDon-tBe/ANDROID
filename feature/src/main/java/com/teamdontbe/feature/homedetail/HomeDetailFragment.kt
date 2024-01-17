@@ -52,6 +52,7 @@ class HomeDetailFragment :
         if ((requireArguments().getInt(KEY_NOTI_DATA)) > 0) {
             homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
         }
+
         getHomeFeedDetailData()?.toFeedEntity()?.contentId?.let { homeViewModel.getCommentList(it) }
         statusBarColorOf(R.color.white)
         initBackBtnClickListener()
@@ -119,6 +120,14 @@ class HomeDetailFragment :
                                 contentId, true,
                             )
                             deleteCommentPosition = position
+                        }, onClickLikedBtn = { contentId, status ->
+                            if (status) {
+                                homeViewModel.deleteFeedLiKED(contentId)
+                            } else {
+                                homeViewModel.postFeedLiKED(
+                                    contentId,
+                                )
+                            }
                         }).apply {
                             submitList(it.data)
                         }
