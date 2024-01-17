@@ -31,6 +31,10 @@ class HomeAdapter(
         holder.bind(currentList[position])
     }
 
+    fun deleteItem(position: Int) {
+        submitList(currentList.toMutableList().apply { removeAt(position) })
+    }
+
     companion object {
         private val HomeAdapterDiffCallback =
             ItemDiffCallback<FeedEntity>(

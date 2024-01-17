@@ -5,6 +5,7 @@ import com.teamdontbe.data.dto.response.ResponseCommentDto
 import com.teamdontbe.data.dto.response.ResponseFeedDto
 import com.teamdontbe.data_remote.api.LoginApiService.Companion.API
 import com.teamdontbe.data_remote.api.LoginApiService.Companion.V1
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -29,4 +30,9 @@ interface HomeApiService {
     suspend fun getCommentList(
         @Path(value = CONTENT_ID) contentId: Int,
     ): BaseResponse<List<ResponseCommentDto>>
+
+    @DELETE("/$API/$V1/$CONTENT/{contentId}")
+    suspend fun deleteFeed(
+        @Path(value = "contentId") contentId: Int,
+    ): BaseResponse<Unit>
 }
