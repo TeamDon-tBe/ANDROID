@@ -45,15 +45,6 @@ class HomeAdapter(
         submitList(currentList.toMutableList().apply { removeAt(position) })
     }
 
-    fun updateItemAtPosition(
-        position: Int,
-        isGhost: Boolean,
-    ) {
-        val oldItem = getItem(position)
-        val newItem = oldItem.copy(isGhost = isGhost)
-        submitList(currentList.toMutableList().apply { set(position, newItem) })
-    }
-
     companion object {
         private val HomeAdapterDiffCallback =
             ItemDiffCallback<FeedEntity>(

@@ -91,13 +91,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         homeViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> {
-                    if (updateFeedPosition != -1) {
-                        homeAdapter.updateItemAtPosition(updateFeedPosition, true)
-                        updateFeedPosition = -1
-                    }
-                }
-
+                is UiState.Success -> homeViewModel.getFeedList()
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }

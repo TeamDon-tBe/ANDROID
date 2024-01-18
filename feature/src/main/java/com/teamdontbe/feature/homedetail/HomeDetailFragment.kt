@@ -56,20 +56,24 @@ class HomeDetailFragment :
     private lateinit var homeDetailFeedCommentAdapter: HomeDetailCommentAdapter
 
     override fun initView() {
-        if ((requireArguments().getInt(KEY_NOTI_DATA)) > 0) {
-            homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
-            homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
-        }
-
+        getHomeDetail()
         getHomeFeedDetailData()?.toFeedEntity()?.contentId?.let { homeViewModel.getCommentList(it) }
         statusBarColorOf(R.color.white)
         initBackBtnClickListener()
-        initHomeDetailFeedAdapter()
-        (getHomeFeedDetailData())?.let { initInputEditTextClickListener() }
         initEditText()
+        (getHomeFeedDetailData())?.let { initInputEditTextClickListener() }
         initAppbarCancelClickListener()
         initCommentBottomSheet()
         initObserve()
+    }
+
+    private fun getHomeDetail() {
+        if ((requireArguments().getInt(KEY_NOTI_DATA)) > 0) {
+            homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
+            homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
+        } else {
+            initHomeDetailFeedAdapter()
+        }
     }
 
     private fun initHomeDetailFeedAdapter() {
@@ -224,13 +228,7 @@ class HomeDetailFragment :
         homeViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> {
-                    if (updateFeedPosition != -1) {
-                        homeDetailFeedAdapter.updateItemAtPosition(updateFeedPosition, true)
-                        updateFeedPosition = -1
-                    }
-                }
-
+                is UiState.Success -> getHomeFeedDetailData()
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }

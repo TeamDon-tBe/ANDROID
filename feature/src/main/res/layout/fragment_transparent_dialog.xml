@@ -58,7 +58,7 @@
             android:textColor="@color/black"
             app:cornerRadius="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="133:48"
+            app:layout_constraintDimensionRatio="120:48"
             app:layout_constraintEnd_toStartOf="@id/btn_transparent_dialog_yes"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintHorizontal_weight="1"
