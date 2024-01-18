@@ -160,7 +160,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             if (memberProfile.idFlag) {
                 MyPageBottomSheet().show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
             } else {
-                MyPageAnotherUserBottomSheet().show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
+                MyPageAnotherUserBottomSheet(
+                    isMember = memberProfile.idFlag,
+                    contentId = memberProfile.id,
+                    isComment = false,
+                    commentId = -1,
+                ).show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
             }
         }
     }
