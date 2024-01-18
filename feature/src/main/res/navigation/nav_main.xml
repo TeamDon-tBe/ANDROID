@@ -39,18 +39,17 @@
             app:destination="@id/fragment_posting"
             app:popUpTo="@id/fragment_posting"
             app:popUpToInclusive="false" />
-            />
         <action
             android:id="@+id/action_notification_to_my_page"
             app:destination="@id/fragment_my_page"
-             app:popUpTo="@id/fragment_my_page"
-        app:popUpToInclusive="false" />
+            app:popUpTo="@id/fragment_my_page"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_notification_to_home_detail"
             app:destination="@id/fragment_home_detail"
             app:popUpTo="@id/fragment_home"
             app:popUpToInclusive="false" />
-            />
+        />
     </fragment>
     <fragment
         android:id="@+id/fragment_my_page"
@@ -61,7 +60,7 @@
             android:id="@+id/action_fragment_my_page_to_fragment_home_detail"
             app:destination="@id/fragment_home_detail"
             app:popUpTo="@id/fragment_my_page"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/fragment_onboarding"

@@ -9,9 +9,9 @@ class MyPageCommentViewHolder(
     private val binding: ItemMyPageCommentBinding,
     private val onClickKebabBtn: (MyPageCommentEntity) -> Unit,
     private val onItemClicked: (MyPageCommentEntity) -> Unit,
+    private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
 ) :
     RecyclerView.ViewHolder(binding.root) {
-
     private var item: MyPageCommentEntity? = null
 
     init {
@@ -23,12 +23,23 @@ class MyPageCommentViewHolder(
         }
     }
 
-    fun onBind(data: MyPageCommentEntity) = with(binding) {
-        tvCommentTransparency.text = "투명도 ${data.memberGhost}% · ${
-            CalculateTime(root.context).getCalculateTime(data.time)
-        }"
-        feed = data
-        item = data
-        executePendingBindings()
-    }
+    fun onBind(data: MyPageCommentEntity) =
+        with(binding) {
+            tvCommentTransparency.text = "투명도 ${data.memberGhost}% · ${
+                CalculateTime(root.context).getCalculateTime(data.time)
+            }"
+            btnCommentHeart.isSelected = data.isLiked
+
+            feed = data
+            item = data
+            executePendingBindings()
+
+            binding.btnCommentHeart.setOnClickListener {
+                onClickLikedBtn(data.commentId, btnCommentHeart.isSelected)
+                val likeNumber = tvCommentLikeNum.text.toString()
+                tvCommentLikeNum.text =
+                    if (btnCommentHeart.isSelected) (likeNumber.toInt() - 1).toString() else (likeNumber.toInt() + 1).toString()
+                btnCommentHeart.isSelected = !btnCommentHeart.isSelected
+            }
+        }
 }

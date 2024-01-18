@@ -48,26 +48,37 @@ class MyPageCommentFragment(id: MyPageModel) :
         }
     }
 
-    private fun updateNoCommentUI() = with(binding) {
-        rvMyPageComment.visibility = View.GONE
-        tvMyPageCommentNoData.visibility = View.VISIBLE
-    }
+    private fun updateNoCommentUI() =
+        with(binding) {
+            rvMyPageComment.visibility = View.GONE
+            tvMyPageCommentNoData.visibility = View.VISIBLE
+        }
 
     private fun initCommentRecyclerView(commentData: List<MyPageCommentEntity>) {
-        val myPageCommentAdapter = MyPageCommentAdapter(
-            onClickKebabBtn = { commentData ->
-                // Kebab 버튼 클릭 이벤트 처리
-            },
-            onItemClicked = { commentData ->
-                // RecyclerView 항목 클릭 이벤트 처리
-                navigateToHomeDetailFragment(
-                    commentData.contentId,
-                )
-            },
-            context = requireContext(),
-        ).apply {
-            submitList(commentData)
-        }
+        val myPageCommentAdapter =
+            MyPageCommentAdapter(
+                onClickKebabBtn = { commentData ->
+                    // Kebab 버튼 클릭 이벤트 처리
+                },
+                onItemClicked = { commentData ->
+                    // RecyclerView 항목 클릭 이벤트 처리
+                    navigateToHomeDetailFragment(
+                        commentData.contentId,
+                    )
+                },
+                context = requireContext(),
+                onClickLikedBtn = { commentId, status ->
+                    if (status) {
+                        mockDataViewModel.deleteCommentLiked(commentId)
+                    } else {
+                        mockDataViewModel.postCommentLiked(
+                            commentId,
+                        )
+                    }
+                },
+            ).apply {
+                submitList(commentData)
+            }
 
         binding.rvMyPageComment.apply {
             adapter = myPageCommentAdapter
