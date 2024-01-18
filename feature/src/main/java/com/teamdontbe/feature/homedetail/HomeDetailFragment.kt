@@ -52,6 +52,7 @@ class HomeDetailFragment :
     override fun initView() {
         if ((requireArguments().getInt(KEY_NOTI_DATA)) > 0) {
             homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
+            homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
         }
 
         getHomeFeedDetailData()?.toFeedEntity()?.contentId?.let { homeViewModel.getCommentList(it) }
@@ -101,8 +102,18 @@ class HomeDetailFragment :
                                 listOf(result.data),
                             )
                         }
-                    homeDetailFeedAdapter.notifyDataSetChanged()
+
                     contentId = result.data.contentId ?: -1
+
+                    if (::homeDetailFeedAdapter.isInitialized && ::homeDetailFeedCommentAdapter.isInitialized) {
+                        binding.rvHomeDetail.adapter =
+                            ConcatAdapter(homeDetailFeedAdapter, homeDetailFeedCommentAdapter)
+                        binding.rvHomeDetail.addItemDecoration(
+                            HomeDetailFeedItemDecorator(
+                                requireContext(),
+                            ),
+                        )
+                    }
                 }
 
                 is UiState.Empty -> Unit
@@ -133,13 +144,15 @@ class HomeDetailFragment :
                             submitList(it.data)
                         }
 
-                    binding.rvHomeDetail.adapter =
-                        ConcatAdapter(homeDetailFeedAdapter, homeDetailFeedCommentAdapter)
-                    binding.rvHomeDetail.addItemDecoration(
-                        HomeDetailFeedItemDecorator(
-                            requireContext(),
-                        ),
-                    )
+                    if (::homeDetailFeedAdapter.isInitialized && ::homeDetailFeedCommentAdapter.isInitialized) {
+                        binding.rvHomeDetail.adapter =
+                            ConcatAdapter(homeDetailFeedAdapter, homeDetailFeedCommentAdapter)
+                        binding.rvHomeDetail.addItemDecoration(
+                            HomeDetailFeedItemDecorator(
+                                requireContext(),
+                            ),
+                        )
+                    }
                 }
 
                 is UiState.Empty -> Unit

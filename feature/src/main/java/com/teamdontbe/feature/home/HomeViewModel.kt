@@ -72,7 +72,7 @@ class HomeViewModel
                 homeRepository.getFeedLDetail(contentId).collectLatest {
                     if (it != null) _getFeedDetail.value = UiState.Success(it) else UiState.Empty
                 }
-                _getFeedList.value = UiState.Loading
+                _getFeedDetail.value = UiState.Loading
             }
 
         fun getCommentList(contentId: Int) =
@@ -80,7 +80,7 @@ class HomeViewModel
                 homeRepository.getCommentList(contentId).collectLatest {
                     if (it != null) _getCommentList.value = UiState.Success(it) else UiState.Empty
                 }
-                _getFeedList.value = UiState.Loading
+                _getCommentList.value = UiState.Loading
             }
 
         fun deleteFeed(contentId: Int) =

@@ -47,27 +47,29 @@ class MyPageFeedFragment(private val memberProfile: MyPageModel) :
         }
     }
 
-    private fun updateNoFeedUI() = with(binding) {
-        rvMyPagePosting.visibility = View.GONE
-        viewMyPageNoFeedNickname.clNoFeed.visibility = View.VISIBLE
-        viewMyPageNoFeedNickname.tvNoFeedNickname.text =
-            getString(R.string.my_page_no_feed_text, memberProfile.nickName)
-    }
+    private fun updateNoFeedUI() =
+        with(binding) {
+            rvMyPagePosting.visibility = View.GONE
+            viewMyPageNoFeedNickname.clNoFeed.visibility = View.VISIBLE
+            viewMyPageNoFeedNickname.tvNoFeedNickname.text =
+                getString(R.string.my_page_no_feed_text, memberProfile.nickName)
+        }
 
     private fun initFeedRecyclerView(feedEntity: List<FeedEntity>) {
-        val myPageFeedAdapter = MyPageFeedAdapter(
-            onClickKebabBtn = { feedEntity ->
-                // Kebab 버튼 클릭 이벤트 처리
-            },
-            onItemClicked = { feedEntity ->
-                // RecyclerView 항목 클릭 이벤트 처리
-                navigateToHomeDetailFragment(feedEntity.memberId)
-            },
-            context = requireContext(),
-            memberProfile.idFlag,
-        ).apply {
-            submitList(feedEntity)
-        }
+        val myPageFeedAdapter =
+            MyPageFeedAdapter(
+                onClickKebabBtn = { feedEntity ->
+                    // Kebab 버튼 클릭 이벤트 처리
+                },
+                onItemClicked = { feedEntity ->
+                    // RecyclerView 항목 클릭 이벤트 처리
+                    feedEntity.contentId?.let { navigateToHomeDetailFragment(it) }
+                },
+                context = requireContext(),
+                memberProfile.idFlag,
+            ).apply {
+                submitList(feedEntity)
+            }
 
         setUpFeedAdapter(myPageFeedAdapter)
     }
