@@ -38,6 +38,10 @@ class UploadingSnackBar(view: View) {
         }
     }
 
+    fun setSnackbarPadding(left: Int, top: Int, right: Int, bottom: Int) {
+        snackbarLayout.setPadding(left, top, right, bottom)
+    }
+
     private fun setSnackbarToComplete() {
         with(binding) {
             ivSnackbarPostingLoadingCheck.isVisible = true
@@ -48,7 +52,8 @@ class UploadingSnackBar(view: View) {
         }
     }
 
-    fun show() {
+    fun show(paddingLeft: Int = 0, paddingTop: Int = 0, paddingRight: Int = 0, paddingBottom: Int = 0) {
+        setSnackbarPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
         snackbar.show()
         Handler(Looper.getMainLooper()).postDelayed({
             setSnackbarToComplete()
