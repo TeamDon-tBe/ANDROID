@@ -123,7 +123,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     TransparentIsGhostSnackBar.make(binding.root).show()
                 } else {
                     initTransparentDialog(data.memberId, data.contentId ?: -1)
-                    updateFeedPosition = position
                 }
             }, onClickUserProfileBtn = { feedData, positoin ->
                 feedData.contentId?.let {

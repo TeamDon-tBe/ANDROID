@@ -14,6 +14,7 @@ class MyPageCommentAdapter(
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     context: Context,
     private val idFlag: Boolean,
+    private val onClickTransparentBtn: (MyPageCommentEntity, Int) -> Unit = { _, _ -> },
 ) :
     ListAdapter<MyPageCommentEntity, MyPageCommentViewHolder>(ExampleDiffCallback) {
     private val inflater by lazy { LayoutInflater.from(context) }
@@ -29,6 +30,7 @@ class MyPageCommentAdapter(
             onItemClicked,
             onClickLikedBtn,
             idFlag,
+            onClickTransparentBtn,
         )
     }
 

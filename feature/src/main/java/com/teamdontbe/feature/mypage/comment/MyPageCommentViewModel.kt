@@ -7,7 +7,9 @@ import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.domain.repository.HomeRepository
 import com.teamdontbe.domain.repository.MyPageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -25,6 +27,9 @@ class MyPageCommentViewModel
             MutableStateFlow<UiState<List<MyPageCommentEntity>>>(UiState.Empty)
         val getMyPageCommentListState: StateFlow<UiState<List<MyPageCommentEntity>>> =
             _getMyPageCommentListState
+
+        private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
+        val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
 
         fun getMyPageCommentList(viewMemberId: Int) {
             viewModelScope.launch {
@@ -51,4 +56,14 @@ class MyPageCommentViewModel
                 homeRepository.deleteCommentLiked(commentId).collectLatest {
                 }
             }
+
+        fun postTransparent(
+            targetMemberId: Int,
+            alarmTriggerId: Int,
+        ) = viewModelScope.launch {
+            homeRepository.postTransparent(targetMemberId, alarmTriggerId).collectLatest {
+                _postTransparent.emit(UiState.Success(it))
+            }
+            _postTransparent.emit(UiState.Loading)
+        }
     }
