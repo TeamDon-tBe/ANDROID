@@ -31,4 +31,6 @@ class PostingViewModel
             }
 
         fun getNickName() = userInfoRepository.getNickName()
+
+        fun getMemberProfileUrl() = userInfoRepository.getMemberProfileUrl()
     }
