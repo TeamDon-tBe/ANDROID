@@ -6,9 +6,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
@@ -34,6 +36,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         homeViewModel.getFeedList()
         initObserve()
         initSwipeRefreshData()
+        scrollRecyclerViewToTop()
     }
 
     private fun initSwipeRefreshData() {
@@ -212,6 +215,18 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     ) {
         val dialog = TransparentDialogFragment(targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HOME_TRANSPARENT_DIALOG)
+    }
+
+    private fun scrollRecyclerViewToTop() {
+        (requireActivity() as MainActivity).findViewById<BottomNavigationView>(R.id.bnv_main)
+            .setOnItemReselectedListener { item ->
+                if (item.itemId == R.id.fragment_home) {
+                    val nestedScroll = binding.nestedScrollHome
+                    nestedScroll.post {
+                        nestedScroll.smoothScrollTo(0, 0)
+                    }
+                }
+            }
     }
 
     companion object {
