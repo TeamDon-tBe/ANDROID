@@ -61,7 +61,7 @@ class MyPageFeedFragment(private val memberProfile: MyPageModel) :
             },
             onItemClicked = { feedEntity ->
                 // RecyclerView 항목 클릭 이벤트 처리
-                navigateToHomeDetailFragment(feedEntity.memberId)
+                navigateToHomeDetailFragment(feedEntity.contentId ?: -1)
             },
             context = requireContext(),
             memberProfile.idFlag,
