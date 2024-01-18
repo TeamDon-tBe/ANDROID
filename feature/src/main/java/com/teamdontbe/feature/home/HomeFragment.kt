@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.home
 
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -42,8 +43,9 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initObserve() {
         homeViewModel.getFeedList.flowWithLifecycle(lifecycle).onEach {
             when (it) {
-                is UiState.Loading -> Unit
+                is UiState.Loading -> binding.progressbarHome.isVisible = true
                 is UiState.Success -> {
+                    binding.progressbarHome.isVisible = false
                     initHomeAdapter(it.data)
                 }
 
