@@ -11,6 +11,7 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
+import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.mypage.MyPageModel
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.util.FeedItemDecorator
@@ -21,7 +22,8 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class MyPageFeedFragment :
     BindingFragment<FragmentMyPageFeedBinding>(R.layout.fragment_my_page_feed) {
-    private val mockDataViewModel by viewModels<MyPageFeedViewModel>()
+    private val myPageFeedViewModel by viewModels<MyPageFeedViewModel>()
+    private val homeViewModel by viewModels<HomeViewModel>()
 
     private lateinit var memberProfile: MyPageModel
 
@@ -38,8 +40,8 @@ class MyPageFeedFragment :
     }
 
     private fun initFeedObserve() {
-        mockDataViewModel.getMyPageFeedList(memberProfile.id)
-        mockDataViewModel.getMyPageFeedListState.flowWithLifecycle(lifecycle).onEach {
+        myPageFeedViewModel.getMyPageFeedList(memberProfile.id)
+        myPageFeedViewModel.getMyPageFeedListState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> handleSuccessState(it.data)
@@ -74,6 +76,15 @@ class MyPageFeedFragment :
                 // RecyclerView 항목 클릭 이벤트 처리
                 navigateToHomeDetailFragment(feedEntity.contentId ?: -1)
             },
+            onClickLikedBtn = { contentId, status ->
+                if (status) {
+                    homeViewModel.deleteFeedLiked(contentId)
+                } else {
+                    homeViewModel.postFeedLiked(
+                        contentId,
+                    )
+                }
+            },
             context = requireContext(),
             memberProfile.idFlag,
         ).apply {
@@ -90,6 +101,7 @@ class MyPageFeedFragment :
         }
     }
 
+    //    action_fragment_home_to_fragment_my_page
     private fun navigateToHomeDetailFragment(id: Int) {
         findNavController().navigate(
             R.id.action_fragment_my_page_to_fragment_home_detail,
