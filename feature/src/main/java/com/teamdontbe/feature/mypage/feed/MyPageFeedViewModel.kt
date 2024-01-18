@@ -6,8 +6,11 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.domain.repository.HomeRepository
 import com.teamdontbe.domain.repository.MyPageRepository
+import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -18,12 +21,16 @@ class MyPageFeedViewModel
 @Inject constructor(
     private val myPageRepository: MyPageRepository,
     private val homeRepository: HomeRepository,
+    private val userInfoRepository: UserInfoRepository,
 ) :
     ViewModel() {
     private val _getMyPageFeedListState =
         MutableStateFlow<UiState<List<FeedEntity>>>(UiState.Empty)
     val getMyPageFeedListState: StateFlow<UiState<List<FeedEntity>>> =
         _getMyPageFeedListState
+
+    private val _deleteFeed = MutableSharedFlow<UiState<Boolean>>()
+    val deleteFeed: SharedFlow<UiState<Boolean>> = _deleteFeed
 
     fun getMyPageFeedList(viewMemberId: Int) {
         viewModelScope.launch {
@@ -50,4 +57,14 @@ class MyPageFeedViewModel
             homeRepository.deleteFeedLiked(commentId).collectLatest {
             }
         }
+
+    fun deleteFeed(contentId: Int) =
+        viewModelScope.launch {
+            homeRepository.deleteFeed(contentId).collectLatest {
+                _deleteFeed.emit(UiState.Success(it))
+            }
+            _deleteFeed.emit(UiState.Loading)
+        }
+
+    fun getMemberId() = userInfoRepository.getMemberId()
 }

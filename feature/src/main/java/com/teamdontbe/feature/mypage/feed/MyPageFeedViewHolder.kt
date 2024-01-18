@@ -8,7 +8,7 @@ import com.teamdontbe.feature.util.CalculateTime
 
 class MyPageFeedViewHolder(
     private val binding: ItemHomeFeedBinding,
-    private val onClickKebabBtn: (FeedEntity) -> Unit,
+    private val onClickKebabBtn: (FeedEntity, Int) -> Unit,
     private val onItemClicked: (FeedEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
     private val idFlag: Boolean,
@@ -22,7 +22,7 @@ class MyPageFeedViewHolder(
             item?.let { onItemClicked(it) }
         }
         binding.btnHomeKebab.setOnClickListener {
-            item?.let { onClickKebabBtn(it) }
+            item?.let { onClickKebabBtn(it, bindingAdapterPosition) }
         }
     }
 
