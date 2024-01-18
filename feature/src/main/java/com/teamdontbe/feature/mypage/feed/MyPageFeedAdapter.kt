@@ -11,6 +11,7 @@ import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 class MyPageFeedAdapter(
     private val onClickKebabBtn: (FeedEntity) -> Unit,
     private val onItemClicked: (FeedEntity) -> Unit,
+    private val onClickLikedBtn: (Int, Boolean) -> Unit,
     context: Context,
     private val idFlag: Boolean,
 ) :
@@ -19,7 +20,13 @@ class MyPageFeedAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPageFeedViewHolder {
         val binding = ItemHomeFeedBinding.inflate(inflater, parent, false)
-        return MyPageFeedViewHolder(binding, onClickKebabBtn, onItemClicked, idFlag)
+        return MyPageFeedViewHolder(
+            binding,
+            onClickKebabBtn,
+            onItemClicked,
+            onClickLikedBtn,
+            idFlag,
+        )
     }
 
     override fun onBindViewHolder(holder: MyPageFeedViewHolder, position: Int) {
