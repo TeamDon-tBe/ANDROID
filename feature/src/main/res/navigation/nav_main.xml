@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_home_to_home_detail"
             app:destination="@id/fragment_home_detail" />
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_my_page"
+            app:destination="@id/fragment_my_page" />
     </fragment>
     <fragment
         android:id="@+id/fragment_posting"

@@ -87,39 +87,50 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun initHomeAdapter(feedData: List<FeedEntity>) {
         homeAdapter =
-            HomeAdapter(onClickKebabBtn = { feedData, positoin ->
-                feedData.contentId?.let {
-                    initBottomSheet(
-                        feedData.memberId == homeViewModel.getMemberId(),
-                        it, false,
+            HomeAdapter(
+                onClickKebabBtn = { feedData, positoin ->
+                    feedData.contentId?.let {
+                        initBottomSheet(
+                            feedData.memberId == homeViewModel.getMemberId(),
+                            it,
+                            false,
+                        )
+                        deleteFeedPosition = positoin
+                    }
+                },
+                onClickToNavigateToHomeDetail = { feedData, position ->
+                    navigateToHomeDetailFragment(
+                        Feed(
+                            feedData.memberId,
+                            feedData.memberNickname,
+                            feedData.memberNickname,
+                            feedData.isLiked,
+                            feedData.isGhost,
+                            feedData.memberGhost,
+                            feedData.contentLikedNumber,
+                            feedData.commentNumber,
+                            feedData.contentText,
+                            feedData.time,
+                            feedData.contentId,
+                        ),
                     )
-                    deleteFeedPosition = positoin
-                }
-            }, onClickToNavigateToHomeDetail = { feedData, position ->
-                navigateToHomeDetailFragment(
-                    Feed(
-                        feedData.memberId,
-                        feedData.memberNickname,
-                        feedData.memberNickname,
-                        feedData.isLiked,
-                        feedData.isGhost,
-                        feedData.memberGhost,
-                        feedData.contentLikedNumber,
-                        feedData.commentNumber,
-                        feedData.contentText,
-                        feedData.time,
-                        feedData.contentId,
-                    ),
-                )
-            }, onClickLikedBtn = { contentId, status ->
-                if (status) {
-                    homeViewModel.deleteFeedLiKED(contentId)
-                } else {
-                    homeViewModel.postFeedLiKED(
-                        contentId,
-                    )
-                }
-            }).apply {
+                },
+                onClickLikedBtn = { contentId, status ->
+                    if (status) {
+                        homeViewModel.deleteFeedLiKED(contentId)
+                    } else {
+                        homeViewModel.postFeedLiKED(
+                            contentId,
+                        )
+                    }
+                },
+                onClickUserProfileBtn = { feedData, positoin ->
+                    feedData.contentId?.let {
+                        navigateToMyPageFragment(feedData.memberId)
+                    }
+                },
+
+            ).apply {
                 submitList(feedData)
             }
         binding.rvHome.adapter = homeAdapter
@@ -145,6 +156,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         findNavController().navigate(
             R.id.action_home_to_home_detail,
             bundleOf(KEY_FEED_DATA to feedData),
+        )
+    }
+
+    private fun navigateToMyPageFragment(id: Int) {
+        findNavController().navigate(
+            R.id.action_fragment_home_to_fragment_my_page,
+            bundleOf(KEY_FEED_DATA to id),
         )
     }
 

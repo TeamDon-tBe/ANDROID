@@ -19,10 +19,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class MyPageCommentFragment(id: MyPageModel) :
+class MyPageCommentFragment(private val memberId: MyPageModel) :
     BindingFragment<FragmentMyPageCommentBinding>(R.layout.fragment_my_page_comment) {
     private val mockDataViewModel by viewModels<MyPageCommentViewModel>()
-    private val memberId = id
 
     override fun initView() {
         initFeedObserve(memberId.id)
@@ -65,6 +64,7 @@ class MyPageCommentFragment(id: MyPageModel) :
                 )
             },
             context = requireContext(),
+            memberId.idFlag,
         ).apply {
             submitList(commentData)
         }

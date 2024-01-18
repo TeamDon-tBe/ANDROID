@@ -12,13 +12,14 @@ class MyPageCommentAdapter(
     private val onClickKebabBtn: (MyPageCommentEntity) -> Unit,
     private val onItemClicked: (MyPageCommentEntity) -> Unit,
     context: Context,
+    private val idFlag: Boolean,
 ) :
     ListAdapter<MyPageCommentEntity, MyPageCommentViewHolder>(ExampleDiffCallback) {
     private val inflater by lazy { LayoutInflater.from(context) }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPageCommentViewHolder {
         val binding = ItemMyPageCommentBinding.inflate(inflater, parent, false)
-        return MyPageCommentViewHolder(binding, onClickKebabBtn, onItemClicked)
+        return MyPageCommentViewHolder(binding, onClickKebabBtn, onItemClicked, idFlag)
     }
 
     override fun onBindViewHolder(holder: MyPageCommentViewHolder, position: Int) {
