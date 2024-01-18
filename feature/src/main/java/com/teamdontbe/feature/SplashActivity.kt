@@ -8,7 +8,6 @@ import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.feature.databinding.ActivitySplashBinding
 import com.teamdontbe.feature.login.LoginActivity
 import com.teamdontbe.feature.login.LoginViewModel
-import com.teamdontbe.feature.signup.SignUpAgreeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,19 +22,20 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         // 타이머가 끝나면 내부 실행
         Handler().postDelayed(
             Runnable {
-                when {
-                    loginViewModel.getNickName().isNotBlank() -> {
-                        navigateTo<MainActivity>()
-                    }
-
-                    loginViewModel.getNickName().isBlank() -> {
-                        navigateTo<SignUpAgreeActivity>()
-                    }
-
-                    else -> {
-                        navigateTo<LoginActivity>()
-                    }
-                }
+                navigateTo<LoginActivity>()
+//                when {
+//                    loginViewModel.getNickName().isNotBlank() -> {
+//                        navigateTo<MainActivity>()
+//                    }
+//
+//                    loginViewModel.getNickName().isBlank() -> {
+//                        navigateTo<SignUpAgreeActivity>()
+//                    }
+//
+//                    else -> {
+//                        navigateTo<LoginActivity>()
+//                    }
+//                }
                 finish()
             },
             3000,
