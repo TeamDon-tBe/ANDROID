@@ -228,7 +228,11 @@ class HomeDetailFragment :
         homeViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> getHomeFeedDetailData()
+                is UiState.Success -> {
+                    homeViewModel.getFeedDetail(contentId)
+                    homeViewModel.getCommentList(contentId)
+                }
+
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
