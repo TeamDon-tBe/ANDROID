@@ -8,13 +8,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_white_fill_10_rect">
 
         <ImageView
-            android:layout_marginTop="38dp"
             android:id="@+id/iv_transparent_dialog_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="38dp"
             android:src="@drawable/ic_transparent_dialog"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,14 +59,14 @@
             app:cornerRadius="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="133:48"
-            app:layout_constraintEnd_toStartOf="@id/btn_transparent_dialog_delete"
+            app:layout_constraintEnd_toStartOf="@id/btn_transparent_dialog_yes"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_transparent_dialog_content" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_transparent_dialog_delete"
+            android:id="@+id/btn_transparent_dialog_yes"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="18dp"

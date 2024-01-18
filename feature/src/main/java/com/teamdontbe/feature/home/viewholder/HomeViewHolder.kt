@@ -1,9 +1,12 @@
 package com.teamdontbe.feature.home.viewholder
 
+import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 import com.teamdontbe.feature.util.CalculateTime
+import com.teamdontbe.feature.util.Transparent
+import timber.log.Timber
 
 class HomeViewHolder(
     private val binding: ItemHomeFeedBinding,
@@ -11,7 +14,7 @@ class HomeViewHolder(
     private val onClickToNavigateToHomeDetail: (FeedEntity, Int) -> Unit = { _, _ -> },
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     private val onClickUserProfileBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
-
+    private val onClickTransparentBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FeedEntity) {
         with(binding) {
@@ -40,6 +43,17 @@ class HomeViewHolder(
             }
             ivHomeProfile.setOnClickListener {
                 onClickUserProfileBtn(data, bindingAdapterPosition)
+            }
+            ivHomeGhostFillGreen.setOnClickListener {
+                onClickTransparentBtn(data, position)
+            }
+
+            if (data.isGhost) {
+                binding.viewHomeTransparentBg.setBackgroundColor(Color.parseColor("#D9FCFCFD"))
+            } else {
+                val color = Transparent().calculateColorWithOpacity(data.memberGhost)
+                Timber.tag("color").d(color)
+                binding.viewHomeTransparentBg.setBackgroundColor(Color.parseColor(color))
             }
         }
     }

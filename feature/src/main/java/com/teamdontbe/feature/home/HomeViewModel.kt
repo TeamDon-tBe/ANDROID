@@ -59,6 +59,9 @@ class HomeViewModel
         private val _deleteComment = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
         val deleteComment: StateFlow<UiState<Boolean>> get() = _deleteComment
 
+        private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
+        val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
+
         fun getFeedList() =
             viewModelScope.launch {
                 homeRepository.getFeedList().collectLatest {
@@ -150,4 +153,14 @@ class HomeViewModel
                 homeRepository.deleteCommentLiked(commentId).collectLatest {
                 }
             }
+
+        fun postTransparent(
+            targetMemberId: Int,
+            alarmTriggerId: Int,
+        ) = viewModelScope.launch {
+            homeRepository.postTransparent(targetMemberId, alarmTriggerId).collectLatest {
+                _postTransparent.emit(UiState.Success(it))
+            }
+            _postTransparent.emit(UiState.Loading)
+        }
     }

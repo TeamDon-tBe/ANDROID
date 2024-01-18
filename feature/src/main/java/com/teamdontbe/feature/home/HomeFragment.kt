@@ -13,6 +13,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
+import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.util.EventObserver
 import com.teamdontbe.feature.util.FeedItemDecorator
@@ -26,6 +27,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private lateinit var homeAdapter: HomeAdapter
     private var deleteFeedPosition: Int = -1
+    private var updateFeedPosition: Int = -1
 
     override fun initView() {
         homeViewModel.getFeedList()
@@ -84,6 +86,22 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 initComplaintDialog(it)
             },
         )
+
+        homeViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> {
+                    homeAdapter
+                    if (deleteFeedPosition != -1) {
+                        homeAdapter.updateItemAtPosition(updateFeedPosition, true)
+                        updateFeedPosition = -1
+                    }
+                }
+
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
     }
 
     private fun initHomeAdapter(feedData: List<FeedEntity>) {
@@ -120,6 +138,9 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                         contentId,
                     )
                 }
+            }, onClickTransparentBtn = { data, positoin ->
+                initTransparentDialog(data.memberId, data.contentId ?: -1)
+                updateFeedPosition = positoin
             }).apply {
                 submitList(feedData)
             }
@@ -174,8 +195,17 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
     }
 
+    private fun initTransparentDialog(
+        targetMemberId: Int,
+        alarmTriggerId: Int,
+    ) {
+        val dialog = TransparentDialogFragment(targetMemberId, alarmTriggerId)
+        dialog.show(childFragmentManager, HOME_TRANSPARENT_DIALOG)
+    }
+
     companion object {
         const val HOME_BOTTOM_SHEET = "home_bottom_sheet"
+        const val HOME_TRANSPARENT_DIALOG = "home_transparent_dialog"
         const val KEY_FEED_DATA = "key_feed_data"
     }
 }
