@@ -10,6 +10,7 @@ class MyPageFeedViewHolder(
     private val binding: ItemHomeFeedBinding,
     private val onClickKebabBtn: (FeedEntity) -> Unit,
     private val onItemClicked: (FeedEntity) -> Unit,
+    private val onClickLikedBtn: (Int, Boolean) -> Unit,
     private val idFlag: Boolean,
 ) :
     RecyclerView.ViewHolder(binding.root) {
@@ -32,13 +33,27 @@ class MyPageFeedViewHolder(
         tvHomeFeedTransparency.text = "투명도 ${data.memberGhost}% · ${
             CalculateTime(root.context).getCalculateTime(data.time)
         }"
+        btnHomeHeart.isSelected = data.isLiked
         feed = data
         item = data
         executePendingBindings()
+        setupLikeButton(data)
     }
 
     private fun ItemHomeFeedBinding.setVisibility() {
         ivHomeGhostFillGreen.visibility = View.INVISIBLE
         ivHomeLinePale.visibility = View.INVISIBLE
+    }
+
+    private fun setupLikeButton(data: FeedEntity) = with(binding) {
+        btnHomeHeart.setOnClickListener {
+            data.contentId?.let { contentId ->
+                onClickLikedBtn(contentId, btnHomeHeart.isSelected)
+            }
+            val likeNumber = tvHomeHeartNum.text.toString().toInt()
+            tvHomeHeartNum.text =
+                (if (btnHomeHeart.isSelected) likeNumber - 1 else likeNumber + 1).toString()
+            btnHomeHeart.isSelected = !btnHomeHeart.isSelected
+        }
     }
 }

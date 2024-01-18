@@ -115,19 +115,21 @@ class SignUpProfileActivity :
                         binding.etSignUpAgreeIntroduce.text.toString(),
                         "",
                     )
-                }
-            }
-            when (flag) {
-                0 -> finish()
+                    when (flag) {
+                        0 -> {
+                            finish()
+                        }
 
-                1 -> {
-                    viewModel.setUserNickName(inputNickName)
+                        1 -> {
+                            viewModel.setUserNickName(inputNickName)
 
-                    val userProfile = setUpUserProfile(
-                        inputNickName,
-                        allowedCheck,
-                    )
-                    navigateToMainAcitivity(userProfile)
+                            val userProfile = setUpUserProfile(
+                                inputNickName,
+                                allowedCheck,
+                            )
+                            navigateToMainAcitivity(userProfile)
+                        }
+                    }
                 }
             }
         }

@@ -19,17 +19,31 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class MyPageFeedFragment(private val memberProfile: MyPageModel) :
+class MyPageFeedFragment :
     BindingFragment<FragmentMyPageFeedBinding>(R.layout.fragment_my_page_feed) {
-    private val mockDataViewModel by viewModels<MyPageFeedViewModel>()
+    private val myPageFeedViewModel by viewModels<MyPageFeedViewModel>()
+
+    private lateinit var memberProfile: MyPageModel
 
     override fun initView() {
+        // Arguments에서 memberProfile 값을 가져오기
+        initMemberProfile()
         initFeedObserve()
     }
 
+    private fun initMemberProfile() {
+        arguments?.let {
+            memberProfile = it.getParcelable(ARG_MEMBER_PROFILE) ?: MyPageModel(
+                -1,
+                getString(R.string.my_page_nickname),
+                false,
+            )
+        }
+    }
+
     private fun initFeedObserve() {
-        mockDataViewModel.getMyPageFeedList(memberProfile.id)
-        mockDataViewModel.getMyPageFeedListState.flowWithLifecycle(lifecycle).onEach {
+        myPageFeedViewModel.getMyPageFeedList(memberProfile.id)
+        myPageFeedViewModel.getMyPageFeedListState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> handleSuccessState(it.data)
@@ -64,6 +78,15 @@ class MyPageFeedFragment(private val memberProfile: MyPageModel) :
                 // RecyclerView 항목 클릭 이벤트 처리
                 navigateToHomeDetailFragment(feedEntity.contentId ?: -1)
             },
+            onClickLikedBtn = { contentId, status ->
+                if (status) {
+                    myPageFeedViewModel.deleteFeedLiked(contentId)
+                } else {
+                    myPageFeedViewModel.postFeedLiked(
+                        contentId,
+                    )
+                }
+            },
             context = requireContext(),
             memberProfile.idFlag,
         ).apply {
@@ -80,11 +103,24 @@ class MyPageFeedFragment(private val memberProfile: MyPageModel) :
         }
     }
 
+    //    action_fragment_home_to_fragment_my_page
     private fun navigateToHomeDetailFragment(id: Int) {
         findNavController().navigate(
             R.id.action_fragment_my_page_to_fragment_home_detail,
             bundleOf(KEY_NOTI_DATA to id),
         )
+    }
+
+    companion object {
+        const val ARG_MEMBER_PROFILE = "arg_member_profile"
+
+        fun newInstance(memberProfile: MyPageModel?): MyPageFeedFragment {
+            return MyPageFeedFragment().apply {
+                arguments = bundleOf(
+                    ARG_MEMBER_PROFILE to memberProfile,
+                )
+            }
+        }
     }
 
     override fun onResume() {
