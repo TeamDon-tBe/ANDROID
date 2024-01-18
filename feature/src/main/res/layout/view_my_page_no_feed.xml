@@ -32,6 +32,7 @@
             tools:text="@string/my_page_no_feed_text" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_no_feed_posting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="100dp"

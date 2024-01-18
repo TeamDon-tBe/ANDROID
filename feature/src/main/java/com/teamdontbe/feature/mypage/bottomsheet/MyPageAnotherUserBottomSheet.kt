@@ -4,15 +4,46 @@ import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.BottomsheetComplaintDeleteBinding
 
-class MyPageAnotherUserBottomSheet() :
+class MyPageAnotherUserBottomSheet(
+    private val isMember: Boolean,
+    private val contentId: Int,
+    private val isComment: Boolean,
+    private val commentId: Int,
+) :
     BindingBottomSheetFragment<BottomsheetComplaintDeleteBinding>(R.layout.bottomsheet_complaint_delete) {
     override fun initView() {
         initBottomSheetCloseClickListener()
+        initShowDialogClickListener()
+        initText()
+    }
+
+    private fun initText() {
+        if (isMember) {
+            binding.tvComplaintTitle.text = getString(R.string.tv_delete_title)
+        }
     }
 
     private fun initBottomSheetCloseClickListener() {
         binding.ivComplaintDeleteClose.setOnClickListener {
             dismiss()
         }
+    }
+
+    private fun initShowDialogClickListener() {
+        binding.tvComplaintTitle.setOnClickListener {
+            MyPageDeleteDialogFragment(
+                isMember,
+                contentId,
+                isComment,
+                commentId,
+            ).show(
+                childFragmentManager,
+                DECLARE_DIALOG,
+            )
+        }
+    }
+
+    companion object {
+        const val DECLARE_DIALOG = "declare"
     }
 }
