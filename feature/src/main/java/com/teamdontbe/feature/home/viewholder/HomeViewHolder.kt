@@ -3,7 +3,9 @@ package com.teamdontbe.feature.home.viewholder
 import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 import com.teamdontbe.feature.util.CalculateTime
 import com.teamdontbe.feature.util.Transparent
@@ -20,6 +22,7 @@ class HomeViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FeedEntity) {
         with(binding) {
+            ivHomeProfile.load(R.drawable.ic_sign_up_profile_person)
             if (data.memberId == userId) {
                 ivHomeGhostFillGreen.visibility = View.INVISIBLE
                 ivHomeLinePale.visibility = View.INVISIBLE

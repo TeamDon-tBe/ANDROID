@@ -13,6 +13,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
+import coil.load
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.drawableOf
@@ -55,6 +56,8 @@ class HomeDetailFragment :
     private lateinit var homeDetailFeedCommentAdapter: HomeDetailCommentAdapter
 
     override fun initView() {
+        binding.ivHomeDetailProfileImg.load(R.drawable.ic_sign_up_profile_person)
+        binding.root.context.hideKeyboard(binding.root)
         getHomeDetail()
         getHomeFeedDetailData()?.toFeedEntity()?.contentId?.let { homeViewModel.getCommentList(it) }
         statusBarColorOf(R.color.white)
