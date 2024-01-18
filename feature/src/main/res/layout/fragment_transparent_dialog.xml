@@ -71,7 +71,7 @@
             android:layout_height="0dp"
             android:layout_marginEnd="18dp"
             android:backgroundTint="@color/black"
-            android:text="네, 맞아요"
+            android:text="@string/btn_transparent_dialog_yes"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
             android:textColor="@color/white"
             app:cornerRadius="4dp"
