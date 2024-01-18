@@ -31,11 +31,11 @@
             imageUrl="@{feed.memberProfileUrl}"
             android:layout_width="44dp"
             android:layout_height="0dp"
-            android:background="@color/gray_9"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintStart_toStartOf="@id/guide_home_start_10"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+            tools:background="@color/gray_9" />
 
         <TextView
             android:id="@+id/tv_home_feed_user_name"
