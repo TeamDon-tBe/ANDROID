@@ -1,4 +1,4 @@
-package com.teamdontbe.feature.comment
+package com.teamdontbe.feature.snackbar
 
 import android.content.res.ColorStateList
 import android.os.Handler

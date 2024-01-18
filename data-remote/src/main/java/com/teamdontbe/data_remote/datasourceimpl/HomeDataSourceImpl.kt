@@ -4,6 +4,7 @@ import com.teamdontbe.data.datasource.HomeDataSource
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.request.RequestCommentLikedDto
 import com.teamdontbe.data.dto.request.RequestCommentPostingDto
+import com.teamdontbe.data.dto.request.RequestTransparentDto
 import com.teamdontbe.data.dto.response.ResponseCommentDto
 import com.teamdontbe.data.dto.response.ResponseFeedDto
 import com.teamdontbe.data_remote.api.HomeApiService
@@ -58,5 +59,18 @@ class HomeDataSourceImpl
 
         override suspend fun deleteCommentLiked(commentId: Int): BaseResponse<Unit> {
             return homeApiService.deleteCommentLiked(commentId)
+        }
+
+        override suspend fun postTransparent(
+            targetMemberId: Int,
+            alarmTriggerId: Int,
+        ): BaseResponse<Unit> {
+            return homeApiService.postTransparent(
+                RequestTransparentDto(
+                    "commentGhost",
+                    targetMemberId,
+                    alarmTriggerId,
+                ),
+            )
         }
     }
