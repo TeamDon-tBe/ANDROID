@@ -140,9 +140,13 @@
     <string name="tv_delete_with_title_delete_dialog">게시글을 삭제하시겠어요?</string>
     <string name="tv_delete_with_title_delete_comment_dialog">댓글을 삭제하시겠어요?</string>
     <string name="tv_delete_with_title_delete_content_dialog">삭제된 게시글은 영구히 사라져요.</string>
+    <string name="tv_transparent_dialog_title">투명도 주기</string>
+    <string name="tv_transparent_dialog_content">지금 누르신 투명도 기능이 Don\'t be를\n 더 온화한 커뮤니티를 만들기 위한 일이겠죠?</string>
+    <string name="btn_transparent_dialog_no">조금 더 고민하기</string>
     <string name="tv_delete_with_title_delete_comment_content_dialog">삭제된 댓글은 영구히 사라져요.</string>
 
     <!-- 404 에러 화면 -->
     <string name="error_404">이런!\n현재 요청하신 페이지를 찾을 수 없어요!</string>
     <string name="error_to_home">홈으로 가기</string>
+    <string name="btn_transparent_dialog_yes">네, 맞아요</string>
 </resources>

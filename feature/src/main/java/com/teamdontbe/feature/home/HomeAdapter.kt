@@ -13,10 +13,11 @@ class HomeAdapter(
     private val onClickToNavigateToHomeDetail: (FeedEntity, Int) -> Unit = { _, _ -> },
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     private val onClickUserProfileBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
+    private val onClickTransparentBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
 ) :
     ListAdapter<FeedEntity, HomeViewHolder>(
-        HomeAdapterDiffCallback,
-    ) {
+            HomeAdapterDiffCallback,
+        ) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -29,6 +30,7 @@ class HomeAdapter(
             onClickToNavigateToHomeDetail,
             onClickLikedBtn,
             onClickUserProfileBtn,
+            onClickTransparentBtn,
         )
     }
 

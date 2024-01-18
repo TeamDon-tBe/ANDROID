@@ -4,6 +4,7 @@ import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.request.RequestCommentLikedDto
 import com.teamdontbe.data.dto.request.RequestCommentPostingDto
 import com.teamdontbe.data.dto.request.RequestFeedLikedDto
+import com.teamdontbe.data.dto.request.RequestTransparentDto
 import com.teamdontbe.data.dto.response.ResponseCommentDto
 import com.teamdontbe.data.dto.response.ResponseFeedDto
 import com.teamdontbe.data_remote.api.LoginApiService.Companion.API
@@ -24,6 +25,7 @@ interface HomeApiService {
         const val LIKED = "liked"
         const val UNLIKED = "unliked"
         const val COMMENT_ID = "commentId"
+        const val GHOST = "ghost"
     }
 
     @GET("/$API/$V1/$CONTENT/$ALL")
@@ -75,5 +77,10 @@ interface HomeApiService {
     @DELETE("/$API/$V1/$CONTENT/{$COMMENT_ID}/$UNLIKED")
     suspend fun deleteCommentLiked(
         @Path(value = COMMENT_ID) commentId: Int,
+    ): BaseResponse<Unit>
+
+    @POST("/$API/$V1/$GHOST")
+    suspend fun postTransparent(
+        @Body request: RequestTransparentDto,
     ): BaseResponse<Unit>
 }
