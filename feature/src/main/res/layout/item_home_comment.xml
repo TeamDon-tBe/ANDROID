@@ -123,6 +123,17 @@
                 app:layout_constraintStart_toStartOf="@id/iv_comment_profile"
                 app:layout_constraintTop_toBottomOf="@id/iv_comment_profile" />
 
+            <View
+                android:id="@+id/view_comment_transparent_bg"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/shape_white_fill_8_rect"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:backgroundTint="#0FFCFCFD" />
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_comment_ghost_fill_green"
                 android:layout_width="44dp"

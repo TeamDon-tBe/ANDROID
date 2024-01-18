@@ -44,24 +44,30 @@ class HomeViewHolder(
             ivHomeProfile.setOnClickListener {
                 onClickUserProfileBtn(data, bindingAdapterPosition)
             }
-            ivHomeGhostFillGreen.setOnClickListener {
-                if (!data.isGhost) {
-                    onClickTransparentBtn(data, position)
-                } else {
-                    onClickTransparentBtn(
-                        data,
-                        -2,
-                    )
-                }
-            }
 
-            if (data.isGhost) {
-                binding.viewHomeTransparentBg.setBackgroundColor(Color.parseColor("#D9FCFCFD"))
+            setTransparent(data)
+        }
+    }
+
+    private fun setTransparent(data: FeedEntity)  {
+        binding.ivHomeGhostFillGreen.setOnClickListener {
+            if (!data.isGhost) {
+                onClickTransparentBtn(data, position)
             } else {
-                val color = Transparent().calculateColorWithOpacity(data.memberGhost)
-                Timber.tag("color").d(color)
-                binding.viewHomeTransparentBg.setBackgroundColor(Color.parseColor(color))
+                onClickTransparentBtn(
+                    data,
+                    -2,
+                )
+                binding.tvHomeFeedTransparency.text = (data.memberGhost - 1).toString()
             }
+        }
+
+        if (data.isGhost) {
+            binding.viewHomeTransparentBg.setBackgroundColor(Color.parseColor("#D9FCFCFD"))
+        } else {
+            val color = Transparent().calculateColorWithOpacity(data.memberGhost)
+            Timber.tag("color").d(color)
+            binding.viewHomeTransparentBg.setBackgroundColor(Color.parseColor(color))
         }
     }
 }

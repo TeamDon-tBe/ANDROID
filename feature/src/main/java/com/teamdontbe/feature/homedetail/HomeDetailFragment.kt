@@ -25,12 +25,15 @@ import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
+import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeAdapter
 import com.teamdontbe.feature.home.HomeBottomSheet
+import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
+import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.snackbar.UploadingSnackBar
 import com.teamdontbe.feature.util.Debouncer
 import com.teamdontbe.feature.util.EventObserver
@@ -47,6 +50,7 @@ class HomeDetailFragment :
     private var contentId: Int = -1
 
     private var deleteCommentPosition: Int = -1
+    private var updateFeedPosition: Int = -1
 
     private lateinit var homeDetailFeedAdapter: HomeAdapter
     private lateinit var homeDetailFeedCommentAdapter: HomeDetailCommentAdapter
@@ -76,6 +80,13 @@ class HomeDetailFragment :
                         feedData.memberId == homeViewModel.getMemberId(),
                         it, false, -1,
                     )
+                }
+            }, onClickTransparentBtn = { data, position ->
+                if (position == -2) {
+                    TransparentIsGhostSnackBar.make(binding.root).show()
+                } else {
+                    initTransparentDialog(data.memberId, data.contentId ?: -1)
+                    updateFeedPosition = position
                 }
             }).apply {
                 submitList(
@@ -186,6 +197,21 @@ class HomeDetailFragment :
                     }
                     val dialog = DeleteCompleteDialogFragment()
                     dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+                }
+
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+
+        homeViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> {
+                    if (updateFeedPosition != -1) {
+                        homeDetailFeedAdapter.updateItemAtPosition(updateFeedPosition, true)
+                        updateFeedPosition = -1
+                    }
                 }
 
                 is UiState.Empty -> Unit
@@ -370,6 +396,14 @@ class HomeDetailFragment :
                 true,
             )
         dialog.show(childFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
+    }
+
+    private fun initTransparentDialog(
+        targetMemberId: Int,
+        alarmTriggerId: Int,
+    ) {
+        val dialog = TransparentDialogFragment(targetMemberId, alarmTriggerId)
+        dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 
     companion object {

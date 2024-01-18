@@ -92,8 +92,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
-                    homeAdapter
-                    if (deleteFeedPosition != -1) {
+                    if (updateFeedPosition != -1) {
                         homeAdapter.updateItemAtPosition(updateFeedPosition, true)
                         updateFeedPosition = -1
                     }

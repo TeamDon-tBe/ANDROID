@@ -49,12 +49,9 @@ class HomeAdapter(
         position: Int,
         isGhost: Boolean,
     ) {
-        val oldItem = currentList[position]
+        val oldItem = getItem(position)
         val newItem = oldItem.copy(isGhost = isGhost)
-
-        val mutableList = currentList.toMutableList()
-        mutableList[position] = newItem
-        submitList(mutableList)
+        submitList(currentList.toMutableList().apply { set(position, newItem) })
     }
 
     companion object {
