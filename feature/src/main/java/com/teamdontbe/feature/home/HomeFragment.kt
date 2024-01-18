@@ -102,7 +102,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     navigateToHomeDetailFragment(
                         Feed(
                             feedData.memberId,
-                            feedData.memberNickname,
+                            feedData.memberProfileUrl,
                             feedData.memberNickname,
                             feedData.isLiked,
                             feedData.isGhost,
@@ -135,7 +135,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     feedData.contentId?.let {
                         navigateToMyPageFragment(feedData.memberId)
                     }
-                }, userId = homeViewModel.getMemberId(),
+                },
+                userId = homeViewModel.getMemberId(),
             ).apply {
                 submitList(feedData)
             }
