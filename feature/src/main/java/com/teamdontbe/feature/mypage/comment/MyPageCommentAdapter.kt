@@ -9,7 +9,7 @@ import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.feature.databinding.ItemMyPageCommentBinding
 
 class MyPageCommentAdapter(
-    private val onClickKebabBtn: (MyPageCommentEntity) -> Unit,
+    private val onClickKebabBtn: (MyPageCommentEntity, Int) -> Unit,
     private val onItemClicked: (MyPageCommentEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     context: Context,
@@ -39,6 +39,10 @@ class MyPageCommentAdapter(
         position: Int,
     ) {
         holder.onBind(currentList[position])
+    }
+
+    fun deleteItem(position: Int) {
+        submitList(currentList.toMutableList().apply { removeAt(position) })
     }
 
     companion object {

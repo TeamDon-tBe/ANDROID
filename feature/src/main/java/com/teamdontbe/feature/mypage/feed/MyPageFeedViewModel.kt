@@ -71,14 +71,4 @@ class MyPageFeedViewModel
             }
 
         fun getMemberId() = userInfoRepository.getMemberId()
-
-        fun postTransparent(
-            targetMemberId: Int,
-            alarmTriggerId: Int,
-        ) = viewModelScope.launch {
-            homeRepository.postTransparent(targetMemberId, alarmTriggerId).collectLatest {
-                _postTransparent.emit(UiState.Success(it))
-            }
-            _postTransparent.emit(UiState.Loading)
-        }
     }

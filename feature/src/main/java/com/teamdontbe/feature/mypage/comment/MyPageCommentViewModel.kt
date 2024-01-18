@@ -6,6 +6,7 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.domain.repository.HomeRepository
 import com.teamdontbe.domain.repository.MyPageRepository
+import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +22,7 @@ class MyPageCommentViewModel
     constructor(
         private val myPageRepository: MyPageRepository,
         private val homeRepository: HomeRepository,
+        private val userInfoRepository: UserInfoRepository,
     ) :
     ViewModel() {
         private val _getMyPageCommentListState =
@@ -30,6 +32,9 @@ class MyPageCommentViewModel
 
         private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
         val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
+
+        private val _deleteComment = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+        val deleteComment: StateFlow<UiState<Boolean>> get() = _deleteComment
 
         fun getMyPageCommentList(viewMemberId: Int) {
             viewModelScope.launch {
@@ -57,13 +62,13 @@ class MyPageCommentViewModel
                 }
             }
 
-        fun postTransparent(
-            targetMemberId: Int,
-            alarmTriggerId: Int,
-        ) = viewModelScope.launch {
-            homeRepository.postTransparent(targetMemberId, alarmTriggerId).collectLatest {
-                _postTransparent.emit(UiState.Success(it))
+        fun deleteComment(commentId: Int) =
+            viewModelScope.launch {
+                homeRepository.deleteComment(commentId).collectLatest {
+                    _deleteComment.value = UiState.Success(it)
+                }
+                _deleteComment.value = UiState.Loading
             }
-            _postTransparent.emit(UiState.Loading)
-        }
+
+        fun getMemberId() = userInfoRepository.getMemberId()
     }

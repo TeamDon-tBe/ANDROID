@@ -24,7 +24,7 @@ class MyPageFeedViewHolder(
             item?.let { onItemClicked(it) }
         }
         binding.btnHomeKebab.setOnClickListener {
-            item?.let { onClickKebabBtn(it, bindingAdapterPosition) }
+            item?.let { onClickKebabBtn(it, position) }
         }
     }
 

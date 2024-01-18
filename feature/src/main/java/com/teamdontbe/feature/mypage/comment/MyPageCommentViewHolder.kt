@@ -10,13 +10,12 @@ import com.teamdontbe.feature.util.Transparent
 
 class MyPageCommentViewHolder(
     private val binding: ItemMyPageCommentBinding,
-    private val onClickKebabBtn: (MyPageCommentEntity) -> Unit,
+    private val onClickKebabBtn: (MyPageCommentEntity, Int) -> Unit,
     private val onItemClicked: (MyPageCommentEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     private val idFlag: Boolean,
     private val onClickTransparentBtn: (MyPageCommentEntity, Int) -> Unit = { _, _ -> },
-) :
-    RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
     private var item: MyPageCommentEntity? = null
 
     init {
@@ -24,7 +23,7 @@ class MyPageCommentViewHolder(
             item?.let { onItemClicked(it) }
         }
         binding.btnCommentKebab.setOnClickListener {
-            item?.let { onClickKebabBtn(it) }
+            item?.let { onClickKebabBtn(it, position) }
         }
     }
 
