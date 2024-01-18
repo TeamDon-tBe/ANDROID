@@ -22,11 +22,16 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class MyPageCommentFragment :
     BindingFragment<FragmentMyPageCommentBinding>(R.layout.fragment_my_page_comment) {
-    private val mockDataViewModel by viewModels<MyPageCommentViewModel>()
+    private val myPageCommentViewModel by viewModels<MyPageCommentViewModel>()
 
     private lateinit var memberId: MyPageModel
 
     override fun initView() {
+        initMemberProfile()
+        initFeedObserve(memberId.id)
+    }
+
+    private fun initMemberProfile() {
         arguments?.let {
             memberId = it.getParcelable(MyPageFeedFragment.ARG_MEMBER_PROFILE) ?: MyPageModel(
                 -1,
@@ -34,12 +39,11 @@ class MyPageCommentFragment :
                 false,
             )
         }
-        initFeedObserve(memberId.id)
     }
 
     private fun initFeedObserve(memberId: Int) {
-        mockDataViewModel.getMyPageCommentList(memberId)
-        mockDataViewModel.getMyPageCommentListState.flowWithLifecycle(lifecycle).onEach {
+        myPageCommentViewModel.getMyPageCommentList(memberId)
+        myPageCommentViewModel.getMyPageCommentListState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> handleSuccessState(it.data)
@@ -77,9 +81,9 @@ class MyPageCommentFragment :
                 },
                 onClickLikedBtn = { commentId, status ->
                     if (status) {
-                        mockDataViewModel.deleteCommentLiked(commentId)
+                        myPageCommentViewModel.deleteCommentLiked(commentId)
                     } else {
-                        mockDataViewModel.postCommentLiked(
+                        myPageCommentViewModel.postCommentLiked(
                             commentId,
                         )
                     }
