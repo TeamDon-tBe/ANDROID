@@ -23,6 +23,7 @@ import com.teamdontbe.feature.util.Debouncer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragment_posting) {
@@ -43,6 +44,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun initUser() {
         binding.tvPostingProfileNickname.text = postingViewModel.getNickName()
+        Timber.tag("user").d("shared preference에서 받아오는 사용자 profile img url : ${postingViewModel.getMemberProfileUrl()}")
         binding.ivPostingProfileImg.load(postingViewModel.getMemberProfileUrl())
     }
 
