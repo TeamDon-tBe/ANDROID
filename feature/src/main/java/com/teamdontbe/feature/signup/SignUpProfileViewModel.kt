@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.repository.LoginRepository
+import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +16,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpProfileViewModel
-@Inject constructor(private val loginRepository: LoginRepository) : ViewModel() {
+@Inject constructor(
+    private val loginRepository: LoginRepository,
+    private val userInfoRepository: UserInfoRepository,
+) : ViewModel() {
     private var _isBtnSelected = MutableLiveData<Boolean>()
     val isBtnSelected: LiveData<Boolean> get() = _isBtnSelected
 
@@ -36,6 +40,10 @@ class SignUpProfileViewModel
 
     init {
         _isBtnSelected.value = false
+    }
+
+    fun setUserNickName(nickName: String) {
+        userInfoRepository.saveNickName(nickName)
     }
 
     fun patchUserProfileEdit(nickName: String, allowed: Boolean, intro: String, url: String) {
