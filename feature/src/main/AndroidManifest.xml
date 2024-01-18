@@ -48,5 +48,9 @@
             android:name=".mypage.MyPageAuthInfoActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ErrorActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

@@ -28,11 +28,11 @@
                 android:layout_marginStart="27dp"
                 android:layout_marginTop="32dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_posting_profile"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/appbar_posting"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                tools:src="@drawable/img_posting_profile" />
 
             <TextView
                 android:id="@+id/tv_posting_profile_nickname"
@@ -65,7 +65,6 @@
                 app:layout_constraintStart_toEndOf="@id/iv_posting_profile_img"
                 app:layout_constraintTop_toBottomOf="@id/tv_posting_profile_nickname">
 
-                <requestFocus />
             </EditText>
 
             <View
