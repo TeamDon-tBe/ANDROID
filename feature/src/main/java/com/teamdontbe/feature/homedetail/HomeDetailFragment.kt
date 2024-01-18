@@ -210,7 +210,7 @@ class HomeDetailFragment :
         commentId: Int,
     ) {
         HomeBottomSheet(isMember, contentId, isComment, commentId).show(
-            childFragmentManager,
+            parentFragmentManager,
             HOME_DETAIL_BOTTOM_SHEET,
         )
     }

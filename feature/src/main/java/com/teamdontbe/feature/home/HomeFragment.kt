@@ -148,6 +148,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             R.id.action_home_to_home_detail,
             bundleOf(KEY_FEED_DATA to feedData),
         )
+        onDestroy()
     }
 
     private fun initComplaintDialog(contentId: Int) {

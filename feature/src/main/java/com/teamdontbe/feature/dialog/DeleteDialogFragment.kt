@@ -41,8 +41,8 @@ class DeleteDialogFragment(private val content: String) :
 
     private fun initDeleteButtonClick() {
         binding.btnDeleteDialogDelete.setOnClickListener {
-            // navigateToPreviousActivity()
-            navigateToMainActivity()
+            navigateToPreviousActivity()
+            // navigateToMainActivity()
             dismiss()
         }
     }
