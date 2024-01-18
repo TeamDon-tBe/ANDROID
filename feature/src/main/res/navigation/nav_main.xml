@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_home_to_home_detail"
-            app:destination="@id/fragment_home_detail" />
+            app:destination="@id/fragment_home_detail"
+            app:popUpTo="@id/fragment_home_detail"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/fragment_posting"
@@ -31,7 +33,7 @@
         android:id="@+id/fragment_notification"
         android:name="com.teamdontbe.feature.notification.NotificationFragment"
         android:label="NotificationFragment"
-        tools:layout="@layout/fragment_notification" >
+        tools:layout="@layout/fragment_notification">
         <action
             android:id="@+id/action_notification_to_posting"
             app:destination="@id/fragment_posting" />
@@ -60,7 +62,7 @@
             android:id="@+id/action_onboarding_to_home"
             app:destination="@id/fragment_home"
             app:popUpTo="@id/fragment_onboarding"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/fragment_onboarding_first_item"

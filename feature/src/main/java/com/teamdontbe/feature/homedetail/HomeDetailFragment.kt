@@ -1,7 +1,11 @@
 package com.teamdontbe.feature.homedetail
 
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.os.Build
 import android.view.View
+import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -11,8 +15,6 @@ import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.drawableOf
-import com.teamdontbe.core_ui.util.context.hideKeyboard
-import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.MainActivity
@@ -25,7 +27,6 @@ import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
 import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeAdapter
 import com.teamdontbe.feature.home.HomeBottomSheet
-import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
@@ -146,17 +147,12 @@ class HomeDetailFragment :
             }
         }.launchIn(lifecycleScope)
 
-        homeViewModel.postCommentPosting.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> handleCommentPostingSuccess()
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
+        homeViewModel.postCommentPosting.observe(this) {
+            handleCommentPostingSuccess()
+        }
 
         homeViewModel.openDeleteCommentDialog.observe(
-            viewLifecycleOwner,
+            this,
             EventObserver {
                 initDeleteCommentDialog(it)
             },
@@ -181,11 +177,12 @@ class HomeDetailFragment :
     }
 
     private fun handleCommentPostingSuccess() {
-        requireContext().hideKeyboard(binding.root)
+        // requireContext().hideKeyboard(binding.root)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
             View.VISIBLE
         homeViewModel.getCommentList(contentId)
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         UploadingSnackBar.make(binding.root).show()
     }
 
@@ -196,7 +193,7 @@ class HomeDetailFragment :
     ) {
         HomeBottomSheet(isMember, contentId, isComment).show(
             parentFragmentManager,
-            HomeFragment.HOME_BOTTOM_SHEET,
+            HOME_DETAIL_BOTTOM_SHEET,
         )
     }
 
@@ -219,55 +216,91 @@ class HomeDetailFragment :
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
                 View.GONE
-            binding.bottomsheet.etCommentContent.requestFocus()
-            requireContext().openKeyboard(binding.root)
+            requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun initEditText() {
         binding.run {
-            bottomsheet.etCommentContent.doAfterTextChanged {
+            binding.bottomsheet.etCommentContent.doAfterTextChanged {
+                val contentLength = binding.bottomsheet.etCommentContent.text.toString().length
                 when {
-                    bottomsheet.etCommentContent.text.toString().length in POSSIBLE_LENGTH -> {
-                        updateUploadBar(
-                            R.drawable.shape_primary_line_10_ring,
-                            bottomsheet.etCommentContent.text.toString().length,
-                            R.drawable.ic_uploading_activate,
-                        )
-                        initUploadingBtnClickListener()
-                    }
-
-                    bottomsheet.etCommentContent.text.toString().length >= MAX_LENGTH -> {
-                        updateUploadBar(
-                            R.drawable.shape_error_line_10_ring,
-                            bottomsheet.etCommentContent.text.toString().length,
-                            R.drawable.ic_uploading_deactivate,
-                        )
-                    }
-
-                    else -> {
-                        bottomsheet.layoutUploadBar.pbUploadBarInput.progress = 0
-                        bottomsheet.layoutUploadBar.btnUploadBarUpload.setImageResource(R.drawable.ic_uploading_deactivate)
-                    }
+                    contentLength in 1..499 -> activatePostingInput(contentLength)
+                    contentLength >= 500 -> deactivatePostingInput(contentLength)
+                    else -> resetPostingInput()
                 }
                 commentDebouncer.setDelay(
                     binding.bottomsheet.etCommentContent.text.toString(),
-                    DELAY,
+                    1000L,
                 ) {}
             }
         }
     }
 
-    private fun updateUploadBar(
-        progressDrawableResId: Int,
-        progress: Int,
-        imageResourceResId: Int,
-    ) {
-        with(binding) {
+    private fun activatePostingInput(contentLength: Int) {
+        binding.run {
             bottomsheet.layoutUploadBar.pbUploadBarInput.progressDrawable =
-                context?.drawableOf(progressDrawableResId)
-            bottomsheet.layoutUploadBar.pbUploadBarInput.progress = progress
-            bottomsheet.layoutUploadBar.btnUploadBarUpload.setImageResource(imageResourceResId)
+                context?.drawableOf(R.drawable.shape_primary_line_10_ring)
+            bottomsheet.layoutUploadBar.pbUploadBarInput.progress = contentLength
+
+            bottomsheet.layoutUploadBar.pbUploadBarInput.backgroundTintList =
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        binding.root.context,
+                        R.color.primary,
+                    ),
+                )
+            bottomsheet.layoutUploadBar.btnUploadBarUpload.setTextColor(
+                ContextCompat.getColor(
+                    binding.root.context,
+                    R.color.black,
+                ),
+            )
+            initUploadingBtnClickListener()
+        }
+    }
+
+    private fun deactivatePostingInput(contentLength: Int) {
+        binding.run {
+            bottomsheet.layoutUploadBar.pbUploadBarInput.progressDrawable =
+                context?.drawableOf(R.drawable.shape_error_line_10_ring)
+            bottomsheet.layoutUploadBar.pbUploadBarInput.progress = contentLength
+
+            bottomsheet.layoutUploadBar.btnUploadBarUpload.backgroundTintList =
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        binding.root.context,
+                        R.color.gray_3,
+                    ),
+                )
+            bottomsheet.layoutUploadBar.btnUploadBarUpload.setTextColor(
+                ContextCompat.getColor(
+                    binding.root.context,
+                    R.color.gray_9,
+                ),
+            )
+            initUploadingBtnClickListener()
+        }
+    }
+
+    private fun resetPostingInput() {
+        binding.run {
+            bottomsheet.layoutUploadBar.pbUploadBarInput.progress = 0
+            bottomsheet.layoutUploadBar.btnUploadBarUpload.backgroundTintList =
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        binding.root.context,
+                        R.color.gray_3,
+                    ),
+                )
+            bottomsheet.layoutUploadBar.btnUploadBarUpload.setTextColor(
+                ContextCompat.getColor(
+                    binding.root.context,
+                    R.color.gray_9,
+                ),
+            )
+            initUploadingBtnClickListener()
         }
     }
 
@@ -307,7 +340,7 @@ class HomeDetailFragment :
                 contentId,
                 true,
             )
-        dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+        dialog.show(parentFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
     }
 
     private fun initDeleteCommentDialog(contentId: Int) {
@@ -319,10 +352,11 @@ class HomeDetailFragment :
                 contentId,
                 true,
             )
-        dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+        dialog.show(parentFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
     }
 
     companion object {
+        const val HOME_DETAIL_BOTTOM_SHEET = "home_detail_bottom_sheet"
         const val KEY_FEED_DATA = "key_feed_data"
         const val DELAY = 1000L
         val POSSIBLE_LENGTH = 1..499

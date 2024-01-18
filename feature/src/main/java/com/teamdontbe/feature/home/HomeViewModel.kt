@@ -53,8 +53,8 @@ class HomeViewModel
         private val _deleteFeedLiked = MutableSharedFlow<UiState<Boolean>>()
         val deleteFeedLiked: SharedFlow<UiState<Boolean>> get() = _deleteFeedLiked
 
-        private val _postCommentPosting = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
-        val postCommentPosting: StateFlow<UiState<Boolean>> get() = _postCommentPosting
+        private val _postCommentPosting = MutableLiveData<Event<Boolean>>()
+        val postCommentPosting: LiveData<Event<Boolean>> get() = _postCommentPosting
 
         private val _deleteComment = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
         val deleteComment: StateFlow<UiState<Boolean>> get() = _deleteComment
@@ -126,9 +126,9 @@ class HomeViewModel
             commentText: String,
         ) = viewModelScope.launch {
             homeRepository.postCommentPosting(contentId, commentText).collectLatest {
-                _postCommentPosting.value = UiState.Success(it)
+                _postCommentPosting.value = Event(it)
             }
-            _getFeedList.value = UiState.Loading
+            _postCommentPosting.value = Event(false)
         }
 
         fun deleteComment(commentId: Int) =

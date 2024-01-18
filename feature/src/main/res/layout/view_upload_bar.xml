@@ -16,9 +16,9 @@
             android:id="@+id/view_upload_bar_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="58dp"
+            android:layout_marginBottom="11dp"
             android:background="@color/gray_2"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/btn_upload_bar_upload" />
 
         <ProgressBar
             android:id="@+id/pb_upload_bar_input"
@@ -37,16 +37,22 @@
             app:layout_constraintTop_toBottomOf="@id/view_upload_bar_line"
             tools:progress="200" />
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_upload_bar_upload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="11dp"
             android:layout_marginEnd="16dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_uploading_deactivate"
+            android:layout_marginBottom="11dp"
+            android:backgroundTint="@color/gray_4"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="8dp"
+            android:text="@string/posting_btn"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            android:textColor="@color/gray_9"
+            app:cornerRadius="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

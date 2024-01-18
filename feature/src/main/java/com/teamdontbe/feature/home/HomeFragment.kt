@@ -72,14 +72,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         }.launchIn(lifecycleScope)
 
         homeViewModel.openDeleteDialog.observe(
-            viewLifecycleOwner,
+            this,
             EventObserver {
                 initDeleteDialog(it)
             },
         )
 
         homeViewModel.openComplaintDialog.observe(
-            viewLifecycleOwner,
+            this,
             EventObserver {
                 initComplaintDialog(it)
             },
