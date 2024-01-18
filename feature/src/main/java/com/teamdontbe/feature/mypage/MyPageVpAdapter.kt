@@ -11,8 +11,8 @@ class MyPageVpAdapter(fr: Fragment, data: MyPageModel) : FragmentStateAdapter(fr
 
     override fun createFragment(position: Int): Fragment { // 포지션에 따라 어떤 프레그먼트를 보여줄것인지
         return when (position) {
-            0 -> MyPageFeedFragment(memberProfile)
-            1 -> MyPageCommentFragment(memberProfile)
+            0 -> MyPageFeedFragment.newInstance(memberProfile)
+            1 -> MyPageCommentFragment.newInstance(memberProfile)
             else -> throw IllegalArgumentException("Invalid position")
         }
     }
