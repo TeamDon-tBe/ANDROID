@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.repository.LoginRepository
 import com.teamdontbe.domain.repository.PostingRepository
+import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +21,7 @@ class OnboardingViewModel
     constructor(
         private val postingRepository: PostingRepository,
         private val loginRepository: LoginRepository,
+        private val userInfoRepository: UserInfoRepository,
     ) : ViewModel() {
         private val _postPosting = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
         val postPosting: StateFlow<UiState<Boolean>> = _postPosting
@@ -59,4 +61,6 @@ class OnboardingViewModel
                 }
             }
         }
+
+        fun getNickName() = userInfoRepository.getNickName()
     }
