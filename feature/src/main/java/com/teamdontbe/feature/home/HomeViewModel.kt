@@ -39,15 +39,6 @@ class HomeViewModel
         private val _deleteFeed = MutableSharedFlow<UiState<Boolean>>()
         val deleteFeed: SharedFlow<UiState<Boolean>> = _deleteFeed
 
-        private val _openComplaintDialog = MutableLiveData<Event<Int>>()
-        val openComplaintDialog: LiveData<Event<Int>> get() = _openComplaintDialog
-
-        private val _openDeleteDialog = MutableLiveData<Event<Int>>()
-        val openDeleteDialog: LiveData<Event<Int>> get() = _openDeleteDialog
-
-        private val _openDeleteCommentDialog = MutableLiveData<Event<Int>>()
-        val openDeleteCommentDialog: LiveData<Event<Int>> get() = _openDeleteCommentDialog
-
         private val _postFeedLiked = MutableSharedFlow<UiState<Boolean>>()
         val postFeedLiked: SharedFlow<UiState<Boolean>> get() = _postFeedLiked
 
@@ -96,18 +87,6 @@ class HomeViewModel
             }
 
         fun getMemberId() = userInfoRepository.getMemberId()
-
-        fun openComplaintDialog(contentId: Int) {
-            _openComplaintDialog.value = Event(contentId)
-        }
-
-        fun openDeleteDialog(contentId: Int) {
-            _openDeleteDialog.value = Event(contentId)
-        }
-
-        fun openCommentDeleteDialog(contentId: Int) {
-            _openDeleteDialog.value = Event(contentId)
-        }
 
         private val likeMutex = Mutex()
 

@@ -24,7 +24,6 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
-import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeAdapter
@@ -171,7 +170,7 @@ class HomeDetailFragment :
                             if (position == -2) {
                                 TransparentIsGhostSnackBar.make(binding.root).show()
                             } else {
-                                initFeedTransparentDialog(data.memberId, contentId)
+                                initCommentTransparentDialog(data.memberId, contentId)
                                 updateFeedPosition = position
                             }
                         }).apply {
@@ -201,13 +200,6 @@ class HomeDetailFragment :
             },
         )
 
-        homeViewModel.openDeleteCommentDialog.observe(
-            this,
-            EventObserver {
-                initDeleteCommentDialog(it)
-            },
-        )
-
         homeViewModel.deleteComment.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
@@ -216,6 +208,20 @@ class HomeDetailFragment :
                         homeDetailFeedCommentAdapter.deleteItem(deleteCommentPosition)
                         deleteCommentPosition = -1
                     }
+                    val dialog = DeleteCompleteDialogFragment()
+                    dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+                }
+
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+
+        homeViewModel.deleteFeed.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> {
+                    findNavController().navigateUp()
                     val dialog = DeleteCompleteDialogFragment()
                     dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
                 }
@@ -391,30 +397,6 @@ class HomeDetailFragment :
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         bottomSheetBehavior.skipCollapsed = true
         bottomSheetBehavior.isFitToContents = true
-    }
-
-    private fun initComplaintDialog(contentId: Int) {
-        val dialog =
-            DeleteWithTitleDialogFragment(
-                getString(R.string.tv_delete_with_title_complain_dialog),
-                getString(R.string.tv_delete_with_title_dialog_comment),
-                false,
-                contentId,
-                true,
-            )
-        dialog.show(childFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
-    }
-
-    private fun initDeleteCommentDialog(contentId: Int) {
-        val dialog =
-            DeleteWithTitleDialogFragment(
-                getString(R.string.tv_delete_with_title_delete_comment_dialog),
-                getString(R.string.tv_delete_with_title_delete_comment_content_dialog),
-                true,
-                contentId,
-                true,
-            )
-        dialog.show(childFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
     }
 
     private fun initFeedTransparentDialog(
