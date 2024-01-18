@@ -109,6 +109,8 @@ class HomeViewModel
             _openDeleteDialog.value = Event(contentId)
         }
 
+        private val likeMutex = Mutex()
+
         fun postFeedLiked(contentId: Int) =
             viewModelScope.launch {
                 likeMutex.tryLock(2000)
@@ -152,22 +154,20 @@ class HomeViewModel
                 _deleteComment.value = UiState.Loading
             }
 
-        private val commentLikeMutex = Mutex()
-
         fun postCommentLiked(commentId: Int) =
             viewModelScope.launch {
-                commentLikeMutex.lock(2000)
+                likeMutex.lock(2000)
                 try {
                     homeRepository.postCommentLiked(commentId).collectLatest {
                     }
                 } finally {
-                    commentLikeMutex.unlock()
+                    likeMutex.unlock()
                 }
             }
 
         fun deleteCommentLiked(commentId: Int) =
             viewModelScope.launch {
-                if (commentLikeMutex.isLocked) {
+                if (likeMutex.isLocked) {
                     _deleteFeedLiked.emit(UiState.Failure("막힘"))
                 } else {
                     homeRepository.deleteCommentLiked(commentId).collectLatest {

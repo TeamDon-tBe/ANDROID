@@ -21,6 +21,7 @@ import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -41,6 +42,16 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             homeViewModel.getFeedList()
             binding.swipeRefreshLayout.isRefreshing = false
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Timber.tag("ttt").d("생명")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Timber.tag("ttt").d("생명")
     }
 
     private fun initObserve() {
