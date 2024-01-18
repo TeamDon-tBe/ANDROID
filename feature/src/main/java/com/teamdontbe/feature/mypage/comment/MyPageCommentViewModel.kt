@@ -6,8 +6,11 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.domain.repository.HomeRepository
 import com.teamdontbe.domain.repository.MyPageRepository
+import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -19,12 +22,19 @@ class MyPageCommentViewModel
     constructor(
         private val myPageRepository: MyPageRepository,
         private val homeRepository: HomeRepository,
+        private val userInfoRepository: UserInfoRepository,
     ) :
     ViewModel() {
         private val _getMyPageCommentListState =
             MutableStateFlow<UiState<List<MyPageCommentEntity>>>(UiState.Empty)
         val getMyPageCommentListState: StateFlow<UiState<List<MyPageCommentEntity>>> =
             _getMyPageCommentListState
+
+        private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
+        val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
+
+        private val _deleteComment = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+        val deleteComment: StateFlow<UiState<Boolean>> get() = _deleteComment
 
         fun getMyPageCommentList(viewMemberId: Int) {
             viewModelScope.launch {
@@ -51,4 +61,14 @@ class MyPageCommentViewModel
                 homeRepository.deleteCommentLiked(commentId).collectLatest {
                 }
             }
+
+        fun deleteComment(commentId: Int) =
+            viewModelScope.launch {
+                homeRepository.deleteComment(commentId).collectLatest {
+                    _deleteComment.value = UiState.Success(it)
+                }
+                _deleteComment.value = UiState.Loading
+            }
+
+        fun getMemberId() = userInfoRepository.getMemberId()
     }

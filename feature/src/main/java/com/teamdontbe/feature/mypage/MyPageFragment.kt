@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.pxToDp
@@ -41,6 +42,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initMyPageTabLayout(memberProfile)
         initMyPageHambergerClickListner(memberProfile)
         initTransparencyInfoDialogBtnClickListener()
+        scrollRecyclerViewToTop()
     }
 
     private fun setUpMemberProfile(): MyPageModel {
@@ -168,6 +170,18 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 ).show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
             }
         }
+    }
+
+    private fun scrollRecyclerViewToTop() {
+        (requireActivity() as MainActivity).findViewById<BottomNavigationView>(R.id.bnv_main)
+            .setOnItemReselectedListener { item ->
+                if (item.itemId == R.id.fragment_my_page) {
+                    val nestedScroll = binding.nestedScrollMyPage
+                    binding.nestedScrollMyPage.post {
+                        nestedScroll.smoothScrollTo(0, 0)
+                    }
+                }
+            }
     }
 
     companion object {

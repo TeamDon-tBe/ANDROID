@@ -103,6 +103,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             setupWithNavController(navController)
             itemIconTintList = null
         }
+
         // NotificationFragment 진입할 때 badge를 없애는 함수
         removeBadgeOnNotification(navController)
         setBottomNaviVisible(navController)

@@ -6,17 +6,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
-import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
-import com.teamdontbe.feature.util.EventObserver
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -34,6 +34,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         homeViewModel.getFeedList()
         initObserve()
         initSwipeRefreshData()
+        scrollRecyclerViewToTop()
     }
 
     private fun initSwipeRefreshData() {
@@ -73,20 +74,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 is UiState.Failure -> Unit
             }
         }.launchIn(lifecycleScope)
-
-        homeViewModel.openDeleteDialog.observe(
-            this,
-            EventObserver {
-                initDeleteDialog(it)
-            },
-        )
-
-        homeViewModel.openComplaintDialog.observe(
-            this,
-            EventObserver {
-                initComplaintDialog(it)
-            },
-        )
 
         homeViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
             when (it) {
@@ -139,7 +126,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     TransparentIsGhostSnackBar.make(binding.root).show()
                 } else {
                     initTransparentDialog(data.memberId, data.contentId ?: -1)
-                    updateFeedPosition = position
                 }
             }, onClickUserProfileBtn = { feedData, positoin ->
                 feedData.contentId?.let {
@@ -173,6 +159,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             R.id.action_home_to_home_detail,
             bundleOf(KEY_FEED_DATA to feedData),
         )
+        onDestroy()
     }
 
     private fun navigateToMyPageFragment(id: Int) {
@@ -182,36 +169,24 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         )
     }
 
-    private fun initComplaintDialog(contentId: Int) {
-        val dialog =
-            DeleteWithTitleDialogFragment(
-                getString(R.string.tv_delete_with_title_complain_dialog),
-                getString(R.string.tv_delete_with_title_dialog_content),
-                false,
-                contentId,
-                false,
-            )
-        dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
-    }
-
-    private fun initDeleteDialog(contentId: Int) {
-        val dialog =
-            DeleteWithTitleDialogFragment(
-                getString(R.string.tv_delete_with_title_delete_dialog),
-                getString(R.string.tv_delete_with_title_delete_content_dialog),
-                true,
-                contentId,
-                false,
-            )
-        dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
-    }
-
     private fun initTransparentDialog(
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
         val dialog = TransparentDialogFragment(targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HOME_TRANSPARENT_DIALOG)
+    }
+
+    private fun scrollRecyclerViewToTop() {
+        (requireActivity() as MainActivity).findViewById<BottomNavigationView>(R.id.bnv_main)
+            .setOnItemReselectedListener { item ->
+                if (item.itemId == R.id.fragment_home) {
+                    val nestedScroll = binding.nestedScrollHome
+                    nestedScroll.post {
+                        nestedScroll.smoothScrollTo(0, 0)
+                    }
+                }
+            }
     }
 
     companion object {

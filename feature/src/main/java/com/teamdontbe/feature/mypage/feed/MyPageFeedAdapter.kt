@@ -14,11 +14,15 @@ class MyPageFeedAdapter(
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
     context: Context,
     private val idFlag: Boolean,
+    private val onClickTransparentBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
 ) :
     ListAdapter<FeedEntity, MyPageFeedViewHolder>(ExampleDiffCallback) {
     private val inflater by lazy { LayoutInflater.from(context) }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPageFeedViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): MyPageFeedViewHolder {
         val binding = ItemHomeFeedBinding.inflate(inflater, parent, false)
         return MyPageFeedViewHolder(
             binding,
@@ -26,10 +30,14 @@ class MyPageFeedAdapter(
             onItemClicked,
             onClickLikedBtn,
             idFlag,
+            onClickTransparentBtn,
         )
     }
 
-    override fun onBindViewHolder(holder: MyPageFeedViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: MyPageFeedViewHolder,
+        position: Int,
+    ) {
         holder.onBind(currentList[position])
     }
 

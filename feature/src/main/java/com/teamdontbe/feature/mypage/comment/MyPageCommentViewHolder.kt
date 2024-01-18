@@ -1,19 +1,21 @@
 package com.teamdontbe.feature.mypage.comment
 
+import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.feature.databinding.ItemMyPageCommentBinding
 import com.teamdontbe.feature.util.CalculateTime
+import com.teamdontbe.feature.util.Transparent
 
 class MyPageCommentViewHolder(
     private val binding: ItemMyPageCommentBinding,
-    private val onClickKebabBtn: (MyPageCommentEntity) -> Unit,
+    private val onClickKebabBtn: (MyPageCommentEntity, Int) -> Unit,
     private val onItemClicked: (MyPageCommentEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     private val idFlag: Boolean,
-) :
-    RecyclerView.ViewHolder(binding.root) {
+    private val onClickTransparentBtn: (MyPageCommentEntity, Int) -> Unit = { _, _ -> },
+) : RecyclerView.ViewHolder(binding.root) {
     private var item: MyPageCommentEntity? = null
 
     init {
@@ -21,7 +23,7 @@ class MyPageCommentViewHolder(
             item?.let { onItemClicked(it) }
         }
         binding.btnCommentKebab.setOnClickListener {
-            item?.let { onClickKebabBtn(it) }
+            item?.let { onClickKebabBtn(it, position) }
         }
     }
 
@@ -49,10 +51,32 @@ class MyPageCommentViewHolder(
                     btnCommentHeart.isSelected = !btnCommentHeart.isSelected
                 }
             }
+
+            setTransparent(data)
         }
 
     private fun ItemMyPageCommentBinding.setVisibility() {
         ivCommentGhostFillGreen.visibility = View.VISIBLE
         dividerComment.visibility = View.VISIBLE
+    }
+
+    private fun setTransparent(data: MyPageCommentEntity) {
+        binding.ivCommentGhostFillGreen.setOnClickListener {
+            if (!data.isGhost) {
+                onClickTransparentBtn(data, position)
+            } else {
+                onClickTransparentBtn(
+                    data,
+                    -2,
+                )
+            }
+        }
+
+        if (data.isGhost) {
+            binding.viewHomeTransparentBg.setBackgroundColor(Color.parseColor("#D9FCFCFD"))
+        } else {
+            val color = Transparent().calculateColorWithOpacity(data.memberGhost)
+            binding.viewHomeTransparentBg.setBackgroundColor(Color.parseColor(color))
+        }
     }
 }
