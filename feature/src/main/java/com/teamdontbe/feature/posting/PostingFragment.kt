@@ -19,10 +19,10 @@ import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.R
-import com.teamdontbe.feature.comment.UploadingSnackBar
 import com.teamdontbe.feature.databinding.FragmentPostingBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.dialog.HomePostingRestrictionDialogFragment
+import com.teamdontbe.feature.snackbar.UploadingSnackBar
 import com.teamdontbe.feature.util.Debouncer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
