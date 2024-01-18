@@ -14,7 +14,7 @@ import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentOnboardingBinding
-import com.teamdontbe.feature.posting.PostingViewModel
+import com.teamdontbe.feature.signup.SignUpAgreeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -23,14 +23,17 @@ import timber.log.Timber
 @AndroidEntryPoint
 class OnboardingFragment :
     BindingFragment<FragmentOnboardingBinding>(R.layout.fragment_onboarding) {
-    private val postingViewModel by activityViewModels<PostingViewModel>()
-    private val onboardingViewModel by viewModels<OnboardingViewModel>()
+    private val onboardingViewModel by activityViewModels<OnboardingViewModel>()
+
+    private val signUpAgree: Boolean by lazy {
+        arguments?.getBoolean(SignUpAgreeActivity.SIGN_UP_AGREE, false) ?: false
+    }
     private var _onboardingAdapter: OnboardingAdapter? = null
     private val onboardingAdapter
         get() = requireNotNull(_onboardingAdapter) { "adapter 초기화 안됨" }
 
     override fun initView() {
-        binding.vm = postingViewModel
+        binding.vm = onboardingViewModel
         checkIsNewUser()
         initOnboardingAdapter()
         initBtnOnboardingNextClickListener()
@@ -46,7 +49,7 @@ class OnboardingFragment :
     }
 
     private fun initObserve() {
-        postingViewModel.postPosting.flowWithLifecycle(lifecycle).onEach {
+        onboardingViewModel.postPosting.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
@@ -59,7 +62,7 @@ class OnboardingFragment :
             }
         }.launchIn(lifecycleScope)
 
-        postingViewModel.introduction.observe(viewLifecycleOwner) {
+        onboardingViewModel.introduction.observe(viewLifecycleOwner) {
             initBtnOnboardingStartClickListener(it)
         }
     }
@@ -115,7 +118,15 @@ class OnboardingFragment :
 
     private fun initBtnOnboardingStartClickListener(introduction: String) {
         binding.btnOnboardingStart.setOnClickListener {
-            postingViewModel.posting(introduction)
+            val inputNickName = onboardingViewModel.getNickName()
+
+            onboardingViewModel.posting(introduction)
+            onboardingViewModel.patchUserProfileEdit(
+                inputNickName,
+                signUpAgree,
+                introduction,
+                "",
+            )
         }
     }
 

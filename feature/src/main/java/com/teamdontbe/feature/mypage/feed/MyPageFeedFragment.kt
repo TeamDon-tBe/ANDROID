@@ -56,20 +56,19 @@ class MyPageFeedFragment(private val memberProfile: MyPageModel) :
         }
 
     private fun initFeedRecyclerView(feedEntity: List<FeedEntity>) {
-        val myPageFeedAdapter =
-            MyPageFeedAdapter(
-                onClickKebabBtn = { feedEntity ->
-                    // Kebab 버튼 클릭 이벤트 처리
-                },
-                onItemClicked = { feedEntity ->
-                    // RecyclerView 항목 클릭 이벤트 처리
-                    feedEntity.contentId?.let { navigateToHomeDetailFragment(it) }
-                },
-                context = requireContext(),
-                memberProfile.idFlag,
-            ).apply {
-                submitList(feedEntity)
-            }
+        val myPageFeedAdapter = MyPageFeedAdapter(
+            onClickKebabBtn = { feedEntity ->
+                // Kebab 버튼 클릭 이벤트 처리
+            },
+            onItemClicked = { feedEntity ->
+                // RecyclerView 항목 클릭 이벤트 처리
+                navigateToHomeDetailFragment(feedEntity.contentId ?: -1)
+            },
+            context = requireContext(),
+            memberProfile.idFlag,
+        ).apply {
+            submitList(feedEntity)
+        }
 
         setUpFeedAdapter(myPageFeedAdapter)
     }

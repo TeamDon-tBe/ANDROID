@@ -15,6 +15,9 @@
             app:destination="@id/fragment_home_detail"
             app:popUpTo="@id/fragment_home"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_my_page"
+            app:destination="@id/fragment_my_page" />
     </fragment>
     <fragment
         android:id="@+id/fragment_posting"

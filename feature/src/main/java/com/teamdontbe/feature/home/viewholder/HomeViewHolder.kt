@@ -10,6 +10,8 @@ class HomeViewHolder(
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
     private val onClickToNavigateToHomeDetail: (FeedEntity, Int) -> Unit = { _, _ -> },
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
+    private val onClickUserProfileBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
+
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FeedEntity) {
         with(binding) {
@@ -35,6 +37,9 @@ class HomeViewHolder(
                 tvHomeHeartNum.text =
                     if (btnHomeHeart.isSelected) (likeNumber.toInt() - 1).toString() else (likeNumber.toInt() + 1).toString()
                 btnHomeHeart.isSelected = !btnHomeHeart.isSelected
+            }
+            ivHomeProfile.setOnClickListener {
+                onClickUserProfileBtn(data, bindingAdapterPosition)
             }
         }
     }
