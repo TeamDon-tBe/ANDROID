@@ -28,7 +28,7 @@
                 android:layout_marginStart="27dp"
                 android:layout_marginTop="32dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_posting_profile"
+                tools:src="@drawable/img_posting_profile"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/appbar_posting"
