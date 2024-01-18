@@ -9,7 +9,7 @@ import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 
 class MyPageFeedAdapter(
-    private val onClickKebabBtn: (FeedEntity) -> Unit,
+    private val onClickKebabBtn: (FeedEntity, Int) -> Unit,
     private val onItemClicked: (FeedEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
     context: Context,
@@ -31,6 +31,10 @@ class MyPageFeedAdapter(
 
     override fun onBindViewHolder(holder: MyPageFeedViewHolder, position: Int) {
         holder.onBind(currentList[position])
+    }
+
+    fun deleteItem(position: Int) {
+        submitList(currentList.toMutableList().apply { removeAt(position) })
     }
 
     companion object {

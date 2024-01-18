@@ -11,8 +11,11 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
+import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.mypage.MyPageModel
+import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
+import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -24,11 +27,14 @@ class MyPageFeedFragment :
     private val myPageFeedViewModel by viewModels<MyPageFeedViewModel>()
 
     private lateinit var memberProfile: MyPageModel
+    private lateinit var myPageFeedAdapter: MyPageFeedAdapter
+    private var deleteFeedPosition: Int = -1
 
     override fun initView() {
         // Arguments에서 memberProfile 값을 가져오기
         initMemberProfile()
         initFeedObserve()
+        initDeleteObserve()
     }
 
     private fun initMemberProfile() {
@@ -46,7 +52,31 @@ class MyPageFeedFragment :
         myPageFeedViewModel.getMyPageFeedListState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> handleSuccessState(it.data)
+                is UiState.Success -> {
+                    initDeleteObserve()
+                    handleSuccessState(it.data)
+                }
+
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun initDeleteObserve() {
+        myPageFeedViewModel.deleteFeed.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+
+                is UiState.Success -> {
+                    if (deleteFeedPosition != -1) {
+                        myPageFeedAdapter.deleteItem(deleteFeedPosition)
+                        deleteFeedPosition = -1
+                    }
+                    val dialog = DeleteCompleteDialogFragment()
+                    dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+                }
+
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
@@ -67,12 +97,24 @@ class MyPageFeedFragment :
             viewMyPageNoFeedNickname.clNoFeed.visibility = View.VISIBLE
             viewMyPageNoFeedNickname.tvNoFeedNickname.text =
                 getString(R.string.my_page_no_feed_text, memberProfile.nickName)
+            viewMyPageNoFeedNickname.btnNoFeedPosting.setOnClickListener {
+                navigateToPostingFragment(memberProfile.id)
+            }
         }
 
     private fun initFeedRecyclerView(feedEntity: List<FeedEntity>) {
-        val myPageFeedAdapter = MyPageFeedAdapter(
-            onClickKebabBtn = { feedEntity ->
+        myPageFeedAdapter = MyPageFeedAdapter(
+            onClickKebabBtn = { feedEntity, position ->
                 // Kebab 버튼 클릭 이벤트 처리
+                feedEntity.contentId?.let {
+                    initBottomSheet(
+                        feedEntity.memberId == myPageFeedViewModel.getMemberId(),
+                        it,
+                        false,
+                        -1,
+                    )
+                    deleteFeedPosition = position
+                }
             },
             onItemClicked = { feedEntity ->
                 // RecyclerView 항목 클릭 이벤트 처리
@@ -96,6 +138,18 @@ class MyPageFeedFragment :
         setUpFeedAdapter(myPageFeedAdapter)
     }
 
+    private fun initBottomSheet(
+        isMember: Boolean,
+        contentId: Int,
+        isComment: Boolean,
+        commentId: Int,
+    ) {
+        MyPageAnotherUserBottomSheet(isMember, contentId, isComment, commentId).show(
+            childFragmentManager,
+            "myPageBottomSheet",
+        )
+    }
+
     private fun setUpFeedAdapter(myPageFeedAdapter: MyPageFeedAdapter) {
         binding.rvMyPagePosting.apply {
             adapter = myPageFeedAdapter
@@ -103,10 +157,16 @@ class MyPageFeedFragment :
         }
     }
 
-    //    action_fragment_home_to_fragment_my_page
     private fun navigateToHomeDetailFragment(id: Int) {
         findNavController().navigate(
             R.id.action_fragment_my_page_to_fragment_home_detail,
+            bundleOf(KEY_NOTI_DATA to id),
+        )
+    }
+
+    private fun navigateToPostingFragment(id: Int) {
+        findNavController().navigate(
+            R.id.action_fragment_my_page_to_fragment_posting,
             bundleOf(KEY_NOTI_DATA to id),
         )
     }
@@ -124,6 +184,7 @@ class MyPageFeedFragment :
     }
 
     override fun onResume() {
+        initDeleteObserve()
         super.onResume()
         binding.root.requestLayout()
     }
