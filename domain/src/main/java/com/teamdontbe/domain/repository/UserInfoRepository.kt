@@ -20,4 +20,12 @@ interface UserInfoRepository {
     fun getNickName(): String
 
     fun saveNickName(nickName: String)
+
+    fun getMemberProfileUrl(): String
+
+    fun saveMemberProfileUrl(memberUrl: String)
+
+    fun getIsNewUser(): Boolean
+
+    fun saveIsNewUser(isNewUser: Boolean)
 }

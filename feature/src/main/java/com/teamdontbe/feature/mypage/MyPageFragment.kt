@@ -13,11 +13,13 @@ import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.MyPageUserProfileEntity
+import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
+import com.teamdontbe.feature.home.HomeFragment.Companion.KEY_FEED_DATA
+import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet
 import com.teamdontbe.feature.mypage.transperencyinfo.TransparencyInfoParentFragment
-import com.teamdontbe.feature.notification.NotificationFragment
 import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -30,12 +32,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private val viewModel by viewModels<MyPageViewModel>()
 
     override fun initView() {
+        binding.btnMyPageBack.visibility = View.INVISIBLE
+
         val memberProfile: MyPageModel = setUpMemberProfile()
 
         initMyPageCollapseAppearance()
         initMyPageStateObserve(memberProfile)
         initMyPageTabLayout(memberProfile)
-        initBtnClickListener()
+        initMyPageHambergerClickListner(memberProfile)
+        initTransparencyInfoDialogBtnClickListener()
     }
 
     private fun setUpMemberProfile(): MyPageModel {
@@ -45,17 +50,26 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             idFlag = true,
         )
         arguments?.let {
-            val parentData = it.getInt(NotificationFragment.KEY_NOTI_DATA, -1)
-            if (memberProfile.id != parentData) {
-                memberProfile.idFlag = false
-                memberProfile.id = parentData
-            }
+            val parentData = it.getInt(KEY_FEED_DATA, -1)
+            setUpCaseProcessing(memberProfile, parentData)
         }
         return memberProfile
     }
 
+    private fun setUpCaseProcessing(
+        memberProfile: MyPageModel,
+        parentData: Int,
+    ) {
+        if (memberProfile.id != parentData) {
+            memberProfile.idFlag = false
+            memberProfile.id = parentData
+            (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
+                View.GONE
+            binding.btnMyPageBack.visibility = View.VISIBLE
+        }
+    }
+
     private fun initMyPageCollapseAppearance() = with(binding) {
-        btnMyPageBack.visibility = View.INVISIBLE
         collapseMyPage.setContentScrimColor(requireContext().getColor(R.color.black))
         statusBarColorOf(R.color.black)
     }
@@ -135,20 +149,19 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }.attach()
     }
 
-    private fun initBtnClickListener() {
-        initTransparencyInfoDialogBtnClickListener()
-        initMyPageHambergerClickListner()
-    }
-
     private fun initTransparencyInfoDialogBtnClickListener() {
         binding.btnMyPageTransparencyInfo.setOnClickListener {
             TransparencyInfoParentFragment().show(childFragmentManager, TRANSPARENCY_INFO)
         }
     }
 
-    private fun initMyPageHambergerClickListner() {
+    private fun initMyPageHambergerClickListner(memberProfile: MyPageModel) {
         binding.btnMyPageHamberger.setOnClickListener {
-            MyPageBottomSheet().show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
+            if (memberProfile.idFlag) {
+                MyPageBottomSheet().show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
+            } else {
+                MyPageAnotherUserBottomSheet().show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
+            }
         }
     }
 
@@ -160,9 +173,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     override fun onResume() {
-        val memberProfile: MyPageModel = setUpMemberProfile()
-        initMyPageStateObserve(memberProfile)
-        initMyPageTabLayout(memberProfile)
+        initView()
         super.onResume()
     }
 }

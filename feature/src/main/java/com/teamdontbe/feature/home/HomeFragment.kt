@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.home
 
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -29,7 +30,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     override fun initView() {
         homeViewModel.getFeedList()
         initObserve()
-
         initSwipeRefreshData()
     }
 
@@ -43,8 +43,9 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initObserve() {
         homeViewModel.getFeedList.flowWithLifecycle(lifecycle).onEach {
             when (it) {
-                is UiState.Loading -> Unit
+                is UiState.Loading -> binding.progressbarHome.isVisible = true
                 is UiState.Success -> {
+                    binding.progressbarHome.isVisible = false
                     initHomeAdapter(it.data)
                 }
 
@@ -71,14 +72,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         }.launchIn(lifecycleScope)
 
         homeViewModel.openDeleteDialog.observe(
-            viewLifecycleOwner,
+            this,
             EventObserver {
                 initDeleteDialog(it)
             },
         )
 
         homeViewModel.openComplaintDialog.observe(
-            viewLifecycleOwner,
+            this,
             EventObserver {
                 initComplaintDialog(it)
             },
@@ -91,7 +92,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 feedData.contentId?.let {
                     initBottomSheet(
                         feedData.memberId == homeViewModel.getMemberId(),
-                        it, false,
+                        it, false, -1,
                     )
                     deleteFeedPosition = positoin
                 }
@@ -113,9 +114,9 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 )
             }, onClickLikedBtn = { contentId, status ->
                 if (status) {
-                    homeViewModel.deleteFeedLiKED(contentId)
+                    homeViewModel.deleteFeedLiked(contentId)
                 } else {
-                    homeViewModel.postFeedLiKED(
+                    homeViewModel.postFeedLiked(
                         contentId,
                     )
                 }
@@ -134,8 +135,9 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         isMember: Boolean,
         contentId: Int,
         isComment: Boolean,
+        commentId: Int,
     ) {
-        HomeBottomSheet(isMember, contentId, isComment).show(
+        HomeBottomSheet(isMember, contentId, isComment, commentId).show(
             parentFragmentManager,
             HOME_BOTTOM_SHEET,
         )

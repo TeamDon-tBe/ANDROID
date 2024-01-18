@@ -1,7 +1,12 @@
 package com.teamdontbe.feature.homedetail
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Build
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -12,7 +17,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
-import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.MainActivity
@@ -25,7 +29,6 @@ import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
 import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeAdapter
 import com.teamdontbe.feature.home.HomeBottomSheet
-import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
@@ -51,6 +54,7 @@ class HomeDetailFragment :
     override fun initView() {
         if ((requireArguments().getInt(KEY_NOTI_DATA)) > 0) {
             homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
+            homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
         }
 
         getHomeFeedDetailData()?.toFeedEntity()?.contentId?.let { homeViewModel.getCommentList(it) }
@@ -70,7 +74,7 @@ class HomeDetailFragment :
                 feedData.contentId?.let {
                     initBottomSheet(
                         feedData.memberId == homeViewModel.getMemberId(),
-                        it, false,
+                        it, false, -1,
                     )
                 }
             }).apply {
@@ -92,7 +96,7 @@ class HomeDetailFragment :
                             feedData.contentId?.let {
                                 initBottomSheet(
                                     feedData.memberId == homeViewModel.getMemberId(),
-                                    it, false,
+                                    it, false, -1,
                                 )
                             }
                         }).apply {
@@ -100,8 +104,18 @@ class HomeDetailFragment :
                                 listOf(result.data),
                             )
                         }
-                    homeDetailFeedAdapter.notifyDataSetChanged()
+
                     contentId = result.data.contentId ?: -1
+
+                    if (::homeDetailFeedAdapter.isInitialized && ::homeDetailFeedCommentAdapter.isInitialized) {
+                        binding.rvHomeDetail.adapter =
+                            ConcatAdapter(homeDetailFeedAdapter, homeDetailFeedCommentAdapter)
+                        binding.rvHomeDetail.addItemDecoration(
+                            HomeDetailFeedItemDecorator(
+                                requireContext(),
+                            ),
+                        )
+                    }
                 }
 
                 is UiState.Empty -> Unit
@@ -114,17 +128,17 @@ class HomeDetailFragment :
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
                     homeDetailFeedCommentAdapter =
-                        HomeDetailCommentAdapter(onClickKebabBtn = { feedData, position ->
+                        HomeDetailCommentAdapter(onClickKebabBtn = { commentData, position ->
                             initBottomSheet(
-                                feedData.memberId == homeViewModel.getMemberId(),
-                                contentId, true,
+                                commentData.memberId == homeViewModel.getMemberId(),
+                                contentId, true, commentData.commentId,
                             )
                             deleteCommentPosition = position
                         }, onClickLikedBtn = { contentId, status ->
                             if (status) {
-                                homeViewModel.deleteFeedLiKED(contentId)
+                                homeViewModel.deleteCommentLiked(contentId)
                             } else {
-                                homeViewModel.postFeedLiKED(
+                                homeViewModel.postCommentLiked(
                                     contentId,
                                 )
                             }
@@ -132,13 +146,15 @@ class HomeDetailFragment :
                             submitList(it.data)
                         }
 
-                    binding.rvHomeDetail.adapter =
-                        ConcatAdapter(homeDetailFeedAdapter, homeDetailFeedCommentAdapter)
-                    binding.rvHomeDetail.addItemDecoration(
-                        HomeDetailFeedItemDecorator(
-                            requireContext(),
-                        ),
-                    )
+                    if (::homeDetailFeedAdapter.isInitialized && ::homeDetailFeedCommentAdapter.isInitialized) {
+                        binding.rvHomeDetail.adapter =
+                            ConcatAdapter(homeDetailFeedAdapter, homeDetailFeedCommentAdapter)
+                        binding.rvHomeDetail.addItemDecoration(
+                            HomeDetailFeedItemDecorator(
+                                requireContext(),
+                            ),
+                        )
+                    }
                 }
 
                 is UiState.Empty -> Unit
@@ -146,17 +162,15 @@ class HomeDetailFragment :
             }
         }.launchIn(lifecycleScope)
 
-        homeViewModel.postCommentPosting.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> handleCommentPostingSuccess()
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
+        homeViewModel.postCommentPosting.observe(
+            this,
+            EventObserver {
+                handleCommentPostingSuccess()
+            },
+        )
 
         homeViewModel.openDeleteCommentDialog.observe(
-            viewLifecycleOwner,
+            this,
             EventObserver {
                 initDeleteCommentDialog(it)
             },
@@ -182,9 +196,9 @@ class HomeDetailFragment :
 
     private fun handleCommentPostingSuccess() {
         requireContext().hideKeyboard(binding.root)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
             View.VISIBLE
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         homeViewModel.getCommentList(contentId)
         UploadingSnackBar.make(binding.root).show()
     }
@@ -193,10 +207,11 @@ class HomeDetailFragment :
         isMember: Boolean,
         contentId: Int,
         isComment: Boolean,
+        commentId: Int,
     ) {
-        HomeBottomSheet(isMember, contentId, isComment).show(
-            parentFragmentManager,
-            HomeFragment.HOME_BOTTOM_SHEET,
+        HomeBottomSheet(isMember, contentId, isComment, commentId).show(
+            childFragmentManager,
+            HOME_DETAIL_BOTTOM_SHEET,
         )
     }
 
@@ -215,87 +230,122 @@ class HomeDetailFragment :
 
     private fun initInputEditTextClickListener() {
         binding.tvHomeDetailInput.setOnClickListener {
-            binding.bottomsheet.etCommentContent.text.clear()
+            binding.bottomsheetHomeDetail.etCommentContent.text.clear()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+            val inputMethodManager =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(
+                binding.bottomsheetHomeDetail.etCommentContent,
+                InputMethodManager.SHOW_IMPLICIT,
+            )
+
+            binding.bottomsheetHomeDetail.etCommentContent.requestFocus()
+
             (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
                 View.GONE
-            binding.bottomsheet.etCommentContent.requestFocus()
-            requireContext().openKeyboard(binding.root)
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun initEditText() {
         binding.run {
-            bottomsheet.etCommentContent.doAfterTextChanged {
+            bottomsheetHomeDetail.etCommentContent.doAfterTextChanged {
                 when {
-                    bottomsheet.etCommentContent.text.toString().length in POSSIBLE_LENGTH -> {
-                        updateUploadBar(
-                            R.drawable.shape_primary_line_10_ring,
-                            bottomsheet.etCommentContent.text.toString().length,
-                            R.drawable.ic_uploading_activate,
+                    bottomsheetHomeDetail.etCommentContent.text.toString().length in 1..499 -> {
+                        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progressDrawable =
+                            context?.drawableOf(R.drawable.shape_primary_line_10_ring)
+                        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progress =
+                            bottomsheetHomeDetail.etCommentContent.text.toString().length
+
+                        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.backgroundTintList =
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    binding.root.context,
+                                    R.color.primary,
+                                ),
+                            )
+                        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setTextColor(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.black,
+                            ),
                         )
                         initUploadingBtnClickListener()
                     }
 
-                    bottomsheet.etCommentContent.text.toString().length >= MAX_LENGTH -> {
-                        updateUploadBar(
-                            R.drawable.shape_error_line_10_ring,
-                            bottomsheet.etCommentContent.text.toString().length,
-                            R.drawable.ic_uploading_deactivate,
+                    bottomsheetHomeDetail.etCommentContent.text.toString().length >= 500 -> {
+                        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progressDrawable =
+                            context?.drawableOf(R.drawable.shape_error_line_10_ring)
+                        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progress =
+                            bottomsheetHomeDetail.etCommentContent.text.toString().length
+
+                        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.backgroundTintList =
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    binding.root.context,
+                                    R.color.gray_3,
+                                ),
+                            )
+                        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setTextColor(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.gray_9,
+                            ),
                         )
+                        initUploadingBtnClickListener()
                     }
 
                     else -> {
-                        bottomsheet.layoutUploadBar.pbUploadBarInput.progress = 0
-                        bottomsheet.layoutUploadBar.btnUploadBarUpload.setImageResource(R.drawable.ic_uploading_deactivate)
+                        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progress = 0
+                        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.backgroundTintList =
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    binding.root.context,
+                                    R.color.gray_3,
+                                ),
+                            )
+                        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setTextColor(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.gray_9,
+                            ),
+                        )
                     }
                 }
                 commentDebouncer.setDelay(
-                    binding.bottomsheet.etCommentContent.text.toString(),
-                    DELAY,
+                    bottomsheetHomeDetail.etCommentContent.text.toString(),
+                    1000L,
                 ) {}
             }
         }
     }
 
-    private fun updateUploadBar(
-        progressDrawableResId: Int,
-        progress: Int,
-        imageResourceResId: Int,
-    ) {
-        with(binding) {
-            bottomsheet.layoutUploadBar.pbUploadBarInput.progressDrawable =
-                context?.drawableOf(progressDrawableResId)
-            bottomsheet.layoutUploadBar.pbUploadBarInput.progress = progress
-            bottomsheet.layoutUploadBar.btnUploadBarUpload.setImageResource(imageResourceResId)
-        }
-    }
-
     private fun initUploadingBtnClickListener() {
-        binding.bottomsheet.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
+        binding.bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
             homeViewModel.postCommentPosting(
                 contentId,
-                binding.bottomsheet.etCommentContent.text.toString(),
+                binding.bottomsheetHomeDetail.etCommentContent.text.toString(),
             )
         }
     }
 
     private fun initAppbarCancelClickListener() {
-        binding.bottomsheet.tvCommentAppbarCancel.setOnClickListener {
+        binding.bottomsheetHomeDetail.tvCommentAppbarCancel.setOnClickListener {
             val dialog = DeleteDialogFragment("작성한 답글을 삭제하시겠어요?")
             dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
         }
     }
 
     private fun initCommentBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomsheet.root)
-        binding.bottomsheet.feed = getHomeFeedDetailData()?.toFeedEntity()
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomsheetHomeDetail.root)
+        binding.bottomsheetHomeDetail.feed = getHomeFeedDetailData()?.toFeedEntity()
         bottomSheetBehavior.isHideable = true
         bottomSheetBehavior.expandedOffset = 28
         bottomSheetBehavior.peekHeight = 0
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         bottomSheetBehavior.skipCollapsed = true
-        bottomSheetBehavior.isFitToContents = false
+        bottomSheetBehavior.isFitToContents = true
     }
 
     private fun initComplaintDialog(contentId: Int) {
@@ -307,7 +357,7 @@ class HomeDetailFragment :
                 contentId,
                 true,
             )
-        dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+        dialog.show(childFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
     }
 
     private fun initDeleteCommentDialog(contentId: Int) {
@@ -319,10 +369,11 @@ class HomeDetailFragment :
                 contentId,
                 true,
             )
-        dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+        dialog.show(childFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
     }
 
     companion object {
+        const val HOME_DETAIL_BOTTOM_SHEET = "home_detail_bottom_sheet"
         const val KEY_FEED_DATA = "key_feed_data"
         const val DELAY = 1000L
         val POSSIBLE_LENGTH = 1..499

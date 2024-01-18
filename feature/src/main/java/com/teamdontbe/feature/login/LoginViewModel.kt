@@ -50,4 +50,12 @@ class LoginViewModel
         fun checkLogin() = userInfoRepository.checkLogin()
 
         fun saveCheckLogin(checkLogin: Boolean) = userInfoRepository.saveCheckLogin(checkLogin)
+
+        fun getMemberProfileUrl() = userInfoRepository.getMemberProfileUrl()
+
+        fun saveMemberProfileUrl(memberUrl: String) = userInfoRepository.saveMemberProfileUrl(memberUrl)
+
+        fun getIsNewUser() = userInfoRepository.getIsNewUser()
+
+        fun saveIsNewUser(isNewUser: Boolean) = userInfoRepository.saveIsNewUser(isNewUser)
     }

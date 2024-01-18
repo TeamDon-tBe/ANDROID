@@ -19,10 +19,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class MyPageCommentFragment(id: MyPageModel) :
+class MyPageCommentFragment(private val memberId: MyPageModel) :
     BindingFragment<FragmentMyPageCommentBinding>(R.layout.fragment_my_page_comment) {
     private val mockDataViewModel by viewModels<MyPageCommentViewModel>()
-    private val memberId = id
 
     override fun initView() {
         initFeedObserve(memberId.id)
@@ -48,26 +47,38 @@ class MyPageCommentFragment(id: MyPageModel) :
         }
     }
 
-    private fun updateNoCommentUI() = with(binding) {
-        rvMyPageComment.visibility = View.GONE
-        tvMyPageCommentNoData.visibility = View.VISIBLE
-    }
+    private fun updateNoCommentUI() =
+        with(binding) {
+            rvMyPageComment.visibility = View.GONE
+            tvMyPageCommentNoData.visibility = View.VISIBLE
+        }
 
     private fun initCommentRecyclerView(commentData: List<MyPageCommentEntity>) {
-        val myPageCommentAdapter = MyPageCommentAdapter(
-            onClickKebabBtn = { commentData ->
-                // Kebab 버튼 클릭 이벤트 처리
-            },
-            onItemClicked = { commentData ->
-                // RecyclerView 항목 클릭 이벤트 처리
-                navigateToHomeDetailFragment(
-                    commentData.contentId,
-                )
-            },
-            context = requireContext(),
-        ).apply {
-            submitList(commentData)
-        }
+        val myPageCommentAdapter =
+            MyPageCommentAdapter(
+                onClickKebabBtn = { commentData ->
+                    // Kebab 버튼 클릭 이벤트 처리
+                },
+                onItemClicked = { commentData ->
+                    // RecyclerView 항목 클릭 이벤트 처리
+                    navigateToHomeDetailFragment(
+                        commentData.contentId,
+                    )
+                },
+                onClickLikedBtn = { commentId, status ->
+                    if (status) {
+                        mockDataViewModel.deleteCommentLiked(commentId)
+                    } else {
+                        mockDataViewModel.postCommentLiked(
+                            commentId,
+                        )
+                    }
+                },
+                context = requireContext(),
+                memberId.idFlag,
+            ).apply {
+                submitList(commentData)
+            }
 
         binding.rvMyPageComment.apply {
             adapter = myPageCommentAdapter
