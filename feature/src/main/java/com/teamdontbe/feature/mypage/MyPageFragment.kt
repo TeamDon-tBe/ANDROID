@@ -17,6 +17,7 @@ import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
 import com.teamdontbe.feature.home.HomeFragment.Companion.KEY_FEED_DATA
+import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet
 import com.teamdontbe.feature.mypage.transperencyinfo.TransparencyInfoParentFragment
 import com.teamdontbe.feature.util.loadImage
@@ -38,7 +39,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initMyPageCollapseAppearance()
         initMyPageStateObserve(memberProfile)
         initMyPageTabLayout(memberProfile)
-        initBtnClickListener()
+        initMyPageHambergerClickListner(memberProfile)
+        initTransparencyInfoDialogBtnClickListener()
     }
 
     private fun setUpMemberProfile(): MyPageModel {
@@ -147,20 +149,19 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }.attach()
     }
 
-    private fun initBtnClickListener() {
-        initTransparencyInfoDialogBtnClickListener()
-        initMyPageHambergerClickListner()
-    }
-
     private fun initTransparencyInfoDialogBtnClickListener() {
         binding.btnMyPageTransparencyInfo.setOnClickListener {
             TransparencyInfoParentFragment().show(childFragmentManager, TRANSPARENCY_INFO)
         }
     }
 
-    private fun initMyPageHambergerClickListner() {
+    private fun initMyPageHambergerClickListner(memberProfile: MyPageModel) {
         binding.btnMyPageHamberger.setOnClickListener {
-            MyPageBottomSheet().show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
+            if (memberProfile.idFlag) {
+                MyPageBottomSheet().show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
+            } else {
+                MyPageAnotherUserBottomSheet().show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
+            }
         }
     }
 
