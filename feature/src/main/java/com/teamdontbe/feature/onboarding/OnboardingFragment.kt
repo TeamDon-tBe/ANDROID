@@ -3,6 +3,7 @@ package com.teamdontbe.feature.onboarding
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,8 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentOnboardingBinding
 import com.teamdontbe.feature.posting.PostingViewModel
+import com.teamdontbe.feature.signup.SignUpAgreeActivity.Companion.SIGN_UP_AGREE
+import com.teamdontbe.feature.signup.SignUpProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -20,13 +23,13 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class OnboardingFragment :
     BindingFragment<FragmentOnboardingBinding>(R.layout.fragment_onboarding) {
-    private val postingViewModel by activityViewModels<PostingViewModel>()
+    private val onboardingViewModel by activityViewModels<OnboardingViewModel>()
     private var _onboardingAdapter: OnboardingAdapter? = null
     private val onboardingAdapter
         get() = requireNotNull(_onboardingAdapter) { "adapter 초기화 안됨" }
 
     override fun initView() {
-        binding.vm = postingViewModel
+        binding.vm = onboardingViewModel
         initOnboardingAdapter()
         initBtnOnboardingNextClickListener()
         initIvOnboardingBackClickListener()
@@ -35,7 +38,7 @@ class OnboardingFragment :
     }
 
     private fun initObserve() {
-        postingViewModel.postPosting.flowWithLifecycle(lifecycle).onEach {
+        onboardingViewModel.postPosting.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> navigateToHomeFragment()
@@ -44,7 +47,7 @@ class OnboardingFragment :
             }
         }.launchIn(lifecycleScope)
 
-        postingViewModel.introduction.observe(viewLifecycleOwner) {
+        onboardingViewModel.introduction.observe(viewLifecycleOwner) {
             initBtnOnboardingStartClickListener(it)
         }
     }
@@ -99,7 +102,7 @@ class OnboardingFragment :
 
     private fun initBtnOnboardingStartClickListener(introduction: String) {
         binding.btnOnboardingStart.setOnClickListener {
-            postingViewModel.posting(introduction)
+            onboardingViewModel.posting(introduction)
         }
     }
 
