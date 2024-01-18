@@ -11,6 +11,7 @@ import com.teamdontbe.feature.homedetail.viewholder.HomeDetailCommentViewHolder
 class HomeDetailCommentAdapter(
     private val onClickKebabBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
+    private val onClickTransparentBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
 ) :
     ListAdapter<CommentEntity, HomeDetailCommentViewHolder>(
             HomeAdapterDiffCallback,
