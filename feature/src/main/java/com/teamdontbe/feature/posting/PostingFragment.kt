@@ -9,12 +9,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.R
+import com.teamdontbe.feature.comment.UploadingSnackBar
 import com.teamdontbe.feature.databinding.FragmentPostingBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.util.Debouncer
@@ -41,6 +43,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun initUser() {
         binding.tvPostingProfileNickname.text = postingViewModel.getNickName()
+        binding.ivPostingProfileImg.load(postingViewModel.getMemberProfileUrl())
     }
 
     private fun initAnimation() {
@@ -53,7 +56,10 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         postingViewModel.postPosting.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> navigateToMainActivity()
+                is UiState.Success -> {
+                    navigateToMainActivity()
+                    UploadingSnackBar.make(binding.root).show()
+                }
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
