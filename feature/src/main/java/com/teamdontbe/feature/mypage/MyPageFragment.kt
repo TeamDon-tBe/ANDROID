@@ -173,7 +173,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     override fun onResume() {
-        initView()
+        val memberProfile: MyPageModel = setUpMemberProfile()
+        initMyPageStateObserve(memberProfile)
+        initMyPageTabLayout(memberProfile)
         super.onResume()
     }
 }

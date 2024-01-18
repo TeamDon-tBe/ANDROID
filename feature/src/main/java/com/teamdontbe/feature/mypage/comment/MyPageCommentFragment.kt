@@ -12,6 +12,7 @@ import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageCommentBinding
 import com.teamdontbe.feature.mypage.MyPageModel
+import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,17 +20,30 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class MyPageCommentFragment(private val memberId: MyPageModel) :
+class MyPageCommentFragment :
     BindingFragment<FragmentMyPageCommentBinding>(R.layout.fragment_my_page_comment) {
-    private val mockDataViewModel by viewModels<MyPageCommentViewModel>()
+    private val myPageCommentViewModel by viewModels<MyPageCommentViewModel>()
+
+    private lateinit var memberId: MyPageModel
 
     override fun initView() {
+        initMemberProfile()
         initFeedObserve(memberId.id)
     }
 
+    private fun initMemberProfile() {
+        arguments?.let {
+            memberId = it.getParcelable(MyPageFeedFragment.ARG_MEMBER_PROFILE) ?: MyPageModel(
+                -1,
+                getString(R.string.my_page_nickname),
+                false,
+            )
+        }
+    }
+
     private fun initFeedObserve(memberId: Int) {
-        mockDataViewModel.getMyPageCommentList(memberId)
-        mockDataViewModel.getMyPageCommentListState.flowWithLifecycle(lifecycle).onEach {
+        myPageCommentViewModel.getMyPageCommentList(memberId)
+        myPageCommentViewModel.getMyPageCommentListState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> handleSuccessState(it.data)
@@ -67,9 +81,9 @@ class MyPageCommentFragment(private val memberId: MyPageModel) :
                 },
                 onClickLikedBtn = { commentId, status ->
                     if (status) {
-                        mockDataViewModel.deleteCommentLiked(commentId)
+                        myPageCommentViewModel.deleteCommentLiked(commentId)
                     } else {
-                        mockDataViewModel.postCommentLiked(
+                        myPageCommentViewModel.postCommentLiked(
                             commentId,
                         )
                     }
@@ -91,6 +105,16 @@ class MyPageCommentFragment(private val memberId: MyPageModel) :
             R.id.action_fragment_my_page_to_fragment_home_detail,
             bundleOf(KEY_NOTI_DATA to id),
         )
+    }
+
+    companion object {
+        fun newInstance(memberProfile: MyPageModel?): MyPageCommentFragment {
+            return MyPageCommentFragment().apply {
+                arguments = bundleOf(
+                    MyPageFeedFragment.ARG_MEMBER_PROFILE to memberProfile,
+                )
+            }
+        }
     }
 
     override fun onResume() {
