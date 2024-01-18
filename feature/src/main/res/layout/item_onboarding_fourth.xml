@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.teamdontbe.feature.posting.PostingViewModel" />
+            type="com.teamdontbe.feature.onboarding.OnboardingViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
