@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.home.viewholder
 
 import android.graphics.Color
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
@@ -15,9 +16,18 @@ class HomeViewHolder(
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     private val onClickUserProfileBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
     private val onClickTransparentBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
+    private val userId: Int,
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FeedEntity) {
         with(binding) {
+            if (data.memberId == userId) {
+                ivHomeGhostFillGreen.visibility = View.INVISIBLE
+                ivHomeLinePale.visibility = View.INVISIBLE
+            } else {
+                ivHomeGhostFillGreen.visibility = View.VISIBLE
+                ivHomeLinePale.visibility = View.VISIBLE
+            }
+
             if (data.time.isNotEmpty()) {
                 tvHomeFeedTransparency.text = "투명도 ${data.memberGhost}% · ${
                     CalculateTime(binding.root.context).getCalculateTime(data.time)
@@ -49,7 +59,7 @@ class HomeViewHolder(
         }
     }
 
-    private fun setTransparent(data: FeedEntity)  {
+    private fun setTransparent(data: FeedEntity) {
         binding.ivHomeGhostFillGreen.setOnClickListener {
             if (!data.isGhost) {
                 onClickTransparentBtn(data, position)

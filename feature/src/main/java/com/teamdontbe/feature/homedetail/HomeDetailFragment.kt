@@ -77,21 +77,25 @@ class HomeDetailFragment :
 
     private fun initHomeDetailFeedAdapter() {
         homeDetailFeedAdapter =
-            HomeAdapter(onClickKebabBtn = { feedData, positoin ->
-                feedData.contentId?.let {
-                    initBottomSheet(
-                        feedData.memberId == homeViewModel.getMemberId(),
-                        it, false, -1,
-                    )
-                }
-            }, onClickTransparentBtn = { data, position ->
-                if (position == -2) {
-                    TransparentIsGhostSnackBar.make(binding.root).show()
-                } else {
-                    initFeedTransparentDialog(data.memberId, data.contentId ?: -1)
-                    updateFeedPosition = position
-                }
-            }).apply {
+            HomeAdapter(
+                onClickKebabBtn = { feedData, positoin ->
+                    feedData.contentId?.let {
+                        initBottomSheet(
+                            feedData.memberId == homeViewModel.getMemberId(),
+                            it, false, -1,
+                        )
+                    }
+                },
+                onClickTransparentBtn = { data, position ->
+                    if (position == -2) {
+                        TransparentIsGhostSnackBar.make(binding.root).show()
+                    } else {
+                        initFeedTransparentDialog(data.memberId, data.contentId ?: -1)
+                        updateFeedPosition = position
+                    }
+                },
+                userId = homeViewModel.getMemberId(),
+            ).apply {
                 submitList(
                     listOf(getHomeFeedDetailData()?.toFeedEntity()),
                 )
@@ -123,6 +127,7 @@ class HomeDetailFragment :
                                     updateFeedPosition = position
                                 }
                             },
+                            userId = homeViewModel.getMemberId(),
                         ).apply {
                             submitList(
                                 listOf(result.data),
@@ -152,28 +157,33 @@ class HomeDetailFragment :
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
                     homeDetailFeedCommentAdapter =
-                        HomeDetailCommentAdapter(onClickKebabBtn = { commentData, position ->
-                            initBottomSheet(
-                                commentData.memberId == homeViewModel.getMemberId(),
-                                contentId, true, commentData.commentId,
-                            )
-                            deleteCommentPosition = position
-                        }, onClickLikedBtn = { contentId, status ->
-                            if (status) {
-                                homeViewModel.deleteCommentLiked(contentId)
-                            } else {
-                                homeViewModel.postCommentLiked(
-                                    contentId,
+                        HomeDetailCommentAdapter(
+                            onClickKebabBtn = { commentData, position ->
+                                initBottomSheet(
+                                    commentData.memberId == homeViewModel.getMemberId(),
+                                    contentId, true, commentData.commentId,
                                 )
-                            }
-                        }, onClickTransparentBtn = { data, position ->
-                            if (position == -2) {
-                                TransparentIsGhostSnackBar.make(binding.root).show()
-                            } else {
-                                initCommentTransparentDialog(data.memberId, contentId)
-                                updateFeedPosition = position
-                            }
-                        }).apply {
+                                deleteCommentPosition = position
+                            },
+                            onClickLikedBtn = { contentId, status ->
+                                if (status) {
+                                    homeViewModel.deleteCommentLiked(contentId)
+                                } else {
+                                    homeViewModel.postCommentLiked(
+                                        contentId,
+                                    )
+                                }
+                            },
+                            onClickTransparentBtn = { data, position ->
+                                if (position == -2) {
+                                    TransparentIsGhostSnackBar.make(binding.root).show()
+                                } else {
+                                    initCommentTransparentDialog(data.memberId, contentId)
+                                    updateFeedPosition = position
+                                }
+                            },
+                            userId = homeViewModel.getMemberId(),
+                        ).apply {
                             submitList(it.data)
                         }
 
