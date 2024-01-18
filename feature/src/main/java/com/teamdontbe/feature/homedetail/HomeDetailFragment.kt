@@ -85,7 +85,7 @@ class HomeDetailFragment :
                 if (position == -2) {
                     TransparentIsGhostSnackBar.make(binding.root).show()
                 } else {
-                    initTransparentDialog(data.memberId, data.contentId ?: -1)
+                    initFeedTransparentDialog(data.memberId, data.contentId ?: -1)
                     updateFeedPosition = position
                 }
             }).apply {
@@ -103,14 +103,24 @@ class HomeDetailFragment :
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
                     homeDetailFeedAdapter =
-                        HomeAdapter(onClickKebabBtn = { feedData, positoin ->
-                            feedData.contentId?.let {
-                                initBottomSheet(
-                                    feedData.memberId == homeViewModel.getMemberId(),
-                                    it, false, -1,
-                                )
-                            }
-                        }).apply {
+                        HomeAdapter(
+                            onClickKebabBtn = { feedData, positoin ->
+                                feedData.contentId?.let {
+                                    initBottomSheet(
+                                        feedData.memberId == homeViewModel.getMemberId(),
+                                        it, false, -1,
+                                    )
+                                }
+                            },
+                            onClickTransparentBtn = { data, position ->
+                                if (position == -2) {
+                                    TransparentIsGhostSnackBar.make(binding.root).show()
+                                } else {
+                                    initFeedTransparentDialog(data.memberId, data.contentId ?: -1)
+                                    updateFeedPosition = position
+                                }
+                            },
+                        ).apply {
                             submitList(
                                 listOf(result.data),
                             )
@@ -152,6 +162,13 @@ class HomeDetailFragment :
                                 homeViewModel.postCommentLiked(
                                     contentId,
                                 )
+                            }
+                        }, onClickTransparentBtn = { data, position ->
+                            if (position == -2) {
+                                TransparentIsGhostSnackBar.make(binding.root).show()
+                            } else {
+                                initFeedTransparentDialog(data.memberId, contentId)
+                                updateFeedPosition = position
                             }
                         }).apply {
                             submitList(it.data)
@@ -398,7 +415,15 @@ class HomeDetailFragment :
         dialog.show(childFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
     }
 
-    private fun initTransparentDialog(
+    private fun initFeedTransparentDialog(
+        targetMemberId: Int,
+        alarmTriggerId: Int,
+    ) {
+        val dialog = TransparentDialogFragment(targetMemberId, alarmTriggerId)
+        dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
+    }
+
+    private fun initCommentTransparentDialog(
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
