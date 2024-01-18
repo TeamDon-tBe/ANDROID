@@ -92,7 +92,9 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 feedData.contentId?.let {
                     initBottomSheet(
                         feedData.memberId == homeViewModel.getMemberId(),
-                        it, false, -1,
+                        it,
+                        false,
+                        -1,
                     )
                     deleteFeedPosition = positoin
                 }
@@ -119,6 +121,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     homeViewModel.postFeedLiked(
                         contentId,
                     )
+                }
+            }, onClickUserProfileBtn = { feedData, positoin ->
+                feedData.contentId?.let {
+                    navigateToMyPageFragment(feedData.memberId)
                 }
             }).apply {
                 submitList(feedData)
@@ -147,6 +153,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         findNavController().navigate(
             R.id.action_home_to_home_detail,
             bundleOf(KEY_FEED_DATA to feedData),
+        )
+    }
+
+    private fun navigateToMyPageFragment(id: Int) {
+        findNavController().navigate(
+            R.id.action_fragment_home_to_fragment_my_page,
+            bundleOf(KEY_FEED_DATA to id),
         )
     }
 
