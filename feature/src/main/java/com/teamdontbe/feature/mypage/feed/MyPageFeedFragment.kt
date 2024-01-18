@@ -12,10 +12,13 @@ import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
+import com.teamdontbe.feature.dialog.TransparentDialogFragment
+import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.mypage.MyPageModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
+import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -35,6 +38,7 @@ class MyPageFeedFragment :
         initMemberProfile()
         initFeedObserve()
         initDeleteObserve()
+        initTransparentObserve()
     }
 
     private fun initMemberProfile() {
@@ -83,6 +87,17 @@ class MyPageFeedFragment :
         }.launchIn(lifecycleScope)
     }
 
+    private fun initTransparentObserve() {
+        myPageFeedViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> myPageFeedViewModel.getMyPageFeedList(memberProfile.id)
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
+
     private fun handleSuccessState(feedList: List<FeedEntity>) {
         if (feedList.isEmpty()) {
             updateNoFeedUI()
@@ -103,39 +118,55 @@ class MyPageFeedFragment :
         }
 
     private fun initFeedRecyclerView(feedEntity: List<FeedEntity>) {
-        myPageFeedAdapter = MyPageFeedAdapter(
-            onClickKebabBtn = { feedEntity, position ->
-                // Kebab 버튼 클릭 이벤트 처리
-                feedEntity.contentId?.let {
-                    initBottomSheet(
-                        feedEntity.memberId == myPageFeedViewModel.getMemberId(),
-                        it,
-                        false,
-                        -1,
-                    )
-                    deleteFeedPosition = position
-                }
-            },
-            onItemClicked = { feedEntity ->
-                // RecyclerView 항목 클릭 이벤트 처리
-                navigateToHomeDetailFragment(feedEntity.contentId ?: -1)
-            },
-            onClickLikedBtn = { contentId, status ->
-                if (status) {
-                    myPageFeedViewModel.deleteFeedLiked(contentId)
-                } else {
-                    myPageFeedViewModel.postFeedLiked(
-                        contentId,
-                    )
-                }
-            },
-            context = requireContext(),
-            memberProfile.idFlag,
-        ).apply {
-            submitList(feedEntity)
-        }
+        myPageFeedAdapter =
+            MyPageFeedAdapter(
+                onClickKebabBtn = { feedEntity, position ->
+                    // Kebab 버튼 클릭 이벤트 처리
+                    feedEntity.contentId?.let {
+                        initBottomSheet(
+                            feedEntity.memberId == myPageFeedViewModel.getMemberId(),
+                            it,
+                            false,
+                            -1,
+                        )
+                        deleteFeedPosition = position
+                    }
+                },
+                onItemClicked = { feedEntity ->
+                    // RecyclerView 항목 클릭 이벤트 처리
+                    navigateToHomeDetailFragment(feedEntity.contentId ?: -1)
+                },
+                onClickLikedBtn = { contentId, status ->
+                    if (status) {
+                        myPageFeedViewModel.deleteFeedLiked(contentId)
+                    } else {
+                        myPageFeedViewModel.postFeedLiked(
+                            contentId,
+                        )
+                    }
+                },
+                context = requireContext(),
+                memberProfile.idFlag,
+                onClickTransparentBtn = { data, position ->
+                    if (position == -2) {
+                        TransparentIsGhostSnackBar.make(binding.root).show()
+                    } else {
+                        initTransparentDialog(data.memberId, data.contentId ?: -1)
+                    }
+                },
+            ).apply {
+                submitList(feedEntity)
+            }
 
         setUpFeedAdapter(myPageFeedAdapter)
+    }
+
+    private fun initTransparentDialog(
+        targetMemberId: Int,
+        alarmTriggerId: Int,
+    ) {
+        val dialog = TransparentDialogFragment(targetMemberId, alarmTriggerId)
+        dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 
     private fun initBottomSheet(
@@ -176,9 +207,10 @@ class MyPageFeedFragment :
 
         fun newInstance(memberProfile: MyPageModel?): MyPageFeedFragment {
             return MyPageFeedFragment().apply {
-                arguments = bundleOf(
-                    ARG_MEMBER_PROFILE to memberProfile,
-                )
+                arguments =
+                    bundleOf(
+                        ARG_MEMBER_PROFILE to memberProfile,
+                    )
             }
         }
     }

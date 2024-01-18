@@ -77,6 +77,17 @@
             tools:text="돈비를 사용하면 진짜 돈비를 맞을 수 있나요?
 저 돈비 맞고 싶어요 돈벼락이 최고입니다. 그나저나 돈비 정말 흥미로운 서비스인 것 같아요 어떻게 이런 기획을 ? 대박 ㄷ ㄷ ㄷ돈비를 사용하면 진짜 돈비를 맞을 수 있나요?" />
 
+        <View
+            android:id="@+id/view_home_transparent_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_white_fill_8_rect"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:backgroundTint="#0FFCFCFD" />
+
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/divider_comment"
             android:layout_width="1dp"

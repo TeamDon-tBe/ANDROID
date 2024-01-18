@@ -14,11 +14,9 @@ import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
-import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
-import com.teamdontbe.feature.util.EventObserver
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -77,20 +75,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             }
         }.launchIn(lifecycleScope)
 
-        homeViewModel.openDeleteDialog.observe(
-            this,
-            EventObserver {
-                initDeleteDialog(it)
-            },
-        )
-
-        homeViewModel.openComplaintDialog.observe(
-            this,
-            EventObserver {
-                initComplaintDialog(it)
-            },
-        )
-
         homeViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
@@ -142,7 +126,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     TransparentIsGhostSnackBar.make(binding.root).show()
                 } else {
                     initTransparentDialog(data.memberId, data.contentId ?: -1)
-                    updateFeedPosition = position
                 }
             }, onClickUserProfileBtn = { feedData, positoin ->
                 feedData.contentId?.let {
@@ -176,6 +159,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             R.id.action_home_to_home_detail,
             bundleOf(KEY_FEED_DATA to feedData),
         )
+        onDestroy()
     }
 
     private fun navigateToMyPageFragment(id: Int) {
@@ -183,30 +167,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             R.id.action_fragment_home_to_fragment_my_page,
             bundleOf(KEY_FEED_DATA to id),
         )
-    }
-
-    private fun initComplaintDialog(contentId: Int) {
-        val dialog =
-            DeleteWithTitleDialogFragment(
-                getString(R.string.tv_delete_with_title_complain_dialog),
-                getString(R.string.tv_delete_with_title_dialog_content),
-                false,
-                contentId,
-                false,
-            )
-        dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
-    }
-
-    private fun initDeleteDialog(contentId: Int) {
-        val dialog =
-            DeleteWithTitleDialogFragment(
-                getString(R.string.tv_delete_with_title_delete_dialog),
-                getString(R.string.tv_delete_with_title_delete_content_dialog),
-                true,
-                contentId,
-                false,
-            )
-        dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
     }
 
     private fun initTransparentDialog(

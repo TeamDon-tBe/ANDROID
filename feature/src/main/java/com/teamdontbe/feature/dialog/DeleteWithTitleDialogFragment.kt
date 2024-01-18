@@ -7,7 +7,10 @@ import com.teamdontbe.core_ui.base.BindingDialogFragment
 import com.teamdontbe.core_ui.util.context.dialogFragmentResize
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentDeleteWithTitleDialogBinding
+import com.teamdontbe.feature.home.HomeBottomSheet
 import com.teamdontbe.feature.home.HomeViewModel
+import com.teamdontbe.feature.homedetail.HomeDetailFragment
+import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.HOME_DETAIL_BOTTOM_SHEET
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -16,7 +19,8 @@ class DeleteWithTitleDialogFragment(
     val content: String,
     private val isMember: Boolean,
     private val contentId: Int,
-    private val isContent: Boolean,
+    private val isComment: Boolean,
+    private val commentId: Int,
 ) : BindingDialogFragment<FragmentDeleteWithTitleDialogBinding>(R.layout.fragment_delete_with_title_dialog) {
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
@@ -29,9 +33,8 @@ class DeleteWithTitleDialogFragment(
     private fun initText() {
         binding.tvDeleteWithTitleDialog.text = title
         binding.tvDeleteWithTitleDialogContent.text = content
-        if (!isMember) {
-            binding.btnDeleteWithTitleDialogDelete.text =
-                getString(R.string.tv_complaint_title)
+        if (isMember) {
+            binding.btnDeleteWithTitleDialogDelete.text = getString(R.string.tv_complaint_title)
         }
     }
 
@@ -43,19 +46,21 @@ class DeleteWithTitleDialogFragment(
     private fun initCancelButtonClickListener() {
         binding.btnDeleteWithTitleDialogCancel.setOnClickListener {
             dismiss()
+            (parentFragmentManager.findFragmentByTag(HomeDetailFragment.HOME_DETAIL_BOTTOM_SHEET) as? HomeBottomSheet)?.dismiss()
         }
     }
 
     private fun initDeleteButtonClickListener() {
         binding.btnDeleteWithTitleDialogDelete.setOnClickListener {
-            if (isMember && !isContent) {
+            if (!isMember && !isComment) {
                 homeViewModel.deleteFeed(contentId)
-            } else if (isMember && isContent) {
-                homeViewModel.deleteComment(contentId)
+            } else if (!isMember && isComment) {
+                homeViewModel.deleteComment(commentId)
             } else {
                 navigateToComplaintWeb()
             }
             dismiss()
+            (parentFragmentManager.findFragmentByTag(HomeDetailFragment.HOME_DETAIL_BOTTOM_SHEET) as? HomeBottomSheet)?.dismiss()
         }
     }
 

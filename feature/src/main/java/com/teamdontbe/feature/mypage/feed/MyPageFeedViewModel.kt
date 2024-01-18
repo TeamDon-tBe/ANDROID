@@ -18,53 +18,57 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageFeedViewModel
-@Inject constructor(
-    private val myPageRepository: MyPageRepository,
-    private val homeRepository: HomeRepository,
-    private val userInfoRepository: UserInfoRepository,
-) :
+    @Inject
+    constructor(
+        private val myPageRepository: MyPageRepository,
+        private val homeRepository: HomeRepository,
+        private val userInfoRepository: UserInfoRepository,
+    ) :
     ViewModel() {
-    private val _getMyPageFeedListState =
-        MutableStateFlow<UiState<List<FeedEntity>>>(UiState.Empty)
-    val getMyPageFeedListState: StateFlow<UiState<List<FeedEntity>>> =
-        _getMyPageFeedListState
+        private val _getMyPageFeedListState =
+            MutableStateFlow<UiState<List<FeedEntity>>>(UiState.Empty)
+        val getMyPageFeedListState: StateFlow<UiState<List<FeedEntity>>> =
+            _getMyPageFeedListState
 
-    private val _deleteFeed = MutableSharedFlow<UiState<Boolean>>()
-    val deleteFeed: SharedFlow<UiState<Boolean>> = _deleteFeed
+        private val _deleteFeed = MutableSharedFlow<UiState<Boolean>>()
+        val deleteFeed: SharedFlow<UiState<Boolean>> = _deleteFeed
 
-    fun getMyPageFeedList(viewMemberId: Int) {
-        viewModelScope.launch {
-            myPageRepository.getMyPageFeedList(viewMemberId).collectLatest {
-                if (it != null) {
-                    _getMyPageFeedListState.value =
-                        UiState.Success(it)
-                } else {
-                    UiState.Empty
+        private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
+        val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
+
+        fun getMyPageFeedList(viewMemberId: Int) {
+            viewModelScope.launch {
+                myPageRepository.getMyPageFeedList(viewMemberId).collectLatest {
+                    if (it != null) {
+                        _getMyPageFeedListState.value =
+                            UiState.Success(it)
+                    } else {
+                        UiState.Empty
+                    }
+                }
+                _getMyPageFeedListState.value = UiState.Loading
+            }
+        }
+
+        fun postFeedLiked(commentId: Int) =
+            viewModelScope.launch {
+                homeRepository.postFeedLiked(commentId).collectLatest {
                 }
             }
-            _getMyPageFeedListState.value = UiState.Loading
-        }
+
+        fun deleteFeedLiked(commentId: Int) =
+            viewModelScope.launch {
+                homeRepository.deleteFeedLiked(commentId).collectLatest {
+                }
+            }
+
+        fun deleteFeed(contentId: Int) =
+            viewModelScope.launch {
+                homeRepository.deleteFeed(contentId).collectLatest {
+                    _deleteFeed.emit(UiState.Success(it))
+                }
+                _deleteFeed.emit(UiState.Loading)
+            }
+
+        fun getMemberId() = userInfoRepository.getMemberId()
     }
-
-    fun postFeedLiked(commentId: Int) =
-        viewModelScope.launch {
-            homeRepository.postFeedLiked(commentId).collectLatest {
-            }
-        }
-
-    fun deleteFeedLiked(commentId: Int) =
-        viewModelScope.launch {
-            homeRepository.deleteFeedLiked(commentId).collectLatest {
-            }
-        }
-
-    fun deleteFeed(contentId: Int) =
-        viewModelScope.launch {
-            homeRepository.deleteFeed(contentId).collectLatest {
-                _deleteFeed.emit(UiState.Success(it))
-            }
-            _deleteFeed.emit(UiState.Loading)
-        }
-
-    fun getMemberId() = userInfoRepository.getMemberId()
-}
