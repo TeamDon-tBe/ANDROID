@@ -23,12 +23,16 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         // 타이머가 끝나면 내부 실행
         Handler().postDelayed(
             Runnable {
-                if (loginViewModel.getNickName().isNotBlank() && loginViewModel.checkLogin()) {
-                    navigateTo<MainActivity>()
-                } else if (loginViewModel.getNickName().isBlank()) {
-                    navigateTo<SignUpAgreeActivity>()
-                } else {
-                    navigateTo<LoginActivity>()
+                when {
+                    loginViewModel.getNickName().isNotBlank() -> {
+                        navigateTo<MainActivity>()
+                    }
+                    loginViewModel.getNickName().isBlank() -> {
+                        navigateTo<SignUpAgreeActivity>()
+                    }
+                    else -> {
+                        navigateTo<LoginActivity>()
+                    }
                 }
                 finish()
             },
