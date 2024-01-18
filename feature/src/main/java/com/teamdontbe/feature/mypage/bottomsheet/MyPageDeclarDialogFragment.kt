@@ -10,8 +10,15 @@ import com.teamdontbe.feature.databinding.FragmentDeleteWithTitleDialogBinding
 class MyPageDeclarDialogFragment :
     BindingDialogFragment<FragmentDeleteWithTitleDialogBinding>(R.layout.fragment_delete_with_title_dialog) {
     override fun initView() {
+        initText()
         initCancelButtonClickListener()
         initDeclareBtnClickListener()
+    }
+
+    private fun initText() {
+        binding.tvDeleteWithTitleDialogContent.text =
+            getString(R.string.tv_delete_with_title_dialog_content)
+        binding.btnDeleteWithTitleDialogDelete.text = getString(R.string.tv_complaint_title)
     }
 
     override fun onResume() {
