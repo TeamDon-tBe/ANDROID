@@ -45,7 +45,14 @@ class HomeViewHolder(
                 onClickUserProfileBtn(data, bindingAdapterPosition)
             }
             ivHomeGhostFillGreen.setOnClickListener {
-                onClickTransparentBtn(data, position)
+                if (!data.isGhost) {
+                    onClickTransparentBtn(data, position)
+                } else {
+                    onClickTransparentBtn(
+                        data,
+                        -2,
+                    )
+                }
             }
 
             if (data.isGhost) {

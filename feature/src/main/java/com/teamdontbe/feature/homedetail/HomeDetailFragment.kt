@@ -21,7 +21,6 @@ import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
-import com.teamdontbe.feature.comment.UploadingSnackBar
 import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
@@ -32,6 +31,7 @@ import com.teamdontbe.feature.home.HomeBottomSheet
 import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
+import com.teamdontbe.feature.snackbar.UploadingSnackBar
 import com.teamdontbe.feature.util.Debouncer
 import com.teamdontbe.feature.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint

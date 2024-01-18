@@ -15,6 +15,7 @@ import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.posting.PostingFragment
+import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.EventObserver
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
@@ -138,9 +139,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                         contentId,
                     )
                 }
-            }, onClickTransparentBtn = { data, positoin ->
-                initTransparentDialog(data.memberId, data.contentId ?: -1)
-                updateFeedPosition = positoin
+            }, onClickTransparentBtn = { data, position ->
+                if (position == -2) {
+                    TransparentIsGhostSnackBar.make(binding.root).show()
+                } else {
+                    initTransparentDialog(data.memberId, data.contentId ?: -1)
+                    updateFeedPosition = position
+                }
             }).apply {
                 submitList(feedData)
             }
