@@ -11,7 +11,6 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
-import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.mypage.MyPageModel
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.util.FeedItemDecorator
@@ -23,12 +22,16 @@ import kotlinx.coroutines.flow.onEach
 class MyPageFeedFragment :
     BindingFragment<FragmentMyPageFeedBinding>(R.layout.fragment_my_page_feed) {
     private val myPageFeedViewModel by viewModels<MyPageFeedViewModel>()
-    private val homeViewModel by viewModels<HomeViewModel>()
 
     private lateinit var memberProfile: MyPageModel
 
     override fun initView() {
         // Arguments에서 memberProfile 값을 가져오기
+        initMemberProfile()
+        initFeedObserve()
+    }
+
+    private fun initMemberProfile() {
         arguments?.let {
             memberProfile = it.getParcelable(ARG_MEMBER_PROFILE) ?: MyPageModel(
                 -1,
@@ -36,7 +39,6 @@ class MyPageFeedFragment :
                 false,
             )
         }
-        initFeedObserve()
     }
 
     private fun initFeedObserve() {
@@ -78,9 +80,9 @@ class MyPageFeedFragment :
             },
             onClickLikedBtn = { contentId, status ->
                 if (status) {
-                    homeViewModel.deleteFeedLiked(contentId)
+                    myPageFeedViewModel.deleteFeedLiked(contentId)
                 } else {
-                    homeViewModel.postFeedLiked(
+                    myPageFeedViewModel.postFeedLiked(
                         contentId,
                     )
                 }
