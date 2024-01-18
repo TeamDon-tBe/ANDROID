@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,6 +59,8 @@ class HomeViewModel
 
         private val _deleteComment = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
         val deleteComment: StateFlow<UiState<Boolean>> get() = _deleteComment
+
+        private val likeMutex = Mutex()
 
         fun getFeedList() =
             viewModelScope.launch {
@@ -107,16 +110,25 @@ class HomeViewModel
 
         fun postFeedLiked(contentId: Int) =
             viewModelScope.launch {
-                homeRepository.postFeedLiked(contentId).collectLatest {
-                    _postFeedLiked.emit(UiState.Success(it))
+                likeMutex.tryLock(2000)
+                try {
+                    homeRepository.postFeedLiked(contentId).collectLatest {
+                        _postFeedLiked.emit(UiState.Success(it))
+                    }
+                } finally {
+                    likeMutex.unlock()
                 }
                 _postFeedLiked.emit(UiState.Loading)
             }
 
         fun deleteFeedLiked(contentId: Int) =
             viewModelScope.launch {
-                homeRepository.deleteFeedLiked(contentId).collectLatest {
-                    _deleteFeedLiked.emit(UiState.Success(it))
+                if (likeMutex.isLocked) {
+                    _deleteFeedLiked.emit(UiState.Failure("막힘"))
+                } else {
+                    homeRepository.deleteFeedLiked(contentId).collectLatest {
+                        _deleteFeedLiked.emit(UiState.Success(it))
+                    }
                 }
                 _deleteFeedLiked.emit(UiState.Loading)
             }
@@ -139,15 +151,26 @@ class HomeViewModel
                 _deleteComment.value = UiState.Loading
             }
 
+        private val commentLikeMutex = Mutex()
+
         fun postCommentLiked(commentId: Int) =
             viewModelScope.launch {
-                homeRepository.postCommentLiked(commentId).collectLatest {
+                commentLikeMutex.lock(2000)
+                try {
+                    homeRepository.postCommentLiked(commentId).collectLatest {
+                    }
+                } finally {
+                    commentLikeMutex.unlock()
                 }
             }
 
         fun deleteCommentLiked(commentId: Int) =
             viewModelScope.launch {
-                homeRepository.deleteCommentLiked(commentId).collectLatest {
+                if (commentLikeMutex.isLocked) {
+                    _deleteFeedLiked.emit(UiState.Failure("막힘"))
+                } else {
+                    homeRepository.deleteCommentLiked(commentId).collectLatest {
+                    }
                 }
             }
     }
