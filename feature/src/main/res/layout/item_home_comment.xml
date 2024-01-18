@@ -161,7 +161,7 @@
                 android:id="@+id/tv_comment_like_num"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="14dp"
                 android:gravity="start"
                 android:text="@{Integer.toString(comment.commentLikedNumber)}"
                 android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"

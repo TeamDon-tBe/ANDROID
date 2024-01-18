@@ -1,8 +1,10 @@
 package com.teamdontbe.feature.onboarding
 
 import android.view.View
+import android.view.WindowManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -32,19 +34,29 @@ class OnboardingFragment :
 
     override fun initView() {
         binding.vm = onboardingViewModel
+        checkIsNewUser()
         initOnboardingAdapter()
         initBtnOnboardingNextClickListener()
         initIvOnboardingBackClickListener()
         initObserve()
         initSkipTextClickListener()
-        Timber.d("here!!!!!!!!!!!!!!!!!!!!!! : $signUpAgree")
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+    }
+
+    private fun checkIsNewUser() {
+        Timber.d(onboardingViewModel.getIsNewUser().toString())
+        binding.tvOnboardingSkip.isVisible = !onboardingViewModel.getIsNewUser()
     }
 
     private fun initObserve() {
         onboardingViewModel.postPosting.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> navigateToHomeFragment()
+                is UiState.Success -> {
+                    navigateToHomeFragment()
+                    onboardingViewModel.saveCheckLogin(true)
+                }
+
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
@@ -75,6 +87,7 @@ class OnboardingFragment :
                             R.string.tv_onboarding_skip,
                         )
                     }
+                checkIsNewUser()
             }
         }
 
@@ -138,6 +151,7 @@ class OnboardingFragment :
 
     override fun onDestroyView() {
         _onboardingAdapter = null
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         super.onDestroyView()
     }
 }

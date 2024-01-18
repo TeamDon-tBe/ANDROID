@@ -5,5 +5,6 @@ data class LoginEntity(
     val memberId: Int,
     val accessToken: String,
     val refreshToken: String,
+    val memberProfileUrl: String,
     val isNewUser: Boolean,
 )

@@ -11,18 +11,25 @@ import com.teamdontbe.feature.databinding.ItemMyPageCommentBinding
 class MyPageCommentAdapter(
     private val onClickKebabBtn: (MyPageCommentEntity) -> Unit,
     private val onItemClicked: (MyPageCommentEntity) -> Unit,
+    private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     context: Context,
     private val idFlag: Boolean,
 ) :
     ListAdapter<MyPageCommentEntity, MyPageCommentViewHolder>(ExampleDiffCallback) {
     private val inflater by lazy { LayoutInflater.from(context) }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPageCommentViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): MyPageCommentViewHolder {
         val binding = ItemMyPageCommentBinding.inflate(inflater, parent, false)
-        return MyPageCommentViewHolder(binding, onClickKebabBtn, onItemClicked, idFlag)
+        return MyPageCommentViewHolder(binding, onClickKebabBtn, onItemClicked, onClickLikedBtn,idFlag)
     }
 
-    override fun onBindViewHolder(holder: MyPageCommentViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: MyPageCommentViewHolder,
+        position: Int,
+    ) {
         holder.onBind(currentList[position])
     }
 

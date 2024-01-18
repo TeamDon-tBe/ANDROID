@@ -47,12 +47,13 @@ class MyPageFeedFragment(private val memberProfile: MyPageModel) :
         }
     }
 
-    private fun updateNoFeedUI() = with(binding) {
-        rvMyPagePosting.visibility = View.GONE
-        viewMyPageNoFeedNickname.clNoFeed.visibility = View.VISIBLE
-        viewMyPageNoFeedNickname.tvNoFeedNickname.text =
-            getString(R.string.my_page_no_feed_text, memberProfile.nickName)
-    }
+    private fun updateNoFeedUI() =
+        with(binding) {
+            rvMyPagePosting.visibility = View.GONE
+            viewMyPageNoFeedNickname.clNoFeed.visibility = View.VISIBLE
+            viewMyPageNoFeedNickname.tvNoFeedNickname.text =
+                getString(R.string.my_page_no_feed_text, memberProfile.nickName)
+        }
 
     private fun initFeedRecyclerView(feedEntity: List<FeedEntity>) {
         val myPageFeedAdapter = MyPageFeedAdapter(

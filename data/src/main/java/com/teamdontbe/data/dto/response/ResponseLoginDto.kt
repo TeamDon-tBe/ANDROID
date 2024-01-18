@@ -25,6 +25,7 @@ data class ResponseLoginDto(
             memberId,
             accessToken,
             refreshToken,
+            memberProfileUrl,
             isNewUser,
         )
 }

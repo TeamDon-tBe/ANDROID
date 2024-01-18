@@ -6,6 +6,8 @@ interface SharedPreferenceDataSource {
     var checkLogin: Boolean
     var memberId: Int
     var nickName: String?
+    var memberProfileUrl: String?
+    var isNewUser: Boolean
 
     fun clear()
 }

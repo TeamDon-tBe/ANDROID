@@ -112,7 +112,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
-            android:id="@+id/bottomsheet"
+            android:id="@+id/bottomsheet_home_detail"
             layout="@layout/bottomsheet_comment" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

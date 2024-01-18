@@ -50,4 +50,20 @@ class UserInfoRepositoryImpl
         override fun saveNickName(nickName: String) {
             sharedPreferenceDataSource.nickName = nickName
         }
+
+        override fun getMemberProfileUrl(): String {
+            return sharedPreferenceDataSource.memberProfileUrl ?: ""
+        }
+
+        override fun saveMemberProfileUrl(memberUrl: String) {
+            sharedPreferenceDataSource.memberProfileUrl = memberUrl
+        }
+
+        override fun getIsNewUser(): Boolean {
+            return sharedPreferenceDataSource.isNewUser
+        }
+
+        override fun saveIsNewUser(isNewUser: Boolean) {
+            sharedPreferenceDataSource.isNewUser = isNewUser
+        }
     }
