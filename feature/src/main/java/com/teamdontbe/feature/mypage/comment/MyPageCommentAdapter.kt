@@ -23,7 +23,13 @@ class MyPageCommentAdapter(
         viewType: Int,
     ): MyPageCommentViewHolder {
         val binding = ItemMyPageCommentBinding.inflate(inflater, parent, false)
-        return MyPageCommentViewHolder(binding, onClickKebabBtn, onItemClicked, onClickLikedBtn,idFlag)
+        return MyPageCommentViewHolder(
+            binding,
+            onClickKebabBtn,
+            onItemClicked,
+            onClickLikedBtn,
+            idFlag,
+        )
     }
 
     override fun onBindViewHolder(
