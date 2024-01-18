@@ -12,6 +12,7 @@ class HomeBottomSheet(
     private val isMember: Boolean,
     private val contentId: Int,
     private val isComment: Boolean,
+    private val commentId: Int,
 ) :
     BindingBottomSheetFragment<BottomsheetComplaintDeleteBinding>(R.layout.bottomsheet_complaint_delete) {
     private val homeViewModel by activityViewModels<HomeViewModel>()
@@ -43,7 +44,7 @@ class HomeBottomSheet(
     private fun initBottomSheetDeleteClickListener() {
         binding.tvDeleteTitle.setOnClickListener {
             if (isComment) {
-                //  homeViewModel.openCommentDeleteDialog(contentId)
+                homeViewModel.openCommentDeleteDialog(commentId)
             } else {
                 homeViewModel.openDeleteDialog(
                     contentId,

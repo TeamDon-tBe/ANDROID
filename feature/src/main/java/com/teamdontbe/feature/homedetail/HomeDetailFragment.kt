@@ -74,7 +74,7 @@ class HomeDetailFragment :
                 feedData.contentId?.let {
                     initBottomSheet(
                         feedData.memberId == homeViewModel.getMemberId(),
-                        it, false,
+                        it, false, -1,
                     )
                 }
             }).apply {
@@ -96,7 +96,7 @@ class HomeDetailFragment :
                             feedData.contentId?.let {
                                 initBottomSheet(
                                     feedData.memberId == homeViewModel.getMemberId(),
-                                    it, false,
+                                    it, false, -1,
                                 )
                             }
                         }).apply {
@@ -128,10 +128,10 @@ class HomeDetailFragment :
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
                     homeDetailFeedCommentAdapter =
-                        HomeDetailCommentAdapter(onClickKebabBtn = { feedData, position ->
+                        HomeDetailCommentAdapter(onClickKebabBtn = { commentData, position ->
                             initBottomSheet(
-                                feedData.memberId == homeViewModel.getMemberId(),
-                                contentId, true,
+                                commentData.memberId == homeViewModel.getMemberId(),
+                                contentId, true, commentData.commentId,
                             )
                             deleteCommentPosition = position
                         }, onClickLikedBtn = { contentId, status ->
@@ -207,9 +207,10 @@ class HomeDetailFragment :
         isMember: Boolean,
         contentId: Int,
         isComment: Boolean,
+        commentId: Int,
     ) {
-        HomeBottomSheet(isMember, contentId, isComment).show(
-            parentFragmentManager,
+        HomeBottomSheet(isMember, contentId, isComment, commentId).show(
+            childFragmentManager,
             HOME_DETAIL_BOTTOM_SHEET,
         )
     }
@@ -356,7 +357,7 @@ class HomeDetailFragment :
                 contentId,
                 true,
             )
-        dialog.show(parentFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
+        dialog.show(childFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
     }
 
     private fun initDeleteCommentDialog(contentId: Int) {
@@ -368,7 +369,7 @@ class HomeDetailFragment :
                 contentId,
                 true,
             )
-        dialog.show(parentFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
+        dialog.show(childFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
     }
 
     companion object {

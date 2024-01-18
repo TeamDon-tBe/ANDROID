@@ -92,7 +92,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 feedData.contentId?.let {
                     initBottomSheet(
                         feedData.memberId == homeViewModel.getMemberId(),
-                        it, false,
+                        it, false, -1,
                     )
                     deleteFeedPosition = positoin
                 }
@@ -135,8 +135,9 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         isMember: Boolean,
         contentId: Int,
         isComment: Boolean,
+        commentId: Int,
     ) {
-        HomeBottomSheet(isMember, contentId, isComment).show(
+        HomeBottomSheet(isMember, contentId, isComment, commentId).show(
             parentFragmentManager,
             HOME_BOTTOM_SHEET,
         )
