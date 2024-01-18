@@ -49,7 +49,11 @@ class OnboardingFragment :
         postingViewModel.postPosting.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> navigateToHomeFragment()
+                is UiState.Success -> {
+                    navigateToHomeFragment()
+                    onboardingViewModel.saveCheckLogin(true)
+                }
+
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }

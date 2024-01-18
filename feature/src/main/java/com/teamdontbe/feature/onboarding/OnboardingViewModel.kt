@@ -12,4 +12,6 @@ class OnboardingViewModel
         private val userInfoRepository: UserInfoRepository,
     ) : ViewModel() {
         fun getIsNewUser() = userInfoRepository.getIsNewUser()
+
+        fun saveCheckLogin(checkLogin: Boolean) = userInfoRepository.saveCheckLogin(checkLogin)
     }

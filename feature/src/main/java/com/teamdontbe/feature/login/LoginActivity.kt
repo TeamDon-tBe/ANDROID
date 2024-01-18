@@ -95,7 +95,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                         it.data.refreshToken,
                         it.data.memberId,
                         it.data.nickname,
-                        true,
                         it.data.memberProfileUrl,
                         it.data.isNewUser,
                     )
@@ -113,7 +112,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         refreshToken: String,
         memberId: Int,
         nickName: String,
-        checkLogin: Boolean,
         memberProfileUrl: String,
         isNewUser: Boolean,
     ) {
@@ -121,7 +119,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         loginViewModel.saveRefreshToken(refreshToken)
         loginViewModel.saveMemberId(memberId)
         loginViewModel.saveNickName(nickName)
-        loginViewModel.saveCheckLogin(checkLogin)
         loginViewModel.saveMemberProfileUrl(memberProfileUrl)
         loginViewModel.saveIsNewUser(isNewUser)
     }
