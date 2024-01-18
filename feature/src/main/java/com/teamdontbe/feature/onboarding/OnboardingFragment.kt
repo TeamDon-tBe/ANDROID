@@ -3,7 +3,6 @@ package com.teamdontbe.feature.onboarding
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,17 +12,20 @@ import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentOnboardingBinding
-import com.teamdontbe.feature.posting.PostingViewModel
-import com.teamdontbe.feature.signup.SignUpAgreeActivity.Companion.SIGN_UP_AGREE
-import com.teamdontbe.feature.signup.SignUpProfileViewModel
+import com.teamdontbe.feature.signup.SignUpAgreeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class OnboardingFragment :
     BindingFragment<FragmentOnboardingBinding>(R.layout.fragment_onboarding) {
     private val onboardingViewModel by activityViewModels<OnboardingViewModel>()
+
+    private val signUpAgree: Boolean by lazy {
+        arguments?.getBoolean(SignUpAgreeActivity.SIGN_UP_AGREE, false) ?: false
+    }
     private var _onboardingAdapter: OnboardingAdapter? = null
     private val onboardingAdapter
         get() = requireNotNull(_onboardingAdapter) { "adapter 초기화 안됨" }
@@ -35,6 +37,7 @@ class OnboardingFragment :
         initIvOnboardingBackClickListener()
         initObserve()
         initSkipTextClickListener()
+        Timber.d("here!!!!!!!!!!!!!!!!!!!!!! : $signUpAgree")
     }
 
     private fun initObserve() {
@@ -102,7 +105,15 @@ class OnboardingFragment :
 
     private fun initBtnOnboardingStartClickListener(introduction: String) {
         binding.btnOnboardingStart.setOnClickListener {
+            val inputNickName = onboardingViewModel.getNickName()
+
             onboardingViewModel.posting(introduction)
+            onboardingViewModel.patchUserProfileEdit(
+                inputNickName,
+                signUpAgree,
+                introduction,
+                "",
+            )
         }
     }
 
