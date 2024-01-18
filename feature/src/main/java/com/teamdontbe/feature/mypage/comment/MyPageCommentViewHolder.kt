@@ -14,7 +14,6 @@ class MyPageCommentViewHolder(
     private val idFlag: Boolean,
 ) :
     RecyclerView.ViewHolder(binding.root) {
-
     private var item: MyPageCommentEntity? = null
 
     init {
@@ -26,28 +25,34 @@ class MyPageCommentViewHolder(
         }
     }
 
-    fun onBind(data: MyPageCommentEntity) = with(binding) {
-        if (!idFlag) {
-            setVisibility()
-        }
-
-        tvCommentTransparency.text = "투명도 ${data.memberGhost}% · ${
-            CalculateTime(root.context).getCalculateTime(data.time)
-        }"
-        feed = data
-        item = data
-        executePendingBindings()
-
+    fun onBind(data: MyPageCommentEntity) =
         with(binding) {
-            btnCommentHeart.isSelected = data.isLiked
+            if (!idFlag) {
+                setVisibility()
+            }
 
-            binding.btnCommentHeart.setOnClickListener {
-                onClickLikedBtn(data.commentId, btnCommentHeart.isSelected)
-                val likeNumber = tvCommentLikeNum.text.toString()
-                tvCommentLikeNum.text =
-                    if (btnCommentHeart.isSelected) (likeNumber.toInt() - 1).toString() else (likeNumber.toInt() + 1).toString()
-                btnCommentHeart.isSelected = !btnCommentHeart.isSelected
+            tvCommentTransparency.text = "투명도 ${data.memberGhost}% · ${
+                CalculateTime(root.context).getCalculateTime(data.time)
+            }"
+            feed = data
+            item = data
+            executePendingBindings()
+
+            with(binding) {
+                btnCommentHeart.isSelected = data.isLiked
+
+                binding.btnCommentHeart.setOnClickListener {
+                    onClickLikedBtn(data.commentId, btnCommentHeart.isSelected)
+                    val likeNumber = tvCommentLikeNum.text.toString()
+                    tvCommentLikeNum.text =
+                        if (btnCommentHeart.isSelected) (likeNumber.toInt() - 1).toString() else (likeNumber.toInt() + 1).toString()
+                    btnCommentHeart.isSelected = !btnCommentHeart.isSelected
+                }
             }
         }
+
+    private fun ItemMyPageCommentBinding.setVisibility() {
+        ivCommentGhostFillGreen.visibility = View.VISIBLE
+        dividerComment.visibility = View.VISIBLE
     }
 }

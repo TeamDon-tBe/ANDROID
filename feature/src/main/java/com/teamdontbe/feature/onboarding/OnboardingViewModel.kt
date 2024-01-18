@@ -13,9 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import androidx.lifecycle.ViewModel
-import com.teamdontbe.domain.repository.UserInfoRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -67,7 +64,7 @@ class OnboardingViewModel
 
         fun getNickName() = userInfoRepository.getNickName()
 
-    fun getIsNewUser() = userInfoRepository.getIsNewUser()
+        fun getIsNewUser() = userInfoRepository.getIsNewUser()
 
-    fun saveCheckLogin(checkLogin: Boolean) = userInfoRepository.saveCheckLogin(checkLogin)
+        fun saveCheckLogin(checkLogin: Boolean) = userInfoRepository.saveCheckLogin(checkLogin)
     }

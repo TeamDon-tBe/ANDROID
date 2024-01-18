@@ -65,8 +65,6 @@ class MyPageCommentFragment(private val memberId: MyPageModel) :
                         commentData.contentId,
                     )
                 },
-                context = requireContext(),
-                memberId.idFlag,
                 onClickLikedBtn = { commentId, status ->
                     if (status) {
                         mockDataViewModel.deleteCommentLiked(commentId)
@@ -76,6 +74,8 @@ class MyPageCommentFragment(private val memberId: MyPageModel) :
                         )
                     }
                 },
+                context = requireContext(),
+                memberId.idFlag,
             ).apply {
                 submitList(commentData)
             }
