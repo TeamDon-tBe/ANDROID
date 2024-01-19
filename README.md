@@ -36,7 +36,7 @@
 |--------|--------|--------|--------| 
 
 ### [𝙑𝙞𝙙𝙚𝙤]
-#### Onboarding
+#### *Onboarding*
 https://github.com/TeamDon-tBe/ANDROID/assets/85453429/36fe2149-6615-433e-85fd-e3116cd4eab6
 
 #### 𝙃𝙤𝙢𝙚
