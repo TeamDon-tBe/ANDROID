@@ -2,7 +2,7 @@ package com.teamdontbe.feature.mypage.comment
 
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -15,6 +15,7 @@ import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.mypage.MyPageModel
+import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
@@ -28,7 +29,7 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class MyPageCommentFragment :
     BindingFragment<FragmentMyPageCommentBinding>(R.layout.fragment_my_page_comment) {
-    private val myPageCommentViewModel by viewModels<MyPageCommentViewModel>()
+    private val myPageCommentViewModel by activityViewModels<MyPageViewModel>()
 
     private lateinit var memberId: MyPageModel
     private lateinit var myPageCommentAdapter: MyPageCommentAdapter
@@ -38,6 +39,7 @@ class MyPageCommentFragment :
         initMemberProfile()
         initFeedObserve(memberId.id)
         initTransparentObserve(memberId.id)
+        initDeleteObserve()
     }
 
     private fun initMemberProfile() {
@@ -112,12 +114,12 @@ class MyPageCommentFragment :
             MyPageCommentAdapter(
                 onClickKebabBtn = { commentData, position ->
                     // Kebab 버튼 클릭 이벤트 처리
-                    commentData.contentId.let {
+                    commentData.let {
                         initBottomSheet(
                             commentData.memberId == myPageCommentViewModel.getMemberId(),
-                            it,
-                            false,
-                            -1,
+                            contentId = it.contentId,
+                            commentId = it.commentId,
+                            whereFrom = FROM_COMMENT,
                         )
                         deleteCommentPosition = position
                     }
@@ -150,19 +152,21 @@ class MyPageCommentFragment :
                 submitList(commentData)
             }
 
-        binding.rvMyPageComment.apply {
-            adapter = myPageCommentAdapter
-            addItemDecoration(FeedItemDecorator(requireContext()))
+        binding.rvMyPageComment.adapter = myPageCommentAdapter
+        if (binding.rvMyPageComment.itemDecorationCount == 0) {
+            binding.rvMyPageComment.addItemDecoration(
+                FeedItemDecorator(requireContext()),
+            )
         }
     }
 
     private fun initBottomSheet(
         isMember: Boolean,
         contentId: Int,
-        isComment: Boolean,
         commentId: Int,
+        whereFrom: String,
     ) {
-        MyPageAnotherUserBottomSheet(isMember, contentId, isComment, commentId).show(
+        MyPageAnotherUserBottomSheet(isMember, contentId, commentId, whereFrom).show(
             childFragmentManager,
             "myPageBottomSheet",
         )
@@ -184,6 +188,7 @@ class MyPageCommentFragment :
     }
 
     companion object {
+        const val FROM_COMMENT = "comment"
         fun newInstance(memberProfile: MyPageModel?): MyPageCommentFragment {
             return MyPageCommentFragment().apply {
                 arguments =

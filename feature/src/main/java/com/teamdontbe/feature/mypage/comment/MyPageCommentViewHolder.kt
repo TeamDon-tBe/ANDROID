@@ -23,7 +23,7 @@ class MyPageCommentViewHolder(
             item?.let { onItemClicked(it) }
         }
         binding.btnCommentKebab.setOnClickListener {
-            item?.let { onClickKebabBtn(it, position) }
+            item?.let { onClickKebabBtn(it, bindingAdapterPosition) }
         }
     }
 

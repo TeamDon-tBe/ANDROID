@@ -63,18 +63,18 @@ interface HomeApiService {
         @Body request: RequestCommentPostingDto,
     ): BaseResponse<Unit>
 
-    @DELETE("/$API/$V1/$CONTENT/{$COMMENT_ID}")
+    @DELETE("/$API/$V1/$COMMENT/{$COMMENT_ID}")
     suspend fun deleteComment(
         @Path(value = COMMENT_ID) commentId: Int,
     ): BaseResponse<Unit>
 
-    @POST("/$API/$V1/$CONTENT/{$COMMENT_ID}/$COMMENT")
+    @POST("/$API/$V1/$COMMENT/{$COMMENT_ID}/$LIKED")
     suspend fun postCommentLiked(
         @Path(value = COMMENT_ID) commentId: Int,
         @Body request: RequestCommentLikedDto,
     ): BaseResponse<Unit>
 
-    @DELETE("/$API/$V1/$CONTENT/{$COMMENT_ID}/$UNLIKED")
+    @DELETE("/$API/$V1/$COMMENT/{$COMMENT_ID}/$UNLIKED")
     suspend fun deleteCommentLiked(
         @Path(value = COMMENT_ID) commentId: Int,
     ): BaseResponse<Unit>

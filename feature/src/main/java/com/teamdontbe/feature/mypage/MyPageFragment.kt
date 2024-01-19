@@ -20,6 +20,7 @@ import com.teamdontbe.feature.databinding.FragmentMyPageBinding
 import com.teamdontbe.feature.home.HomeFragment.Companion.KEY_FEED_DATA
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet
+import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment.Companion.FROM_FEED
 import com.teamdontbe.feature.mypage.transperencyinfo.TransparencyInfoParentFragment
 import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -165,20 +166,22 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 MyPageAnotherUserBottomSheet(
                     isMember = memberProfile.idFlag,
                     contentId = memberProfile.id,
-                    isComment = false,
                     commentId = -1,
-                ).show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
+                    whereFrom = FROM_FEED,
+                ).show(childFragmentManager, MY_PAGE_ANOTHER_BOTTOM_SHEET)
             }
         }
     }
 
     private fun scrollRecyclerViewToTop() {
-        (requireActivity() as MainActivity).findViewById<BottomNavigationView>(R.id.bnv_main)
-            .setOnItemReselectedListener { item ->
-                if (item.itemId == R.id.fragment_my_page) {
-                    val nestedScroll = binding.nestedScrollMyPage
-                    binding.nestedScrollMyPage.post {
-                        nestedScroll.smoothScrollTo(0, 0)
+        val mainActivity = requireActivity() as? MainActivity
+        val nestedScrollMyPage = binding?.nestedScrollMyPage
+
+        mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)
+            ?.setOnItemReselectedListener { item ->
+                if (item.itemId == R.id.fragment_my_page && nestedScrollMyPage != null) {
+                    nestedScrollMyPage.post {
+                        nestedScrollMyPage.smoothScrollTo(0, 0)
                     }
                 }
             }
@@ -189,6 +192,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         const val COMMENT = "답글"
         const val TRANSPARENCY_INFO = "TransparencyInfo"
         const val MY_PAGE_BOTTOM_SHEET = "MyPageBottomSheet"
+        const val MY_PAGE_ANOTHER_BOTTOM_SHEET = "MyPageAnotherBottomSheet"
     }
 
     override fun onResume() {

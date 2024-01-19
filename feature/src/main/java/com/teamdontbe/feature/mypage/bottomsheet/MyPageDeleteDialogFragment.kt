@@ -5,18 +5,24 @@ import com.teamdontbe.core_ui.base.BindingDialogFragment
 import com.teamdontbe.core_ui.util.context.dialogFragmentResize
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentDeleteWithTitleDialogBinding
-import com.teamdontbe.feature.mypage.feed.MyPageFeedViewModel
+import com.teamdontbe.feature.mypage.MyPageViewModel
+import com.teamdontbe.feature.mypage.comment.MyPageCommentFragment.Companion.FROM_COMMENT
+import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment.Companion.FROM_FEED
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MyPageDeleteDialogFragment(
     isMember: Boolean,
     contentId: Int,
-    isComment: Boolean,
-    commentId: Any?,
+    commentId: Int,
+    whereFrom: String,
 ) : BindingDialogFragment<FragmentDeleteWithTitleDialogBinding>(R.layout.fragment_delete_with_title_dialog) {
-    private val myPageFeedViewModel by activityViewModels<MyPageFeedViewModel>()
+    private val myPageViewModel by activityViewModels<MyPageViewModel>()
+
     val contentId = contentId ?: -1
+    val isMember = isMember ?: false
+    val commentId = commentId ?: -1
+    val whereFrom = whereFrom ?: "feed"
 
     override fun initView() {
         initText()
@@ -43,8 +49,13 @@ class MyPageDeleteDialogFragment(
 
     private fun initDeclareBtnClickListener() {
         binding.btnDeleteWithTitleDialogDelete.setOnClickListener {
-            myPageFeedViewModel.deleteFeed(contentId)
-            dismiss()
+            if (isMember) {
+                when (whereFrom) {
+                    FROM_FEED -> myPageViewModel.deleteFeed(contentId)
+                    FROM_COMMENT -> myPageViewModel.deleteComment(commentId)
+                }
+                dismiss()
+            }
         }
     }
 }

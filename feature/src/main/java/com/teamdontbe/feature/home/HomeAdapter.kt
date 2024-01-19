@@ -14,6 +14,7 @@ class HomeAdapter(
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     private val onClickUserProfileBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
     private val onClickTransparentBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
+    private val userId: Int,
 ) :
     ListAdapter<FeedEntity, HomeViewHolder>(
             HomeAdapterDiffCallback,
@@ -31,6 +32,7 @@ class HomeAdapter(
             onClickLikedBtn,
             onClickUserProfileBtn,
             onClickTransparentBtn,
+            userId,
         )
     }
 

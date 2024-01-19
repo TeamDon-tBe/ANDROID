@@ -1,8 +1,9 @@
 package com.teamdontbe.feature.mypage.feed
 
 import android.view.View
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -14,7 +15,9 @@ import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.home.HomeFragment
+import com.teamdontbe.feature.mypage.MyPageFragment.Companion.MY_PAGE_ANOTHER_BOTTOM_SHEET
 import com.teamdontbe.feature.mypage.MyPageModel
+import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
@@ -27,7 +30,7 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class MyPageFeedFragment :
     BindingFragment<FragmentMyPageFeedBinding>(R.layout.fragment_my_page_feed) {
-    private val myPageFeedViewModel by viewModels<MyPageFeedViewModel>()
+    private val myPageFeedViewModel by activityViewModels<MyPageViewModel>()
 
     private lateinit var memberProfile: MyPageModel
     private lateinit var myPageFeedAdapter: MyPageFeedAdapter
@@ -125,9 +128,9 @@ class MyPageFeedFragment :
                     feedEntity.contentId?.let {
                         initBottomSheet(
                             feedEntity.memberId == myPageFeedViewModel.getMemberId(),
-                            it,
-                            false,
-                            -1,
+                            contentId = it,
+                            commentId = -1,
+                            whereFrom = FROM_FEED,
                         )
                         deleteFeedPosition = position
                     }
@@ -172,19 +175,21 @@ class MyPageFeedFragment :
     private fun initBottomSheet(
         isMember: Boolean,
         contentId: Int,
-        isComment: Boolean,
         commentId: Int,
+        whereFrom: String,
     ) {
-        MyPageAnotherUserBottomSheet(isMember, contentId, isComment, commentId).show(
-            childFragmentManager,
-            "myPageBottomSheet",
+        MyPageAnotherUserBottomSheet(isMember, contentId, commentId, whereFrom).show(
+            parentFragmentManager,
+            MY_PAGE_ANOTHER_BOTTOM_SHEET,
         )
     }
 
     private fun setUpFeedAdapter(myPageFeedAdapter: MyPageFeedAdapter) {
-        binding.rvMyPagePosting.apply {
-            adapter = myPageFeedAdapter
-            addItemDecoration(FeedItemDecorator(requireContext()))
+        binding.rvMyPagePosting.adapter = myPageFeedAdapter
+        if (binding.rvMyPagePosting.itemDecorationCount == 0) {
+            binding.rvMyPagePosting.addItemDecoration(
+                FeedItemDecorator(requireContext()),
+            )
         }
     }
 
@@ -204,6 +209,7 @@ class MyPageFeedFragment :
 
     companion object {
         const val ARG_MEMBER_PROFILE = "arg_member_profile"
+        const val FROM_FEED = "feed"
 
         fun newInstance(memberProfile: MyPageModel?): MyPageFeedFragment {
             return MyPageFeedFragment().apply {
@@ -216,7 +222,6 @@ class MyPageFeedFragment :
     }
 
     override fun onResume() {
-        initDeleteObserve()
         super.onResume()
         binding.root.requestLayout()
     }

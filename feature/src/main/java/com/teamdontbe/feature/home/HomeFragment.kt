@@ -28,7 +28,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private lateinit var homeAdapter: HomeAdapter
     private var deleteFeedPosition: Int = -1
-    private var updateFeedPosition: Int = -1
 
     override fun initView() {
         homeViewModel.getFeedList()
@@ -87,51 +86,58 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun initHomeAdapter(feedData: List<FeedEntity>) {
         homeAdapter =
-            HomeAdapter(onClickKebabBtn = { feedData, positoin ->
-                feedData.contentId?.let {
-                    initBottomSheet(
-                        feedData.memberId == homeViewModel.getMemberId(),
-                        it,
-                        false,
-                        -1,
+            HomeAdapter(
+                onClickKebabBtn = { feedData, positoin ->
+                    feedData.contentId?.let {
+                        initBottomSheet(
+                            feedData.memberId == homeViewModel.getMemberId(),
+                            it,
+                            false,
+                            -1,
+                        )
+                        deleteFeedPosition = positoin
+                    }
+                },
+                onClickToNavigateToHomeDetail = { feedData, position ->
+                    navigateToHomeDetailFragment(
+                        Feed(
+                            feedData.memberId,
+                            feedData.memberProfileUrl,
+                            feedData.memberNickname,
+                            feedData.isLiked,
+                            feedData.isGhost,
+                            feedData.memberGhost,
+                            feedData.contentLikedNumber,
+                            feedData.commentNumber,
+                            feedData.contentText,
+                            feedData.time,
+                            feedData.contentId,
+                        ),
                     )
-                    deleteFeedPosition = positoin
-                }
-            }, onClickToNavigateToHomeDetail = { feedData, position ->
-                navigateToHomeDetailFragment(
-                    Feed(
-                        feedData.memberId,
-                        feedData.memberNickname,
-                        feedData.memberNickname,
-                        feedData.isLiked,
-                        feedData.isGhost,
-                        feedData.memberGhost,
-                        feedData.contentLikedNumber,
-                        feedData.commentNumber,
-                        feedData.contentText,
-                        feedData.time,
-                        feedData.contentId,
-                    ),
-                )
-            }, onClickLikedBtn = { contentId, status ->
-                if (status) {
-                    homeViewModel.deleteFeedLiked(contentId)
-                } else {
-                    homeViewModel.postFeedLiked(
-                        contentId,
-                    )
-                }
-            }, onClickTransparentBtn = { data, position ->
-                if (position == -2) {
-                    TransparentIsGhostSnackBar.make(binding.root).show()
-                } else {
-                    initTransparentDialog(data.memberId, data.contentId ?: -1)
-                }
-            }, onClickUserProfileBtn = { feedData, positoin ->
-                feedData.contentId?.let {
-                    navigateToMyPageFragment(feedData.memberId)
-                }
-            }).apply {
+                },
+                onClickLikedBtn = { contentId, status ->
+                    if (status) {
+                        homeViewModel.deleteFeedLiked(contentId)
+                    } else {
+                        homeViewModel.postFeedLiked(
+                            contentId,
+                        )
+                    }
+                },
+                onClickTransparentBtn = { data, position ->
+                    if (position == -2) {
+                        TransparentIsGhostSnackBar.make(binding.root).show()
+                    } else {
+                        initTransparentDialog(data.memberId, data.contentId ?: -1)
+                    }
+                },
+                onClickUserProfileBtn = { feedData, positoin ->
+                    feedData.contentId?.let {
+                        navigateToMyPageFragment(feedData.memberId)
+                    }
+                },
+                userId = homeViewModel.getMemberId(),
+            ).apply {
                 submitList(feedData)
             }
         binding.rvHome.adapter = homeAdapter
@@ -178,12 +184,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun scrollRecyclerViewToTop() {
-        (requireActivity() as MainActivity).findViewById<BottomNavigationView>(R.id.bnv_main)
-            .setOnItemReselectedListener { item ->
-                if (item.itemId == R.id.fragment_home) {
-                    val nestedScroll = binding.nestedScrollHome
-                    nestedScroll.post {
-                        nestedScroll.smoothScrollTo(0, 0)
+        val mainActivity = requireActivity() as? MainActivity
+        val nestedScrollMyPage = binding?.nestedScrollHome
+
+        mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)
+            ?.setOnItemReselectedListener { item ->
+                if (item.itemId == R.id.fragment_home && nestedScrollMyPage != null) {
+                    nestedScrollMyPage.post {
+                        nestedScrollMyPage.smoothScrollTo(0, 0)
                     }
                 }
             }

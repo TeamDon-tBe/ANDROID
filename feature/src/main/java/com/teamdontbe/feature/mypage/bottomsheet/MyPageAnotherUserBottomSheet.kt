@@ -7,8 +7,8 @@ import com.teamdontbe.feature.databinding.BottomsheetComplaintDeleteBinding
 class MyPageAnotherUserBottomSheet(
     private val isMember: Boolean,
     private val contentId: Int,
-    private val isComment: Boolean,
     private val commentId: Int,
+    private val whereFrom: String,
 ) :
     BindingBottomSheetFragment<BottomsheetComplaintDeleteBinding>(R.layout.bottomsheet_complaint_delete) {
     override fun initView() {
@@ -34,12 +34,13 @@ class MyPageAnotherUserBottomSheet(
             MyPageDeleteDialogFragment(
                 isMember,
                 contentId,
-                isComment,
                 commentId,
+                whereFrom,
             ).show(
-                childFragmentManager,
+                parentFragmentManager,
                 DECLARE_DIALOG,
             )
+            dismiss()
         }
     }
 

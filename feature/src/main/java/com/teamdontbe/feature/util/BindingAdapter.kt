@@ -7,9 +7,16 @@ import coil.transform.RoundedCornersTransformation
 import com.teamdontbe.feature.R
 
 @BindingAdapter("imageUrl")
-fun loadImage(view: ImageView, url: String?) {
-    view.load(url) {
-        placeholder(R.drawable.ic_sign_up_profile_person) // 기본 이미지 설정
+fun loadImage(
+    view: ImageView,
+    url: String?,
+) {
+    if (url?.isBlank() == true) {
+        view.load(R.drawable.ic_sign_up_profile_person)
+    } else {
+        view.load(url) {
+            placeholder(R.drawable.ic_sign_up_profile_person) // 기본 이미지 설정
+        }
     }
 }
 

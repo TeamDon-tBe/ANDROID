@@ -77,7 +77,9 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         binding.tvPostingProfileNickname.text = postingViewModel.getNickName()
         Timber.tag("user")
             .d("shared preference에서 받아오는 사용자 profile img url : ${postingViewModel.getMemberProfileUrl()}")
-        binding.ivPostingProfileImg.load(postingViewModel.getMemberProfileUrl())
+        binding.ivPostingProfileImg.load(
+            """https:\\github.com\TeamDon-tBe\SERVER\assets\97835512\fb3ea04c-661e-4221-a837-854d66cdb77e""",
+        )
     }
 
     private fun initAnimation() {
