@@ -21,7 +21,7 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentPostingBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
-import com.teamdontbe.feature.dialog.HomePostingRestrictionDialogFragment
+import com.teamdontbe.feature.dialog.PostingRestrictionDialogFragment
 import com.teamdontbe.feature.snackbar.UploadingSnackBar
 import com.teamdontbe.feature.util.Debouncer
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,7 +55,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
                     if (it.data.memberGhost == -85) {
-                        val dialog = HomePostingRestrictionDialogFragment()
+                        val dialog = PostingRestrictionDialogFragment()
                         dialog.show(childFragmentManager, BAN_POSTING)
                     } else {
                         val inputMethodManager =
