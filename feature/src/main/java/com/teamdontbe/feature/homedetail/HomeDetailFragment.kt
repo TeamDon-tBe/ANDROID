@@ -2,6 +2,7 @@ package com.teamdontbe.feature.homedetail
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Build
 import android.view.View
@@ -20,6 +21,7 @@ import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
@@ -174,7 +176,15 @@ class HomeDetailFragment :
                 }
 
                 is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
+                is UiState.Failure -> {
+                    requireActivity().startActivity(
+                        Intent(
+                            requireActivity(),
+                            ErrorActivity::class.java,
+                        ),
+                    )
+                    requireActivity().finish()
+                }
             }
         }.launchIn(lifecycleScope)
 
@@ -225,7 +235,15 @@ class HomeDetailFragment :
                 }
 
                 is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
+                is UiState.Failure -> {
+                    requireActivity().startActivity(
+                        Intent(
+                            requireActivity(),
+                            ErrorActivity::class.java,
+                        ),
+                    )
+                    requireActivity().finish()
+                }
             }
         }.launchIn(lifecycleScope)
 
