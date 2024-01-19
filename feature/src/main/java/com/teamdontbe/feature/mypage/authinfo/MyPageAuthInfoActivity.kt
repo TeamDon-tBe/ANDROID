@@ -1,4 +1,4 @@
-package com.teamdontbe.feature.mypage
+package com.teamdontbe.feature.mypage.authinfo
 
 import android.graphics.Paint
 import androidx.activity.viewModels
@@ -29,6 +29,7 @@ class MyPageAuthInfoActivity :
 
         initConditionsBtnClickListener()
         initWithdrawBtnClickListener()
+        initBackBtnClickListenr()
     }
 
     private fun initObserve() {
@@ -63,6 +64,14 @@ class MyPageAuthInfoActivity :
         binding.tvMyPageAuthInfoConditionsContent.setOnClickListener {
             // 테스트용 코드
             toast("자세히보기 클릭됨")
+        }
+    }
+
+    private fun initBackBtnClickListenr() {
+        binding.ivMyPageAuthInfoBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+            // 예시: 이전 프레그먼트로 돌아가는 코드
+            supportFragmentManager.popBackStack()
         }
     }
 }

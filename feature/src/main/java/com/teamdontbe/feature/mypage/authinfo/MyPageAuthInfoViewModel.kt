@@ -1,4 +1,4 @@
-package com.teamdontbe.feature.mypage
+package com.teamdontbe.feature.mypage.authinfo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
