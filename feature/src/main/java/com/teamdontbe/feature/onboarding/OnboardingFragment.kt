@@ -57,8 +57,8 @@ class OnboardingFragment :
     }
 
     private fun checkIsNewUser() {
-        Timber.d(onboardingViewModel.getIsNewUser().toString())
-        binding.tvOnboardingSkip.isVisible = !onboardingViewModel.getIsNewUser()
+        Timber.tag("새로운 유저 유무").d(onboardingViewModel.getIsNewUser().toString())
+        binding.tvOnboardingSkip.isVisible = onboardingViewModel.getNickName().isNotBlank()
     }
 
     private fun initObserve() {
@@ -145,9 +145,9 @@ class OnboardingFragment :
                     introduction,
                     "",
                 )
-            }
-            else {
-                Timber.tag("my_page").d("my page에서 받아오는 sign up agree의 allowedCheck : $allowedCheckd")
+            } else {
+                Timber.tag("my_page")
+                    .d("my page에서 받아오는 sign up agree의 allowedCheck : $allowedCheckd")
 
                 onboardingViewModel.posting(introduction)
                 onboardingViewModel.patchUserProfileEdit(

@@ -28,7 +28,10 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
                         navigateTo<MainActivity>()
                     }
 
-                    loginViewModel.getNickName().isBlank() -> {
+                    loginViewModel.getNickName().isBlank() &&
+                        loginViewModel.getAccessToken()
+                            .isNotBlank()
+                    -> {
                         navigateTo<SignUpAgreeActivity>()
                     }
 

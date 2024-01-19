@@ -52,7 +52,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     initHomeAdapter(it.data)
                 }
 
-                is UiState.Empty -> Unit
+                is UiState.Empty -> {
+                    binding.progressbarHome.isVisible = false
+                }
+
                 is UiState.Failure -> Unit
             }
         }.launchIn(lifecycleScope)
