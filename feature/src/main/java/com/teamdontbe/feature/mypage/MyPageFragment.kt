@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teamdontbe.core_ui.base.BindingFragment
@@ -44,6 +45,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initMyPageHambergerClickListner(memberProfile)
         initTransparencyInfoDialogBtnClickListener()
         scrollRecyclerViewToTop()
+        initBackBtnClickListener()
     }
 
     private fun setUpMemberProfile(): MyPageModel {
@@ -185,6 +187,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     }
                 }
             }
+    }
+
+    private fun initBackBtnClickListener() {
+        binding.btnMyPageBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     companion object {
