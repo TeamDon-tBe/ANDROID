@@ -1,7 +1,6 @@
 package com.teamdontbe.feature.mypage.feed
 
 import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -13,12 +12,12 @@ import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
-import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.mypage.MyPageFragment.Companion.MY_PAGE_ANOTHER_BOTTOM_SHEET
 import com.teamdontbe.feature.mypage.MyPageModel
 import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
+import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
@@ -168,7 +167,7 @@ class MyPageFeedFragment :
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = TransparentDialogFragment(targetMemberId, alarmTriggerId)
+        val dialog = MyPageTransparentDialogFragment(targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 

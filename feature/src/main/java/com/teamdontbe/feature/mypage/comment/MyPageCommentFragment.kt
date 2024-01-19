@@ -12,11 +12,11 @@ import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageCommentBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
-import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.mypage.MyPageModel
 import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
+import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
 import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
@@ -176,7 +176,7 @@ class MyPageCommentFragment :
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = TransparentDialogFragment(targetMemberId, alarmTriggerId)
+        val dialog = MyPageTransparentDialogFragment(targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 
