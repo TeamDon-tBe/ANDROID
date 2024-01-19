@@ -75,6 +75,11 @@ class HomeDetailFragment :
             homeViewModel.getUserNickname()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getHomeDetail()
+    }
+
     private fun getHomeDetail() {
         if ((requireArguments().getInt(KEY_NOTI_DATA)) > 0) {
             homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
@@ -349,7 +354,7 @@ class HomeDetailFragment :
     ) {
         HomeBottomSheet(isMember, contentId, isComment, commentId).show(
             parentFragmentManager,
-            HOME_DETAIL_BOTTOM_SHEET,
+            HomeFragment.HOME_BOTTOM_SHEET,
         )
     }
 

@@ -106,19 +106,9 @@ class HomeViewModel
 
         fun deleteFeedLiked(contentId: Int) =
             viewModelScope.launch {
-                likeMutex.tryLock(1000)
-                try {
-                    if (likeMutex.isLocked) {
-                        _deleteFeedLiked.emit(UiState.Failure("막힘"))
-                    } else {
-                        homeRepository.deleteFeedLiked(contentId).collectLatest {
-                            _deleteFeedLiked.emit(UiState.Success(it))
-                        }
-                    }
-                } finally {
-                    likeMutex.unlock()
+                homeRepository.deleteFeedLiked(contentId).collectLatest {
+                    _deleteFeedLiked.emit(UiState.Success(it))
                 }
-                _deleteFeedLiked.emit(UiState.Loading)
             }
 
         fun postCommentPosting(
