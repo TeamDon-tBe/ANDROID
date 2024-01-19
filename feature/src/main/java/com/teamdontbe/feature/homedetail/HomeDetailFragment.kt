@@ -367,9 +367,6 @@ class HomeDetailFragment :
 
     private fun initInputEditTextClickListener() {
         binding.tvHomeDetailInput.setOnClickListener {
-            homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
-            homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
-
             binding.bottomsheetHomeDetail.etCommentContent.text.clear()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
