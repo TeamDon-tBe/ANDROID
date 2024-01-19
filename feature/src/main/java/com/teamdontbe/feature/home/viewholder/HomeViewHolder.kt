@@ -1,8 +1,11 @@
 package com.teamdontbe.feature.home.viewholder
 
 import android.graphics.Color
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 import com.teamdontbe.feature.util.CalculateTime
 import com.teamdontbe.feature.util.Transparent
@@ -15,9 +18,19 @@ class HomeViewHolder(
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     private val onClickUserProfileBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
     private val onClickTransparentBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
+    private val userId: Int,
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FeedEntity) {
         with(binding) {
+            ivHomeProfile.load(R.drawable.ic_sign_up_profile_person)
+            if (data.memberId == userId) {
+                ivHomeGhostFillGreen.visibility = View.INVISIBLE
+                ivHomeLinePale.visibility = View.INVISIBLE
+            } else {
+                ivHomeGhostFillGreen.visibility = View.VISIBLE
+                ivHomeLinePale.visibility = View.VISIBLE
+            }
+
             if (data.time.isNotEmpty()) {
                 tvHomeFeedTransparency.text = "투명도 ${data.memberGhost}% · ${
                     CalculateTime(binding.root.context).getCalculateTime(data.time)
@@ -49,7 +62,7 @@ class HomeViewHolder(
         }
     }
 
-    private fun setTransparent(data: FeedEntity)  {
+    private fun setTransparent(data: FeedEntity) {
         binding.ivHomeGhostFillGreen.setOnClickListener {
             if (!data.isGhost) {
                 onClickTransparentBtn(data, position)
