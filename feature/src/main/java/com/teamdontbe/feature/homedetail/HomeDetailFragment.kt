@@ -75,6 +75,11 @@ class HomeDetailFragment :
             homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
         } else {
             initHomeDetailFeedAdapter()
+            getHomeFeedDetailData()?.toFeedEntity()?.contentId?.let {
+                homeViewModel.getCommentList(
+                    it,
+                )
+            }
         }
     }
 
@@ -98,6 +103,15 @@ class HomeDetailFragment :
                     }
                 },
                 userId = homeViewModel.getMemberId(),
+                onClickLikedBtn = { contentId, status ->
+                    if (status) {
+                        homeViewModel.deleteFeedLiked(contentId)
+                    } else {
+                        homeViewModel.postFeedLiked(
+                            contentId,
+                        )
+                    }
+                },
             ).apply {
                 submitList(
                     listOf(getHomeFeedDetailData()?.toFeedEntity()),
@@ -131,6 +145,15 @@ class HomeDetailFragment :
                                 }
                             },
                             userId = homeViewModel.getMemberId(),
+                            onClickLikedBtn = { contentId, status ->
+                                if (status) {
+                                    homeViewModel.deleteFeedLiked(contentId)
+                                } else {
+                                    homeViewModel.postFeedLiked(
+                                        contentId,
+                                    )
+                                }
+                            },
                         ).apply {
                             submitList(
                                 listOf(result.data),
@@ -168,12 +191,12 @@ class HomeDetailFragment :
                                 )
                                 deleteCommentPosition = position
                             },
-                            onClickLikedBtn = { contentId, status ->
+                            onClickLikedBtn = { commentId, status ->
                                 if (status) {
-                                    homeViewModel.deleteCommentLiked(contentId)
+                                    homeViewModel.deleteCommentLiked(commentId)
                                 } else {
                                     homeViewModel.postCommentLiked(
-                                        contentId,
+                                        commentId,
                                     )
                                 }
                             },
@@ -262,8 +285,8 @@ class HomeDetailFragment :
         requireContext().hideKeyboard(binding.root)
         (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
             View.VISIBLE
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        homeViewModel.getCommentList(contentId)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        getHomeDetail()
         UploadingSnackBar.make(binding.root).show()
     }
 
