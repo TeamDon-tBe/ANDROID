@@ -1,5 +1,6 @@
 package com.teamdontbe.feature.mypage.comment
 
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -38,6 +39,7 @@ class MyPageCommentFragment :
         initMemberProfile()
         initFeedObserve(memberId.id)
         initTransparentObserve(memberId.id)
+        initDeleteObserve()
     }
 
     private fun initMemberProfile() {
@@ -112,13 +114,14 @@ class MyPageCommentFragment :
             MyPageCommentAdapter(
                 onClickKebabBtn = { commentData, position ->
                     // Kebab 버튼 클릭 이벤트 처리
-                    commentData.contentId.let {
+                    commentData.let {
                         initBottomSheet(
                             commentData.memberId == myPageCommentViewModel.getMemberId(),
-                            it,
-                            false,
-                            -1,
+                            contentId = it.contentId,
+                            commentId = it.commentId,
+                            whereFrom = FROM_COMMENT,
                         )
+                        Log.d("commentId", it.commentId.toString())
                         deleteCommentPosition = position
                     }
                 },
@@ -159,10 +162,10 @@ class MyPageCommentFragment :
     private fun initBottomSheet(
         isMember: Boolean,
         contentId: Int,
-        isComment: Boolean,
         commentId: Int,
+        whereFrom: String,
     ) {
-        MyPageAnotherUserBottomSheet(isMember, contentId, isComment, commentId).show(
+        MyPageAnotherUserBottomSheet(isMember, contentId, commentId, whereFrom).show(
             childFragmentManager,
             "myPageBottomSheet",
         )
@@ -184,6 +187,7 @@ class MyPageCommentFragment :
     }
 
     companion object {
+        const val FROM_COMMENT = "comment"
         fun newInstance(memberProfile: MyPageModel?): MyPageCommentFragment {
             return MyPageCommentFragment().apply {
                 arguments =
