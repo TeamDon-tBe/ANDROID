@@ -275,12 +275,7 @@ class HomeDetailFragment :
         homeViewModel.deleteFeed.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> {
-                    findNavController().navigateUp()
-                    val dialog = DeleteCompleteDialogFragment()
-                    dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
-                }
-
+                is UiState.Success -> findNavController().navigateUp()
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
@@ -426,7 +421,9 @@ class HomeDetailFragment :
                         )
                     }
                 }
-                bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.startAnimation(animateProgressBar)
+                bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.startAnimation(
+                    animateProgressBar,
+                )
                 commentDebouncer.setDelay(
                     bottomsheetHomeDetail.etCommentContent.text.toString(),
                     1000L,
