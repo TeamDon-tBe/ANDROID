@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.homedetail.viewholder
 
 import android.graphics.Color
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.CommentEntity
@@ -14,12 +15,20 @@ class HomeDetailCommentViewHolder(
     private val onClickKebabBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     private val onClickTransparentBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
+    private val userId: Int,
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(
         data: CommentEntity,
         lastPosition: Int,
     ) {
         with(binding) {
+            if (data.memberId == userId) {
+                ivCommentGhostFillGreen.visibility = View.INVISIBLE
+                dividerComment.visibility = View.INVISIBLE
+            } else {
+                ivCommentGhostFillGreen.visibility = View.VISIBLE
+                dividerComment.visibility = View.VISIBLE
+            }
             if (data.time.isNotEmpty()) {
                 tvCommentTransparency.text = "투명도 ${data.memberGhost}% · ${
                     CalculateTime(binding.root.context).getCalculateTime(data.time)
@@ -53,7 +62,6 @@ class HomeDetailCommentViewHolder(
                     data,
                     -2,
                 )
-                binding.tvCommentTransparency.text = (data.memberGhost - 1).toString()
             }
         }
 

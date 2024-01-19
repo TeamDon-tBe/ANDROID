@@ -12,6 +12,7 @@ class HomeDetailCommentAdapter(
     private val onClickKebabBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     private val onClickTransparentBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
+    private val userId: Int,
 ) :
     ListAdapter<CommentEntity, HomeDetailCommentViewHolder>(
             HomeAdapterDiffCallback,
@@ -22,7 +23,13 @@ class HomeDetailCommentAdapter(
     ): HomeDetailCommentViewHolder {
         val binding =
             ItemHomeCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return HomeDetailCommentViewHolder(binding, onClickKebabBtn, onClickLikedBtn)
+        return HomeDetailCommentViewHolder(
+            binding,
+            onClickKebabBtn,
+            onClickLikedBtn,
+            onClickTransparentBtn,
+            userId,
+        )
     }
 
     override fun onBindViewHolder(

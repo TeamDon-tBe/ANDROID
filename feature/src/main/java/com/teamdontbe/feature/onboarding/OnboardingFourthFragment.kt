@@ -18,7 +18,7 @@ class OnboardingFourthFragment() :
         binding.vm = onboardingViewModel
         Timber.d("온보딩 네번째")
         binding.tvOnboardingFourthNickname.text = "돈비 사랑해"
-        binding.ivOnboardingFourthProfile.setImageDrawable(drawableOf(R.drawable.img_posting_profile))
+        binding.ivOnboardingFourthProfile.setImageDrawable(drawableOf(R.drawable.ic_sign_up_profile_person))
         hideKeyboard()
     }
 
