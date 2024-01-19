@@ -134,7 +134,7 @@ class HomeDetailFragment :
                     }
                 },
                 onClickUserProfileBtn = { feedData, positoin ->
-                    feedData.contentId?.let {
+                    feedData.memberId?.let {
                         navigateToMyPageFragment(feedData.memberId)
                     }
                 },
@@ -194,6 +194,11 @@ class HomeDetailFragment :
                                     homeViewModel.postFeedLiked(
                                         contentId,
                                     )
+                                }
+                            },
+                            onClickUserProfileBtn = { feedData, positoin ->
+                                feedData.memberId?.let {
+                                    navigateToMyPageFragment(feedData.memberId)
                                 }
                             },
                         ).apply {
@@ -258,6 +263,11 @@ class HomeDetailFragment :
                                 } else {
                                     initCommentTransparentDialog(data.memberId, contentId)
                                     updateFeedPosition = position
+                                }
+                            },
+                            onClickUserProfileBtn = { feedData, positoin ->
+                                feedData.memberId?.let {
+                                    navigateToMyPageFragment(feedData.memberId)
                                 }
                             },
                             userId = homeViewModel.getMemberId(),
