@@ -7,7 +7,7 @@ import com.teamdontbe.core_ui.util.context.dialogFragmentResize
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentDeleteWithTitleDialogBinding
 
-class MyPageDeclarDialogFragment :
+class MyPageComplaintDialogFragment :
     BindingDialogFragment<FragmentDeleteWithTitleDialogBinding>(R.layout.fragment_delete_with_title_dialog) {
     override fun initView() {
         initText()
