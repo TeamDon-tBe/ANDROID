@@ -333,6 +333,7 @@ class HomeDetailFragment :
 
     private fun handleCommentPostingSuccess() {
         requireContext().hideKeyboard(binding.root)
+        getHomeDetail()
         (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
             View.VISIBLE
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -367,9 +368,6 @@ class HomeDetailFragment :
 
     private fun initInputEditTextClickListener() {
         binding.tvHomeDetailInput.setOnClickListener {
-            homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
-            homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
-
             binding.bottomsheetHomeDetail.etCommentContent.text.clear()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
