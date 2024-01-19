@@ -32,6 +32,9 @@ class MyPageViewModel
 
     fun getMemberId() = userInfoRepository.getMemberId()
 
+    private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
+    val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
+
     fun getMyPageUserProfileInfo(viewMemberId: Int) {
         viewModelScope.launch {
             myPageRepository.getMyPageUserProfile(viewMemberId).collectLatest {
@@ -86,9 +89,6 @@ class MyPageViewModel
     val getMyPageCommentListState: StateFlow<UiState<List<MyPageCommentEntity>>> =
         _getMyPageCommentListState
 
-    private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
-    val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
-
     private val _deleteComment = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
     val deleteComment: StateFlow<UiState<Boolean>> get() = _deleteComment
 
@@ -118,5 +118,15 @@ class MyPageViewModel
             _deleteComment.value = UiState.Success(it)
         }
         _deleteComment.value = UiState.Loading
+    }
+
+    fun postTransparent(
+        targetMemberId: Int,
+        alarmTriggerId: Int,
+    ) = viewModelScope.launch {
+        homeRepository.postTransparent(targetMemberId, alarmTriggerId).collectLatest {
+            _postTransparent.emit(UiState.Success(it))
+        }
+        _postTransparent.emit(UiState.Loading)
     }
 }
