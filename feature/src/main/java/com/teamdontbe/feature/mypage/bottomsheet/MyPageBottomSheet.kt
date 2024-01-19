@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.mypage.bottomsheet
 
 import android.content.Intent
+import android.net.Uri
 import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.BottomSheetMyPageHambergerBinding
@@ -13,6 +14,13 @@ class MyPageBottomSheet :
         initBottomSheetCloseClickListener()
         navigateToSignUpProfileActivity()
         navigateToMyPageAuthInfoFragment()
+        initCustomerCenterClickListener()
+    }
+
+    private fun initCustomerCenterClickListener() {
+        binding.tvMyPageBottomSheetCustomService.setOnClickListener {
+            navigateToComplaintWeb()
+        }
     }
 
     private fun initBottomSheetCloseClickListener() {
@@ -33,6 +41,15 @@ class MyPageBottomSheet :
         binding.tvMyPageBottomSheetAccountInfo.setOnClickListener {
             startActivity(Intent(requireContext(), MyPageAuthInfoActivity::class.java))
         }
+    }
+
+    private fun navigateToComplaintWeb() {
+        val urlIntentComplaint =
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://joyous-ghost-8c7.notion.site/Don-t-be-e949f7751de94ba682f4bd6792cbe36e"),
+            )
+        startActivity(urlIntentComplaint)
     }
 
     companion object {
