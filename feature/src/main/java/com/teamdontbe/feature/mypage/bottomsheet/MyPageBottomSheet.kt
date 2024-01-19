@@ -4,7 +4,7 @@ import android.content.Intent
 import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.BottomSheetMyPageHambergerBinding
-import com.teamdontbe.feature.mypage.MyPageAuthInfoActivity
+import com.teamdontbe.feature.mypage.authinfo.MyPageAuthInfoActivity
 import com.teamdontbe.feature.signup.SignUpProfileActivity
 
 class MyPageBottomSheet :

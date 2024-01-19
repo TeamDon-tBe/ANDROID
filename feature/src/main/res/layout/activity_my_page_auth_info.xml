@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.teamdontbe.feature.mypage.MyPageAuthInfoViewModel" />
+            type="com.teamdontbe.feature.mypage.authinfo.MyPageAuthInfoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
