@@ -71,7 +71,6 @@ class HomeViewHolder(
                     data,
                     -2,
                 )
-                binding.tvHomeFeedTransparency.text = (data.memberGhost - 1).toString()
             }
         }
 

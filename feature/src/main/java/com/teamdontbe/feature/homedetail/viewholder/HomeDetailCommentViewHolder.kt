@@ -62,7 +62,6 @@ class HomeDetailCommentViewHolder(
                     data,
                     -2,
                 )
-                binding.tvCommentTransparency.text = (data.memberGhost - 1).toString()
             }
         }
 

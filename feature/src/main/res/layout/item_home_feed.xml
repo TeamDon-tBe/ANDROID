@@ -159,7 +159,7 @@
             android:id="@+id/tv_home_heart_num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="3dp"
+            android:layout_marginEnd="6dp"
             android:text="@{Integer.toString(feed.contentLikedNumber)}"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"

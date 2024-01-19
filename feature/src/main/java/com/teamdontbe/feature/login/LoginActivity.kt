@@ -15,6 +15,7 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivityLoginBinding
+import com.teamdontbe.feature.signup.SignUpAgreeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -133,6 +134,10 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
     private fun navigateToMainActivity() {
         // 로그인 -> 성공 화면(원래는 온보딩 화면으로 넘어가야 함)
-        startActivity(Intent(this, MainActivity::class.java))
+        if (loginViewModel.getNickName().isEmpty()) {
+            startActivity(Intent(this, SignUpAgreeActivity::class.java))
+        } else {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
     }
 }

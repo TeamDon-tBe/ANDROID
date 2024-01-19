@@ -2,6 +2,7 @@ package com.teamdontbe.feature.homedetail
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Build
 import android.view.View
@@ -20,6 +21,7 @@ import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
@@ -75,6 +77,11 @@ class HomeDetailFragment :
             homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
         } else {
             initHomeDetailFeedAdapter()
+            getHomeFeedDetailData()?.toFeedEntity()?.contentId?.let {
+                homeViewModel.getCommentList(
+                    it,
+                )
+            }
         }
     }
 
@@ -98,6 +105,15 @@ class HomeDetailFragment :
                     }
                 },
                 userId = homeViewModel.getMemberId(),
+                onClickLikedBtn = { contentId, status ->
+                    if (status) {
+                        homeViewModel.deleteFeedLiked(contentId)
+                    } else {
+                        homeViewModel.postFeedLiked(
+                            contentId,
+                        )
+                    }
+                },
             ).apply {
                 submitList(
                     listOf(getHomeFeedDetailData()?.toFeedEntity()),
@@ -131,6 +147,15 @@ class HomeDetailFragment :
                                 }
                             },
                             userId = homeViewModel.getMemberId(),
+                            onClickLikedBtn = { contentId, status ->
+                                if (status) {
+                                    homeViewModel.deleteFeedLiked(contentId)
+                                } else {
+                                    homeViewModel.postFeedLiked(
+                                        contentId,
+                                    )
+                                }
+                            },
                         ).apply {
                             submitList(
                                 listOf(result.data),
@@ -151,7 +176,15 @@ class HomeDetailFragment :
                 }
 
                 is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
+                is UiState.Failure -> {
+                    requireActivity().startActivity(
+                        Intent(
+                            requireActivity(),
+                            ErrorActivity::class.java,
+                        ),
+                    )
+                    requireActivity().finish()
+                }
             }
         }.launchIn(lifecycleScope)
 
@@ -168,12 +201,12 @@ class HomeDetailFragment :
                                 )
                                 deleteCommentPosition = position
                             },
-                            onClickLikedBtn = { contentId, status ->
+                            onClickLikedBtn = { commentId, status ->
                                 if (status) {
-                                    homeViewModel.deleteCommentLiked(contentId)
+                                    homeViewModel.deleteCommentLiked(commentId)
                                 } else {
                                     homeViewModel.postCommentLiked(
-                                        contentId,
+                                        commentId,
                                     )
                                 }
                             },
@@ -202,7 +235,15 @@ class HomeDetailFragment :
                 }
 
                 is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
+                is UiState.Failure -> {
+                    requireActivity().startActivity(
+                        Intent(
+                            requireActivity(),
+                            ErrorActivity::class.java,
+                        ),
+                    )
+                    requireActivity().finish()
+                }
             }
         }.launchIn(lifecycleScope)
 
@@ -262,8 +303,8 @@ class HomeDetailFragment :
         requireContext().hideKeyboard(binding.root)
         (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
             View.VISIBLE
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        homeViewModel.getCommentList(contentId)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        getHomeDetail()
         UploadingSnackBar.make(binding.root).show()
     }
 
