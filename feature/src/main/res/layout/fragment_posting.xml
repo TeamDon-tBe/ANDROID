@@ -48,6 +48,7 @@
 
             <EditText
                 android:id="@+id/et_posting_content"
+                style="@style/EditTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="7dp"
@@ -59,7 +60,6 @@
                 android:hint="@string/posting_content_hint"
                 android:maxLength="500"
                 android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
-                android:textCursorDrawable="@color/primary"
                 app:layout_constraintBottom_toTopOf="@id/view_posting_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_posting_profile_img"

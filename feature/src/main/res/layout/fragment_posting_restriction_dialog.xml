@@ -8,7 +8,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_home_posting_restriction"
+        android:id="@+id/layout_posting_restriction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -16,52 +16,52 @@
         android:minHeight="358dp">
 
         <ImageView
-            android:id="@+id/iv_home_posting_restriction_dialog"
+            android:id="@+id/iv_posting_restriction_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="34dp"
-            android:src="@drawable/ic_home_posting_restriction"
+            android:src="@drawable/img_posting_restriction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_home_posting_restriction_dialog_title"
+            android:id="@+id/tv_posting_restriction_dialog_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/home_posting_restriction_dialog_title"
+            android:text="@string/posting_restriction_dialog_title"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_home_posting_restriction_dialog" />
+            app:layout_constraintTop_toBottomOf="@id/iv_posting_restriction_dialog" />
 
         <TextView
-            android:id="@+id/tv_home_posting_restriction_dialog_content"
+            android:id="@+id/tv_posting_restriction_dialog_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:gravity="center"
-            android:text="@string/home_posting_restriction_dialog_content"
+            android:text="@string/posting_restriction_dialog_content"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/gray_11"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_home_posting_restriction_dialog_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_posting_restriction_dialog_title" />
 
         <TextView
-            android:id="@+id/tv_home_posting_restriction_dialog_caption"
+            android:id="@+id/tv_posting_restriction_dialog_caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="@string/home_posting_restriction_dialog_caption"
+            android:text="@string/posting_restriction_dialog_caption"
             android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
             android:textColor="@color/gray_7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_home_posting_restriction_dialog_content" />
+            app:layout_constraintTop_toBottomOf="@id/tv_posting_restriction_dialog_content" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_home_posting_restriction_dialog_check"
+            android:id="@+id/btn_posting_restriction_dialog_check"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="18dp"
@@ -69,14 +69,14 @@
             android:layout_marginBottom="20dp"
             android:backgroundTint="@color/black"
             android:paddingVertical="14dp"
-            android:text="@string/home_posting_restriction_dialog_btn"
+            android:text="@string/posting_restriction_dialog_btn"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
             android:textColor="@color/white"
             app:cornerRadius="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_home_posting_restriction_dialog_caption" />
+            app:layout_constraintTop_toBottomOf="@id/tv_posting_restriction_dialog_caption" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

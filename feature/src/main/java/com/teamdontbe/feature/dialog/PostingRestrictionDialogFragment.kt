@@ -7,10 +7,10 @@ import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingDialogFragment
 import com.teamdontbe.core_ui.util.context.dialogFragmentResize
 import com.teamdontbe.feature.R
-import com.teamdontbe.feature.databinding.FragmentHomePostingRestrictionDialogBinding
+import com.teamdontbe.feature.databinding.FragmentPostingRestrictionDialogBinding
 
-class HomePostingRestrictionDialogFragment() :
-    BindingDialogFragment<FragmentHomePostingRestrictionDialogBinding>(R.layout.fragment_home_posting_restriction_dialog) {
+class PostingRestrictionDialogFragment() :
+    BindingDialogFragment<FragmentPostingRestrictionDialogBinding>(R.layout.fragment_posting_restriction_dialog) {
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
@@ -29,7 +29,7 @@ class HomePostingRestrictionDialogFragment() :
     }
 
     private fun initCheckButtonClick() {
-        binding.btnHomePostingRestrictionDialogCheck.setOnClickListener {
+        binding.btnPostingRestrictionDialogCheck.setOnClickListener {
             navigateToMainActivity()
             dismiss()
         }
