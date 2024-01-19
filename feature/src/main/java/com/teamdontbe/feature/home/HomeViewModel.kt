@@ -88,6 +88,8 @@ class HomeViewModel
 
         fun getMemberId() = userInfoRepository.getMemberId()
 
+        fun getUserNickname() = userInfoRepository.getNickName()
+
         private val likeMutex = Mutex()
 
         fun postFeedLiked(contentId: Int) =

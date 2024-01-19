@@ -28,6 +28,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private lateinit var homeAdapter: HomeAdapter
     private var deleteFeedPosition: Int = -1
+    private var contentLikedNumber: Int = -1
 
     override fun initView() {
         homeViewModel.getFeedList()
@@ -52,7 +53,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     initHomeAdapter(it.data)
                 }
 
-                is UiState.Empty -> Unit
+                is UiState.Empty -> {
+                    binding.progressbarHome.isVisible = false
+                }
+
                 is UiState.Failure -> Unit
             }
         }.launchIn(lifecycleScope)
@@ -99,6 +103,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     }
                 },
                 onClickToNavigateToHomeDetail = { feedData, position ->
+                    contentLikedNumber = feedData.contentLikedNumber
                     navigateToHomeDetailFragment(
                         Feed(
                             feedData.memberId,
@@ -107,7 +112,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                             feedData.isLiked,
                             feedData.isGhost,
                             feedData.memberGhost,
-                            feedData.contentLikedNumber,
+                            contentLikedNumber,
                             feedData.commentNumber,
                             feedData.contentText,
                             feedData.time,

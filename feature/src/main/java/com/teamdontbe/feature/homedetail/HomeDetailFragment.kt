@@ -76,12 +76,20 @@ class HomeDetailFragment :
         if ((requireArguments().getInt(KEY_NOTI_DATA)) > 0) {
             homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
             homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
+            binding.bottomsheetHomeDetail.tvCommentFeedUserName.text =
+                homeViewModel.getUserNickname()
         } else {
             initHomeDetailFeedAdapter()
             getHomeFeedDetailData()?.toFeedEntity()?.contentId?.let {
                 homeViewModel.getCommentList(
                     it,
                 )
+                binding.bottomsheetHomeDetail.etCommentContent.hint =
+                    getHomeFeedDetailData()?.toFeedEntity()?.memberNickname + "님에게 답글 남기기"
+                binding.bottomsheetHomeDetail.tvCommentFeedUserName.text =
+                    homeViewModel.getUserNickname()
+                binding.tvHomeDetailInput.text =
+                    getHomeFeedDetailData()?.toFeedEntity()?.memberNickname + "님에게 답글 남기기"
             }
         }
     }
@@ -162,6 +170,10 @@ class HomeDetailFragment :
                                 listOf(result.data),
                             )
                         }
+
+                    binding.bottomsheetHomeDetail.etCommentContent.hint =
+                        result.data.memberNickname + "님에게 답글 남기기"
+                    binding.tvHomeDetailInput.text = result.data.memberNickname + "님에게 답글 남기기"
 
                     contentId = result.data.contentId ?: -1
 
