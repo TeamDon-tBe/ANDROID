@@ -87,16 +87,16 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_comment_feed_user_profile"
+                    imageUrl="@{feed.memberProfileUrl}"
                     android:layout_width="44dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
-                    imageUrl="@{feed.memberProfileUrl}"
-                    tools:background="@color/gray_9"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/view_comment_feed_background"
-                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                    tools:background="@color/gray_9" />
 
                 <TextView
                     android:id="@+id/tv_comment_feed_user_name"
@@ -166,6 +166,7 @@
 
                 <EditText
                     android:id="@+id/et_comment_content"
+                    style="@style/EditTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="320dp"
                     android:layout_marginTop="2dp"
