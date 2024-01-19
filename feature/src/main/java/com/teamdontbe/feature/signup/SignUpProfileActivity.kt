@@ -63,42 +63,11 @@ class SignUpProfileActivity :
         }
     }
 
-    /* private fun initDoubleBtnClickListener(flag: Int) {
-         binding.btnSignUpProfileDoubleCheck.setOnClickListener {
-             val inputNickName = binding.etSignUpProfileNickname.text.toString()
-             viewModel.getNickNameDoubleCheck(inputNickName)
-             nextBtnObserve(inputNickName, flag)
-         }
-     }*/
-
     private fun initDoubleBtnClickListener(flag: Int) {
         binding.btnSignUpProfileDoubleCheck.setOnClickListener {
             val inputNickName = binding.etSignUpProfileNickname.text.toString()
-
-            // 중복 확인 요청
             viewModel.getNickNameDoubleCheck(inputNickName)
-
-            // 중복 확인 결과 처리
-            viewModel.nickNameDoubleState.flowWithLifecycle(lifecycle).onEach {
-                when (it) {
-                    is UiState.Loading -> Unit
-                    is UiState.Success -> {
-                        if (it.data.isEmpty()) {
-                            // 중복 확인이 성공하면 에러 메시지 업데이트
-                            updateErrorMessage(false)
-
-                            // 중복 확인이 성공하면 다음 단계로 진행하는 함수 호출
-                            nextBtnObserve(inputNickName, flag)
-                        } else {
-                            // 중복 확인이 실패하면 에러 메시지 업데이트
-                            updateErrorMessage(true)
-                        }
-                    }
-
-                    is UiState.Empty -> Unit
-                    is UiState.Failure -> Unit
-                }
-            }.launchIn(lifecycleScope)
+            nextBtnObserve(inputNickName, flag)
         }
     }
 
