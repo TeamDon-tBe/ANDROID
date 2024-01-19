@@ -113,7 +113,7 @@ class SignUpProfileActivity :
                         inputNickName,
                         allowedCheck,
                         binding.etSignUpAgreeIntroduce.text.toString(),
-                        "",
+                        null,
                     )
                     when (flag) {
                         0 -> {
