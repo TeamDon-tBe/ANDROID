@@ -419,6 +419,7 @@ class HomeDetailFragment :
                             ),
                         )
                         initUploadingBtnClickListener()
+                        commentDebouncer.setDelay(bottomsheetHomeDetail.etCommentContent.text.toString(), 1000L) {}
                     }
 
                     bottomsheetHomeDetail.etCommentContent.text.toString().length >= 500 -> {
