@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -175,12 +174,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun scrollRecyclerViewToTop() {
-        (requireActivity() as MainActivity).findViewById<BottomNavigationView>(R.id.bnv_main)
-            .setOnItemReselectedListener { item ->
-                if (item.itemId == R.id.fragment_my_page) {
-                    val nestedScroll: NestedScrollView = binding.nestedScrollMyPage
-                    binding.nestedScrollMyPage.post {
-                        nestedScroll.smoothScrollTo(0, 0)
+        val mainActivity = requireActivity() as? MainActivity
+        val nestedScrollMyPage = binding?.nestedScrollMyPage
+
+        mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)
+            ?.setOnItemReselectedListener { item ->
+                if (item.itemId == R.id.fragment_my_page && nestedScrollMyPage != null) {
+                    nestedScrollMyPage.post {
+                        nestedScrollMyPage.smoothScrollTo(0, 0)
                     }
                 }
             }
