@@ -76,6 +76,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             binding.etPostingContent,
             InputMethodManager.SHOW_IMPLICIT,
         )
+        binding.etPostingContent.requestFocus()
     }
 
     private fun initUser() {
