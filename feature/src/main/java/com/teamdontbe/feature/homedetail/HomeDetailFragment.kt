@@ -472,8 +472,5 @@ class HomeDetailFragment :
     companion object {
         const val HOME_DETAIL_BOTTOM_SHEET = "home_detail_bottom_sheet"
         const val KEY_FEED_DATA = "key_feed_data"
-        const val DELAY = 1000L
-        val POSSIBLE_LENGTH = 1..499
-        const val MAX_LENGTH = 500
     }
 }
