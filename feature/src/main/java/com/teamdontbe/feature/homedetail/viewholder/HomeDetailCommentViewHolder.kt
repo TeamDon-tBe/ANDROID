@@ -16,6 +16,7 @@ class HomeDetailCommentViewHolder(
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     private val onClickTransparentBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
     private val userId: Int,
+    private val onClickUserProfileBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(
         data: CommentEntity,
@@ -50,6 +51,9 @@ class HomeDetailCommentViewHolder(
             if (lastPosition == position) dividerCommentDivideBottom.isVisible = false
 
             setTransparent(data)
+            ivCommentProfile.setOnClickListener {
+                onClickUserProfileBtn(data, bindingAdapterPosition)
+            }
         }
     }
 

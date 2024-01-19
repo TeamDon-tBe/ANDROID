@@ -13,10 +13,11 @@ class HomeDetailCommentAdapter(
     private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
     private val onClickTransparentBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
     private val userId: Int,
+    private val onClickUserProfileBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
 ) :
     ListAdapter<CommentEntity, HomeDetailCommentViewHolder>(
-            HomeAdapterDiffCallback,
-        ) {
+        HomeAdapterDiffCallback,
+    ) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -29,6 +30,7 @@ class HomeDetailCommentAdapter(
             onClickLikedBtn,
             onClickTransparentBtn,
             userId,
+            onClickUserProfileBtn,
         )
     }
 
