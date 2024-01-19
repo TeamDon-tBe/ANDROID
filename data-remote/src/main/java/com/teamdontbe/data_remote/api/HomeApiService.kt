@@ -68,7 +68,7 @@ interface HomeApiService {
         @Path(value = COMMENT_ID) commentId: Int,
     ): BaseResponse<Unit>
 
-    @POST("/$API/$V1/$COMMENT/{$COMMENT_ID}/$COMMENT")
+    @POST("/$API/$V1/$COMMENT/{$COMMENT_ID}/$LIKED")
     suspend fun postCommentLiked(
         @Path(value = COMMENT_ID) commentId: Int,
         @Body request: RequestCommentLikedDto,
