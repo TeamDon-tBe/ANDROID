@@ -67,18 +67,18 @@ class HomeDetailFragment :
         statusBarColorOf(R.color.white)
         initBackBtnClickListener()
         initEditText()
-        (getHomeFeedDetailData())?.let { initInputEditTextClickListener() }
+        initInputEditTextClickListener()
         initAppbarCancelClickListener()
         initCommentBottomSheet()
         initObserve()
+        binding.bottomsheetHomeDetail.tvCommentProfileNickname.text =
+            homeViewModel.getUserNickname()
     }
 
     private fun getHomeDetail() {
         if ((requireArguments().getInt(KEY_NOTI_DATA)) > 0) {
             homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
             homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
-            binding.bottomsheetHomeDetail.tvCommentFeedUserName.text =
-                homeViewModel.getUserNickname()
         } else {
             initHomeDetailFeedAdapter()
             getHomeFeedDetailData()?.toFeedEntity()?.contentId?.let {
@@ -91,6 +91,8 @@ class HomeDetailFragment :
                     homeViewModel.getUserNickname()
                 binding.tvHomeDetailInput.text =
                     getHomeFeedDetailData()?.toFeedEntity()?.memberNickname + "님에게 답글 남기기"
+                binding.bottomsheetHomeDetail.tvCommentFeedUserName.text =
+                    getHomeFeedDetailData()?.toFeedEntity()?.memberNickname
             }
         }
     }
@@ -152,6 +154,13 @@ class HomeDetailFragment :
             when (result) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
+                    binding.bottomsheetHomeDetail.etCommentContent.hint =
+                        result.data.memberNickname + "님에게 답글 남기기"
+                    binding.bottomsheetHomeDetail.tvCommentFeedUserName.text =
+                        homeViewModel.getUserNickname()
+                    binding.tvHomeDetailInput.text = result.data.memberNickname + "님에게 답글 남기기"
+                    binding.bottomsheetHomeDetail.tvCommentFeedUserName.text =
+                        result.data.memberNickname
                     homeDetailFeedAdapter =
                         HomeAdapter(
                             onClickKebabBtn = { feedData, positoin ->
@@ -187,10 +196,6 @@ class HomeDetailFragment :
                                 listOf(result.data),
                             )
                         }
-
-                    binding.bottomsheetHomeDetail.etCommentContent.hint =
-                        result.data.memberNickname + "님에게 답글 남기기"
-                    binding.tvHomeDetailInput.text = result.data.memberNickname + "님에게 답글 남기기"
 
                     contentId = result.data.contentId ?: -1
 
@@ -362,6 +367,9 @@ class HomeDetailFragment :
 
     private fun initInputEditTextClickListener() {
         binding.tvHomeDetailInput.setOnClickListener {
+            homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
+            homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
+
             binding.bottomsheetHomeDetail.etCommentContent.text.clear()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
