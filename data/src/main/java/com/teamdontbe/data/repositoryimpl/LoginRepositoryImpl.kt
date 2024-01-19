@@ -41,7 +41,7 @@ class LoginRepositoryImpl
             nickName: String,
             allowed: Boolean,
             intro: String,
-            url: String,
+            url: String?,
         ): Flow<Boolean> {
             return flow {
                 val result =
