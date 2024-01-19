@@ -66,7 +66,7 @@ class HomeBottomSheet(
                     contentId,
                     true,
                     commentId,
-                ).show(childFragmentManager, HomeDetailFragment.HOME_DETAIL_BOTTOM_SHEET)
+                ).show(parentFragmentManager, HomeDetailFragment.HOME_DETAIL_BOTTOM_SHEET)
             } else {
                 DeleteWithTitleDialogFragment(
                     getString(R.string.tv_delete_with_title_delete_dialog),
@@ -75,8 +75,9 @@ class HomeBottomSheet(
                     contentId,
                     false,
                     commentId,
-                ).show(childFragmentManager, HomeDetailFragment.HOME_DETAIL_BOTTOM_SHEET)
+                ).show(parentFragmentManager, HomeDetailFragment.HOME_DETAIL_BOTTOM_SHEET)
             }
+            dismiss()
         }
     }
 }
