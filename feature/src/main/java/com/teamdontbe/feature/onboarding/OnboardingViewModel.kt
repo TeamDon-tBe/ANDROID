@@ -17,54 +17,54 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OnboardingViewModel
-    @Inject
-    constructor(
-        private val postingRepository: PostingRepository,
-        private val loginRepository: LoginRepository,
-        private val userInfoRepository: UserInfoRepository,
-    ) : ViewModel() {
-        private val _postPosting = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
-        val postPosting: StateFlow<UiState<Boolean>> = _postPosting
+@Inject
+constructor(
+    private val postingRepository: PostingRepository,
+    private val loginRepository: LoginRepository,
+    private val userInfoRepository: UserInfoRepository,
+) : ViewModel() {
+    private val _postPosting = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+    val postPosting: StateFlow<UiState<Boolean>> = _postPosting
 
-        private val _introduction = MutableLiveData("")
-        val introduction: LiveData<String> get() = _introduction
+    private val _introduction = MutableLiveData("")
+    val introduction: LiveData<String> get() = _introduction
 
-        private val _profileEditSuccess = MutableLiveData<Boolean>()
-        val profileEditSuccess: LiveData<Boolean> get() = _profileEditSuccess
+    private val _profileEditSuccess = MutableLiveData<Boolean>()
+    val profileEditSuccess: LiveData<Boolean> get() = _profileEditSuccess
 
-        fun posting(contentText: String) =
-            viewModelScope.launch {
-                postingRepository.posting(contentText).collectLatest {
-                    _postPosting.value = UiState.Success(it)
-                }
-                _postPosting.value = UiState.Loading
+    fun posting(contentText: String) =
+        viewModelScope.launch {
+            postingRepository.posting(contentText).collectLatest {
+                _postPosting.value = UiState.Success(it)
             }
-
-        fun setIntroduction(input: String) {
-            this._introduction.value = input
+            _postPosting.value = UiState.Loading
         }
 
-        fun patchUserProfileEdit(
-            nickName: String,
-            allowed: Boolean,
-            intro: String,
-            url: String,
-        ) {
-            viewModelScope.launch {
-                loginRepository.patchProfileEdit(
-                    nickName,
-                    allowed,
-                    intro,
-                    url,
-                ).collectLatest {
-                    _profileEditSuccess.value = it
-                }
-            }
-        }
-
-        fun getNickName() = userInfoRepository.getNickName()
-
-        fun getIsNewUser() = userInfoRepository.getIsNewUser()
-
-        fun saveCheckLogin(checkLogin: Boolean) = userInfoRepository.saveCheckLogin(checkLogin)
+    fun setIntroduction(input: String) {
+        this._introduction.value = input
     }
+
+    fun patchUserProfileEdit(
+        nickName: String,
+        allowed: Boolean,
+        intro: String,
+        url: String?,
+    ) {
+        viewModelScope.launch {
+            loginRepository.patchProfileEdit(
+                nickName,
+                allowed,
+                intro,
+                url,
+            ).collectLatest {
+                _profileEditSuccess.value = it
+            }
+        }
+    }
+
+    fun getNickName() = userInfoRepository.getNickName()
+
+    fun getIsNewUser() = userInfoRepository.getIsNewUser()
+
+    fun saveCheckLogin(checkLogin: Boolean) = userInfoRepository.saveCheckLogin(checkLogin)
+}
