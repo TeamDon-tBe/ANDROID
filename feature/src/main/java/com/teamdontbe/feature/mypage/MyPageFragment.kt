@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -169,18 +168,20 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     contentId = memberProfile.id,
                     commentId = -1,
                     whereFrom = FROM_FEED,
-                ).show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
+                ).show(childFragmentManager, MY_PAGE_ANOTHER_BOTTOM_SHEET)
             }
         }
     }
 
     private fun scrollRecyclerViewToTop() {
-        (requireActivity() as MainActivity).findViewById<BottomNavigationView>(R.id.bnv_main)
-            .setOnItemReselectedListener { item ->
-                if (item.itemId == R.id.fragment_my_page) {
-                    val nestedScroll: NestedScrollView = binding.nestedScrollMyPage
-                    binding.nestedScrollMyPage.post {
-                        nestedScroll.smoothScrollTo(0, 0)
+        val mainActivity = requireActivity() as? MainActivity
+        val nestedScrollMyPage = binding?.nestedScrollMyPage
+
+        mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)
+            ?.setOnItemReselectedListener { item ->
+                if (item.itemId == R.id.fragment_my_page && nestedScrollMyPage != null) {
+                    nestedScrollMyPage.post {
+                        nestedScrollMyPage.smoothScrollTo(0, 0)
                     }
                 }
             }
@@ -191,6 +192,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         const val COMMENT = "답글"
         const val TRANSPARENCY_INFO = "TransparencyInfo"
         const val MY_PAGE_BOTTOM_SHEET = "MyPageBottomSheet"
+        const val MY_PAGE_ANOTHER_BOTTOM_SHEET = "MyPageAnotherBottomSheet"
     }
 
     override fun onResume() {

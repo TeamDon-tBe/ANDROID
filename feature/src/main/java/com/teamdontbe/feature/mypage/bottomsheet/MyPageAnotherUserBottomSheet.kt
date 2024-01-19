@@ -37,9 +37,10 @@ class MyPageAnotherUserBottomSheet(
                 commentId,
                 whereFrom,
             ).show(
-                childFragmentManager,
+                parentFragmentManager,
                 DECLARE_DIALOG,
             )
+            dismiss()
         }
     }
 

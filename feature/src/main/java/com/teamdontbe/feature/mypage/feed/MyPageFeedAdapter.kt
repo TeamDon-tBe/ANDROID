@@ -48,7 +48,7 @@ class MyPageFeedAdapter(
     companion object {
         private val ExampleDiffCallback =
             ItemDiffCallback<FeedEntity>(
-                onItemsTheSame = { old, new -> old.memberId == new.memberId },
+                onItemsTheSame = { old, new -> old.contentId == new.contentId },
                 onContentsTheSame = { old, new -> old == new },
             )
     }

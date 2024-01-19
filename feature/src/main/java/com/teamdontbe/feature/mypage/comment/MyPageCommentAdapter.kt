@@ -48,7 +48,7 @@ class MyPageCommentAdapter(
     companion object {
         private val ExampleDiffCallback =
             ItemDiffCallback<MyPageCommentEntity>(
-                onItemsTheSame = { old, new -> old.memberId == new.memberId },
+                onItemsTheSame = { old, new -> old.commentId == new.commentId },
                 onContentsTheSame = { old, new -> old == new },
             )
     }

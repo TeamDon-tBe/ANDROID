@@ -6,6 +6,7 @@ import com.teamdontbe.core_ui.util.context.dialogFragmentResize
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentTransparentDialogBinding
 import com.teamdontbe.feature.home.HomeViewModel
+import com.teamdontbe.feature.mypage.MyPageViewModel
 
 class TransparentDialogFragment(
     private val targetMemberId: Int,
@@ -13,10 +14,12 @@ class TransparentDialogFragment(
 ) :
     BindingDialogFragment<FragmentTransparentDialogBinding>(R.layout.fragment_transparent_dialog) {
     private val homeViewModel by activityViewModels<HomeViewModel>()
+    private val myPageViewModel by activityViewModels<MyPageViewModel>()
 
     override fun initView() {
         initYesButtonClickListener()
         initCancelButtonClickListener()
+        initMyPageYesButtonClickListener()
     }
 
     override fun onResume() {
@@ -33,6 +36,13 @@ class TransparentDialogFragment(
     private fun initYesButtonClickListener() {
         binding.btnTransparentDialogYes.setOnClickListener {
             homeViewModel.postTransparent(targetMemberId, alarmTriggerId)
+            dismiss()
+        }
+    }
+
+    private fun initMyPageYesButtonClickListener() {
+        binding.btnTransparentDialogYes.setOnClickListener {
+            myPageViewModel.postTransparent(targetMemberId, alarmTriggerId)
             dismiss()
         }
     }

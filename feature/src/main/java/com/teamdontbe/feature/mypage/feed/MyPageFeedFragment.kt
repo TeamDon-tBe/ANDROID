@@ -1,8 +1,9 @@
 package com.teamdontbe.feature.mypage.feed
 
 import android.view.View
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -14,7 +15,9 @@ import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.home.HomeFragment
+import com.teamdontbe.feature.mypage.MyPageFragment.Companion.MY_PAGE_ANOTHER_BOTTOM_SHEET
 import com.teamdontbe.feature.mypage.MyPageModel
+import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
@@ -27,7 +30,7 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class MyPageFeedFragment :
     BindingFragment<FragmentMyPageFeedBinding>(R.layout.fragment_my_page_feed) {
-    private val myPageFeedViewModel by viewModels<MyPageFeedViewModel>()
+    private val myPageFeedViewModel by activityViewModels<MyPageViewModel>()
 
     private lateinit var memberProfile: MyPageModel
     private lateinit var myPageFeedAdapter: MyPageFeedAdapter
@@ -176,15 +179,17 @@ class MyPageFeedFragment :
         whereFrom: String,
     ) {
         MyPageAnotherUserBottomSheet(isMember, contentId, commentId, whereFrom).show(
-            childFragmentManager,
-            "myPageBottomSheet",
+            parentFragmentManager,
+            MY_PAGE_ANOTHER_BOTTOM_SHEET,
         )
     }
 
     private fun setUpFeedAdapter(myPageFeedAdapter: MyPageFeedAdapter) {
-        binding.rvMyPagePosting.apply {
-            adapter = myPageFeedAdapter
-            addItemDecoration(FeedItemDecorator(requireContext()))
+        binding.rvMyPagePosting.adapter = myPageFeedAdapter
+        if (binding.rvMyPagePosting.itemDecorationCount == 0) {
+            binding.rvMyPagePosting.addItemDecoration(
+                FeedItemDecorator(requireContext()),
+            )
         }
     }
 
@@ -217,7 +222,6 @@ class MyPageFeedFragment :
     }
 
     override fun onResume() {
-        initDeleteObserve()
         super.onResume()
         binding.root.requestLayout()
     }
