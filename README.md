@@ -33,18 +33,23 @@
 
 | 𝙃𝙤𝙢𝙚 | 𝙋𝙤𝙨𝙩𝙞𝙣𝙜 | 𝙉𝙤𝙩𝙞𝙛𝙞𝙘𝙖𝙩𝙤𝙞𝙣 |  𝙈𝙮 𝙋𝙖𝙜𝙚 |
 |--------|--------|--------|--------|
-|--------|--------|--------|--------| 
+|![KakaoTalk_Photo_2024-01-19-23-41-03 004](https://github.com/TeamDon-tBe/ANDROID/assets/85453429/40450a84-4a23-4b7a-bfaf-b9f12c434a71)|![KakaoTalk_Photo_2024-01-19-23-41-03 003](https://github.com/TeamDon-tBe/ANDROID/assets/85453429/1492a471-8dbe-45c8-9dd2-5918a7f9aadb)|![KakaoTalk_Photo_2024-01-19-23-41-03 002](https://github.com/TeamDon-tBe/ANDROID/assets/85453429/300835cf-a6dd-4d27-9cde-dc1e9bd694b5)|![KakaoTalk_Photo_2024-01-19-23-41-03 001](https://github.com/TeamDon-tBe/ANDROID/assets/85453429/efdff32d-3df5-4e54-965b-3af874681571)| 
 
 ### [𝙑𝙞𝙙𝙚𝙤]
+#### *Onboarding*
+https://github.com/TeamDon-tBe/ANDROID/assets/85453429/36fe2149-6615-433e-85fd-e3116cd4eab6
+
 #### 𝙃𝙤𝙢𝙚
+https://github.com/TeamDon-tBe/ANDROID/assets/85453429/db04d32c-1b3a-4b38-ad72-e38f77f9999b
 
 #### 𝙋𝙤𝙨𝙩𝙞𝙣𝙜
+https://github.com/TeamDon-tBe/ANDROID/assets/85453429/78a399da-1987-47cc-b43c-5e003ba5151e
 
 #### 𝙉𝙤𝙩𝙞𝙛𝙞𝙘𝙖𝙩𝙤𝙞𝙣
+https://github.com/TeamDon-tBe/ANDROID/assets/85453429/0edec452-299c-4198-b251-75fd640ee369
 
 #### 𝙈𝙮 𝙋𝙖𝙜𝙚
-
-
+https://github.com/TeamDon-tBe/ANDROID/assets/85453429/88a1ac4f-9948-4841-a2a3-0defe9c4e730
 
 
 ## 💚 𝘾𝙤𝙣𝙩𝙧𝙞𝙗𝙪𝙩𝙤𝙧𝙨
