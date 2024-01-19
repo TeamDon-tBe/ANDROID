@@ -185,9 +185,11 @@ class MyPageFeedFragment :
     }
 
     private fun setUpFeedAdapter(myPageFeedAdapter: MyPageFeedAdapter) {
-        binding.rvMyPagePosting.apply {
-            adapter = myPageFeedAdapter
-            addItemDecoration(FeedItemDecorator(requireContext()))
+        binding.rvMyPagePosting.adapter = myPageFeedAdapter
+        if (binding.rvMyPagePosting.itemDecorationCount == 0) {
+            binding.rvMyPagePosting.addItemDecoration(
+                FeedItemDecorator(requireContext()),
+            )
         }
     }
 

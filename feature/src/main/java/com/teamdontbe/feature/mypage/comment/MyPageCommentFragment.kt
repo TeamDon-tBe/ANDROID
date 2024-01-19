@@ -152,9 +152,11 @@ class MyPageCommentFragment :
                 submitList(commentData)
             }
 
-        binding.rvMyPageComment.apply {
-            adapter = myPageCommentAdapter
-            addItemDecoration(FeedItemDecorator(requireContext()))
+        binding.rvMyPageComment.adapter = myPageCommentAdapter
+        if (binding.rvMyPageComment.itemDecorationCount == 0) {
+            binding.rvMyPageComment.addItemDecoration(
+                FeedItemDecorator(requireContext()),
+            )
         }
     }
 
