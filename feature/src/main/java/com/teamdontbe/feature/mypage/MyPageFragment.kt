@@ -169,7 +169,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     contentId = memberProfile.id,
                     commentId = -1,
                     whereFrom = FROM_FEED,
-                ).show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
+                ).show(childFragmentManager, MY_PAGE_ANOTHER_BOTTOM_SHEET)
             }
         }
     }
@@ -191,6 +191,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         const val COMMENT = "답글"
         const val TRANSPARENCY_INFO = "TransparencyInfo"
         const val MY_PAGE_BOTTOM_SHEET = "MyPageBottomSheet"
+        const val MY_PAGE_ANOTHER_BOTTOM_SHEET = "MyPageAnotherBottomSheet"
     }
 
     override fun onResume() {
