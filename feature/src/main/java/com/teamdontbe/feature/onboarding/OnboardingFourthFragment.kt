@@ -1,5 +1,6 @@
 package com.teamdontbe.feature.onboarding
 
+import android.view.WindowManager
 import androidx.fragment.app.activityViewModels
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.hideKeyboard
@@ -20,6 +21,7 @@ class OnboardingFourthFragment() :
         binding.tvOnboardingFourthNickname.text = onboardingViewModel.getNickName()
         binding.ivOnboardingFourthProfile.setImageDrawable(drawableOf(R.drawable.ic_sign_up_profile_person))
         hideKeyboard()
+        WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
     }
 
     private fun hideKeyboard() {

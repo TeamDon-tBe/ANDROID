@@ -59,7 +59,6 @@ class HomeViewModel
                 homeRepository.getFeedList().collectLatest {
                     if (it != null) _getFeedList.value = UiState.Success(it) else UiState.Empty
                 }
-                _getFeedList.value = UiState.Loading
             }
 
         fun getFeedDetail(contentId: Int) =

@@ -47,7 +47,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initObserve() {
         homeViewModel.getFeedList.flowWithLifecycle(lifecycle).onEach {
             when (it) {
-                is UiState.Loading -> binding.progressbarHome.isVisible = true
+                is UiState.Loading -> Unit
                 is UiState.Success -> {
                     binding.progressbarHome.isVisible = false
                     initHomeAdapter(it.data)
