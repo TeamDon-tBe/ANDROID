@@ -42,10 +42,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".example.ExampleActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".mypage.authinfo.MyPageAuthInfoActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
