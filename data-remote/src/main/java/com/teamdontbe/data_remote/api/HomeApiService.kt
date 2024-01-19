@@ -63,7 +63,7 @@ interface HomeApiService {
         @Body request: RequestCommentPostingDto,
     ): BaseResponse<Unit>
 
-    @DELETE("/$API/$V1/$CONTENT/{$COMMENT_ID}")
+    @DELETE("/$API/$V1/$COMMENT/{$COMMENT_ID}")
     suspend fun deleteComment(
         @Path(value = COMMENT_ID) commentId: Int,
     ): BaseResponse<Unit>
