@@ -57,13 +57,6 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                     if (it.data.memberGhost == -85) {
                         val dialog = PostingRestrictionDialogFragment()
                         dialog.show(childFragmentManager, BAN_POSTING)
-                    } else {
-                        val inputMethodManager =
-                            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        inputMethodManager.showSoftInput(
-                            binding.etPostingContent,
-                            InputMethodManager.SHOW_IMPLICIT,
-                        )
                     }
                 }
 
