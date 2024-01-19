@@ -8,6 +8,7 @@ import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -101,7 +102,9 @@ class HomeDetailFragment :
                     feedData.contentId?.let {
                         initBottomSheet(
                             feedData.memberId == homeViewModel.getMemberId(),
-                            it, false, -1,
+                            it,
+                            false,
+                            -1,
                         )
                     }
                 },
@@ -123,6 +126,11 @@ class HomeDetailFragment :
                         )
                     }
                 },
+                onClickUserProfileBtn = { feedData, positoin ->
+                    feedData.contentId?.let {
+                        navigateToMyPageFragment(feedData.memberId)
+                    }
+                },
             ).apply {
                 submitList(
                     listOf(getHomeFeedDetailData()?.toFeedEntity()),
@@ -130,6 +138,13 @@ class HomeDetailFragment :
             }
 
         contentId = getHomeFeedDetailData()?.contentId ?: -1
+    }
+
+    private fun navigateToMyPageFragment(id: Int) {
+        findNavController().navigate(
+            R.id.action_fragment_home_detail_to_fragment_my_page,
+            bundleOf(HomeFragment.KEY_FEED_DATA to id),
+        )
     }
 
     private fun initObserve() {
@@ -143,7 +158,9 @@ class HomeDetailFragment :
                                 feedData.contentId?.let {
                                     initBottomSheet(
                                         feedData.memberId == homeViewModel.getMemberId(),
-                                        it, false, -1,
+                                        it,
+                                        false,
+                                        -1,
                                     )
                                 }
                             },
@@ -210,7 +227,9 @@ class HomeDetailFragment :
                             onClickKebabBtn = { commentData, position ->
                                 initBottomSheet(
                                     commentData.memberId == homeViewModel.getMemberId(),
-                                    contentId, true, commentData.commentId,
+                                    contentId,
+                                    true,
+                                    commentData.commentId,
                                 )
                                 deleteCommentPosition = position
                             },

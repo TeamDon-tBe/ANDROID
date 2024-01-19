@@ -19,7 +19,7 @@
             android:id="@+id/action_fragment_home_to_fragment_my_page"
             app:destination="@id/fragment_my_page"
             app:popUpTo="@id/fragment_my_page"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/fragment_posting"
@@ -106,5 +106,11 @@
         android:id="@+id/fragment_home_detail"
         android:name="com.teamdontbe.feature.homedetail.HomeDetailFragment"
         android:label="HomeDetailFragment"
-        tools:layout="@layout/fragment_home_detail" />
+        tools:layout="@layout/fragment_home_detail">
+        <action
+            android:id="@+id/action_fragment_home_detail_to_fragment_my_page"
+            app:destination="@id/fragment_my_page"
+            app:popUpTo="@id/fragment_my_page"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

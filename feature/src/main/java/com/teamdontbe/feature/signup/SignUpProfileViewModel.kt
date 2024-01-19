@@ -8,8 +8,8 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.repository.LoginRepository
 import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,10 +32,10 @@ class SignUpProfileViewModel
     private var _introduceNum = MutableLiveData<String>()
     val introduceNum = _introduceNum
 
-    private val _nickNameDoubleState = MutableStateFlow<UiState<String>>(UiState.Empty)
-    val nickNameDoubleState: StateFlow<UiState<String>> = _nickNameDoubleState
+    private val _nickNameDoubleState = MutableSharedFlow<UiState<String>>()
+    val nickNameDoubleState: SharedFlow<UiState<String>> = _nickNameDoubleState
 
-    private val _profileEditSuccess = MutableLiveData<Boolean>()
+    private var _profileEditSuccess = MutableLiveData<Boolean>()
     val profileEditSuccess: LiveData<Boolean> get() = _profileEditSuccess
 
     init {
@@ -62,11 +62,12 @@ class SignUpProfileViewModel
     fun getNickNameDoubleCheck(nickName: String) {
         viewModelScope.launch {
             loginRepository.getNickNameDoubleCheck(nickName).collectLatest {
-                _nickNameDoubleState.value = UiState.Success(it)
+//                _nickNameDoubleState.value = UiState.Success(it)
+                _nickNameDoubleState.emit(UiState.Success(it))
                 _profileEditSuccess.value = it.isEmpty()
                 updateNextNameBtnValidity()
             }
-            _nickNameDoubleState.value = UiState.Empty
+            _nickNameDoubleState.emit(UiState.Empty)
         }
     }
 
@@ -82,11 +83,12 @@ class SignUpProfileViewModel
 
     private fun validateNickName(nickName: String) {
         _isNickNameValid.value = nicknameRegex.matches(nickName)
+        updateNextNameBtnValidity()
     }
 
     private fun updateNextNameBtnValidity() {
         _isBtnSelected.value =
-            (!(_profileEditSuccess.value ?: false) && _isNickNameValid.value == true)
+            _profileEditSuccess.value == false && _isNickNameValid.value == true
     }
 
     companion object {

@@ -1,6 +1,8 @@
-package com.teamdontbe.feature.mypage
+package com.teamdontbe.feature.mypage.authinfo
 
+import android.content.Intent
 import android.graphics.Paint
+import android.net.Uri
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -29,6 +31,7 @@ class MyPageAuthInfoActivity :
 
         initConditionsBtnClickListener()
         initWithdrawBtnClickListener()
+        initBackBtnClickListenr()
     }
 
     private fun initObserve() {
@@ -61,8 +64,24 @@ class MyPageAuthInfoActivity :
 
     private fun initConditionsBtnClickListener() {
         binding.tvMyPageAuthInfoConditionsContent.setOnClickListener {
-            // 테스트용 코드
-            toast("자세히보기 클릭됨")
+            navigateToComplaintWeb()
+        }
+    }
+
+    private fun navigateToComplaintWeb() {
+        val urlIntentComplaint =
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://www.notion.so/93625ba2f93547ff88984d3bb82a2f32"),
+            )
+        startActivity(urlIntentComplaint)
+    }
+
+    private fun initBackBtnClickListenr() {
+        binding.ivMyPageAuthInfoBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+            // 예시: 이전 프레그먼트로 돌아가는 코드
+            supportFragmentManager.popBackStack()
         }
     }
 }

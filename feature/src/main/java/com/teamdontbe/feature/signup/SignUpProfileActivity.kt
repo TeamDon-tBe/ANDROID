@@ -29,6 +29,7 @@ class SignUpProfileActivity :
         initUpdateErrorMessage()
         initDoubleBtnClickListener(flag)
         initMyPageStateObserve()
+        initBackBtnClickListenr(flag)
     }
 
     private fun initMyPageProfileAppBarTitle(): Int {
@@ -152,5 +153,15 @@ class SignUpProfileActivity :
         intent.putExtra(SIGN_UP_AGREE, userProfile)
         startActivity(intent)
         finish()
+    }
+
+    private fun initBackBtnClickListenr(flag: Int) {
+        if (flag == 0) {
+            binding.appbarSignUp.btnAppbarBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+                // 예시: 이전 프레그먼트로 돌아가는 코드
+                supportFragmentManager.popBackStack()
+            }
+        }
     }
 }

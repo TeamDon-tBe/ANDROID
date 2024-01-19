@@ -1,6 +1,7 @@
 package com.teamdontbe.feature.signup
 
 import android.content.Intent
+import android.net.Uri
 import android.view.View
 import android.widget.CheckBox
 import com.teamdontbe.core_ui.base.BindingActivity
@@ -26,6 +27,28 @@ class SignUpAgreeActivity :
         binding.appbarSignUp.btnAppbarBack.visibility = View.INVISIBLE
         initParentCheckBoxSignUpAgreeClickListener()
         initChildCheckBoxSignUpAgreeListener()
+        initBtnClickListener()
+    }
+
+    private fun initBtnClickListener() {
+        binding.btnSignUpAgreeChild1.setOnClickListener {
+            navigateToComplaintWeb("https://www.notion.so/93625ba2f93547ff88984d3bb82a2f32")
+        }
+        binding.btnSignUpAgreeChild2.setOnClickListener {
+            navigateToComplaintWeb("https://www.notion.so/1681f9cae9de47858ee0997b4cea9c03")
+        }
+        binding.btnSignUpAgreeChild4.setOnClickListener {
+            navigateToComplaintWeb("https://www.notion.so/0c70bf474acb487ab2b2ae957d975e51")
+        }
+    }
+
+    private fun navigateToComplaintWeb(uri: String) {
+        val urlIntentComplaint =
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(uri),
+            )
+        startActivity(urlIntentComplaint)
     }
 
     private fun initParentCheckBoxSignUpAgreeClickListener() =
