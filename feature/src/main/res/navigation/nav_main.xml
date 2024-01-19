@@ -62,7 +62,7 @@
             android:id="@+id/action_fragment_my_page_to_fragment_home_detail"
             app:destination="@id/fragment_home_detail"
             app:popUpTo="@id/fragment_my_page"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_fragment_my_page_to_fragment_posting"
             app:destination="@id/fragment_posting" />
