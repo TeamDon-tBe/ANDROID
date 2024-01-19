@@ -29,6 +29,7 @@ class SignUpProfileActivity :
         initUpdateErrorMessage()
         initDoubleBtnClickListener(flag)
         initMyPageStateObserve()
+        initBackBtnClickListenr(flag)
     }
 
     private fun initMyPageProfileAppBarTitle(): Int {
@@ -62,11 +63,42 @@ class SignUpProfileActivity :
         }
     }
 
+    /* private fun initDoubleBtnClickListener(flag: Int) {
+         binding.btnSignUpProfileDoubleCheck.setOnClickListener {
+             val inputNickName = binding.etSignUpProfileNickname.text.toString()
+             viewModel.getNickNameDoubleCheck(inputNickName)
+             nextBtnObserve(inputNickName, flag)
+         }
+     }*/
+
     private fun initDoubleBtnClickListener(flag: Int) {
         binding.btnSignUpProfileDoubleCheck.setOnClickListener {
             val inputNickName = binding.etSignUpProfileNickname.text.toString()
+
+            // 중복 확인 요청
             viewModel.getNickNameDoubleCheck(inputNickName)
-            nextBtnObserve(inputNickName, flag)
+
+            // 중복 확인 결과 처리
+            viewModel.nickNameDoubleState.flowWithLifecycle(lifecycle).onEach {
+                when (it) {
+                    is UiState.Loading -> Unit
+                    is UiState.Success -> {
+                        if (it.data.isEmpty()) {
+                            // 중복 확인이 성공하면 에러 메시지 업데이트
+                            updateErrorMessage(false)
+
+                            // 중복 확인이 성공하면 다음 단계로 진행하는 함수 호출
+                            nextBtnObserve(inputNickName, flag)
+                        } else {
+                            // 중복 확인이 실패하면 에러 메시지 업데이트
+                            updateErrorMessage(true)
+                        }
+                    }
+
+                    is UiState.Empty -> Unit
+                    is UiState.Failure -> Unit
+                }
+            }.launchIn(lifecycleScope)
         }
     }
 
@@ -152,5 +184,15 @@ class SignUpProfileActivity :
         intent.putExtra(SIGN_UP_AGREE, userProfile)
         startActivity(intent)
         finish()
+    }
+
+    private fun initBackBtnClickListenr(flag: Int) {
+        if (flag == 0) {
+            binding.appbarSignUp.btnAppbarBack.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+                // 예시: 이전 프레그먼트로 돌아가는 코드
+                supportFragmentManager.popBackStack()
+            }
+        }
     }
 }
