@@ -34,6 +34,7 @@ import com.teamdontbe.feature.home.HomeBottomSheet
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
+import com.teamdontbe.feature.posting.AnimateProgressBar
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.snackbar.UploadingSnackBar
@@ -356,6 +357,13 @@ class HomeDetailFragment :
     private fun initEditText() {
         binding.run {
             bottomsheetHomeDetail.etCommentContent.doAfterTextChanged {
+                val animateProgressBar =
+                    AnimateProgressBar(
+                        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput,
+                        0f,
+                        bottomsheetHomeDetail.etCommentContent.text.toString().length.toFloat(),
+                    )
+
                 when {
                     bottomsheetHomeDetail.etCommentContent.text.toString().length in 1..499 -> {
                         bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progressDrawable =
@@ -418,6 +426,7 @@ class HomeDetailFragment :
                         )
                     }
                 }
+                bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.startAnimation(animateProgressBar)
                 commentDebouncer.setDelay(
                     bottomsheetHomeDetail.etCommentContent.text.toString(),
                     1000L,
