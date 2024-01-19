@@ -15,7 +15,6 @@ import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.intent.getParcelable
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.databinding.ActivityMainBinding
-import com.teamdontbe.feature.dialog.HomePostingRestrictionDialogFragment
 import com.teamdontbe.feature.notification.NotificationViewModel
 import com.teamdontbe.feature.signup.SignUpAgreeActivity.Companion.SIGN_UP_AGREE
 import com.teamdontbe.feature.signup.UserProfileModel
@@ -63,23 +62,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun initBottomNavPostingClickListener(navController: NavController) {
-        if (false) {
-            binding.bnvMain.setOnItemSelectedListener {
-                when (it.itemId) {
-                    R.id.fragment_posting -> {
-                        initCheckBtnClickListener()
-                        false
-                    }
-
-                    else -> it.onNavDestinationSelected(navController)
-                }
-            }
+        binding.bnvMain.setOnItemSelectedListener {
+            it.onNavDestinationSelected(navController)
         }
-    }
-
-    private fun initCheckBtnClickListener() {
-        val dialog = HomePostingRestrictionDialogFragment()
-        dialog.show(supportFragmentManager, RESTRICTION_POSTING)
     }
 
     private fun initKakaoUser() {
