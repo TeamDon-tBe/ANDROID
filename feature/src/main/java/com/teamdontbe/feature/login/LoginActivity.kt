@@ -77,6 +77,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                                 loginViewModel.saveAccessToken(token.accessToken)
                                 loginViewModel.postLogin("KAKAO")
                                 loginViewModel.saveCheckLogin(true)
+                                navigateToMainActivity()
                             }
                         }
                     }

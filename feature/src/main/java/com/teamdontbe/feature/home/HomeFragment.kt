@@ -21,6 +21,7 @@ import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -35,6 +36,11 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         initObserve()
         initSwipeRefreshData()
         scrollRecyclerViewToTop()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initView()
     }
 
     private fun initSwipeRefreshData() {
@@ -121,6 +127,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     )
                 },
                 onClickLikedBtn = { contentId, status ->
+                    Timber.tag("status").d(status.toString())
                     if (status) {
                         homeViewModel.deleteFeedLiked(contentId)
                     } else {
