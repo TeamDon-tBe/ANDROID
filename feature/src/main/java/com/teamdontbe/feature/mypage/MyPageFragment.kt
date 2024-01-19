@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,7 @@ import com.teamdontbe.feature.databinding.FragmentMyPageBinding
 import com.teamdontbe.feature.home.HomeFragment.Companion.KEY_FEED_DATA
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet
+import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment.Companion.FROM_FEED
 import com.teamdontbe.feature.mypage.transperencyinfo.TransparencyInfoParentFragment
 import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -165,8 +167,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 MyPageAnotherUserBottomSheet(
                     isMember = memberProfile.idFlag,
                     contentId = memberProfile.id,
-                    isComment = false,
                     commentId = -1,
+                    whereFrom = FROM_FEED,
                 ).show(childFragmentManager, MY_PAGE_BOTTOM_SHEET)
             }
         }
@@ -176,7 +178,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         (requireActivity() as MainActivity).findViewById<BottomNavigationView>(R.id.bnv_main)
             .setOnItemReselectedListener { item ->
                 if (item.itemId == R.id.fragment_my_page) {
-                    val nestedScroll = binding.nestedScrollMyPage
+                    val nestedScroll: NestedScrollView = binding.nestedScrollMyPage
                     binding.nestedScrollMyPage.post {
                         nestedScroll.smoothScrollTo(0, 0)
                     }
