@@ -19,7 +19,7 @@
             android:id="@+id/action_fragment_home_to_fragment_my_page"
             app:destination="@id/fragment_my_page"
             app:popUpTo="@id/fragment_my_page"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/fragment_posting"
