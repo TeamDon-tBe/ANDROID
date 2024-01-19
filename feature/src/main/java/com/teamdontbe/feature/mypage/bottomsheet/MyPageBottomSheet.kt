@@ -17,12 +17,6 @@ class MyPageBottomSheet :
         initCustomerCenterClickListener()
     }
 
-    private fun initCustomerCenterClickListener() {
-        binding.tvMyPageBottomSheetCustomService.setOnClickListener {
-            navigateToComplaintWeb()
-        }
-    }
-
     private fun initBottomSheetCloseClickListener() {
         binding.ivMyPageBottomSheetClose.setOnClickListener {
             dismiss()
@@ -43,12 +37,20 @@ class MyPageBottomSheet :
         }
     }
 
-    private fun navigateToComplaintWeb() {
-        val urlIntentComplaint =
-            Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("https://joyous-ghost-8c7.notion.site/Don-t-be-e949f7751de94ba682f4bd6792cbe36e"),
-            )
+    private fun initCustomerCenterClickListener() {
+        binding.tvMyPageBottomSheetCustomService.setOnClickListener {
+            navigateToComplaintWeb("https://joyous-ghost-8c7.notion.site/Don-t-be-e949f7751de94ba682f4bd6792cbe36e")
+        }
+        binding.tvMyPageBottomSheetFeedback.setOnClickListener {
+            navigateToComplaintWeb("https://forms.gle/DqnypURRBDks7WqJ6")
+        }
+    }
+
+    private fun navigateToComplaintWeb(uri: String) {
+        val urlIntentComplaint = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(uri),
+        )
         startActivity(urlIntentComplaint)
     }
 
