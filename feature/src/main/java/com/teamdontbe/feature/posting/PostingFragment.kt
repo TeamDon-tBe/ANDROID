@@ -134,6 +134,13 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private fun initEditTextBtn() {
         binding.run {
             etPostingContent.doAfterTextChanged {
+                val animateProgressBar =
+                    AnimateProgressBar(
+                        pbPostingInput,
+                        0f,
+                        etPostingContent.text.toString().length.toFloat(),
+                    )
+
                 when {
                     etPostingContent.text.toString().length in 1..499 -> {
                         pbPostingInput.progressDrawable =
@@ -143,17 +150,18 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                         btnPostingUpload.backgroundTintList =
                             ColorStateList.valueOf(
                                 ContextCompat.getColor(
-                                    binding.root.context,
+                                    root.context,
                                     R.color.primary,
                                 ),
                             )
                         btnPostingUpload.setTextColor(
                             ContextCompat.getColor(
-                                binding.root.context,
+                                root.context,
                                 R.color.black,
                             ),
                         )
                         initUploadingActivateBtnClickListener()
+                        postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}
                     }
 
                     etPostingContent.text.toString().length >= 500 -> {
@@ -164,13 +172,13 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                         btnPostingUpload.backgroundTintList =
                             ColorStateList.valueOf(
                                 ContextCompat.getColor(
-                                    binding.root.context,
+                                    root.context,
                                     R.color.gray_3,
                                 ),
                             )
                         btnPostingUpload.setTextColor(
                             ContextCompat.getColor(
-                                binding.root.context,
+                                root.context,
                                 R.color.gray_9,
                             ),
                         )
@@ -182,7 +190,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                         btnPostingUpload.backgroundTintList =
                             ColorStateList.valueOf(
                                 ContextCompat.getColor(
-                                    binding.root.context,
+                                    root.context,
                                     R.color.gray_3,
                                 ),
                             )
@@ -195,6 +203,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                         initUploadingDeactivateBtnClickListener()
                     }
                 }
+                pbPostingInput.startAnimation(animateProgressBar)
                 postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}
             }
         }
