@@ -10,7 +10,7 @@
 
     <!-- 프로그래스바의 진행률 색깔 선택 -->
     <item android:id="@android:id/progress">
-        <clip>
+        <scale android:scaleWidth="100%">
             <shape>
                 <corners android:radius="50dp" />
                 <gradient
@@ -20,6 +20,6 @@
                     android:endColor="@color/progress_start"
                     android:startColor="@color/progress_end" />
             </shape>
-        </clip>
+        </scale>
     </item>
 </layer-list>
