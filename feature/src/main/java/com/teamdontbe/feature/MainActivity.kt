@@ -131,8 +131,4 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 }
         }
     }
-
-    companion object {
-        const val RESTRICTION_POSTING = "restriction_posting"
-    }
 }
