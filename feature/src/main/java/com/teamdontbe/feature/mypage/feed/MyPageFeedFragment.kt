@@ -125,9 +125,9 @@ class MyPageFeedFragment :
                     feedEntity.contentId?.let {
                         initBottomSheet(
                             feedEntity.memberId == myPageFeedViewModel.getMemberId(),
-                            it,
-                            false,
-                            -1,
+                            contentId = it,
+                            commentId = -1,
+                            whereFrom = FROM_FEED,
                         )
                         deleteFeedPosition = position
                     }
@@ -172,10 +172,10 @@ class MyPageFeedFragment :
     private fun initBottomSheet(
         isMember: Boolean,
         contentId: Int,
-        isComment: Boolean,
         commentId: Int,
+        whereFrom: String,
     ) {
-        MyPageAnotherUserBottomSheet(isMember, contentId, isComment, commentId).show(
+        MyPageAnotherUserBottomSheet(isMember, contentId, commentId, whereFrom).show(
             childFragmentManager,
             "myPageBottomSheet",
         )
@@ -204,6 +204,7 @@ class MyPageFeedFragment :
 
     companion object {
         const val ARG_MEMBER_PROFILE = "arg_member_profile"
+        const val FROM_FEED = "feed"
 
         fun newInstance(memberProfile: MyPageModel?): MyPageFeedFragment {
             return MyPageFeedFragment().apply {

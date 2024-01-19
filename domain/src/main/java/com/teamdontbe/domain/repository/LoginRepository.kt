@@ -12,6 +12,6 @@ interface LoginRepository {
         nickName: String,
         allowed: Boolean,
         intro: String,
-        url: String,
+        url: String?,
     ): Flow<Boolean>
 }

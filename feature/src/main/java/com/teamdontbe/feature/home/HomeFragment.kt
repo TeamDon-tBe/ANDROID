@@ -2,6 +2,7 @@ package com.teamdontbe.feature.home
 
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -187,7 +188,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         (requireActivity() as MainActivity).findViewById<BottomNavigationView>(R.id.bnv_main)
             .setOnItemReselectedListener { item ->
                 if (item.itemId == R.id.fragment_home) {
-                    val nestedScroll = binding.nestedScrollHome
+                    val nestedScroll: NestedScrollView = binding.nestedScrollHome
                     nestedScroll.post {
                         nestedScroll.smoothScrollTo(0, 0)
                     }

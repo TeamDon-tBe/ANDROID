@@ -8,5 +8,5 @@ data class RequestProfileEditDto(
     @SerialName("nickname") val nickName: String,
     @SerialName("is_alarm_allowed") val isAlarmAllowed: Boolean,
     @SerialName("member_intro") val memberIntro: String,
-    @SerialName("profile_url") val profileUrl: String,
+    @SerialName("profile_url") val profileUrl: String?,
 )
