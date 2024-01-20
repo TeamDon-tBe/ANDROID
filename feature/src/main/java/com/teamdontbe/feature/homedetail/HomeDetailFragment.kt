@@ -75,6 +75,11 @@ class HomeDetailFragment :
             homeViewModel.getUserNickname()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getHomeDetail()
+    }
+
     private fun getHomeDetail() {
         if ((requireArguments().getInt(KEY_NOTI_DATA)) > 0) {
             homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
@@ -129,7 +134,7 @@ class HomeDetailFragment :
                     }
                 },
                 onClickUserProfileBtn = { feedData, positoin ->
-                    feedData.contentId?.let {
+                    feedData.memberId?.let {
                         navigateToMyPageFragment(feedData.memberId)
                     }
                 },
@@ -189,6 +194,11 @@ class HomeDetailFragment :
                                     homeViewModel.postFeedLiked(
                                         contentId,
                                     )
+                                }
+                            },
+                            onClickUserProfileBtn = { feedData, positoin ->
+                                feedData.memberId?.let {
+                                    navigateToMyPageFragment(feedData.memberId)
                                 }
                             },
                         ).apply {
@@ -253,6 +263,11 @@ class HomeDetailFragment :
                                 } else {
                                     initCommentTransparentDialog(data.memberId, contentId)
                                     updateFeedPosition = position
+                                }
+                            },
+                            onClickUserProfileBtn = { feedData, positoin ->
+                                feedData.memberId?.let {
+                                    navigateToMyPageFragment(feedData.memberId)
                                 }
                             },
                             userId = homeViewModel.getMemberId(),
@@ -333,6 +348,7 @@ class HomeDetailFragment :
 
     private fun handleCommentPostingSuccess() {
         requireContext().hideKeyboard(binding.root)
+        getHomeDetail()
         (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
             View.VISIBLE
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -348,7 +364,7 @@ class HomeDetailFragment :
     ) {
         HomeBottomSheet(isMember, contentId, isComment, commentId).show(
             parentFragmentManager,
-            HOME_DETAIL_BOTTOM_SHEET,
+            HomeFragment.HOME_BOTTOM_SHEET,
         )
     }
 

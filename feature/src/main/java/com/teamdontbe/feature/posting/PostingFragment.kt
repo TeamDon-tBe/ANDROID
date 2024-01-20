@@ -46,6 +46,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
         initCancelBtnClickListener()
         initObservePost()
+        showKeyboard()
     }
 
     private fun initObserveUser() {
@@ -58,12 +59,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                         val dialog = PostingRestrictionDialogFragment()
                         dialog.show(childFragmentManager, BAN_POSTING)
                     } else {
-                        val inputMethodManager =
-                            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        inputMethodManager.showSoftInput(
-                            binding.etPostingContent,
-                            InputMethodManager.SHOW_IMPLICIT,
-                        )
+                        showKeyboard()
                     }
                 }
 
@@ -71,6 +67,16 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 is UiState.Failure -> Unit
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private fun showKeyboard() {
+        val inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(
+            binding.etPostingContent,
+            InputMethodManager.SHOW_IMPLICIT,
+        )
+        binding.etPostingContent.requestFocus()
     }
 
     private fun initUser() {

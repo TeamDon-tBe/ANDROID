@@ -143,7 +143,7 @@ class OnboardingFragment :
                     inputNickName,
                     allowedCheckd,
                     introduction,
-                    "",
+                    null,
                 )
             } else {
                 Timber.tag("my_page")
@@ -154,7 +154,7 @@ class OnboardingFragment :
                     inputNickName,
                     allowedCheckd,
                     introduction,
-                    "",
+                    null,
                 )
             }
         }

@@ -76,6 +76,8 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                                 Timber.tag("kakao").i("카카오톡으로 로그인 성공 %s", token.accessToken)
                                 loginViewModel.saveAccessToken(token.accessToken)
                                 loginViewModel.postLogin("KAKAO")
+                                loginViewModel.saveCheckLogin(true)
+                                navigateToMainActivity()
                             }
                         }
                     }
