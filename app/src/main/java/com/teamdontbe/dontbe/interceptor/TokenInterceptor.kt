@@ -32,16 +32,10 @@ class TokenInterceptor
             val response = chain.proceed(request)
             Timber.tag("interceptor").d(accessToken)
 
-            val responseMessage =
-                json.decodeFromString<BaseResponse<Unit>>(
-                    response.body?.string()
-                        ?: throw IllegalStateException("\"refreshTokenResponse is null $response\""),
-                ).message
-
             when (response.code) {
                 // 기존 request가 401 : access token 이상
                 401 -> {
-                    Timber.tag("interceptor").d("%s 토큰 만료됨!!!", responseMessage)
+                    Timber.d("토큰 만료됨!!!")
 
                     response.close()
                     // access token 재발급 request
