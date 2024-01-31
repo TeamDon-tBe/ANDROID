@@ -1,4 +1,4 @@
-package com.teamdontbe.data.interceptor
+package com.teamdontbe.dontbe.interceptor
 
 import android.app.Application
 import android.content.Intent
@@ -6,12 +6,12 @@ import com.teamdontbe.data.BuildConfig
 import com.teamdontbe.data.datasource.SharedPreferenceDataSource
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.response.ResponseRefreshAccessTokenDto
+import com.teamdontbe.feature.login.LoginActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
-import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -35,26 +35,29 @@ class TokenInterceptor
             when (response.code) {
                 // 기존 request가 401 : access token 이상
                 401 -> {
+                    Timber.d("토큰 만료됨!!!")
+
                     response.close()
                     // access token 재발급 request
                     val accessTokenRequest =
-                        chain.request().newBuilder().get()
-                            .url("${BuildConfig.DONTBE_BASE_URL}/api/v1/token")
-                            .post("".toRequestBody(null))
+                        chain.request().newBuilder()
+                            .url("${BuildConfig.DONTBE_BASE_URL}/api/v1/auth/token")
+                            .get()
                             .addHeader("Authorization", "Bearer $accessToken")
                             .addHeader("Refresh", "Bearer $refreshToken")
                             .build()
 
                     val refreshAccessTokenResponse = chain.proceed(accessTokenRequest)
 
-                    when (refreshAccessTokenResponse.message) {
-                        "유효하지 않은 토큰입니다." -> {
-                            val refreshAccessToken =
-                                json.decodeFromString<BaseResponse<ResponseRefreshAccessTokenDto>>(
-                                    refreshAccessTokenResponse.body?.string()
-                                        ?: throw IllegalStateException("\"refreshTokenResponse is null $refreshAccessTokenResponse\""),
-                                )
+                    val refreshAccessToken =
+                        json.decodeFromString<BaseResponse<ResponseRefreshAccessTokenDto>>(
+                            refreshAccessTokenResponse.body?.string()
+                                ?: throw IllegalStateException("\"refreshTokenResponse is null $refreshAccessTokenResponse\""),
+                        )
 
+                    when (refreshAccessToken.message) {
+                        // access token 재발급 성공
+                        "토큰 재발급 성공" -> {
                             userInfoDataSource.accessToken = refreshAccessToken.data?.accessToken
 
                             refreshAccessTokenResponse.close()
@@ -64,6 +67,7 @@ class TokenInterceptor
                                     "Authorization",
                                     "Bearer ${userInfoDataSource.accessToken}",
                                 ).build()
+
                             return chain.proceed(newRequest)
                         }
 
@@ -71,11 +75,9 @@ class TokenInterceptor
                         else -> {
                             with(context) {
                                 CoroutineScope(Dispatchers.Main).launch {
-                                    startActivity(
-                                        Intent.makeRestartActivityTask(
-                                            packageManager.getLaunchIntentForPackage(packageName)?.component,
-                                        ),
-                                    )
+                                    val intent = Intent(this@with, LoginActivity::class.java)
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    startActivity(intent)
                                     userInfoDataSource.clear()
                                 }
                             }

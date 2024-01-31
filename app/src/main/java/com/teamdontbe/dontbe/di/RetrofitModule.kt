@@ -2,9 +2,9 @@ package com.teamdontbe.dontbe.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.teamdontbe.data.datasource.SharedPreferenceDataSource
-import com.teamdontbe.data.interceptor.TokenInterceptor
 import com.teamdontbe.data_local.SharedPreferenceDataSourceImpl
 import com.teamdontbe.dontbe.BuildConfig.DONTBE_BASE_URL
+import com.teamdontbe.dontbe.interceptor.TokenInterceptor
 import com.velogandroid.di.extension.isJsonArray
 import com.velogandroid.di.extension.isJsonObject
 import dagger.Module
