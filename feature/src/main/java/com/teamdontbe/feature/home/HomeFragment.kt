@@ -1,7 +1,6 @@
 package com.teamdontbe.feature.home
 
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -29,18 +28,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private lateinit var homeAdapter: HomeAdapter
     private var deleteFeedPosition: Int = -1
-    private var contentLikedNumber: Int = -1
 
     override fun initView() {
         homeViewModel.getFeedList()
-        initObserve()
+        collectFeedList()
+        collectDeleteFeedStatus()
+        collectPostTransparentStatus()
         initSwipeRefreshData()
         scrollRecyclerViewToTop()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        initView()
     }
 
     private fun initSwipeRefreshData() {
@@ -50,26 +45,18 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         }
     }
 
-    private fun initObserve() {
+    private fun collectFeedList()  {
         homeViewModel.getFeedList.flowWithLifecycle(lifecycle).onEach {
             when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> {
-                    binding.progressbarHome.isVisible = false
-                    initHomeAdapter(it.data)
-                }
-
-                is UiState.Empty -> {
-                    binding.progressbarHome.isVisible = false
-                }
-
-                is UiState.Failure -> Unit
+                is UiState.Success -> initHomeAdapter(it.data)
+                else -> Unit
             }
         }.launchIn(lifecycleScope)
+    }
 
+    private fun collectDeleteFeedStatus()  {
         homeViewModel.deleteFeed.flowWithLifecycle(lifecycle).onEach {
             when (it) {
-                is UiState.Loading -> Unit
                 is UiState.Success -> {
                     if (deleteFeedPosition != -1) {
                         homeAdapter.deleteItem(deleteFeedPosition)
@@ -78,12 +65,12 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     val dialog = DeleteCompleteDialogFragment()
                     dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
                 }
-
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
+                else -> Unit
             }
         }.launchIn(lifecycleScope)
+    }
 
+    private fun collectPostTransparentStatus()  {
         homeViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
@@ -109,7 +96,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     }
                 },
                 onClickToNavigateToHomeDetail = { feedData, position ->
-                    contentLikedNumber = feedData.contentLikedNumber
                     navigateToHomeDetailFragment(
                         Feed(
                             feedData.memberId,
@@ -118,7 +104,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                             feedData.isLiked,
                             feedData.isGhost,
                             feedData.memberGhost,
-                            contentLikedNumber,
+                            feedData.contentLikedNumber,
                             feedData.commentNumber,
                             feedData.contentText,
                             feedData.time,
@@ -159,6 +145,9 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             )
         }
     }
+
+    private fun
+
 
     private fun initBottomSheet(
         isMember: Boolean,

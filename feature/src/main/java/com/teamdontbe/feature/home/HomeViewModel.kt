@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 
 @HiltViewModel
@@ -56,6 +55,7 @@ class HomeViewModel
 
         fun getFeedList() =
             viewModelScope.launch {
+                _getFeedList.value = UiState.Loading
                 homeRepository.getFeedList().collectLatest {
                     if (it != null) _getFeedList.value = UiState.Success(it) else UiState.Empty
                 }
@@ -63,45 +63,37 @@ class HomeViewModel
 
         fun getFeedDetail(contentId: Int) =
             viewModelScope.launch {
+                _getFeedDetail.value = UiState.Loading
                 homeRepository.getFeedLDetail(contentId).collectLatest {
                     if (it != null) _getFeedDetail.value = UiState.Success(it) else UiState.Empty
                 }
-                _getFeedDetail.value = UiState.Loading
             }
 
         fun getCommentList(contentId: Int) =
             viewModelScope.launch {
+                _getCommentList.value = UiState.Loading
                 homeRepository.getCommentList(contentId).collectLatest {
                     if (it != null) _getCommentList.value = UiState.Success(it) else UiState.Empty
                 }
-                _getCommentList.value = UiState.Loading
             }
 
         fun deleteFeed(contentId: Int) =
             viewModelScope.launch {
+                _deleteFeed.emit(UiState.Loading)
                 homeRepository.deleteFeed(contentId).collectLatest {
                     _deleteFeed.emit(UiState.Success(it))
                 }
-                _deleteFeed.emit(UiState.Loading)
             }
 
         fun getMemberId() = userInfoRepository.getMemberId()
 
         fun getUserNickname() = userInfoRepository.getNickName()
 
-        private val likeMutex = Mutex()
-
         fun postFeedLiked(contentId: Int) =
             viewModelScope.launch {
-                likeMutex.tryLock(1000)
-                try {
-                    homeRepository.postFeedLiked(contentId).collectLatest {
-                        _postFeedLiked.emit(UiState.Success(it))
-                    }
-                } finally {
-                    likeMutex.unlock()
+                homeRepository.postFeedLiked(contentId).collectLatest {
+                    _postFeedLiked.emit(UiState.Success(it))
                 }
-                _postFeedLiked.emit(UiState.Loading)
             }
 
         fun deleteFeedLiked(contentId: Int) =
@@ -131,25 +123,13 @@ class HomeViewModel
 
         fun postCommentLiked(commentId: Int) =
             viewModelScope.launch {
-                if (likeMutex.tryLock(1000)) {
-                    try {
-                        homeRepository.postCommentLiked(commentId).collectLatest {
-                        }
-                    } finally {
-                        likeMutex.unlock()
-                    }
+                homeRepository.postCommentLiked(commentId).collectLatest {
                 }
             }
 
         fun deleteCommentLiked(commentId: Int) =
             viewModelScope.launch {
-                if (likeMutex.tryLock(1000)) {
-                    try {
-                        homeRepository.deleteCommentLiked(commentId).collectLatest {
-                        }
-                    } finally {
-                        likeMutex.unlock()
-                    }
+                homeRepository.deleteCommentLiked(commentId).collectLatest {
                 }
             }
 
@@ -157,9 +137,9 @@ class HomeViewModel
             targetMemberId: Int,
             alarmTriggerId: Int,
         ) = viewModelScope.launch {
+            _postTransparent.emit(UiState.Loading)
             homeRepository.postTransparent(targetMemberId, alarmTriggerId).collectLatest {
                 _postTransparent.emit(UiState.Success(it))
             }
-            _postTransparent.emit(UiState.Loading)
         }
     }
