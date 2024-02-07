@@ -7,7 +7,7 @@ import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 import com.teamdontbe.feature.util.Transparent
 
-class HomeViewHolder(
+class HomeFeedViewHolder(
     private val binding: ItemHomeFeedBinding,
     private val userId: Int,
     private val onClickToNavigateToHomeDetail: (FeedEntity) -> Unit,

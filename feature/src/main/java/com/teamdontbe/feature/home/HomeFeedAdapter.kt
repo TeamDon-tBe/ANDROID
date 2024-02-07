@@ -6,25 +6,25 @@ import androidx.recyclerview.widget.ListAdapter
 import com.teamdontbe.core_ui.view.ItemDiffCallback
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
-import com.teamdontbe.feature.home.viewholder.HomeViewHolder
+import com.teamdontbe.feature.home.viewholder.HomeFeedViewHolder
 
-class HomeAdapter(
+class HomeFeedAdapter(
     private val userId: Int,
     private val onClickToNavigateToHomeDetail: (FeedEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
     private val onClickUserProfileBtn: (FeedEntity) -> Unit,
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit,
     private val onClickTransparentBtn: (FeedEntity) -> Unit,
-) : ListAdapter<FeedEntity, HomeViewHolder>(
+) : ListAdapter<FeedEntity, HomeFeedViewHolder>(
     HomeAdapterDiffCallback,
 ) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): HomeViewHolder {
+    ): HomeFeedViewHolder {
         val binding =
             ItemHomeFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return HomeViewHolder(
+        return HomeFeedViewHolder(
             binding,
             userId,
             onClickToNavigateToHomeDetail,
@@ -37,7 +37,7 @@ class HomeAdapter(
     }
 
     override fun onBindViewHolder(
-        holder: HomeViewHolder,
+        holder: HomeFeedViewHolder,
         position: Int,
     ) {
         holder.bind(currentList[position])

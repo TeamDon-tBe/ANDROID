@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.onEach
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
-    private lateinit var homeAdapter: HomeAdapter
+    private lateinit var homeFeedAdapter: HomeFeedAdapter
     private var deleteFeedPosition: Int = -1
 
     override fun initView() {
@@ -54,7 +54,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun initHomeAdapter(feedListData: List<FeedEntity>) {
-        homeAdapter = HomeAdapter(
+        homeFeedAdapter = HomeFeedAdapter(
             onClickKebabBtn = ::onKebabBtnClick,
             onClickLikedBtn = ::onLikedBtnClick,
             onClickTransparentBtn = ::onTransparentBtnClick,
@@ -64,7 +64,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         ).apply {
             submitList(feedListData)
         }
-        binding.rvHome.adapter = homeAdapter
+        binding.rvHome.adapter = homeFeedAdapter
     }
 
     private fun onKebabBtnClick(feedData: FeedEntity, position: Int) {
@@ -152,7 +152,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun handleDeleteFeedSuccess() {
         if (deleteFeedPosition != -1) {
-            homeAdapter.deleteItem(deleteFeedPosition)
+            homeFeedAdapter.deleteItem(deleteFeedPosition)
             deleteFeedPosition = -1
         }
         val dialog = DeleteCompleteDialogFragment()

@@ -30,7 +30,7 @@ import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.home.Feed
-import com.teamdontbe.feature.home.HomeAdapter
+import com.teamdontbe.feature.home.HomeFeedAdapter
 import com.teamdontbe.feature.home.HomeBottomSheet
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.home.HomeViewModel
@@ -56,7 +56,7 @@ class HomeDetailFragment :
     private var deleteCommentPosition: Int = -1
     private var updateFeedPosition: Int = -1
 
-    private lateinit var homeDetailFeedAdapter: HomeAdapter
+    private lateinit var homeDetailFeedAdapter: HomeFeedAdapter
     private lateinit var homeDetailFeedCommentAdapter: HomeDetailCommentAdapter
 
     override fun initView() {
@@ -104,7 +104,7 @@ class HomeDetailFragment :
 
     private fun initHomeDetailFeedAdapter() {
         homeDetailFeedAdapter =
-            HomeAdapter(
+            HomeFeedAdapter(
                 onClickKebabBtn = { feedData, positoin ->
                     feedData.contentId?.let {
                         initBottomSheet(
@@ -167,7 +167,7 @@ class HomeDetailFragment :
                     binding.bottomsheetHomeDetail.tvCommentFeedUserName.text =
                         result.data.memberNickname
                     homeDetailFeedAdapter =
-                        HomeAdapter(
+                        HomeFeedAdapter(
                             onClickKebabBtn = { feedData, positoin ->
                                 feedData.contentId?.let {
                                     initBottomSheet(
