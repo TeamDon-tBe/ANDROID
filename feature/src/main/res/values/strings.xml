@@ -82,7 +82,9 @@
     <!-- 홈 화면 -->
     <string name="tv_home_detail_appbar_title">게시글</string>
     <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
-    <!-- 홈 -> 글 작성 block 유저 제한 다이얼로그 -->
+    <string name="tv_transparency">투명도 %1$d%% · %2$s</string>
+
+    <!-- 글 작성 block 유저 제한 다이얼로그 -->
     <string name="posting_restriction_dialog_title">한동안 글을 쓸 수 없어요 :(</string>
     <string name="posting_restriction_dialog_content">투명도가 -85%까지 떨어졌네요!\n투명도가 회복되기 전까지 글을 쓸 수 없어요.</string>
     <string name="posting_restriction_dialog_caption">*회복 방법은 마이페이지 투명도 툴팁을 확인해보세요.</string>
