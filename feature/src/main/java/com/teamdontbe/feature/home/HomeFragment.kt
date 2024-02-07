@@ -1,5 +1,6 @@
 package com.teamdontbe.feature.home
 
+import android.content.Intent
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -9,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
@@ -20,7 +22,6 @@ import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -31,149 +32,67 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     override fun initView() {
         homeViewModel.getFeedList()
-        collectFeedList()
-        collectDeleteFeedStatus()
-        collectPostTransparentStatus()
+        observeFeedList()
+        observePostTransparentStatus()
+        observeDeleteFeedStatus()
         initSwipeRefreshData()
         scrollRecyclerViewToTop()
     }
 
-    private fun initSwipeRefreshData() {
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            homeViewModel.getFeedList()
-            binding.swipeRefreshLayout.isRefreshing = false
-        }
-    }
-
-    private fun collectFeedList()  {
+    private fun observeFeedList() {
         homeViewModel.getFeedList.flowWithLifecycle(lifecycle).onEach {
             when (it) {
-                is UiState.Success -> initHomeAdapter(it.data)
-                else -> Unit
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun collectDeleteFeedStatus()  {
-        homeViewModel.deleteFeed.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
                 is UiState.Success -> {
-                    if (deleteFeedPosition != -1) {
-                        homeAdapter.deleteItem(deleteFeedPosition)
-                        deleteFeedPosition = -1
-                    }
-                    val dialog = DeleteCompleteDialogFragment()
-                    dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+                    initHomeAdapter(it.data)
+                    setRecyclerViewItemDecoration()
                 }
+
+                is UiState.Failure -> navigateToErrorPage()
                 else -> Unit
             }
         }.launchIn(lifecycleScope)
     }
 
-    private fun collectPostTransparentStatus()  {
-        homeViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> homeViewModel.getFeedList()
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
+    private fun initHomeAdapter(feedListData: List<FeedEntity>) {
+        homeAdapter = HomeAdapter(
+            onClickKebabBtn = ::onKebabBtnClick,
+            onClickLikedBtn = ::onLikedBtnClick,
+            onClickTransparentBtn = ::onTransparentBtnClick,
+            onClickUserProfileBtn = ::navigateToMyPageFragment,
+            onClickToNavigateToHomeDetail = ::navigateToHomeDetailFragment,
+            userId = homeViewModel.getMemberId()
+        ).apply {
+            submitList(feedListData)
+        }
+        binding.rvHome.adapter = homeAdapter
     }
 
-    private fun initHomeAdapter(feedData: List<FeedEntity>) {
-        homeAdapter =
-            HomeAdapter(
-                onClickKebabBtn = { feedData, positoin ->
-                    feedData.contentId?.let {
-                        initBottomSheet(
-                            feedData.memberId == homeViewModel.getMemberId(),
-                            it,
-                            false,
-                            -1,
-                        )
-                        deleteFeedPosition = positoin
-                    }
-                },
-                onClickToNavigateToHomeDetail = { feedData, position ->
-                    navigateToHomeDetailFragment(
-                        Feed(
-                            feedData.memberId,
-                            feedData.memberProfileUrl,
-                            feedData.memberNickname,
-                            feedData.isLiked,
-                            feedData.isGhost,
-                            feedData.memberGhost,
-                            feedData.contentLikedNumber,
-                            feedData.commentNumber,
-                            feedData.contentText,
-                            feedData.time,
-                            feedData.contentId,
-                        ),
-                    )
-                },
-                onClickLikedBtn = { contentId, status ->
-                    Timber.tag("status").d(status.toString())
-                    if (status) {
-                        homeViewModel.deleteFeedLiked(contentId)
-                    } else {
-                        homeViewModel.postFeedLiked(
-                            contentId,
-                        )
-                    }
-                },
-                onClickTransparentBtn = { data, position ->
-                    if (position == -2) {
-                        TransparentIsGhostSnackBar.make(binding.root).show()
-                    } else {
-                        initTransparentDialog(data.memberId, data.contentId ?: -1)
-                    }
-                },
-                onClickUserProfileBtn = { feedData, positoin ->
-                    feedData.contentId?.let {
-                        navigateToMyPageFragment(feedData.memberId)
-                    }
-                },
-                userId = homeViewModel.getMemberId(),
-            ).apply {
-                submitList(feedData)
-            }
-        binding.rvHome.adapter = homeAdapter
-        if (binding.rvHome.itemDecorationCount == 0) {
-            binding.rvHome.addItemDecoration(
-                FeedItemDecorator(requireContext()),
+    private fun onKebabBtnClick(feedData: FeedEntity, position: Int) {
+        feedData.contentId?.let {
+            initBottomSheet(
+                feedData.memberId == homeViewModel.getMemberId(), it
             )
+            deleteFeedPosition = position
         }
     }
 
-    private fun
-
-
     private fun initBottomSheet(
-        isMember: Boolean,
-        contentId: Int,
-        isComment: Boolean,
-        commentId: Int,
+        isMember: Boolean, contentId: Int
     ) {
-        HomeBottomSheet(isMember, contentId, isComment, commentId).show(
+        HomeBottomSheet(isMember, contentId, false, -1).show(
             parentFragmentManager,
             HOME_BOTTOM_SHEET,
         )
     }
 
-    private fun navigateToHomeDetailFragment(feedData: Feed) {
-        findNavController().navigate(
-            R.id.action_home_to_home_detail,
-            bundleOf(KEY_FEED_DATA to feedData),
-        )
-        onDestroy()
+    private fun onLikedBtnClick(contentId: Int, status: Boolean) {
+        if (status) homeViewModel.deleteFeedLiked(contentId)
+        else homeViewModel.postFeedLiked(contentId)
     }
 
-    private fun navigateToMyPageFragment(id: Int) {
-        findNavController().navigate(
-            R.id.action_fragment_home_to_fragment_my_page,
-            bundleOf(KEY_FEED_DATA to id),
-        )
+    private fun onTransparentBtnClick(data: FeedEntity) {
+        if (data.isGhost) TransparentIsGhostSnackBar.make(binding.root).show()
+        else initTransparentDialog(data.memberId, data.contentId ?: -1)
     }
 
     private fun initTransparentDialog(
@@ -184,9 +103,72 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         dialog.show(childFragmentManager, HOME_TRANSPARENT_DIALOG)
     }
 
+    private fun navigateToMyPageFragment(feedData: FeedEntity) {
+        feedData.contentId?.let {
+            findNavController().navigate(
+                R.id.action_fragment_home_to_fragment_my_page, bundleOf(KEY_FEED_DATA to it)
+            )
+        }
+    }
+
+    private fun navigateToHomeDetailFragment(feedData: FeedEntity) {
+        findNavController().navigate(
+            R.id.action_home_to_home_detail,
+            bundleOf(KEY_FEED_DATA to Feed(feedData)),
+        )
+    }
+
+    private fun setRecyclerViewItemDecoration() {
+        if (binding.rvHome.itemDecorationCount == 0) {
+            binding.rvHome.addItemDecoration(
+                FeedItemDecorator(requireContext()),
+            )
+        }
+    }
+
+    private fun navigateToErrorPage() {
+        startActivity(Intent(requireActivity(), ErrorActivity::class.java))
+    }
+
+    private fun observePostTransparentStatus() {
+        homeViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Success -> homeViewModel.getFeedList()
+                is UiState.Failure -> navigateToErrorPage()
+                else -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun observeDeleteFeedStatus() {
+        homeViewModel.deleteFeed.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Success -> handleDeleteFeedSuccess()
+                is UiState.Failure -> navigateToErrorPage()
+                else -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun handleDeleteFeedSuccess() {
+        if (deleteFeedPosition != -1) {
+            homeAdapter.deleteItem(deleteFeedPosition)
+            deleteFeedPosition = -1
+        }
+        val dialog = DeleteCompleteDialogFragment()
+        dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+    }
+
+    private fun initSwipeRefreshData() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            homeViewModel.getFeedList()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+    }
+
     private fun scrollRecyclerViewToTop() {
         val mainActivity = requireActivity() as? MainActivity
-        val nestedScrollMyPage = binding?.nestedScrollHome
+        val nestedScrollMyPage = binding.nestedScrollHome
 
         mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)
             ?.setOnItemReselectedListener { item ->
