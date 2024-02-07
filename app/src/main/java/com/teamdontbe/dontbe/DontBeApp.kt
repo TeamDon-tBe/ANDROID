@@ -2,7 +2,7 @@ package com.teamdontbe.dontbe
 
 import android.app.Application
 import com.kakao.sdk.common.KakaoSdk
-import com.teamdontbe.feature.BuildConfig
+import com.teamdontbe.dontbe.BuildConfig.KAKAO_APP_KEY
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -11,7 +11,7 @@ class DontBeApp : Application() {
     override fun onCreate() {
         super.onCreate()
         setTimber()
-        KakaoSdk.init(this, BuildConfig.KAKAO_APP_KEY)
+        KakaoSdk.init(this, KAKAO_APP_KEY)
     }
 
     private fun setTimber() {
