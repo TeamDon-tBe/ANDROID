@@ -43,7 +43,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         homeViewModel.getFeedList.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Success -> {
-                    initHomeAdapter(it.data)
+                    initHomeFeedAdapter(it.data)
                     setRecyclerViewItemDecoration()
                 }
 
@@ -53,7 +53,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         }.launchIn(lifecycleScope)
     }
 
-    private fun initHomeAdapter(feedListData: List<FeedEntity>) {
+    private fun initHomeFeedAdapter(feedListData: List<FeedEntity>) {
         homeFeedAdapter = HomeFeedAdapter(
             onClickKebabBtn = ::onKebabBtnClick,
             onClickLikedBtn = ::onLikedBtnClick,
