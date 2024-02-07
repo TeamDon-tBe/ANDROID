@@ -9,16 +9,15 @@ import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 import com.teamdontbe.feature.home.viewholder.HomeViewHolder
 
 class HomeAdapter(
-    private val onClickKebabBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
-    private val onClickToNavigateToHomeDetail: (FeedEntity, Int) -> Unit = { _, _ -> },
-    private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
-    private val onClickUserProfileBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
-    private val onClickTransparentBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
     private val userId: Int,
-) :
-    ListAdapter<FeedEntity, HomeViewHolder>(
-            HomeAdapterDiffCallback,
-        ) {
+    private val onClickToNavigateToHomeDetail: (FeedEntity) -> Unit,
+    private val onClickLikedBtn: (Int, Boolean) -> Unit,
+    private val onClickUserProfileBtn: (FeedEntity) -> Unit,
+    private val onClickKebabBtn: (FeedEntity, Int) -> Unit,
+    private val onClickTransparentBtn: (FeedEntity) -> Unit,
+) : ListAdapter<FeedEntity, HomeViewHolder>(
+    HomeAdapterDiffCallback,
+) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -27,13 +26,14 @@ class HomeAdapter(
             ItemHomeFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HomeViewHolder(
             binding,
-            onClickKebabBtn,
+            userId,
             onClickToNavigateToHomeDetail,
             onClickLikedBtn,
             onClickUserProfileBtn,
-            onClickTransparentBtn,
-            userId,
+            onClickKebabBtn,
+            onClickTransparentBtn
         )
+
     }
 
     override fun onBindViewHolder(
@@ -48,10 +48,9 @@ class HomeAdapter(
     }
 
     companion object {
-        private val HomeAdapterDiffCallback =
-            ItemDiffCallback<FeedEntity>(
-                onItemsTheSame = { old, new -> old.memberId == new.memberId },
-                onContentsTheSame = { old, new -> old == new },
-            )
+        private val HomeAdapterDiffCallback = ItemDiffCallback<FeedEntity>(
+            onItemsTheSame = { old, new -> old.memberId == new.memberId },
+            onContentsTheSame = { old, new -> old == new },
+        )
     }
 }
