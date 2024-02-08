@@ -22,6 +22,7 @@ import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
@@ -56,7 +57,7 @@ class HomeDetailFragment :
     private var deleteCommentPosition: Int = -1
     private var updateFeedPosition: Int = -1
 
-    private lateinit var homeDetailFeedAdapter: HomeFeedAdapter
+    private lateinit var homeFeedAdapter: HomeFeedAdapter
     private lateinit var homeDetailFeedCommentAdapter: HomeDetailCommentAdapter
 
     override fun initView() {
@@ -90,68 +91,68 @@ class HomeDetailFragment :
                 homeViewModel.getCommentList(
                     it,
                 )
-                binding.bottomsheetHomeDetail.etCommentContent.hint =
-                    getHomeFeedDetailData()?.toFeedEntity()?.memberNickname + "님에게 답글 남기기"
-                binding.bottomsheetHomeDetail.tvCommentFeedUserName.text =
-                    homeViewModel.getUserNickname()
-                binding.tvHomeDetailInput.text =
-                    getHomeFeedDetailData()?.toFeedEntity()?.memberNickname + "님에게 답글 남기기"
-                binding.bottomsheetHomeDetail.tvCommentFeedUserName.text =
-                    getHomeFeedDetailData()?.toFeedEntity()?.memberNickname
             }
+
         }
     }
 
-    private fun initHomeDetailFeedAdapter() {
-        homeDetailFeedAdapter =
-            HomeFeedAdapter(
-                onClickKebabBtn = { feedData, positoin ->
-                    feedData.contentId?.let {
-                        initBottomSheet(
-                            feedData.memberId == homeViewModel.getMemberId(),
-                            it,
-                            false,
-                            -1,
-                        )
-                    }
-                },
-                onClickTransparentBtn = { data, position ->
-                    if (position == -2) {
-                        TransparentIsGhostSnackBar.make(binding.root).show()
-                    } else {
-                        initFeedTransparentDialog(data.memberId, data.contentId ?: -1)
-                        updateFeedPosition = position
-                    }
-                },
-                userId = homeViewModel.getMemberId(),
-                onClickLikedBtn = { contentId, status ->
-                    if (status) {
-                        homeViewModel.deleteFeedLiked(contentId)
-                    } else {
-                        homeViewModel.postFeedLiked(
-                            contentId,
-                        )
-                    }
-                },
-                onClickUserProfileBtn = { feedData, positoin ->
-                    feedData.memberId?.let {
-                        navigateToMyPageFragment(feedData.memberId)
-                    }
-                },
-            ).apply {
-                submitList(
-                    listOf(getHomeFeedDetailData()?.toFeedEntity()),
-                )
-            }
-
-        contentId = getHomeFeedDetailData()?.contentId ?: -1
+    private fun initHomeFeedAdapter(feedListData: List<FeedEntity>) {
+        homeFeedAdapter = HomeFeedAdapter(
+            onClickKebabBtn = ::onKebabBtnClick,
+            onClickLikedBtn = ::onLikedBtnClick,
+            onClickTransparentBtn = ::onTransparentBtnClick,
+            onClickUserProfileBtn = ::navigateToMyPageFragment,
+            onClickToNavigateToHomeDetail = {},
+            userId = homeViewModel.getMemberId()
+        ).apply {
+            submitList(feedListData)
+        }
     }
 
-    private fun navigateToMyPageFragment(id: Int) {
-        findNavController().navigate(
-            R.id.action_fragment_home_detail_to_fragment_my_page,
-            bundleOf(HomeFragment.KEY_FEED_DATA to id),
+    private fun onKebabBtnClick(feedData: FeedEntity, position: Int) {
+        feedData.contentId?.let {
+            initBottomSheet(
+                feedData.memberId == homeViewModel.getMemberId(), it, false, -1
+            )
+        }
+    }
+
+    private fun initBottomSheet(
+        isMember: Boolean,
+        contentId: Int,
+        isComment: Boolean,
+        commentId: Int,
+    ) {
+        HomeBottomSheet(isMember, contentId, isComment, commentId).show(
+            parentFragmentManager,
+            HomeFragment.HOME_BOTTOM_SHEET,
         )
+    }
+
+    private fun onLikedBtnClick(contentId: Int, status: Boolean) {
+        if (status) homeViewModel.deleteFeedLiked(contentId)
+        else homeViewModel.postFeedLiked(contentId)
+    }
+
+    private fun onTransparentBtnClick(data: FeedEntity) {
+        if (data.isGhost) TransparentIsGhostSnackBar.make(binding.root).show()
+        else initTransparentDialog(data.memberId, data.contentId ?: -1)
+    }
+
+    private fun initTransparentDialog(
+        targetMemberId: Int,
+        alarmTriggerId: Int,
+    ) {
+        val dialog = TransparentDialogFragment(targetMemberId, alarmTriggerId)
+        dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
+    }
+
+    private fun navigateToMyPageFragment(feedData: FeedEntity) {
+        feedData.contentId?.let {
+            findNavController().navigate(
+                R.id.action_fragment_home_to_fragment_my_page, bundleOf(HomeFragment.KEY_FEED_DATA to it)
+            )
+        }
     }
 
     private fun initObserve() {
@@ -166,52 +167,14 @@ class HomeDetailFragment :
                     binding.tvHomeDetailInput.text = result.data.memberNickname + "님에게 답글 남기기"
                     binding.bottomsheetHomeDetail.tvCommentFeedUserName.text =
                         result.data.memberNickname
-                    homeDetailFeedAdapter =
-                        HomeFeedAdapter(
-                            onClickKebabBtn = { feedData, positoin ->
-                                feedData.contentId?.let {
-                                    initBottomSheet(
-                                        feedData.memberId == homeViewModel.getMemberId(),
-                                        it,
-                                        false,
-                                        -1,
-                                    )
-                                }
-                            },
-                            onClickTransparentBtn = { data, position ->
-                                if (position == -2) {
-                                    TransparentIsGhostSnackBar.make(binding.root).show()
-                                } else {
-                                    initFeedTransparentDialog(data.memberId, data.contentId ?: -1)
-                                    updateFeedPosition = position
-                                }
-                            },
-                            userId = homeViewModel.getMemberId(),
-                            onClickLikedBtn = { contentId, status ->
-                                if (status) {
-                                    homeViewModel.deleteFeedLiked(contentId)
-                                } else {
-                                    homeViewModel.postFeedLiked(
-                                        contentId,
-                                    )
-                                }
-                            },
-                            onClickUserProfileBtn = { feedData, positoin ->
-                                feedData.memberId?.let {
-                                    navigateToMyPageFragment(feedData.memberId)
-                                }
-                            },
-                        ).apply {
-                            submitList(
-                                listOf(result.data),
-                            )
-                        }
+
+                    initHomeFeedAdapter(listOf(result.data))
 
                     contentId = result.data.contentId ?: -1
 
-                    if (::homeDetailFeedAdapter.isInitialized && ::homeDetailFeedCommentAdapter.isInitialized) {
+                    if (::homeFeedAdapter.isInitialized && ::homeDetailFeedCommentAdapter.isInitialized) {
                         binding.rvHomeDetail.adapter =
-                            ConcatAdapter(homeDetailFeedAdapter, homeDetailFeedCommentAdapter)
+                            ConcatAdapter(homeFeedAdapter, homeDetailFeedCommentAdapter)
                         binding.rvHomeDetail.addItemDecoration(
                             HomeDetailFeedItemDecorator(
                                 requireContext(),
@@ -275,9 +238,9 @@ class HomeDetailFragment :
                             submitList(it.data)
                         }
 
-                    if (::homeDetailFeedAdapter.isInitialized && ::homeDetailFeedCommentAdapter.isInitialized) {
+                    if (::homeFeedAdapter.isInitialized && ::homeDetailFeedCommentAdapter.isInitialized) {
                         binding.rvHomeDetail.adapter =
-                            ConcatAdapter(homeDetailFeedAdapter, homeDetailFeedCommentAdapter)
+                            ConcatAdapter(homeFeedAdapter, homeDetailFeedCommentAdapter)
                         binding.rvHomeDetail.addItemDecoration(
                             HomeDetailFeedItemDecorator(
                                 requireContext(),
@@ -354,18 +317,6 @@ class HomeDetailFragment :
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         getHomeDetail()
         UploadingSnackBar.make(binding.root).show()
-    }
-
-    private fun initBottomSheet(
-        isMember: Boolean,
-        contentId: Int,
-        isComment: Boolean,
-        commentId: Int,
-    ) {
-        HomeBottomSheet(isMember, contentId, isComment, commentId).show(
-            parentFragmentManager,
-            HomeFragment.HOME_BOTTOM_SHEET,
-        )
     }
 
     private fun getHomeFeedDetailData(): Feed? =
@@ -509,14 +460,6 @@ class HomeDetailFragment :
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         bottomSheetBehavior.skipCollapsed = true
         bottomSheetBehavior.isFitToContents = true
-    }
-
-    private fun initFeedTransparentDialog(
-        targetMemberId: Int,
-        alarmTriggerId: Int,
-    ) {
-        val dialog = TransparentDialogFragment(targetMemberId, alarmTriggerId)
-        dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 
     private fun initCommentTransparentDialog(
