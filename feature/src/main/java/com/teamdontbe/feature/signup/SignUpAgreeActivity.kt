@@ -24,43 +24,34 @@ class SignUpAgreeActivity :
     }
 
     override fun initView() {
-        binding.appbarSignUp.btnAppbarBack.visibility = View.INVISIBLE
-        initParentCheckBoxSignUpAgreeClickListener()
-        initChildCheckBoxSignUpAgreeListener()
+        initBackBtnVisibility()
+        initCheckBoxClickListener()
         initBtnClickListener()
     }
 
-    private fun initBtnClickListener() {
-        binding.btnSignUpAgreeChild1.setOnClickListener {
-            navigateToComplaintWeb("https://www.notion.so/93625ba2f93547ff88984d3bb82a2f32")
-        }
-        binding.btnSignUpAgreeChild2.setOnClickListener {
-            navigateToComplaintWeb("https://www.notion.so/1681f9cae9de47858ee0997b4cea9c03")
-        }
-        binding.btnSignUpAgreeChild4.setOnClickListener {
-            navigateToComplaintWeb("https://www.notion.so/0c70bf474acb487ab2b2ae957d975e51")
-        }
+    private fun initBackBtnVisibility() {
+        binding.appbarSignUp.btnAppbarBack.visibility = View.INVISIBLE
     }
 
-    private fun navigateToComplaintWeb(uri: String) {
-        val urlIntentComplaint =
-            Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(uri),
-            )
-        startActivity(urlIntentComplaint)
+    private fun initCheckBoxClickListener() {
+        initParentCheckBoxSignUpAgreeClickListener()
+        initChildCheckBoxSignUpAgreeListener()
     }
 
-    private fun initParentCheckBoxSignUpAgreeClickListener() =
-        with(binding) {
-            cbSignUpParent.setOnCheckedChangeListener { _, isChecked ->
+    private fun initParentCheckBoxSignUpAgreeClickListener() {
+        binding.cbSignUpParent.setOnCheckedChangeListener { buttonView, isChecked ->
+            // 사용자가 눌렀을 때만 해당 child check 로직 실행
+            if (buttonView.isPressed) {
                 childCheckBoxList.forEach { it.isChecked = isChecked }
+                updateNextBtnState(childCheckBoxList)
             }
         }
+    }
 
     private fun initChildCheckBoxSignUpAgreeListener() {
         childCheckBoxList.forEach { checkBox ->
             checkBox.setOnCheckedChangeListener { _, _ ->
+                binding.cbSignUpParent.isChecked = childCheckBoxList.all { it.isChecked }
                 updateNextBtnState(childCheckBoxList)
             }
         }
@@ -84,6 +75,27 @@ class SignUpAgreeActivity :
         intent.putExtra(SIGN_UP_AGREE, isChild4Checked)
         startActivity(intent)
         finish()
+    }
+
+    private fun initBtnClickListener() {
+        binding.btnSignUpAgreeChild1.setOnClickListener {
+            navigateToComplaintWeb("https://www.notion.so/93625ba2f93547ff88984d3bb82a2f32")
+        }
+        binding.btnSignUpAgreeChild2.setOnClickListener {
+            navigateToComplaintWeb("https://www.notion.so/1681f9cae9de47858ee0997b4cea9c03")
+        }
+        binding.btnSignUpAgreeChild4.setOnClickListener {
+            navigateToComplaintWeb("https://www.notion.so/0c70bf474acb487ab2b2ae957d975e51")
+        }
+    }
+
+    private fun navigateToComplaintWeb(uri: String) {
+        val urlIntentComplaint =
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(uri),
+            )
+        startActivity(urlIntentComplaint)
     }
 
     companion object {
