@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.drawableOf
-import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
@@ -35,7 +34,6 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private val postingViewModel by viewModels<PostingViewModel>()
 
     override fun initView() {
-        requireContext().openKeyboard(binding.etPostingContent)
         statusBarColorOf(R.color.white)
 
         initAnimation()
@@ -46,7 +44,6 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
         initCancelBtnClickListener()
         initObservePost()
-        showKeyboard()
     }
 
     private fun initObserveUser() {
@@ -83,9 +80,10 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         binding.tvPostingProfileNickname.text = postingViewModel.getNickName()
         Timber.tag("user")
             .d("shared preference에서 받아오는 사용자 profile img url : ${postingViewModel.getMemberProfileUrl()}")
-        binding.ivPostingProfileImg.load(
-            """https:\\github.com\TeamDon-tBe\SERVER\assets\97835512\fb3ea04c-661e-4221-a837-854d66cdb77e""",
-        )
+        binding.ivPostingProfileImg.load(postingViewModel.getMemberProfileUrl())
+//                binding.ivPostingProfileImg.load(
+//            """https:\\github.com\TeamDon-tBe\SERVER\assets\97835512\fb3ea04c-661e-4221-a837-854d66cdb77e""",
+//        )
     }
 
     private fun initAnimation() {
@@ -151,70 +149,70 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
                 when {
                     etPostingContent.text.toString().length in 1..499 -> {
-                        pbPostingInput.progressDrawable =
-                            context?.drawableOf(R.drawable.shape_primary_line_10_ring)
-                        pbPostingInput.progress = etPostingContent.text.toString().length
-
-                        btnPostingUpload.backgroundTintList =
-                            ColorStateList.valueOf(
-                                ContextCompat.getColor(
-                                    root.context,
-                                    R.color.primary,
-                                ),
-                            )
-                        btnPostingUpload.setTextColor(
-                            ContextCompat.getColor(
-                                root.context,
-                                R.color.black,
-                            ),
-                        )
-                        initUploadingActivateBtnClickListener()
+                        updateProgress(
+                            R.drawable.shape_primary_line_10_ring,
+                            etPostingContent.text.toString().length,
+                            R.color.primary,
+                            R.color.black,
+                        ) {
+                            initUploadingActivateBtnClickListener()
+                        }
                         postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}
                     }
 
                     etPostingContent.text.toString().length >= 500 -> {
-                        pbPostingInput.progressDrawable =
-                            context?.drawableOf(R.drawable.shape_error_line_10_ring)
-                        pbPostingInput.progress = etPostingContent.text.toString().length
-
-                        btnPostingUpload.backgroundTintList =
-                            ColorStateList.valueOf(
-                                ContextCompat.getColor(
-                                    root.context,
-                                    R.color.gray_3,
-                                ),
-                            )
-                        btnPostingUpload.setTextColor(
-                            ContextCompat.getColor(
-                                root.context,
-                                R.color.gray_9,
-                            ),
-                        )
-                        initUploadingDeactivateBtnClickListener()
+                        updateProgress(
+                            R.drawable.shape_error_line_10_ring,
+                            etPostingContent.text.toString().length,
+                            R.color.gray_3,
+                            R.color.gray_9,
+                        ) {
+                            initUploadingDeactivateBtnClickListener()
+                        }
                     }
 
                     else -> {
-                        pbPostingInput.progress = 0
-                        btnPostingUpload.backgroundTintList =
-                            ColorStateList.valueOf(
-                                ContextCompat.getColor(
-                                    root.context,
-                                    R.color.gray_3,
-                                ),
-                            )
-                        btnPostingUpload.setTextColor(
-                            ContextCompat.getColor(
-                                binding.root.context,
-                                R.color.gray_9,
-                            ),
-                        )
-                        initUploadingDeactivateBtnClickListener()
+                        updateProgress(
+                            R.drawable.shape_primary_line_10_ring,
+                            0,
+                            R.color.gray_3,
+                            R.color.gray_9,
+                        ) {
+                            initUploadingDeactivateBtnClickListener()
+                        }
                     }
                 }
                 pbPostingInput.startAnimation(animateProgressBar)
                 postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}
             }
         }
+    }
+
+    private fun FragmentPostingBinding.updateProgress(
+        progressDrawableResId: Int,
+        textLength: Int,
+        backgroundTintResId: Int,
+        textColorResId: Int,
+        clickListener: () -> Unit,
+    ) {
+        pbPostingInput.progressDrawable =
+            context?.drawableOf(progressDrawableResId)
+        pbPostingInput.progress = textLength
+
+        btnPostingUpload.backgroundTintList =
+            ColorStateList.valueOf(
+                ContextCompat.getColor(
+                    root.context,
+                    backgroundTintResId,
+                ),
+            )
+        btnPostingUpload.setTextColor(
+            ContextCompat.getColor(
+                root.context,
+                textColorResId,
+            ),
+        )
+        clickListener.invoke()
     }
 
     companion object {
