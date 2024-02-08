@@ -11,6 +11,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_with_back"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -46,6 +47,14 @@
             </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:dividerColor="@color/gray_2"
+            app:layout_constraintBottom_toBottomOf="@id/appbar_with_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
