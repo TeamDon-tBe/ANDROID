@@ -2,11 +2,11 @@ package com.teamdontbe.feature.signup
 
 import android.content.Intent
 import android.net.Uri
-import android.view.View
 import android.widget.CheckBox
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivitySignUpAgreeBinding
+import com.teamdontbe.feature.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,13 +24,16 @@ class SignUpAgreeActivity :
     }
 
     override fun initView() {
-        initBackBtnVisibility()
+        initBackBtnClickListener()
         initCheckBoxClickListener()
-        initBtnClickListener()
+        initInfoUriBtnClickListener()
     }
 
-    private fun initBackBtnVisibility() {
-        binding.appbarSignUp.btnAppbarBack.visibility = View.INVISIBLE
+    private fun initBackBtnClickListener() {
+        binding.appbarSignUp.btnAppbarBack.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
     }
 
     private fun initCheckBoxClickListener() {
@@ -74,10 +77,9 @@ class SignUpAgreeActivity :
         val isChild4Checked = binding.cbSignUpChild4.isChecked
         intent.putExtra(SIGN_UP_AGREE, isChild4Checked)
         startActivity(intent)
-        finish()
     }
 
-    private fun initBtnClickListener() {
+    private fun initInfoUriBtnClickListener() {
         binding.btnSignUpAgreeChild1.setOnClickListener {
             navigateToComplaintWeb("https://www.notion.so/93625ba2f93547ff88984d3bb82a2f32")
         }
