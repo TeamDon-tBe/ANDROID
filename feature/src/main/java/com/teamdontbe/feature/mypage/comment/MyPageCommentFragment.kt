@@ -18,10 +18,10 @@ import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
 import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment
-import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.FeedItemDecorator
+import com.teamdontbe.feature.util.KeyStorage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -183,7 +183,7 @@ class MyPageCommentFragment :
     private fun navigateToHomeDetailFragment(id: Int) {
         findNavController().navigate(
             R.id.action_fragment_my_page_to_fragment_home_detail,
-            bundleOf(KEY_NOTI_DATA to id),
+            bundleOf(KeyStorage.KEY_NOTI_DATA to id),
         )
     }
 
