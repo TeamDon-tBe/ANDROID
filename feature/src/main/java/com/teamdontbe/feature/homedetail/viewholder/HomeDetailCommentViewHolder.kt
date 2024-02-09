@@ -37,11 +37,11 @@ class HomeDetailCommentViewHolder(
         }
     }
 
-    private fun initProfileBtnClickListener(data: CommentEntity) {
+    private fun initProfileBtnClickListener(data: CommentEntity) =
         binding.ivCommentProfile.setOnClickListener {
             onClickUserProfileBtn(data.memberId)
         }
-    }
+
 
     private fun initLikedBtnCLickListener(data: CommentEntity) {
         with(binding) {
@@ -55,17 +55,17 @@ class HomeDetailCommentViewHolder(
         }
     }
 
-    private fun initKebabBtnClickListener(data: CommentEntity) {
+    private fun initKebabBtnClickListener(data: CommentEntity) =
         binding.btnCommentKebab.setOnClickListener {
             onClickKebabBtn(data, bindingAdapterPosition)
         }
-    }
 
-    private fun initGhostBtnClickListener(data: CommentEntity) {
+
+    private fun initGhostBtnClickListener(data: CommentEntity) =
         binding.ivCommentGhostFillGreen.setOnClickListener {
             onClickTransparentBtn(data)
         }
-    }
+
 
     private fun setFeedTransparent(memberGhostPercent: Int) {
         val color = Transparent().calculateColorWithOpacity(memberGhostPercent)

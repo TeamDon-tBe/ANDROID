@@ -39,11 +39,11 @@ class HomeFeedViewHolder(
         }
     }
 
-    private fun initProfileBtnClickListener(data: FeedEntity) {
+    private fun initProfileBtnClickListener(data: FeedEntity) =
         binding.ivHomeProfile.setOnClickListener {
             onClickUserProfileBtn(data.memberId)
         }
-    }
+
 
     private fun initLikedBtnCLickListener(data: FeedEntity) {
         with(binding) {
@@ -59,17 +59,17 @@ class HomeFeedViewHolder(
         }
     }
 
-    private fun initKebabBtnClickListener(data: FeedEntity) {
+    private fun initKebabBtnClickListener(data: FeedEntity) =
         binding.btnHomeKebab.setOnClickListener {
             onClickKebabBtn(data, bindingAdapterPosition)
         }
-    }
 
-    private fun initGhostBtnClickListener(data: FeedEntity) {
+
+    private fun initGhostBtnClickListener(data: FeedEntity) =
         binding.ivHomeGhostFillGreen.setOnClickListener {
             onClickTransparentBtn(data)
         }
-    }
+
 
     private fun setFeedTransparent(memberGhostPercent: Int) {
         val color = Transparent().calculateColorWithOpacity(memberGhostPercent)
