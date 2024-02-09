@@ -89,6 +89,7 @@
             <TextView
                 android:id="@+id/tv_comment_transparency"
                 android:layout_width="0dp"
+                setTransparencyAndTimeText="@{comment}"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
@@ -138,7 +139,6 @@
                 android:id="@+id/iv_comment_ghost_fill_green"
                 android:layout_width="44dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="16dp"
                 android:src="@drawable/ic_home_ghost_fill_green"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
@@ -161,12 +161,14 @@
                 android:id="@+id/btn_comment_heart"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="14dp"
                 android:background="@drawable/sel_home_heart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_comment_like_num" />
+                app:layout_constraintEnd_toStartOf="@id/tv_comment_like_num"
+                app:layout_constraintTop_toBottomOf="@id/tv_comment_content" />
 
             <TextView
                 android:id="@+id/tv_comment_like_num"
