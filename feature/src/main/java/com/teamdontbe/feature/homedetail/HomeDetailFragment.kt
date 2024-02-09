@@ -116,7 +116,8 @@ class HomeDetailFragment :
                 onTransparentBtnClick(
                     commentData.isGhost,
                     commentData.memberId,
-                    commentData.commentId
+                    commentData.commentId,
+                    "commentGhost"
                 )
             },
             onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
@@ -138,7 +139,8 @@ class HomeDetailFragment :
                 onTransparentBtnClick(
                     feedData.isGhost,
                     feedData.memberId,
-                    feedData.contentId
+                    feedData.contentId,
+                    "contentGhost"
                 )
             },
             onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
@@ -184,16 +186,17 @@ class HomeDetailFragment :
         else homeViewModel.postCommentLiked(id)
     }
 
-    private fun onTransparentBtnClick(isGhost: Boolean, memberId: Int, alarmTriggerId: Int?) {
+    private fun onTransparentBtnClick(isGhost: Boolean, memberId: Int, alarmTriggerId: Int?, alarmTriggerType: String) {
         if (isGhost) TransparentIsGhostSnackBar.make(binding.root).show()
-        else initTransparentDialog(memberId, alarmTriggerId ?: -1)
+        else initTransparentDialog(alarmTriggerType, memberId, alarmTriggerId ?: -1)
     }
 
     private fun initTransparentDialog(
+        alarmTriggerType: String,
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = TransparentDialogFragment(targetMemberId, alarmTriggerId)
+        val dialog = TransparentDialogFragment(alarmTriggerType, targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 

@@ -62,12 +62,13 @@ class HomeDataSourceImpl
         }
 
         override suspend fun postTransparent(
+            alarmTriggerType: String,
             targetMemberId: Int,
             alarmTriggerId: Int,
         ): BaseResponse<Unit> {
             return homeApiService.postTransparent(
                 RequestTransparentDto(
-                    "commentGhost",
+                    alarmTriggerType,
                     targetMemberId,
                     alarmTriggerId,
                 ),

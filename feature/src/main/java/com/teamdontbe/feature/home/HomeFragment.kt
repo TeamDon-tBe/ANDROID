@@ -101,7 +101,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = TransparentDialogFragment(targetMemberId, alarmTriggerId)
+        val dialog = TransparentDialogFragment("contentGhost", targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HOME_TRANSPARENT_DIALOG)
     }
 

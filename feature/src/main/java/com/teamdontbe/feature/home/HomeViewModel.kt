@@ -141,11 +141,12 @@ class HomeViewModel
             }
 
         fun postTransparent(
+            alarmTriggerType: String,
             targetMemberId: Int,
             alarmTriggerId: Int,
         ) = viewModelScope.launch {
             _postTransparent.emit(UiState.Loading)
-            homeRepository.postTransparent(targetMemberId, alarmTriggerId).collectLatest {
+            homeRepository.postTransparent(alarmTriggerType, targetMemberId, alarmTriggerId).collectLatest {
                 _postTransparent.emit(UiState.Success(it))
             }
         }
