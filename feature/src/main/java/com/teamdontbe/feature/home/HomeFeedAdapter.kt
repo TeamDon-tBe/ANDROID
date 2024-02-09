@@ -12,7 +12,7 @@ class HomeFeedAdapter(
     private val userId: Int,
     private val onClickToNavigateToHomeDetail: (FeedEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
-    private val onClickUserProfileBtn: (FeedEntity) -> Unit,
+    private val onClickUserProfileBtn: (Int) -> Unit,
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit,
     private val onClickTransparentBtn: (FeedEntity) -> Unit,
 ) : ListAdapter<FeedEntity, HomeFeedViewHolder>(
