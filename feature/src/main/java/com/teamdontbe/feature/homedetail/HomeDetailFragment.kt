@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -64,14 +65,14 @@ class HomeDetailFragment :
 
     override fun initView() {
         binding.root.context.hideKeyboard(binding.root)
-        getHomeDetail()
+        statusBarColorOf(R.color.white)
         observeGetFeedDetail()
+        getHomeDetail()
         observeGetCommentList()
         observeDeleteFeed()
         observeDeleteComment()
         observePostTransparent()
         observePostCommentPosting()
-        statusBarColorOf(R.color.white)
         initBackBtnClickListener()
         initEditText()
         initInputEditTextClickListener()
@@ -88,7 +89,6 @@ class HomeDetailFragment :
             homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
         } else {
             getHomeFeedDetailData()?.toFeedEntity()?.let {
-                Timber.tag("test").d(it.toString())
                 initHomeFeedAdapter(listOf(it))
                 contentId = it.contentId ?: return
                 homeViewModel.getCommentList(contentId)
