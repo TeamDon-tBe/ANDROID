@@ -10,6 +10,7 @@ import com.teamdontbe.feature.login.LoginActivity
 import com.teamdontbe.feature.login.LoginViewModel
 import com.teamdontbe.feature.signup.SignUpAgreeActivity
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_splash) {
@@ -24,14 +25,14 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         Handler().postDelayed(
             Runnable {
                 when {
-                    loginViewModel.getNickName().isNotBlank() && loginViewModel.checkLogin() -> {
+                    loginViewModel.getNickName().isNotBlank() && loginViewModel.getAccessToken()
+                        .isNotBlank() && loginViewModel.getRefreshToken()
+                        .isNotBlank() && loginViewModel.checkLogin() -> {
                         navigateTo<MainActivity>()
                     }
 
-                    loginViewModel.getNickName().isBlank() &&
-                        loginViewModel.getAccessToken()
-                            .isNotBlank()
-                    -> {
+                    loginViewModel.getNickName().isBlank() && loginViewModel.getAccessToken()
+                        .isNotBlank() && loginViewModel.getRefreshToken().isNotBlank() -> {
                         navigateTo<SignUpAgreeActivity>()
                     }
 
