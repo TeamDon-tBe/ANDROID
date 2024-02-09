@@ -145,7 +145,7 @@ class MyPageCommentFragment :
                     if (position == -2) {
                         TransparentIsGhostSnackBar.make(binding.root).show()
                     } else {
-                        initTransparentDialog(data.memberId, data.contentId ?: -1)
+                        initTransparentDialog(data.memberId, data.commentId)
                     }
                 },
             ).apply {
@@ -176,7 +176,7 @@ class MyPageCommentFragment :
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = MyPageTransparentDialogFragment(targetMemberId, alarmTriggerId)
+        val dialog = MyPageTransparentDialogFragment("commentGhost", targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 

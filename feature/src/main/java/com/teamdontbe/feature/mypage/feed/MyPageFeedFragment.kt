@@ -167,7 +167,7 @@ class MyPageFeedFragment :
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = MyPageTransparentDialogFragment(targetMemberId, alarmTriggerId)
+        val dialog = MyPageTransparentDialogFragment("contentGhost", targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 
