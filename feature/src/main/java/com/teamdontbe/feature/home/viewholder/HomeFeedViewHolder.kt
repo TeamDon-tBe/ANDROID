@@ -12,7 +12,7 @@ class HomeFeedViewHolder(
     private val userId: Int,
     private val onClickToNavigateToHomeDetail: (FeedEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
-    private val onClickUserProfileBtn: (FeedEntity) -> Unit,
+    private val onClickUserProfileBtn: (Int) -> Unit,
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit,
     private val onClickTransparentBtn: (FeedEntity) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
@@ -24,8 +24,8 @@ class HomeFeedViewHolder(
 
             if (data.isGhost) setFeedTransparent(-85) else setFeedTransparent(data.memberGhost)
 
-            ivHomeGhostFillGreen.isVisible = data.memberId == userId
-            ivHomeLinePale.isVisible = data.memberId == userId
+            ivHomeGhostFillGreen.isVisible = data.memberId !== userId
+            ivHomeLinePale.isVisible = data.memberId !== userId
             btnHomeHeart.isSelected = data.isLiked
 
             root.setOnClickListener {
@@ -41,7 +41,7 @@ class HomeFeedViewHolder(
 
     private fun initProfileBtnClickListener(data: FeedEntity) {
         binding.ivHomeProfile.setOnClickListener {
-            onClickUserProfileBtn(data)
+            onClickUserProfileBtn(data.memberId)
         }
     }
 
