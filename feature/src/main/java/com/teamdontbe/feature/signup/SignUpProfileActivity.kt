@@ -7,6 +7,8 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.context.colorOf
+import com.teamdontbe.core_ui.util.context.hideKeyboard
+import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
@@ -30,7 +32,22 @@ class SignUpProfileActivity :
         initDoubleBtnClickListener(flag)
         initMyPageStateObserve()
         initBackBtnClickListener(flag)
+        hideKeyboard()
+        requestFocusIntroduceEditText()
     }
+
+    private fun hideKeyboard() {
+        binding.clSignUpProfileRoot.setOnClickListener {
+            hideKeyboard(binding.root)
+        }
+    }
+
+    private fun requestFocusIntroduceEditText() =
+        with(binding) {
+            etSignUpAgreeIntroduce.setOnClickListener {
+                openKeyboard(etSignUpAgreeIntroduce)
+            }
+        }
 
     private fun initMyPageProfileAppBarTitle(): Int {
         return when {
@@ -68,6 +85,10 @@ class SignUpProfileActivity :
             val inputNickName = binding.etSignUpProfileNickname.text.toString()
             viewModel.getNickNameDoubleCheck(inputNickName)
             nextBtnObserve(inputNickName, flag)
+            when (flag) {
+                0 -> binding.etSignUpAgreeIntroduce.requestFocus()
+                1 -> hideKeyboard(binding.root)
+            }
         }
     }
 
