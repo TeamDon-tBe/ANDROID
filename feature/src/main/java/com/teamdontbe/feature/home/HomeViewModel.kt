@@ -53,6 +53,13 @@ class HomeViewModel
         private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
         val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
 
+        private val _openHomeDetail = MutableLiveData<Event<FeedEntity>>()
+        val openHomeDetail: LiveData<Event<FeedEntity>> = _openHomeDetail
+
+        fun openHomeDetail(feedEntity: FeedEntity) {
+            _openHomeDetail.value = Event(feedEntity)
+        }
+
         fun getFeedList() =
             viewModelScope.launch {
                 _getFeedList.value = UiState.Loading

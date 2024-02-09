@@ -18,6 +18,7 @@ import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
+import com.teamdontbe.feature.util.EventObserver
 import com.teamdontbe.feature.util.FeedItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -33,6 +34,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     override fun initView() {
         homeViewModel.getFeedList()
         observeFeedList()
+        observeOpenHomeDetail()
         observePostTransparentStatus()
         observeDeleteFeedStatus()
         initSwipeRefreshData()
@@ -59,7 +61,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             onClickLikedBtn = ::onLikedBtnClick,
             onClickTransparentBtn = ::onTransparentBtnClick,
             onClickUserProfileBtn = ::navigateToMyPageFragment,
-            onClickToNavigateToHomeDetail = ::navigateToHomeDetailFragment,
+            onClickToNavigateToHomeDetail = { feedData -> homeViewModel.openHomeDetail(feedData) },
             userId = homeViewModel.getMemberId()
         ).apply {
             submitList(feedListData)
@@ -103,18 +105,23 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         dialog.show(childFragmentManager, HOME_TRANSPARENT_DIALOG)
     }
 
-    private fun navigateToMyPageFragment(feedData: FeedEntity) {
-        feedData.contentId?.let {
-            findNavController().navigate(
-                R.id.action_fragment_home_to_fragment_my_page, bundleOf(KEY_FEED_DATA to it)
-            )
-        }
+    private fun navigateToMyPageFragment(memberId: Int) {
+        findNavController().navigate(
+            R.id.action_fragment_home_to_fragment_my_page,
+            bundleOf(KEY_FEED_DATA to memberId)
+        )
+    }
+
+    private fun observeOpenHomeDetail() {
+        homeViewModel.openHomeDetail.observe(viewLifecycleOwner, EventObserver {
+            navigateToHomeDetailFragment(it)
+        })
     }
 
     private fun navigateToHomeDetailFragment(feedData: FeedEntity) {
         findNavController().navigate(
             R.id.action_home_to_home_detail,
-            bundleOf(KEY_FEED_DATA to Feed(feedData)),
+            bundleOf(KEY_HOME_DETAIL_FEED to Feed(feedData)),
         )
     }
 
@@ -184,5 +191,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         const val HOME_BOTTOM_SHEET = "home_bottom_sheet"
         const val HOME_TRANSPARENT_DIALOG = "home_transparent_dialog"
         const val KEY_FEED_DATA = "key_feed_data"
+        const val KEY_HOME_DETAIL_FEED = "key_home_detail_feed"
     }
 }
