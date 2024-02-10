@@ -2,6 +2,7 @@ package com.teamdontbe.feature.signup
 
 import android.content.Intent
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -60,9 +61,8 @@ class SignUpProfileActivity :
             }
 
             intent.hasExtra(SIGN_UP_AGREE) -> {
-                binding.etSignUpAgreeIntroduce.visibility = View.INVISIBLE
-                binding.tvSignUpProfile.visibility = View.INVISIBLE
-                binding.tvSignUpProfileIntroduceNum.visibility = View.INVISIBLE
+                binding.groupSignUpIntroduce.visibility = View.INVISIBLE
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
                 1
             }
 
