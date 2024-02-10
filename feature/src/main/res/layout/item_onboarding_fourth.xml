@@ -80,6 +80,8 @@
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/gray_10"
+            android:textSelectHandleLeft="@drawable/shape_primary_fill_left10_rect"
+            android:textSelectHandleRight="@drawable/shape_primary_fill_right10_rect"
             app:layout_constraintEnd_toEndOf="@id/view_onboarding_fourth_background"
             app:layout_constraintStart_toStartOf="@id/view_onboarding_fourth_background"
             app:layout_constraintTop_toBottomOf="@id/tv_onboarding_fourth_nickname" />

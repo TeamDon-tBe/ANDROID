@@ -60,6 +60,8 @@
                 android:hint="@string/posting_content_hint"
                 android:maxLength="500"
                 android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+                android:textSelectHandleLeft="@drawable/shape_primary_fill_left10_rect"
+                android:textSelectHandleRight="@drawable/shape_primary_fill_right10_rect"
                 app:layout_constraintBottom_toTopOf="@id/view_posting_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_posting_profile_img"

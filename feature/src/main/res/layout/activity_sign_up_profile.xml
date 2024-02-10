@@ -69,6 +69,7 @@
 
         <EditText
             android:id="@+id/et_sign_up_profile_nickname"
+            style="@style/EditTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -84,6 +85,8 @@
             android:paddingVertical="12dp"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/black"
+            android:textSelectHandleLeft="@drawable/shape_primary_fill_left10_rect"
+            android:textSelectHandleRight="@drawable/shape_primary_fill_right10_rect"
             app:layout_constraintEnd_toStartOf="@id/btn_sign_up_profile_double_check"
             app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_17"
             app:layout_constraintTop_toBottomOf="@id/tv_sign_up_agree" />
@@ -147,6 +150,7 @@
 
         <EditText
             android:id="@+id/et_sign_up_agree_introduce"
+            style="@style/EditTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -162,6 +166,8 @@
             android:paddingVertical="12dp"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/black"
+            android:textSelectHandleLeft="@drawable/shape_primary_fill_left10_rect"
+            android:textSelectHandleRight="@drawable/shape_primary_fill_right10_rect"
             app:layout_constraintEnd_toEndOf="@id/guide_sign_up_end_17"
             app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_17"
             app:layout_constraintTop_toBottomOf="@id/tv_sign_up_profile" />
