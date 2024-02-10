@@ -20,12 +20,15 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
+import com.teamdontbe.core_ui.util.fragment.colorOf
+import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
+import com.teamdontbe.feature.databinding.FragmentPostingBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
@@ -413,64 +416,32 @@ class HomeDetailFragment :
 
                 when {
                     bottomsheetHomeDetail.etCommentContent.text.toString().length in 1..499 -> {
-                        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progressDrawable =
-                            context?.drawableOf(R.drawable.shape_primary_line_10_ring)
-                        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progress =
-                            bottomsheetHomeDetail.etCommentContent.text.toString().length
-
-                        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.backgroundTintList =
-                            ColorStateList.valueOf(
-                                ContextCompat.getColor(
-                                    binding.root.context,
-                                    R.color.primary,
-                                ),
-                            )
-                        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setTextColor(
-                            ContextCompat.getColor(
-                                binding.root.context,
-                                R.color.black,
-                            ),
-                        )
-                        initUploadingBtnClickListener()
+                        updateProgress(
+                            R.drawable.shape_primary_line_10_ring,
+                            bottomsheetHomeDetail.etCommentContent.text.toString().length,
+                            R.color.primary,
+                            R.color.black,
+                        ) {
+                            initUploadingBtnClickListener()
+                        }
                     }
 
                     bottomsheetHomeDetail.etCommentContent.text.toString().length >= 500 -> {
-                        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progressDrawable =
-                            context?.drawableOf(R.drawable.shape_error_line_10_ring)
-                        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progress =
-                            bottomsheetHomeDetail.etCommentContent.text.toString().length
-
-                        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.backgroundTintList =
-                            ColorStateList.valueOf(
-                                ContextCompat.getColor(
-                                    binding.root.context,
-                                    R.color.gray_3,
-                                ),
-                            )
-                        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setTextColor(
-                            ContextCompat.getColor(
-                                binding.root.context,
-                                R.color.gray_9,
-                            ),
-                        )
-                        initUploadingBtnClickListener()
+                        updateProgress(
+                            R.drawable.shape_error_line_10_ring,
+                            bottomsheetHomeDetail.etCommentContent.text.toString().length,
+                            R.color.gray_3,
+                            R.color.gray_9,
+                        ) {}
                     }
 
                     else -> {
-                        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progress = 0
-                        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.backgroundTintList =
-                            ColorStateList.valueOf(
-                                ContextCompat.getColor(
-                                    binding.root.context,
-                                    R.color.gray_3,
-                                ),
-                            )
-                        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setTextColor(
-                            ContextCompat.getColor(
-                                binding.root.context,
-                                R.color.gray_9,
-                            ),
-                        )
+                        updateProgress(
+                            R.drawable.shape_primary_line_10_ring,
+                            0,
+                            R.color.gray_3,
+                            R.color.gray_9,
+                        ) {}
                     }
                 }
                 bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.startAnimation(
@@ -482,6 +453,26 @@ class HomeDetailFragment :
                 ) {}
             }
         }
+    }
+
+    private fun FragmentHomeDetailBinding.updateProgress(
+        progressDrawableResId: Int,
+        textLength: Int,
+        backgroundTintResId: Int,
+        textColorResId: Int,
+        clickListener: () -> Unit,
+    ) {
+        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progressDrawable = drawableOf(progressDrawableResId)
+        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progress = textLength
+
+        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.backgroundTintList =
+            ColorStateList.valueOf(
+                colorOf(backgroundTintResId),
+            )
+        bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setTextColor(
+            colorOf(textColorResId),
+        )
+        clickListener.invoke()
     }
 
     private fun initUploadingBtnClickListener() {
