@@ -269,6 +269,7 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_sign_up_next_gray_24"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/mcv_sign_up_agree_green_child_3"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintStart_toEndOf="@id/mcv_sign_up_agree_green_child_3"
@@ -294,13 +295,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="11dp"
+            android:breakStrategy="simple"
+            android:hyphenationFrequency="none"
+            android:includeFontPadding="false"
             android:text="@string/sign_up_agree_child_4"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_16"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@id/cb_sign_up_child_4"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBaseline_toBaselineOf="@id/cb_sign_up_child_4"
             app:layout_constraintEnd_toStartOf="@id/mcv_sign_up_agree_green_child_4"
-            app:layout_constraintStart_toEndOf="@id/cb_sign_up_child_4"
-            app:layout_constraintTop_toTopOf="@id/cb_sign_up_child_4" />
+            app:layout_constraintStart_toEndOf="@id/cb_sign_up_child_4" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/mcv_sign_up_agree_green_child_4"
@@ -309,10 +313,10 @@
             android:layout_marginStart="4dp"
             app:cardBackgroundColor="@color/pale"
             app:cardCornerRadius="6dp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_child_4"
+            app:layout_constraintBottom_toBottomOf="@id/cb_sign_up_child_4"
             app:layout_constraintEnd_toStartOf="@id/btn_sign_up_agree_child_4"
             app:layout_constraintStart_toEndOf="@id/tv_sign_up_child_4"
-            app:layout_constraintTop_toTopOf="@id/tv_sign_up_child_4"
+            app:layout_constraintTop_toTopOf="@id/cb_sign_up_child_4"
             app:strokeWidth="0dp">
 
             <TextView
@@ -332,7 +336,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="23dp"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
@@ -340,7 +344,6 @@
             app:layout_constraintBottom_toBottomOf="@id/mcv_sign_up_agree_green_child_4"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@id/mcv_sign_up_agree_green_child_4"
             app:layout_constraintTop_toTopOf="@id/mcv_sign_up_agree_green_child_4" />
 
