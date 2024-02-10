@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -13,8 +12,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.teamdontbe.core_ui.base.BindingFragment
-import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.core_ui.util.context.pxToDp
+import com.teamdontbe.core_ui.util.fragment.colorOf
+import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.R
@@ -80,10 +80,14 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         binding.tvPostingProfileNickname.text = postingViewModel.getNickName()
         Timber.tag("user")
             .d("shared preference에서 받아오는 사용자 profile img url : ${postingViewModel.getMemberProfileUrl()}")
-        binding.ivPostingProfileImg.load(postingViewModel.getMemberProfileUrl())
-//                binding.ivPostingProfileImg.load(
-//            """https:\\github.com\TeamDon-tBe\SERVER\assets\97835512\fb3ea04c-661e-4221-a837-854d66cdb77e""",
-//        )
+
+        if (postingViewModel.getMemberProfileUrl() == "") {
+            binding.ivPostingProfileImg.load(
+                """https:\\github.com\TeamDon-tBe\SERVER\assets\97835512\fb3ea04c-661e-4221-a837-854d66cdb77e""",
+            )
+        } else {
+            binding.ivPostingProfileImg.load(postingViewModel.getMemberProfileUrl())
+        }
     }
 
     private fun initAnimation() {
@@ -157,7 +161,6 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                         ) {
                             initUploadingActivateBtnClickListener()
                         }
-                        postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}
                     }
 
                     etPostingContent.text.toString().length >= 500 -> {
@@ -195,22 +198,15 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         textColorResId: Int,
         clickListener: () -> Unit,
     ) {
-        pbPostingInput.progressDrawable =
-            context?.drawableOf(progressDrawableResId)
+        pbPostingInput.progressDrawable = drawableOf(progressDrawableResId)
         pbPostingInput.progress = textLength
 
         btnPostingUpload.backgroundTintList =
             ColorStateList.valueOf(
-                ContextCompat.getColor(
-                    root.context,
-                    backgroundTintResId,
-                ),
+                colorOf(backgroundTintResId),
             )
         btnPostingUpload.setTextColor(
-            ContextCompat.getColor(
-                root.context,
-                textColorResId,
-            ),
+            colorOf(textColorResId),
         )
         clickListener.invoke()
     }
