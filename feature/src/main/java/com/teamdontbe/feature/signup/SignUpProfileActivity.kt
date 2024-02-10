@@ -144,6 +144,7 @@ class SignUpProfileActivity :
                     )
                     when (flag) {
                         0 -> {
+                            viewModel.setUserNickName(inputNickName)
                             finish()
                         }
 
