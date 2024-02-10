@@ -4,23 +4,21 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.teamdontbe.core_ui.base.BindingFragment
-import com.teamdontbe.core_ui.util.context.drawableOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
+import com.teamdontbe.core_ui.util.fragment.colorOf
+import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.CommentEntity
@@ -186,7 +184,12 @@ class HomeDetailFragment :
         else homeViewModel.postCommentLiked(id)
     }
 
-    private fun onTransparentBtnClick(isGhost: Boolean, memberId: Int, alarmTriggerId: Int?, alarmTriggerType: String) {
+    private fun onTransparentBtnClick(
+        isGhost: Boolean,
+        memberId: Int,
+        alarmTriggerId: Int?,
+        alarmTriggerType: String
+    ) {
         if (isGhost) TransparentIsGhostSnackBar.make(binding.root).show()
         else initTransparentDialog(alarmTriggerType, memberId, alarmTriggerId ?: -1)
     }
@@ -348,8 +351,8 @@ class HomeDetailFragment :
             val textLength = text?.length ?: 0
 
             val progressBarDrawableId = getProgressBarDrawableId(textLength)
-            val btnBackgroundTint = getButtonBackgroundTint(textLength, binding.root.context)
-            val btnTextColor = getButtonTextColor(textLength, binding.root.context)
+            val btnBackgroundTint = getButtonBackgroundTint(textLength)
+            val btnTextColor = getButtonTextColor(textLength)
 
             updateUploadBar(textLength, progressBarDrawableId, btnBackgroundTint, btnTextColor)
             initUploadingBtnClickListener()
@@ -358,29 +361,16 @@ class HomeDetailFragment :
         }
     }
 
-    private fun getProgressBarDrawableId(textLength: Int): Int {
-        return if (textLength >= MAX_COMMENT_LENGTH) {
-            R.drawable.shape_error_line_10_ring
-        } else {
-            R.drawable.shape_primary_line_10_ring
-        }
-    }
+    private fun getProgressBarDrawableId(textLength: Int): Int =
+        if (textLength >= MAX_COMMENT_LENGTH) R.drawable.shape_error_line_10_ring else R.drawable.shape_primary_line_10_ring
 
-    private fun getButtonBackgroundTint(textLength: Int, context: Context): ColorStateList {
-        return if (textLength >= MAX_COMMENT_LENGTH) {
-            ColorStateList.valueOf(ContextCompat.getColor(context, R.color.gray_3))
-        } else {
-            ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primary))
-        }
-    }
+    private fun getButtonBackgroundTint(textLength: Int): ColorStateList =
+        if (textLength >= MAX_COMMENT_LENGTH) ColorStateList.valueOf(colorOf(R.color.gray_3)) else ColorStateList.valueOf(
+            colorOf(R.color.primary)
+        )
 
-    private fun getButtonTextColor(textLength: Int, context: Context): Int {
-        return if (textLength >= MAX_COMMENT_LENGTH) {
-            ContextCompat.getColor(context, R.color.gray_9)
-        } else {
-            Color.BLACK
-        }
-    }
+    private fun getButtonTextColor(textLength: Int): Int =
+        if (textLength >= MAX_COMMENT_LENGTH) colorOf(R.color.gray_9) else colorOf(R.color.black)
 
     private fun updateUploadBar(
         textLength: Int,
@@ -388,12 +378,13 @@ class HomeDetailFragment :
         btnBackgroundTint: ColorStateList,
         btnTextColor: Int
     ) {
-        val uploadBar = binding.bottomsheetHomeDetail.layoutUploadBar
-        uploadBar.pbUploadBarInput.progressDrawable =
-            uploadBar.root.context.drawableOf(progressBarDrawableId)
-        uploadBar.pbUploadBarInput.progress = textLength
-        uploadBar.btnUploadBarUpload.backgroundTintList = btnBackgroundTint
-        uploadBar.btnUploadBarUpload.setTextColor(btnTextColor)
+        with(binding.bottomsheetHomeDetail.layoutUploadBar) {
+            pbUploadBarInput.progressDrawable =
+                drawableOf(progressBarDrawableId)
+            pbUploadBarInput.progress = textLength
+            btnUploadBarUpload.backgroundTintList = btnBackgroundTint
+            btnUploadBarUpload.setTextColor(btnTextColor)
+        }
     }
 
     private fun startProgressBarAnimation(textLength: Int) {
