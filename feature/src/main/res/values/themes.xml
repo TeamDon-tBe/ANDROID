@@ -2,7 +2,8 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.DontBe" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/secondary</item>
         <item name="android:windowBackground">@color/gray_1</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -20,8 +21,9 @@
     </style>
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
-        <item name="android:textColorHighlight">@color/primary</item>
         <item name="android:colorControlActivated">@color/primary</item>
+        <item name="android:textSelectHandle">@color/primary</item>
+        <item name="android:textColorHighlight">@color/primary</item>
         <item name="android:textCursorDrawable">@color/primary</item>
     </style>
 </resources>
