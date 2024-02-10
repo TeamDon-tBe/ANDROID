@@ -7,7 +7,6 @@ import android.content.res.ColorStateList
 import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
@@ -28,7 +27,6 @@ import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
-import com.teamdontbe.feature.databinding.FragmentPostingBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
@@ -415,7 +413,7 @@ class HomeDetailFragment :
                     )
 
                 when {
-                    bottomsheetHomeDetail.etCommentContent.text.toString().length in 1..499 -> {
+                    bottomsheetHomeDetail.etCommentContent.text.toString().length in PostingFragment.POSTING_MIN..PostingFragment.POSTING_MAX -> {
                         updateProgress(
                             R.drawable.shape_primary_line_10_ring,
                             bottomsheetHomeDetail.etCommentContent.text.toString().length,
@@ -426,7 +424,7 @@ class HomeDetailFragment :
                         }
                     }
 
-                    bottomsheetHomeDetail.etCommentContent.text.toString().length >= 500 -> {
+                    bottomsheetHomeDetail.etCommentContent.text.toString().length >= PostingFragment.POSTING_MAX + 1 -> {
                         updateProgress(
                             R.drawable.shape_error_line_10_ring,
                             bottomsheetHomeDetail.etCommentContent.text.toString().length,
@@ -466,7 +464,8 @@ class HomeDetailFragment :
         textColorResId: Int,
         clickListener: () -> Unit,
     ) {
-        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progressDrawable = drawableOf(progressDrawableResId)
+        bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progressDrawable =
+            drawableOf(progressDrawableResId)
         bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.progress = textLength
 
         bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.backgroundTintList =

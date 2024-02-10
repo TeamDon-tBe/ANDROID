@@ -52,7 +52,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
-                    if (it.data.memberGhost == -85) {
+                    if (it.data.memberGhost == TRANSPARENT_LIMIT) {
                         val dialog = PostingRestrictionDialogFragment()
                         dialog.show(childFragmentManager, BAN_POSTING)
                     } else {
@@ -152,7 +152,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                     )
 
                 when {
-                    etPostingContent.text.toString().length in 1..499 -> {
+                    etPostingContent.text.toString().length in POSTING_MIN..POSTING_MAX -> {
                         updateProgress(
                             R.drawable.shape_primary_line_10_ring,
                             etPostingContent.text.toString().length,
@@ -163,7 +163,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                         }
                     }
 
-                    etPostingContent.text.toString().length >= 500 -> {
+                    etPostingContent.text.toString().length >= POSTING_MAX + 1 -> {
                         updateProgress(
                             R.drawable.shape_error_line_10_ring,
                             etPostingContent.text.toString().length,
@@ -214,5 +214,8 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     companion object {
         const val DELETE_POSTING = "delete_posting"
         const val BAN_POSTING = "ban_posting"
+        const val POSTING_MIN = 1
+        const val POSTING_MAX = 499
+        const val TRANSPARENT_LIMIT = -85
     }
 }
