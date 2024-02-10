@@ -422,7 +422,7 @@ class HomeDetailFragment :
                             R.color.primary,
                             R.color.black,
                         ) {
-                            initUploadingBtnClickListener()
+                            initUploadingActivateBtnClickListener()
                         }
                     }
 
@@ -432,7 +432,9 @@ class HomeDetailFragment :
                             bottomsheetHomeDetail.etCommentContent.text.toString().length,
                             R.color.gray_3,
                             R.color.gray_9,
-                        ) {}
+                        ) {
+                            initUploadingDeactivateBtnClickListener()
+                        }
                     }
 
                     else -> {
@@ -441,7 +443,9 @@ class HomeDetailFragment :
                             0,
                             R.color.gray_3,
                             R.color.gray_9,
-                        ) {}
+                        ) {
+                            initUploadingDeactivateBtnClickListener()
+                        }
                     }
                 }
                 bottomsheetHomeDetail.layoutUploadBar.pbUploadBarInput.startAnimation(
@@ -475,7 +479,11 @@ class HomeDetailFragment :
         clickListener.invoke()
     }
 
-    private fun initUploadingBtnClickListener() {
+    private fun initUploadingDeactivateBtnClickListener() {
+        binding.bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setOnClickListener {}
+    }
+
+    private fun initUploadingActivateBtnClickListener() {
         binding.bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
             homeViewModel.postCommentPosting(
                 contentId,
