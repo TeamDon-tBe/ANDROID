@@ -50,23 +50,25 @@ class SignUpProfileActivity :
             }
         }
 
-    private fun initMyPageProfileAppBarTitle(): Int {
-        return when {
+    private fun initMyPageProfileAppBarTitle(): String {
+        when {
             intent.getStringExtra(MY_PAGE_PROFILE) != null -> {
                 val myPageAppBarTitle =
                     intent.getStringExtra(MY_PAGE_PROFILE) ?: getString(R.string.my_page_nickname)
                 binding.appbarSignUp.tvAppbarTitle.text = myPageAppBarTitle
                 binding.btnSignUpAgreeNext.text = getString(R.string.my_page_profile_edit_completed)
-                0
+
+                return MY_PAGE_PROFILE
             }
 
             intent.hasExtra(SIGN_UP_AGREE) -> {
                 binding.groupSignUpIntroduce.visibility = View.INVISIBLE
                 window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-                1
+                
+                return SIGN_UP_AGREE
             }
 
-            else -> 1
+            else -> return SIGN_UP_AGREE
         }
     }
 
@@ -80,14 +82,14 @@ class SignUpProfileActivity :
         }
     }
 
-    private fun initDoubleBtnClickListener(flag: Int) {
+    private fun initDoubleBtnClickListener(flag: String) {
         binding.btnSignUpProfileDoubleCheck.setOnClickListener {
             val inputNickName = binding.etSignUpProfileNickname.text.toString()
             viewModel.getNickNameDoubleCheck(inputNickName)
             nextBtnObserve(inputNickName, flag)
             when (flag) {
-                0 -> binding.etSignUpAgreeIntroduce.requestFocus()
-                1 -> hideKeyboard(binding.root)
+                MY_PAGE_PROFILE -> binding.etSignUpAgreeIntroduce.requestFocus()
+                SIGN_UP_AGREE -> hideKeyboard(binding.root)
             }
         }
     }
@@ -130,7 +132,7 @@ class SignUpProfileActivity :
 
     private fun nextBtnObserve(
         inputNickName: String,
-        flag: Int,
+        flag: String,
     ) {
         binding.btnSignUpAgreeNext.setOnClickListener {
             val allowedCheck = intent.getBooleanExtra(SIGN_UP_AGREE, false)
@@ -143,12 +145,12 @@ class SignUpProfileActivity :
                         null,
                     )
                     when (flag) {
-                        0 -> {
+                        MY_PAGE_PROFILE -> {
                             viewModel.setUserNickName(inputNickName)
                             finish()
                         }
 
-                        1 -> {
+                        SIGN_UP_AGREE -> {
                             viewModel.setUserNickName(inputNickName)
 
                             val userProfile =
@@ -183,9 +185,9 @@ class SignUpProfileActivity :
         finish()
     }
 
-    private fun initBackBtnClickListener(flag: Int) {
+    private fun initBackBtnClickListener(flag: String) {
         when (flag) {
-            0 -> {
+            MY_PAGE_PROFILE -> {
                 binding.appbarSignUp.btnAppbarBack.setOnClickListener {
                     // 이전 프레그먼트로 돌아가는 코드
                     onBackPressedDispatcher.onBackPressed()
@@ -193,7 +195,7 @@ class SignUpProfileActivity :
                 }
             }
 
-            1 -> {
+            SIGN_UP_AGREE -> {
                 binding.appbarSignUp.btnAppbarBack.setOnClickListener {
                     finish()
                 }
