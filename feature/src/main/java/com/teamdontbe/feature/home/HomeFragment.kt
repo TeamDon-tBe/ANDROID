@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.ErrorActivity
@@ -33,6 +34,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private var deleteFeedPosition: Int = -1
 
     override fun initView() {
+        statusBarColorOf(R.color.gray_1)
         homeViewModel.getFeedList()
         observeFeedList()
         observeOpenHomeDetail()
