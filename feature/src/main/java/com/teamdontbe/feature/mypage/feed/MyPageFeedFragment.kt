@@ -13,6 +13,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.home.HomeFragment
+import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.ALARM_TRIGGER_TYPE_CONTENT
 import com.teamdontbe.feature.mypage.MyPageFragment.Companion.MY_PAGE_ANOTHER_BOTTOM_SHEET
 import com.teamdontbe.feature.mypage.MyPageModel
 import com.teamdontbe.feature.mypage.MyPageViewModel
@@ -167,7 +168,7 @@ class MyPageFeedFragment :
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = MyPageTransparentDialogFragment("contentGhost", targetMemberId, alarmTriggerId)
+        val dialog = MyPageTransparentDialogFragment(ALARM_TRIGGER_TYPE_CONTENT, targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 

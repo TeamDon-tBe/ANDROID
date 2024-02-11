@@ -115,7 +115,7 @@ class HomeDetailFragment :
                     commentData.isGhost,
                     commentData.memberId,
                     commentData.commentId,
-                    "commentGhost"
+                    ALARM_TRIGGER_TYPE_COMMENT
                 )
             },
             onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
@@ -138,7 +138,7 @@ class HomeDetailFragment :
                     feedData.isGhost,
                     feedData.memberId,
                     feedData.contentId,
-                    "contentGhost"
+                    ALARM_TRIGGER_TYPE_CONTENT
                 )
             },
             onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
@@ -330,6 +330,7 @@ class HomeDetailFragment :
         binding.tvHomeDetailInput.setOnClickListener {
             binding.bottomsheetHomeDetail.etCommentContent.text.clear()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheetBehavior.isDraggable = false
 
             val inputMethodManager =
                 requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -426,12 +427,13 @@ class HomeDetailFragment :
         bottomSheetBehavior.peekHeight = 0
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         bottomSheetBehavior.skipCollapsed = true
-        bottomSheetBehavior.isFitToContents = true
     }
 
     companion object {
         const val HOME_DETAIL_BOTTOM_SHEET = "home_detail_bottom_sheet"
         const val MAX_COMMENT_LENGTH = 500
         const val COMMENT_DEBOUNCE_DELAY = 1000L
+        const val ALARM_TRIGGER_TYPE_COMMENT = "commentGhost"
+        const val ALARM_TRIGGER_TYPE_CONTENT = "contentGhost"
     }
 }

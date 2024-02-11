@@ -16,6 +16,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
+import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.ALARM_TRIGGER_TYPE_CONTENT
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.EventObserver
@@ -101,7 +102,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = TransparentDialogFragment("contentGhost", targetMemberId, alarmTriggerId)
+        val dialog = TransparentDialogFragment(ALARM_TRIGGER_TYPE_CONTENT, targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HOME_TRANSPARENT_DIALOG)
     }
 
