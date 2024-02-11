@@ -64,15 +64,15 @@ class HomeViewModel
             viewModelScope.launch {
                 _getFeedList.value = UiState.Loading
                 homeRepository.getFeedList().collectLatest {
-                    if (it != null) _getFeedList.value = UiState.Success(it) else UiState.Empty
+                    if (it != null) _getFeedList.value = UiState.Success(it) else UiState.Failure("null")
                 }
             }
 
         fun getFeedDetail(contentId: Int) =
             viewModelScope.launch {
                 _getFeedDetail.emit(UiState.Loading)
-                homeRepository.getFeedLDetail(contentId).collect {
-                    if(it!=null) _getFeedDetail.emit(UiState.Success(it)) else UiState.Empty
+                homeRepository.getFeedLDetail(contentId).collectLatest {
+                    if(it!=null) _getFeedDetail.emit(UiState.Success(it)) else UiState.Failure("null")
                 }
             }
 
@@ -80,7 +80,7 @@ class HomeViewModel
             viewModelScope.launch {
                 _getCommentList.value = UiState.Loading
                 homeRepository.getCommentList(contentId).collectLatest {
-                    if (it != null) _getCommentList.value = UiState.Success(it) else UiState.Empty
+                    if (it != null) _getCommentList.value = UiState.Success(it) else UiState.Failure("null")
                 }
             }
 
