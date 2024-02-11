@@ -1,6 +1,5 @@
 package com.teamdontbe.feature.homedetail
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -46,7 +45,6 @@ import com.teamdontbe.feature.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeDetailFragment :
@@ -346,17 +344,15 @@ class HomeDetailFragment :
         }
     }
 
-    @SuppressLint("ResourceAsColor")
     private fun initEditText() {
         binding.bottomsheetHomeDetail.etCommentContent.doAfterTextChanged { text ->
             val textLength = text?.length ?: 0
-
             val progressBarDrawableId = getProgressBarDrawableId(textLength)
             val btnBackgroundTint = getButtonBackgroundTint(textLength)
             val btnTextColor = getButtonTextColor(textLength)
 
             updateUploadBar(textLength, progressBarDrawableId, btnBackgroundTint, btnTextColor)
-            initUploadingBtnClickListener()
+            initUploadingBtnClickListener(textLength)
             startProgressBarAnimation(textLength)
             debounceComment(text.toString())
         }
@@ -402,18 +398,20 @@ class HomeDetailFragment :
         commentDebouncer.setDelay(commentText, COMMENT_DEBOUNCE_DELAY) {}
     }
 
-    private fun initUploadingBtnClickListener() {
+    private fun initUploadingBtnClickListener(textLength: Int) {
         binding.bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
-            homeViewModel.postCommentPosting(
-                contentId,
-                binding.bottomsheetHomeDetail.etCommentContent.text.toString(),
-            )
+            if (textLength < MAX_COMMENT_LENGTH) {
+                homeViewModel.postCommentPosting(
+                    contentId,
+                    binding.bottomsheetHomeDetail.etCommentContent.text.toString(),
+                )
+            }
         }
     }
 
     private fun initAppbarCancelClickListener() {
         binding.bottomsheetHomeDetail.tvCommentAppbarCancel.setOnClickListener {
-            val dialog = DeleteDialogFragment("작성한 답글을 삭제하시겠어요?")
+            val dialog = DeleteDialogFragment(getString(R.string.comment_delete_dialog))
             dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
         }
     }

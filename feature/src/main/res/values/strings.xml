@@ -39,6 +39,7 @@
     <string name="posting_delete_dialog">작성한 글을 삭제하시겠어요?</string>
     <string name="delete_dialog_cancel">취소</string>
     <string name="delete_dialog_delete">삭제</string>
+    <string name="comment_delete_dialog">작성한 답글을 삭제하시겠어요?</string>
 
     <!-- onboarding -->
     <string name="content_description_iv_onboarding_back">뒤로가기 입니다.</string>
