@@ -29,8 +29,8 @@ class HomeViewModel
         private val _getFeedList = MutableStateFlow<UiState<List<FeedEntity>>>(UiState.Empty)
         val getFeedList: StateFlow<UiState<List<FeedEntity>>> = _getFeedList
 
-        private val _getFeedDetail = MutableStateFlow<UiState<FeedEntity>>(UiState.Empty)
-        val getFeedDetail: StateFlow<UiState<FeedEntity>> = _getFeedDetail
+        private val _getFeedDetail = MutableSharedFlow<UiState<FeedEntity>>()
+        val getFeedDetail: SharedFlow<UiState<FeedEntity>> = _getFeedDetail
 
         private val _getCommentList = MutableStateFlow<UiState<List<CommentEntity>>>(UiState.Empty)
         val getCommentList: StateFlow<UiState<List<CommentEntity>>> = _getCommentList
@@ -70,9 +70,9 @@ class HomeViewModel
 
         fun getFeedDetail(contentId: Int) =
             viewModelScope.launch {
-                _getFeedDetail.value = UiState.Loading
-                homeRepository.getFeedLDetail(contentId).collectLatest {
-                    if (it != null) _getFeedDetail.value = UiState.Success(it) else UiState.Empty
+                _getFeedDetail.emit(UiState.Loading)
+                homeRepository.getFeedLDetail(contentId).collect {
+                    if(it!=null) _getFeedDetail.emit(UiState.Success(it)) else UiState.Empty
                 }
             }
 
