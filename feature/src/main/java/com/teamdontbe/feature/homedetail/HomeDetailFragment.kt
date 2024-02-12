@@ -326,7 +326,6 @@ class HomeDetailFragment :
 
     private fun initInputEditTextClickListener() {
         binding.tvHomeDetailInput.setOnClickListener {
-            binding.bottomsheetHomeDetail.etCommentContent.text.clear()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             bottomSheetBehavior.isDraggable = false
 
@@ -362,12 +361,15 @@ class HomeDetailFragment :
         if (textLength >= MAX_COMMENT_LENGTH) R.drawable.shape_error_line_10_ring else R.drawable.shape_primary_line_10_ring
 
     private fun getButtonBackgroundTint(textLength: Int): ColorStateList =
-        if (textLength >= MAX_COMMENT_LENGTH) ColorStateList.valueOf(colorOf(R.color.gray_3)) else ColorStateList.valueOf(
+        if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH) ColorStateList.valueOf(
             colorOf(R.color.primary)
-        )
+        ) else ColorStateList.valueOf(colorOf(R.color.gray_3))
+
 
     private fun getButtonTextColor(textLength: Int): Int =
-        if (textLength >= MAX_COMMENT_LENGTH) colorOf(R.color.gray_9) else colorOf(R.color.black)
+        if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH) colorOf(R.color.black) else colorOf(
+            R.color.gray_9
+        )
 
     private fun updateUploadBar(
         textLength: Int,
@@ -400,7 +402,7 @@ class HomeDetailFragment :
 
     private fun initUploadingBtnClickListener(textLength: Int) {
         binding.bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
-            if (textLength < MAX_COMMENT_LENGTH) {
+            if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH) {
                 homeViewModel.postCommentPosting(
                     contentId,
                     binding.bottomsheetHomeDetail.etCommentContent.text.toString(),
@@ -430,6 +432,7 @@ class HomeDetailFragment :
     companion object {
         const val HOME_DETAIL_BOTTOM_SHEET = "home_detail_bottom_sheet"
         const val MAX_COMMENT_LENGTH = 500
+        const val MIN_COMMENT_LENGTH = 1
         const val COMMENT_DEBOUNCE_DELAY = 1000L
         const val ALARM_TRIGGER_TYPE_COMMENT = "commentGhost"
         const val ALARM_TRIGGER_TYPE_CONTENT = "contentGhost"
