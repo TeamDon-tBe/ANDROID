@@ -20,6 +20,7 @@ import com.teamdontbe.core_ui.util.fragment.colorOf
 import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.ErrorActivity
@@ -401,7 +402,7 @@ class HomeDetailFragment :
     }
 
     private fun initUploadingBtnClickListener(textLength: Int) {
-        binding.bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
+        binding.bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setOnDuplicateBlockClick {
             if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH) {
                 homeViewModel.postCommentPosting(
                     contentId,
