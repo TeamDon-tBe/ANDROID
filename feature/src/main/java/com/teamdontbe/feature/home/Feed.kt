@@ -18,6 +18,20 @@ data class Feed(
     val time: String,
     val contentId: Int? = null,
 ) : Parcelable {
+    constructor(feedEntity: FeedEntity) : this(
+        feedEntity.memberId,
+        feedEntity.memberProfileUrl,
+        feedEntity.memberNickname,
+        feedEntity.isLiked,
+        feedEntity.isGhost,
+        feedEntity.memberGhost,
+        feedEntity.contentLikedNumber,
+        feedEntity.commentNumber,
+        feedEntity.contentText,
+        feedEntity.time,
+        feedEntity.contentId
+    )
+
     fun toFeedEntity() =
         FeedEntity(
             memberId,

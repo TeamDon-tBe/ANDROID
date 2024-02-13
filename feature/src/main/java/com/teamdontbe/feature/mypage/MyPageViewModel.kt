@@ -121,10 +121,11 @@ class MyPageViewModel
     }
 
     fun postTransparent(
+        alarmTriggerType: String,
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) = viewModelScope.launch {
-        homeRepository.postTransparent(targetMemberId, alarmTriggerId).collectLatest {
+        homeRepository.postTransparent(alarmTriggerType, targetMemberId, alarmTriggerId).collectLatest {
             _postTransparent.emit(UiState.Success(it))
         }
         _postTransparent.emit(UiState.Loading)

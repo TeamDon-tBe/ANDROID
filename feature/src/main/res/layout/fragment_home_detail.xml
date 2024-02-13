@@ -90,7 +90,7 @@
                     android:background="@drawable/shape_pale_fill_38_rect"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    android:text="@string/et_home_detail_input"
+                    android:text="@{feed.memberNickname + `님에게 답글 남기기`}"
                     android:textAppearance="@style/TextAppearance.DontBe.cap_regular_13"
                     android:textColor="@color/gray_9"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -113,6 +113,7 @@
 
         <include
             android:id="@+id/bottomsheet_home_detail"
-            layout="@layout/bottomsheet_comment" />
+            layout="@layout/bottomsheet_comment"
+            app:feed="@{feed}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

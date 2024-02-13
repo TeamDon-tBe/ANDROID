@@ -30,6 +30,7 @@ interface HomeDataSource {
     suspend fun deleteCommentLiked(commentId: Int): BaseResponse<Unit>
 
     suspend fun postTransparent(
+        alarmTriggerType: String,
         targetMemberId: Int,
         alarmTriggerId: Int,
     ): BaseResponse<Unit>
