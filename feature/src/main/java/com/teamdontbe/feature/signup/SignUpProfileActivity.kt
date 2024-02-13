@@ -174,7 +174,7 @@ class SignUpProfileActivity :
             inputNickName,
             allowedCheck,
             inputNickName,
-            "",
+            null,
         )
     }
 

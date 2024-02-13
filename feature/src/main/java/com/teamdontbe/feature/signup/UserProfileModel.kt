@@ -8,5 +8,5 @@ data class UserProfileModel(
     val nickName: String,
     val allowedCheck: Boolean,
     val introduce: String,
-    val imgUrl: String,
+    val imgUrl: String?,
 ) : Parcelable
