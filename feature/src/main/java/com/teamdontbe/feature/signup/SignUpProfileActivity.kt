@@ -29,7 +29,7 @@ class SignUpProfileActivity :
         initUpdateErrorMessage()
         initDoubleBtnClickListener(flag)
         initMyPageStateObserve()
-        initBackBtnClickListenr(flag)
+        initBackBtnClickListener(flag)
     }
 
     private fun initMyPageProfileAppBarTitle(): Int {
@@ -97,17 +97,22 @@ class SignUpProfileActivity :
         }.launchIn(lifecycleScope)
     }
 
-    private fun updateAgreeMessage(messageResId: Int, textColorResId: Int) {
+    private fun updateAgreeMessage(
+        messageResId: Int,
+        textColorResId: Int,
+    ) {
         binding.tvSignUpAgreeMessage.apply {
             text = context.getString(messageResId)
             setTextColor(colorOf(textColorResId))
         }
     }
 
-    private fun nextBtnObserve(inputNickName: String, flag: Int) {
+    private fun nextBtnObserve(
+        inputNickName: String,
+        flag: Int,
+    ) {
         binding.btnSignUpAgreeNext.setOnClickListener {
             val allowedCheck = intent.getBooleanExtra(SIGN_UP_AGREE, false)
-//            val inputNickName = binding.etSignUpAgreeIntroduce.text.toString()
             viewModel.isBtnSelected.observe(this) {
                 if (it) {
                     viewModel.patchUserProfileEdit(
@@ -124,10 +129,11 @@ class SignUpProfileActivity :
                         1 -> {
                             viewModel.setUserNickName(inputNickName)
 
-                            val userProfile = setUpUserProfile(
-                                inputNickName,
-                                allowedCheck,
-                            )
+                            val userProfile =
+                                setUpUserProfile(
+                                    inputNickName,
+                                    allowedCheck,
+                                )
                             navigateToMainAcitivity(userProfile)
                         }
                     }
@@ -155,12 +161,20 @@ class SignUpProfileActivity :
         finish()
     }
 
-    private fun initBackBtnClickListenr(flag: Int) {
-        if (flag == 0) {
-            binding.appbarSignUp.btnAppbarBack.setOnClickListener {
-                onBackPressedDispatcher.onBackPressed()
-                // 예시: 이전 프레그먼트로 돌아가는 코드
-                supportFragmentManager.popBackStack()
+    private fun initBackBtnClickListener(flag: Int) {
+        when (flag) {
+            0 -> {
+                binding.appbarSignUp.btnAppbarBack.setOnClickListener {
+                    // 이전 프레그먼트로 돌아가는 코드
+                    onBackPressedDispatcher.onBackPressed()
+                    supportFragmentManager.popBackStack()
+                }
+            }
+
+            1 -> {
+                binding.appbarSignUp.btnAppbarBack.setOnClickListener {
+                    finish()
+                }
             }
         }
     }

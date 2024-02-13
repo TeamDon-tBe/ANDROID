@@ -9,7 +9,6 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentDeleteWithTitleDialogBinding
 import com.teamdontbe.feature.home.HomeBottomSheet
 import com.teamdontbe.feature.home.HomeViewModel
-import com.teamdontbe.feature.homedetail.HomeDetailFragment
 import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.HOME_DETAIL_BOTTOM_SHEET
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,21 +45,19 @@ class DeleteWithTitleDialogFragment(
     private fun initCancelButtonClickListener() {
         binding.btnDeleteWithTitleDialogCancel.setOnClickListener {
             dismiss()
-            (parentFragmentManager.findFragmentByTag(HomeDetailFragment.HOME_DETAIL_BOTTOM_SHEET) as? HomeBottomSheet)?.dismiss()
+            (parentFragmentManager.findFragmentByTag(HOME_DETAIL_BOTTOM_SHEET) as? HomeBottomSheet)?.dismiss()
         }
     }
 
     private fun initDeleteButtonClickListener() {
         binding.btnDeleteWithTitleDialogDelete.setOnClickListener {
-            if (!isMember && !isComment) {
-                homeViewModel.deleteFeed(contentId)
-            } else if (!isMember && isComment) {
-                homeViewModel.deleteComment(commentId)
-            } else {
-                navigateToComplaintWeb()
+            when {
+                !isMember && !isComment -> homeViewModel.deleteFeed(contentId)
+                !isMember && isComment -> homeViewModel.deleteComment(commentId)
+                else -> navigateToComplaintWeb()
             }
             dismiss()
-            (parentFragmentManager.findFragmentByTag(HomeDetailFragment.HOME_DETAIL_BOTTOM_SHEET) as? HomeBottomSheet)?.dismiss()
+            (parentFragmentManager.findFragmentByTag(HOME_DETAIL_BOTTOM_SHEET) as? HomeBottomSheet)?.dismiss()
         }
     }
 

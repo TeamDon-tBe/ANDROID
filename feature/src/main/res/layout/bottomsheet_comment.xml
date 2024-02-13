@@ -174,7 +174,7 @@
                     android:background="@null"
                     android:focusable="true"
                     android:gravity="top|start"
-                    android:hint="@string/et_home_detail_input"
+                    android:hint="@{feed.memberNickname + `님에게 답글 남기기...`}"
                     android:maxLength="500"
                     android:paddingBottom="24dp"
                     android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"

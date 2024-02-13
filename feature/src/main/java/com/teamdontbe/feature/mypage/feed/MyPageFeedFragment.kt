@@ -13,6 +13,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.home.HomeFragment
+import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.ALARM_TRIGGER_TYPE_CONTENT
 import com.teamdontbe.feature.mypage.MyPageFragment.Companion.MY_PAGE_ANOTHER_BOTTOM_SHEET
 import com.teamdontbe.feature.mypage.MyPageModel
 import com.teamdontbe.feature.mypage.MyPageViewModel
@@ -22,6 +23,7 @@ import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NO
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.FeedItemDecorator
+import com.teamdontbe.feature.util.KeyStorage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -167,7 +169,7 @@ class MyPageFeedFragment :
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = MyPageTransparentDialogFragment(targetMemberId, alarmTriggerId)
+        val dialog = MyPageTransparentDialogFragment(ALARM_TRIGGER_TYPE_CONTENT, targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 
@@ -202,7 +204,7 @@ class MyPageFeedFragment :
     private fun navigateToPostingFragment(id: Int) {
         findNavController().navigate(
             R.id.action_fragment_my_page_to_fragment_posting,
-            bundleOf(KEY_NOTI_DATA to id),
+            bundleOf(KeyStorage.KEY_NOTI_DATA to id),
         )
     }
 

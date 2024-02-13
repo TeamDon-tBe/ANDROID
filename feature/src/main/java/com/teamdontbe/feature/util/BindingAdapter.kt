@@ -1,9 +1,13 @@
 package com.teamdontbe.feature.util
 
+import android.content.Context
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.RoundedCornersTransformation
+import com.teamdontbe.domain.entity.CommentEntity
+import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
 
 @BindingAdapter("imageUrl")
@@ -26,3 +30,30 @@ fun ImageView.setCircleImage(img: String?) {
         transformations(RoundedCornersTransformation(1000f))
     }
 }
+
+@BindingAdapter("setTransparencyAndTimeText")
+fun TextView.setTransparencyAndTimeText(data: Any?) {
+    data ?: return
+    when (data) {
+        is FeedEntity -> {
+            if (data.time.isNotEmpty()) {
+                text = context.getString(
+                    R.string.tv_transparency,
+                    data.memberGhost,
+                    CalculateTime(context).getCalculateTime(data.time)
+                )
+            }
+        }
+
+        is CommentEntity -> {
+            if (data.time.isNotEmpty()) {
+                text = context.getString(
+                    R.string.tv_transparency,
+                    data.memberGhost,
+                    CalculateTime(context).getCalculateTime(data.time)
+                )
+            }
+        }
+    }
+}
+
