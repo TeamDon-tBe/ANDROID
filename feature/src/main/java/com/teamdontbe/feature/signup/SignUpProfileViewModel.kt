@@ -32,8 +32,8 @@ class SignUpProfileViewModel
     private var _introduceNum = MutableLiveData<String>()
     val introduceNum = _introduceNum
 
-    private val _nickNameDoubleState = MutableSharedFlow<UiState<String>>()
-    val nickNameDoubleState: SharedFlow<UiState<String>> = _nickNameDoubleState
+    private val _nickNameDoubleState = MutableSharedFlow<UiState<Boolean>>()
+    val nickNameDoubleState: SharedFlow<UiState<Boolean>> = _nickNameDoubleState
 
     private var _profileEditSuccess = MutableLiveData<Boolean>()
     val profileEditSuccess: LiveData<Boolean> get() = _profileEditSuccess
@@ -62,9 +62,8 @@ class SignUpProfileViewModel
     fun getNickNameDoubleCheck(nickName: String) {
         viewModelScope.launch {
             loginRepository.getNickNameDoubleCheck(nickName).collectLatest {
-//                _nickNameDoubleState.value = UiState.Success(it)
                 _nickNameDoubleState.emit(UiState.Success(it))
-                _profileEditSuccess.value = it.isEmpty()
+                _profileEditSuccess.value = !it
                 updateNextNameBtnValidity()
             }
             _nickNameDoubleState.emit(UiState.Empty)

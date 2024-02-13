@@ -102,15 +102,15 @@ class SignUpProfileActivity :
         updateAgreeMessage(messageResId, textColorResId)
     }
 
-    private fun initMyPageStateObserve() {
+    private fun initNickNameDoubleStateObserve() {
         viewModel.nickNameDoubleState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
-                    if (it.data.isEmpty()) {
-                        updateErrorMessage(false)
-                    } else {
+                    if (it.data) {
                         updateErrorMessage(true)
+                    } else {
+                        updateErrorMessage(false)
                     }
                 }
 
