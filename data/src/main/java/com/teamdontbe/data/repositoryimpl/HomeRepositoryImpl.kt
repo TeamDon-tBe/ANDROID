@@ -123,14 +123,16 @@ class HomeRepositoryImpl
         }
 
         override suspend fun postTransparent(
+            alarmTriggerType: String,
             targetMemberId: Int,
             alarmTriggerId: Int,
         ): Flow<Boolean> {
             return flow {
-                val result =
-                    runCatching {
-                        homeDataSource.postTransparent(targetMemberId, alarmTriggerId).success
-                    }
+                val result = runCatching {
+                    homeDataSource.postTransparent(
+                        alarmTriggerType, targetMemberId, alarmTriggerId
+                    ).success
+                }
                 emit(result.getOrDefault(false))
             }
         }
