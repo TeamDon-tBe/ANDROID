@@ -71,25 +71,51 @@ class SignUpProfileActivity :
         }
     }
 
-    private fun initUpdateErrorMessage() {
+    // 닉네임 중복 체크 메세지
+    private fun initUpdateErrorMessage(flag: String) {
         viewModel.isNickNameValid.observe(this) {
             val messageResId =
                 if (it) R.string.sign_up_profile_check_text else R.string.sign_up_profile_correct_check
             val textColorResId = if (it) R.color.gray_8 else R.color.error
 
             updateAgreeMessage(messageResId, textColorResId)
+            initDoubleBtnClickListener(flag, it)
         }
     }
 
-    private fun initDoubleBtnClickListener(flag: String) {
+    private fun updateAgreeMessage(
+        messageResId: Int,
+        textColorResId: Int,
+    ) {
+        binding.tvSignUpAgreeMessage.apply {
+            text = context.getString(messageResId)
+            setTextColor(colorOf(textColorResId))
+        }
+    }
+
+    // 중복 확인 버튼 클릭
+    private fun initDoubleBtnClickListener(flag: String, btnAvailable: Boolean) {
         binding.btnSignUpProfileDoubleCheck.setOnClickListener {
-            val inputNickName = binding.etSignUpProfileNickname.text.toString()
-            viewModel.getNickNameDoubleCheck(inputNickName)
-            nextBtnObserve(inputNickName, flag)
+            viewModel.getNickNameDoubleCheck(binding.etSignUpProfileNickname.text.toString())
+            handleFlag(flag, btnAvailable)
+        }
+    }
+
+    // 프로필 편집, 마이페이지 프로필 편집 분기처리
+    private fun handleFlag(flag: String, btnAvailable: Boolean) {
+        if (btnAvailable) {
             when (flag) {
-                MY_PAGE_PROFILE -> binding.etSignUpAgreeIntroduce.requestFocus()
                 SIGN_UP_AGREE -> hideKeyboard(binding.root)
+                MY_PAGE_PROFILE -> focusOnIntroduceEditText()
             }
+        }
+    }
+
+    // editText 자동 포커스
+    private fun focusOnIntroduceEditText() {
+        binding.etSignUpAgreeIntroduce.apply {
+            requestFocus()
+            setSelection(this.text.length)
         }
     }
 
@@ -117,16 +143,6 @@ class SignUpProfileActivity :
                 is UiState.Failure -> Unit
             }
         }.launchIn(lifecycleScope)
-    }
-
-    private fun updateAgreeMessage(
-        messageResId: Int,
-        textColorResId: Int,
-    ) {
-        binding.tvSignUpAgreeMessage.apply {
-            text = context.getString(messageResId)
-            setTextColor(colorOf(textColorResId))
-        }
     }
 
     private fun nextBtnObserve(
