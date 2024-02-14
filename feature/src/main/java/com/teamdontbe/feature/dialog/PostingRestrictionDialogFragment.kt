@@ -24,7 +24,6 @@ class PostingRestrictionDialogFragment() :
 
     override fun onResume() {
         context?.dialogFragmentResize(this, 25.0f)
-//        binding.layoutHomePostingRestriction.isVisible = true
         super.onResume()
     }
 

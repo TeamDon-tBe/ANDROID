@@ -9,11 +9,11 @@ import com.teamdontbe.feature.databinding.ItemHomeCommentBinding
 import com.teamdontbe.feature.homedetail.viewholder.HomeDetailCommentViewHolder
 
 class HomeDetailCommentAdapter(
-    private val onClickKebabBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
-    private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
-    private val onClickTransparentBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
+    private val onClickKebabBtn: (CommentEntity, Int) -> Unit,
+    private val onClickLikedBtn: (Int, Boolean) -> Unit,
+    private val onClickTransparentBtn: (CommentEntity) -> Unit,
     private val userId: Int,
-    private val onClickUserProfileBtn: (CommentEntity, Int) -> Unit = { _, _ -> },
+    private val onClickUserProfileBtn: (Int) -> Unit,
 ) :
     ListAdapter<CommentEntity, HomeDetailCommentViewHolder>(
         HomeAdapterDiffCallback,

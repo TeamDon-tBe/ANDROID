@@ -8,6 +8,7 @@ import com.teamdontbe.feature.databinding.FragmentTransparentDialogBinding
 import com.teamdontbe.feature.home.HomeViewModel
 
 class TransparentDialogFragment(
+    private val alarmTriggerType: String,
     private val targetMemberId: Int,
     private val alarmTriggerId: Int,
 ) :
@@ -32,7 +33,7 @@ class TransparentDialogFragment(
 
     private fun initYesButtonClickListener() {
         binding.btnTransparentDialogYes.setOnClickListener {
-            homeViewModel.postTransparent(targetMemberId, alarmTriggerId)
+            homeViewModel.postTransparent(alarmTriggerType, targetMemberId, alarmTriggerId)
             dismiss()
         }
     }

@@ -8,6 +8,7 @@ import com.teamdontbe.feature.databinding.FragmentTransparentDialogBinding
 import com.teamdontbe.feature.mypage.MyPageViewModel
 
 class MyPageTransparentDialogFragment(
+    private val alarmTriggerType: String,
     private val targetMemberId: Int,
     private val alarmTriggerId: Int,
 ) :
@@ -33,7 +34,7 @@ class MyPageTransparentDialogFragment(
 
     private fun initMyPageYesButtonClickListener() {
         binding.btnTransparentDialogYes.setOnClickListener {
-            myPageViewModel.postTransparent(targetMemberId, alarmTriggerId)
+            myPageViewModel.postTransparent(alarmTriggerType, targetMemberId, alarmTriggerId)
             dismiss()
         }
     }
