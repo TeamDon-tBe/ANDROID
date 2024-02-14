@@ -71,9 +71,12 @@ class SignUpProfileViewModel
     }
 
     fun setNickName(input: String) {
-        this._nickName.value = input
-        validateNickName(input)
-        updateNextNameBtnValidity()
+        // 닉네임 eidtText가 변경 될때 만 해당 로직 처리
+        if (_nickName.value != input) {
+            this._nickName.value = input
+            validateNickName(input)
+            _isBtnSelected.value = false
+        }
     }
 
     fun setIntroduce(input: String) {
