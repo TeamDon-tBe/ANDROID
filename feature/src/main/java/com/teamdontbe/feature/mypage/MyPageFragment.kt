@@ -1,5 +1,6 @@
 package com.teamdontbe.feature.mypage
 
+import android.content.Intent
 import android.content.res.Resources
 import android.view.View
 import android.widget.ProgressBar
@@ -15,6 +16,7 @@ import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.MyPageUserProfileEntity
+import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
@@ -87,9 +89,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 is UiState.Success -> handleSuccessState(it.data, memberProfile)
 
                 is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
+                is UiState.Failure -> navigateToErrorPage()
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private fun navigateToErrorPage() {
+        startActivity(Intent(requireActivity(), ErrorActivity::class.java))
     }
 
     private fun handleSuccessState(data: MyPageUserProfileEntity, memberProfile: MyPageModel) =
