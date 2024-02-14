@@ -107,7 +107,7 @@ class SignUpProfileViewModel
     }
 
     fun setIntroduce(input: String) {
-        this._introduceNum.value = input
+        this._introduceText.value = input
     }
 
     private fun validateNickName(nickName: String) {

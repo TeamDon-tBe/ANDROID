@@ -196,7 +196,7 @@
                     android:layout_marginEnd="14dp"
                     android:layout_marginBottom="12dp"
                     android:gravity="end"
-                    android:text='@{String.format("(%d/50)", vm.introduceNum.length)}'
+                    android:text='@{String.format("(%d/50)", vm.introduceText.length)}'
                     android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
                     android:textColor="@color/gray_7"
                     app:layout_constraintBottom_toBottomOf="@id/et_sign_up_agree_introduce"
