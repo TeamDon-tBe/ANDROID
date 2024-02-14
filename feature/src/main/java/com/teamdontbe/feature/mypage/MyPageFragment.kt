@@ -24,7 +24,7 @@ import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet
 import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment.Companion.FROM_FEED
 import com.teamdontbe.feature.mypage.transperencyinfo.TransparencyInfoParentFragment
-import com.teamdontbe.feature.util.KeyStorage
+import com.teamdontbe.feature.util.KeyStorage.KEY_FEED_DATA
 import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -57,7 +57,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             idFlag = true,
         )
         arguments?.let {
-            val parentData = it.getInt(KeyStorage.KEY_FEED_DATA, -1)
+            val parentData = it.getInt(KEY_FEED_DATA, -1)
             setUpCaseProcessing(memberProfile, parentData)
         }
         return memberProfile
