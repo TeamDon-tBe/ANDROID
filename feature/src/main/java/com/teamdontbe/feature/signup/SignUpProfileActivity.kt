@@ -146,54 +146,68 @@ class SignUpProfileActivity :
         flag: String,
     ) {
         binding.btnSignUpAgreeNext.setOnClickListener {
-            val allowedCheck = intent.getBooleanExtra(SIGN_UP_AGREE, false)
-            viewModel.isBtnSelected.observe(this) {
-                if (it) {
-                    viewModel.patchUserProfileEdit(
-                        inputNickName,
-                        allowedCheck,
-                        binding.etSignUpAgreeIntroduce.text.toString(),
-                        null,
-                    )
-                    when (flag) {
-                        MY_PAGE_PROFILE -> {
-                            viewModel.setUserNickName(inputNickName)
-                            finish()
-                        }
-
-                        SIGN_UP_AGREE -> {
-                            viewModel.setUserNickName(inputNickName)
-
-                            val userProfile =
-                                setUpUserProfile(
-                                    inputNickName,
-                                    allowedCheck,
-                                )
-                            navigateToMainAcitivity(userProfile)
-                        }
-                    }
-                }
-            }
+            handleSelectedButton(flag)
         }
+    }
+
+    private fun handleSelectedButton(flag: String) {
+        val nickName = viewModel.nickName.value.orEmpty()
+        val optionalAgreementInSignUp = intent.getBooleanExtra(SIGN_UP_AGREE, false)
+        val introduceText = viewModel.introduceText.value.orEmpty()
+        val imgUrl = null
+
+        viewModel.saveUserNickNameInLocal(nickName)
+
+        when (flag) {
+            SIGN_UP_AGREE -> handleSignUpAgree(
+                nickName = nickName,
+                optionalAgreement = optionalAgreementInSignUp,
+                introduce = introduceText,
+                imgUrl = imgUrl
+            )
+            // 마이페이지 인 경우 선택 동의 null
+            MY_PAGE_PROFILE -> handleMyPageProfile(
+                nickName = nickName,
+                introduce = introduceText,
+                imgUrl = imgUrl
+            )
+        }
+    }
+
+    private fun handleSignUpAgree(
+        nickName: String,
+        optionalAgreement: Boolean,
+        introduce: String,
+        imgUrl: String?
+    ) {
+        viewModel.patchUserProfileEdit(nickName, optionalAgreement, introduce, imgUrl)
+        navigateToMainActivity(setUpUserProfile(nickName, optionalAgreement, introduce, imgUrl))
+    }
+
+    private fun handleMyPageProfile(nickName: String, introduce: String, imgUrl: String?) {
+        viewModel.patchUserProfileEdit(nickName, null, introduce, imgUrl)
+        finish()
+    }
+
+    private fun navigateToMainActivity(userProfile: UserProfileModel) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra(SIGN_UP_AGREE, userProfile)
+        startActivity(intent)
+        finish()
     }
 
     private fun setUpUserProfile(
         inputNickName: String,
         allowedCheck: Boolean,
+        introduce: String,
+        imgUrl: String?
     ): UserProfileModel {
         return UserProfileModel(
             inputNickName,
             allowedCheck,
-            inputNickName,
-            null,
+            introduce,
+            imgUrl,
         )
-    }
-
-    private fun navigateToMainAcitivity(userProfile: UserProfileModel) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra(SIGN_UP_AGREE, userProfile)
-        startActivity(intent)
-        finish()
     }
 
     private fun initBackBtnClickListener(flag: String) {
