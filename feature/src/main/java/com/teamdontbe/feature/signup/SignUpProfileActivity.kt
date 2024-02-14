@@ -33,8 +33,7 @@ class SignUpProfileActivity :
         initDoubleBtnClickListener(flag)
         initMyPageStateObserve()
         initBackBtnClickListener(flag)
-        hideKeyboard()
-        requestFocusIntroduceEditText()
+        initKeyboardSetting()
     }
 
     private fun hideKeyboard() {
@@ -200,6 +199,23 @@ class SignUpProfileActivity :
                     finish()
                 }
             }
+        }
+    }
+
+    private fun initKeyboardSetting() {
+        hideKeyboardOnClickBackground()
+        requestFocusIntroduceEditText()
+    }
+
+    private fun hideKeyboardOnClickBackground() {
+        binding.clSignUpProfileRoot.setOnClickListener {
+            hideKeyboard(binding.root)
+        }
+    }
+
+    private fun requestFocusIntroduceEditText() = with(binding) {
+        etSignUpAgreeIntroduce.setOnClickListener {
+            openKeyboard(etSignUpAgreeIntroduce)
         }
     }
 }
