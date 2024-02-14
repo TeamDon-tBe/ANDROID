@@ -29,28 +29,15 @@ class SignUpProfileActivity :
         binding.vm = viewModel
 
         val flag = initMyPageProfileAppBarTitle()
-        initUpdateErrorMessage()
-        initDoubleBtnClickListener(flag)
-        initMyPageStateObserve()
+        initUpdateErrorMessage(flag)
+        initNickNameDoubleStateObserve()
+        initNextBtnStateObserve(flag)
         initBackBtnClickListener(flag)
         initKeyboardSetting()
     }
 
-    private fun hideKeyboard() {
-        binding.clSignUpProfileRoot.setOnClickListener {
-            hideKeyboard(binding.root)
-        }
-    }
-
-    private fun requestFocusIntroduceEditText() =
-        with(binding) {
-            etSignUpAgreeIntroduce.setOnClickListener {
-                openKeyboard(etSignUpAgreeIntroduce)
-            }
-        }
-
     private fun initMyPageProfileAppBarTitle(): String {
-        when {
+        return when {
             intent.getStringExtra(MY_PAGE_PROFILE) != null -> {
                 val myPageAppBarTitle =
                     intent.getStringExtra(MY_PAGE_PROFILE) ?: getString(R.string.my_page_nickname)
@@ -60,15 +47,25 @@ class SignUpProfileActivity :
                 return MY_PAGE_PROFILE
             }
 
-            intent.hasExtra(SIGN_UP_AGREE) -> {
-                binding.groupSignUpIntroduce.visibility = View.INVISIBLE
-                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-                
-                return SIGN_UP_AGREE
+            else -> {
+                initializeSignUpAgree()
+                SIGN_UP_AGREE
             }
+        }
+    }
+
+    private fun initializeMyPageProfile() = with(binding) {
+        setUpInitMyPageProfileUi()
+        setUpMyPageProfileViewModelUi()
+    }
 
             else -> return SIGN_UP_AGREE
         }
+    }
+
+    private fun initializeSignUpAgree() {
+        binding.groupSignUpIntroduce.visibility = View.INVISIBLE
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
     // 닉네임 중복 체크 메세지
@@ -78,12 +75,12 @@ class SignUpProfileActivity :
                 if (it) R.string.sign_up_profile_check_text else R.string.sign_up_profile_correct_check
             val textColorResId = if (it) R.color.gray_8 else R.color.error
 
-            updateAgreeMessage(messageResId, textColorResId)
+            updateAgreeText(messageResId, textColorResId)
             initDoubleBtnClickListener(flag, it)
         }
     }
 
-    private fun updateAgreeMessage(
+    private fun updateAgreeText(
         messageResId: Int,
         textColorResId: Int,
     ) {
@@ -117,14 +114,6 @@ class SignUpProfileActivity :
             requestFocus()
             setSelection(this.text.length)
         }
-    }
-
-    private fun updateErrorMessage(doubleCheck: Boolean) {
-        val messageResId =
-            if (doubleCheck) R.string.sign_up_profile_use_posssible else R.string.sign_up_profile_use_impossible
-        val textColorResId = if (doubleCheck) R.color.primary else R.color.error
-
-        updateAgreeMessage(messageResId, textColorResId)
     }
 
     private fun initNickNameDoubleStateObserve() {
