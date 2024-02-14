@@ -104,7 +104,6 @@ class MyPageViewModel
                     UiState.Failure("null")
                 }
             }
-            _getMyPageCommentListState.value = UiState.Loading
         }
     }
 

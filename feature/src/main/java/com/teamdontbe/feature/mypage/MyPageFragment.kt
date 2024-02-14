@@ -85,11 +85,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         viewModel.getMyPageUserProfileInfo(memberProfile.id)
         viewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
-                is UiState.Loading -> Unit
                 is UiState.Success -> handleSuccessState(it.data, memberProfile)
-
-                is UiState.Empty -> Unit
                 is UiState.Failure -> navigateToErrorPage()
+                else -> Unit
             }
         }.launchIn(lifecycleScope)
     }
@@ -134,10 +132,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         val textViewX =
             (
-                (updateProgress * (progressBar.width - 2)) / progressBar.max - requireContext().pxToDp(
-                    12,
-                )
-                ) - (progressLabelTextView.width / 2)
+                    (updateProgress * (progressBar.width - 2)) / progressBar.max - requireContext().pxToDp(
+                        12,
+                    )
+                    ) - (progressLabelTextView.width / 2)
         val finalX =
             if (progressLabelTextView.width + textViewX > maxX) (maxX - progressLabelTextView.width - 16) else textViewX + 16 /*your margin*/
 
