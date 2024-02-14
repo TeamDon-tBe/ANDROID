@@ -69,6 +69,7 @@
 
         <EditText
             android:id="@+id/et_sign_up_profile_nickname"
+            style="@style/EditTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -147,6 +148,7 @@
 
         <EditText
             android:id="@+id/et_sign_up_agree_introduce"
+            style="@style/EditTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

@@ -178,7 +178,6 @@
                     android:maxLength="500"
                     android:paddingBottom="24dp"
                     android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
-                    android:textCursorDrawable="@color/primary"
                     app:layout_constraintEnd_toEndOf="@id/view_comment_background"
                     app:layout_constraintStart_toStartOf="@id/tv_comment_profile_nickname"
                     app:layout_constraintTop_toBottomOf="@id/tv_comment_profile_nickname"

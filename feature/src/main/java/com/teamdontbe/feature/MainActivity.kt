@@ -32,15 +32,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         initMainBottomNavigation()
         notiViewModel.getNotificationCount()
         initObserve()
-        initGetUserProfile()
-    }
-
-    private fun initGetUserProfile() {
-        val userProfileInfo =
-            intent.getParcelable(SIGN_UP_AGREE, UserProfileModel::class.java)
-
-        if (userProfileInfo != null) {
-        }
     }
 
     private fun initObserve() {

@@ -63,9 +63,7 @@
                 app:layout_constraintBottom_toTopOf="@id/view_posting_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_posting_profile_img"
-                app:layout_constraintTop_toBottomOf="@id/tv_posting_profile_nickname">
-
-            </EditText>
+                app:layout_constraintTop_toBottomOf="@id/tv_posting_profile_nickname" />
 
             <View
                 android:id="@+id/view_posting_line"
