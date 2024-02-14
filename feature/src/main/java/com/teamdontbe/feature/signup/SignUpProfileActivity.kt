@@ -39,12 +39,8 @@ class SignUpProfileActivity :
     private fun initMyPageProfileAppBarTitle(): String {
         return when {
             intent.getStringExtra(MY_PAGE_PROFILE) != null -> {
-                val myPageAppBarTitle =
-                    intent.getStringExtra(MY_PAGE_PROFILE) ?: getString(R.string.my_page_nickname)
-                binding.appbarSignUp.tvAppbarTitle.text = myPageAppBarTitle
-                binding.btnSignUpAgreeNext.text = getString(R.string.my_page_profile_edit_completed)
-
-                return MY_PAGE_PROFILE
+                initializeMyPageProfile()
+                MY_PAGE_PROFILE
             }
 
             else -> {
@@ -59,7 +55,18 @@ class SignUpProfileActivity :
         setUpMyPageProfileViewModelUi()
     }
 
-            else -> return SIGN_UP_AGREE
+    private fun setUpInitMyPageProfileUi() = with(binding) {
+        val myPageAppBarTitle =
+            intent.getStringExtra(MY_PAGE_PROFILE) ?: getString(R.string.my_page_nickname)
+        appbarSignUp.tvAppbarTitle.text = myPageAppBarTitle
+        btnSignUpAgreeNext.text = getString(R.string.my_page_profile_edit_completed)
+        etSignUpProfileNickname.setText(viewModel.getUserNickName() ?: "")
+    }
+
+    private fun setUpMyPageProfileViewModelUi() {
+        viewModel.apply {
+            getUserProfileIntroduce()
+            checkOnMyPageInitialNickName()
         }
     }
 

@@ -121,6 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:backgroundTint="@color/primary"
+                    android:enabled="@{vm.isNickNameValid()}"
                     android:insetLeft="0dp"
                     android:insetTop="0dp"
                     android:insetRight="0dp"
