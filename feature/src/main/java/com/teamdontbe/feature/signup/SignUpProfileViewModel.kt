@@ -68,7 +68,12 @@ class SignUpProfileViewModel
         }
     }
 
-    fun patchUserProfileEdit(nickName: String, allowed: Boolean, intro: String, url: String?) {
+    fun patchUserProfileEdit(
+        nickName: String,
+        allowed: Boolean?,
+        intro: String,
+        url: String?,
+    ) {
         viewModelScope.launch {
             loginRepository.patchProfileEdit(
                 nickName,
