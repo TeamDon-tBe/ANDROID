@@ -141,10 +141,15 @@ class SignUpProfileActivity :
         }.launchIn(lifecycleScope)
     }
 
-    private fun nextBtnObserve(
-        inputNickName: String,
-        flag: String,
-    ) {
+    private fun updateErrorMessage(doubleCheck: Boolean) {
+        val messageResId =
+            if (doubleCheck) R.string.sign_up_profile_use_posssible else R.string.sign_up_profile_use_impossible
+        val textColorResId = if (doubleCheck) R.color.primary else R.color.error
+
+        updateAgreeText(messageResId, textColorResId)
+    }
+
+    private fun initNextBtnStateObserve(flag: String) {
         binding.btnSignUpAgreeNext.setOnClickListener {
             handleSelectedButton(flag)
         }
@@ -212,17 +217,17 @@ class SignUpProfileActivity :
 
     private fun initBackBtnClickListener(flag: String) {
         when (flag) {
+            SIGN_UP_AGREE -> {
+                binding.appbarSignUp.btnAppbarBack.setOnClickListener {
+                    finish()
+                }
+            }
+
             MY_PAGE_PROFILE -> {
                 binding.appbarSignUp.btnAppbarBack.setOnClickListener {
                     // 이전 프레그먼트로 돌아가는 코드
                     onBackPressedDispatcher.onBackPressed()
                     supportFragmentManager.popBackStack()
-                }
-            }
-
-            SIGN_UP_AGREE -> {
-                binding.appbarSignUp.btnAppbarBack.setOnClickListener {
-                    finish()
                 }
             }
         }
