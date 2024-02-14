@@ -183,6 +183,7 @@
                     android:maxLines="5"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="12dp"
+                    android:text="@{vm.myPageUserIntroduce}"
                     android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="@id/guide_sign_up_end_17"
