@@ -5,9 +5,6 @@
 
     <data>
 
-        <variable
-            name="title"
-            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,7 +42,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@{title}"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
                     android:textColor="@color/black" />

@@ -9,13 +9,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/gray_1">
+        android:layout_height="match_parent">
 
         <include
             android:id="@+id/appbar_my_page_auth_withdraw_reason"
-            layout="@layout/view_appbar_with_back"
-            app:title="@{@string/my_page_auth_info_withdraw_content}" />
+            layout="@layout/view_appbar_with_back" />
 
         <TextView
             android:id="@+id/tv_my_page_auth_withdraw_reason_title"
