@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_white_fill_10_rect"
+        android:minHeight="193dp">
+
+        <TextView
+            android:id="@+id/tv_delete_with_title_wide_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/my_page_auth_info_withdraw_content" />
+
+        <TextView
+            android:id="@+id/tv_delete_with_title_wide_dialog_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="22dp"
+            android:paddingHorizontal="10dp"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/gray_11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_delete_with_title_wide_dialog_title"
+            tools:text="@string/my_page_auth_withdraw_guide_dialog_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_delete_with_title_wide_dialog_cancel"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/gray_3"
+            android:text="@string/delete_dialog_cancel"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            android:textColor="@color/black"
+            app:cornerRadius="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="133:48"
+            app:layout_constraintEnd_toStartOf="@id/btn_delete_with_title_wide_dialog_delete"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_delete_with_title_wide_dialog_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_delete_with_title_wide_dialog_delete"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="18dp"
+            android:backgroundTint="@color/black"
+            android:text="@string/my_page_auth_withdraw_guide_dialog_check"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            android:textColor="@color/white"
+            app:cornerRadius="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/btn_delete_with_title_wide_dialog_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/btn_delete_with_title_wide_dialog_cancel"
+            app:layout_constraintTop_toTopOf="@id/btn_delete_with_title_wide_dialog_cancel" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
