@@ -125,11 +125,11 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     }
 
     private fun initUploadingDeactivateBtnClickListener() {
-        binding.btnPostingUpload.setOnClickListener {}
+        binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {}
     }
 
     private fun initUploadingActivateBtnClickListener() {
-        binding.btnPostingUpload.setOnClickListener {
+        binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
             postingViewModel.posting(binding.etPostingContent.text.toString())
         }
     }
@@ -146,7 +146,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             etPostingContent.doAfterTextChanged {
                 val animateProgressBar =
                     AnimateProgressBar(
-                        pbPostingInput,
+                        layoutUploadBar.pbUploadBarInput,
                         0f,
                         etPostingContent.text.toString().length.toFloat(),
                     )
@@ -185,7 +185,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                         }
                     }
                 }
-                pbPostingInput.startAnimation(animateProgressBar)
+                layoutUploadBar.pbUploadBarInput.startAnimation(animateProgressBar)
                 postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}
             }
         }
@@ -198,14 +198,14 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         textColorResId: Int,
         clickListener: () -> Unit,
     ) {
-        pbPostingInput.progressDrawable = drawableOf(progressDrawableResId)
-        pbPostingInput.progress = textLength
+        layoutUploadBar.pbUploadBarInput.progressDrawable = drawableOf(progressDrawableResId)
+        layoutUploadBar.pbUploadBarInput.progress = textLength
 
-        btnPostingUpload.backgroundTintList =
+        layoutUploadBar.btnUploadBarUpload.backgroundTintList =
             ColorStateList.valueOf(
                 colorOf(backgroundTintResId),
             )
-        btnPostingUpload.setTextColor(
+        layoutUploadBar.btnUploadBarUpload.setTextColor(
             colorOf(textColorResId),
         )
         clickListener.invoke()
