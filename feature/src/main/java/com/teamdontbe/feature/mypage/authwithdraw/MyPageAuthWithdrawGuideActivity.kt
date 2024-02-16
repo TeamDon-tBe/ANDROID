@@ -10,6 +10,7 @@ class MyPageAuthWithdrawGuideActivity :
     BindingActivity<ActivityMyPageAuthWithdrawGuideBinding>(R.layout.activity_my_page_auth_withdraw_guide) {
     override fun initView() {
         statusBarColorOf(R.color.gray_1)
+        binding.appbarMyPageAuthWithdrawGuide.tvAppbarTitle.setText(R.string.my_page_auth_info_withdraw_content)
 
         initBackBtnClickListener()
         initCheckBoxClickListener()

@@ -24,6 +24,7 @@ class MyPageAuthInfoActivity :
 
     override fun initView() {
         statusBarColorOf(R.color.gray_1)
+        binding.appbarMyPageAuthInfo.tvAppbarTitle.setText(R.string.my_page_auth_info_appbar)
 
         binding.viewModel = viewModel
 

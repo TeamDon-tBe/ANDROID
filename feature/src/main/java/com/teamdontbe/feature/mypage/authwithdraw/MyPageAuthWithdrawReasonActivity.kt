@@ -13,6 +13,7 @@ class MyPageAuthWithdrawReasonActivity :
     BindingActivity<ActivityMyPageAuthWithdrawReasonBinding>(R.layout.activity_my_page_auth_withdraw_reason) {
     override fun initView() {
         statusBarColorOf(R.color.gray_1)
+        binding.appbarMyPageAuthWithdrawReason.tvAppbarTitle.setText(R.string.my_page_auth_info_withdraw_content)
 
         onRadioButtonClicked()
         initBackBtnClickListener()
