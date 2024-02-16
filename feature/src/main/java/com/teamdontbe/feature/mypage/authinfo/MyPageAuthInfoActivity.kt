@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.teamdontbe.core_ui.base.BindingActivity
+import com.teamdontbe.core_ui.util.context.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.MyPageUserAccountInfoEntity
 import com.teamdontbe.feature.R
@@ -22,6 +23,8 @@ class MyPageAuthInfoActivity :
     private val viewModel: MyPageAuthInfoViewModel by viewModels()
 
     override fun initView() {
+        statusBarColorOf(R.color.white)
+
         binding.viewModel = viewModel
 
         binding.tvMyPageAuthInfoConditionsContent.paintFlags = Paint.UNDERLINE_TEXT_FLAG
