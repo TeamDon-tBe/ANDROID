@@ -9,7 +9,7 @@ import com.teamdontbe.feature.dialog.DeleteWithTitleWideDialogFragment
 class MyPageAuthWithdrawGuideActivity :
     BindingActivity<ActivityMyPageAuthWithdrawGuideBinding>(R.layout.activity_my_page_auth_withdraw_guide) {
     override fun initView() {
-        statusBarColorOf(R.color.white)
+        statusBarColorOf(R.color.gray_1)
 
         initBackBtnClickListener()
         initCheckBoxClickListener()

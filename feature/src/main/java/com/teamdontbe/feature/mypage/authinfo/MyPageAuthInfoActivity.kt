@@ -23,7 +23,7 @@ class MyPageAuthInfoActivity :
     private val viewModel: MyPageAuthInfoViewModel by viewModels()
 
     override fun initView() {
-        statusBarColorOf(R.color.white)
+        statusBarColorOf(R.color.gray_1)
 
         binding.viewModel = viewModel
 

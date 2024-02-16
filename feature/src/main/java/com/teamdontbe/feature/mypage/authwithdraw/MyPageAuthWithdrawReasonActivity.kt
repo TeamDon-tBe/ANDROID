@@ -12,7 +12,7 @@ import com.teamdontbe.feature.databinding.ActivityMyPageAuthWithdrawReasonBindin
 class MyPageAuthWithdrawReasonActivity :
     BindingActivity<ActivityMyPageAuthWithdrawReasonBinding>(R.layout.activity_my_page_auth_withdraw_reason) {
     override fun initView() {
-        statusBarColorOf(R.color.white)
+        statusBarColorOf(R.color.gray_1)
 
         onRadioButtonClicked()
         initBackBtnClickListener()
