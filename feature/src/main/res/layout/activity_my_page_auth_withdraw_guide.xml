@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/appbar_my_page_auth_withdraw_guide"
+            layout="@layout/view_appbar_with_back"
+            app:title="@{@string/my_page_auth_info_withdraw_content}" />
+
+        <TextView
+            android:id="@+id/tv_my_page_auth_withdraw_guide_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="22dp"
+            android:layout_marginTop="36dp"
+            android:text="@string/my_page_auth_withdraw_guide_title"
+            android:textAppearance="@style/TextAppearance.DontBe.head_semi_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_my_page_auth_withdraw_guide" />
+
+        <ImageView
+            android:id="@+id/iv_my_page_auth_withdraw_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="22dp"
+            android:layout_marginTop="23dp"
+            android:src="@drawable/img_my_page_auth_withdraw_guide"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_my_page_auth_withdraw_guide_title" />
+
+        <TextView
+            android:id="@+id/tv_my_page_auth_withdraw_guide_subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="22dp"
+            android:layout_marginTop="25dp"
+            android:text="@string/my_page_auth_withdraw_guide_subtitle"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            android:textColor="@color/error"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_my_page_auth_withdraw_guide" />
+
+        <TextView
+            android:id="@+id/tv_my_page_auth_withdraw_guide_dot_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:text="@string/my_page_auth_withdraw_guide_dot"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/gray_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_my_page_auth_withdraw_guide_content_1" />
+
+        <TextView
+            android:id="@+id/tv_my_page_auth_withdraw_guide_content_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="29dp"
+            android:text="@string/my_page_auth_withdraw_guide_content_1"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/gray_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_my_page_auth_withdraw_guide_dot_1"
+            app:layout_constraintTop_toBottomOf="@id/tv_my_page_auth_withdraw_guide_subtitle" />
+
+        <TextView
+            android:id="@+id/tv_my_page_auth_withdraw_guide_dot_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:text="@string/my_page_auth_withdraw_guide_dot"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/gray_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_my_page_auth_withdraw_guide_content_2" />
+
+        <TextView
+            android:id="@+id/tv_my_page_auth_withdraw_guide_content_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="29dp"
+            android:text="@string/my_page_auth_withdraw_guide_content_2"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/gray_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_my_page_auth_withdraw_guide_dot_2"
+            app:layout_constraintTop_toBottomOf="@id/tv_my_page_auth_withdraw_guide_content_1" />
+
+        <TextView
+            android:id="@+id/tv_my_page_auth_withdraw_guide_dot_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:text="@string/my_page_auth_withdraw_guide_dot"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/gray_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_my_page_auth_withdraw_guide_content_3" />
+
+        <TextView
+            android:id="@+id/tv_my_page_auth_withdraw_guide_content_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="29dp"
+            android:text="@string/my_page_auth_withdraw_guide_content_3"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/gray_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_my_page_auth_withdraw_guide_dot_3"
+            app:layout_constraintTop_toBottomOf="@id/tv_my_page_auth_withdraw_guide_content_2" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="14dp"
+            app:dividerColor="@color/gray_2"
+            app:layout_constraintBottom_toTopOf="@id/cb_my_page_auth_withdraw_guide"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_my_page_auth_withdraw_guide"
+            android:layout_width="30dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="14dp"
+            android:background="@drawable/sel_my_page_auth_withdraw_guide_checkbox"
+            android:button="@null"
+            app:layout_constraintBottom_toTopOf="@id/btn_my_page_auth_withdraw_guide_delete"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/my_page_auth_withdraw_guide_check"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            app:layout_constraintBottom_toBottomOf="@id/cb_my_page_auth_withdraw_guide"
+            app:layout_constraintStart_toEndOf="@id/cb_my_page_auth_withdraw_guide"
+            app:layout_constraintTop_toTopOf="@id/cb_my_page_auth_withdraw_guide" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_my_page_auth_withdraw_guide_delete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="17dp"
+            android:layout_marginBottom="14dp"
+            android:background="@drawable/sel_sign_up_agree_btn_next"
+            android:clickable="true"
+            android:enabled="false"
+            android:focusable="true"
+            android:paddingVertical="14dp"
+            android:text="@string/my_page_auth_withdraw_guide_btn_delete"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            android:textColor="@color/gray_9"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
