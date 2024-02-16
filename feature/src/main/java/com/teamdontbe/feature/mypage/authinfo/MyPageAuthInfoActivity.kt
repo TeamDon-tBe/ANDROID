@@ -7,11 +7,11 @@ import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.teamdontbe.core_ui.base.BindingActivity
-import com.teamdontbe.core_ui.util.context.toast
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.MyPageUserAccountInfoEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivityMyPageAuthInfoBinding
+import com.teamdontbe.feature.mypage.authwithdraw.MyPageAuthWithdrawReasonActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -47,18 +47,18 @@ class MyPageAuthInfoActivity :
         }.launchIn(lifecycleScope)
     }
 
-    private fun handleSuccessState(data: MyPageUserAccountInfoEntity) = with(binding) {
-        tvMyPageAuthInfoDateContent.text = data.joinDate
-        tvMyPageAuthInfoSocialContent.text = data.socialPlatform
-        tvMyPageAuthInfoVersionContent.text = data.versionInformation
-        tvMyPageAuthInfoIdContent.text = data.showMemberId
-        tvMyPageAuthInfoVersionContent.text = data.versionInformation
-    }
+    private fun handleSuccessState(data: MyPageUserAccountInfoEntity) =
+        with(binding) {
+            tvMyPageAuthInfoDateContent.text = data.joinDate
+            tvMyPageAuthInfoSocialContent.text = data.socialPlatform
+            tvMyPageAuthInfoVersionContent.text = data.versionInformation
+            tvMyPageAuthInfoIdContent.text = data.showMemberId
+            tvMyPageAuthInfoVersionContent.text = data.versionInformation
+        }
 
     private fun initWithdrawBtnClickListener() {
         binding.tvMyPageAuthInfoWithdrawContent.setOnClickListener {
-            // 테스트용 코드
-            toast("회원탈퇴 클릭됨")
+            startActivity(Intent(this, MyPageAuthWithdrawReasonActivity::class.java))
         }
     }
 
@@ -78,7 +78,7 @@ class MyPageAuthInfoActivity :
     }
 
     private fun initBackBtnClickListenr() {
-        binding.ivMyPageAuthInfoBack.setOnClickListener {
+        binding.appbarMyPageAuthInfo.btnAppbarBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
             // 예시: 이전 프레그먼트로 돌아가는 코드
             supportFragmentManager.popBackStack()
