@@ -154,7 +154,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 when {
                     etPostingContent.text.toString().length in POSTING_MIN..POSTING_MAX -> {
                         updateProgress(
-                            R.drawable.shape_primary_line_10_ring,
+                            R.drawable.shape_primary_line_circle,
                             etPostingContent.text.toString().length,
                             R.color.primary,
                             R.color.black,
@@ -165,7 +165,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
                     etPostingContent.text.toString().length >= POSTING_MAX + 1 -> {
                         updateProgress(
-                            R.drawable.shape_error_line_10_ring,
+                            R.drawable.shape_error_line_circle,
                             etPostingContent.text.toString().length,
                             R.color.gray_3,
                             R.color.gray_9,
@@ -176,7 +176,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
                     else -> {
                         updateProgress(
-                            R.drawable.shape_primary_line_10_ring,
+                            R.drawable.shape_primary_line_circle,
                             0,
                             R.color.gray_3,
                             R.color.gray_9,
