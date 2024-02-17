@@ -111,6 +111,7 @@
     <string name="my_page_auth_info_conditions_title">이용약관</string>
     <string name="my_page_auth_info_conditions_content">자세히보기</string>
     <string name="my_page_auth_info_withdraw_content">계정삭제</string>
+
     <!-- 마이 페이지 계정 삭제 사유 화면 -->
     <string name="my_page_auth_withdraw_reason_title">정말 떠나시는 건가요?\n한번 더 생각해보지 않으시겠어요?</string>
     <string name="my_page_auth_withdraw_reason_subtitle">계정을 삭제하시려는 이유를 말씀해주세요.\n제품 개선에 중요한 자료로 활용하겠습니다.</string>
@@ -151,6 +152,7 @@
     <string name="bottom_sheet_my_page_feedback">피드백 남기기</string>
     <string name="bottom_sheet_my_page_customer_service">고객센터</string>
     <string name="bottom_sheet_my_page_logout">로그아웃</string>
+    <string name="bottom_sheet_my_page_logout_description">계정에서 로그아웃하시겠어요?</string>
 
     <!--    마이페이지 프로필 편집-->
     <string name="my_page_profile_edit">프로필 편집</string>

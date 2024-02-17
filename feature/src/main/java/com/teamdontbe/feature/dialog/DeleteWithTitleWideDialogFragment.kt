@@ -8,8 +8,9 @@ import com.teamdontbe.core_ui.util.context.dialogFragmentResize
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentDeleteWithTitleWideDialogBinding
 
-class DeleteWithTitleWideDialogFragment(private val title: String, private val content: String) :
-    BindingDialogFragment<FragmentDeleteWithTitleWideDialogBinding>(R.layout.fragment_delete_with_title_wide_dialog) {
+class DeleteWithTitleWideDialogFragment(
+    private val title: String, private val content: String, private val typeIsLogout: Boolean
+) : BindingDialogFragment<FragmentDeleteWithTitleWideDialogBinding>(R.layout.fragment_delete_with_title_wide_dialog) {
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
@@ -41,6 +42,14 @@ class DeleteWithTitleWideDialogFragment(private val title: String, private val c
 
     private fun initDeleteButtonClick() {
         binding.btnDeleteWithTitleWideDialogDelete.setOnClickListener {
+            when(typeIsLogout){
+                true -> {
+
+                }
+                false -> {
+                    //계정 삭제 로직 적기
+                }
+            }
             navigateToLoginActivity()
             dismiss()
         }
