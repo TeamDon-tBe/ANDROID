@@ -150,6 +150,8 @@
     <string name="bottom_sheet_my_page_account_info">계정 정보</string>
     <string name="bottom_sheet_my_page_feedback">피드백 남기기</string>
     <string name="bottom_sheet_my_page_customer_service">고객센터</string>
+    <string name="bottom_sheet_my_page_logout">로그아웃</string>
+
     <!--    마이페이지 프로필 편집-->
     <string name="my_page_profile_edit">프로필 편집</string>
     <string name="my_page_profile_edit_completed">수정 완료</string>
