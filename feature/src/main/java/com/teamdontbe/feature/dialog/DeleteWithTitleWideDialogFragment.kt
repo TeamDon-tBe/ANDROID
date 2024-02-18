@@ -3,14 +3,23 @@ package com.teamdontbe.feature.dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.teamdontbe.core_ui.base.BindingDialogFragment
 import com.teamdontbe.core_ui.util.context.dialogFragmentResize
+import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentDeleteWithTitleWideDialogBinding
+import com.teamdontbe.feature.login.LoginActivity
+import com.teamdontbe.feature.mypage.MyPageViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DeleteWithTitleWideDialogFragment(
     private val title: String, private val content: String, private val typeIsLogout: Boolean
 ) : BindingDialogFragment<FragmentDeleteWithTitleWideDialogBinding>(R.layout.fragment_delete_with_title_wide_dialog) {
+
+    private val viewModel by viewModels<MyPageViewModel>()
+
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
@@ -42,10 +51,8 @@ class DeleteWithTitleWideDialogFragment(
 
     private fun initDeleteButtonClick() {
         binding.btnDeleteWithTitleWideDialogDelete.setOnClickListener {
-            when(typeIsLogout){
-                true -> {
-
-                }
+            when (typeIsLogout) {
+                true -> viewModel.checkLogin(false)
                 false -> {
                     //계정 삭제 로직 적기
                 }
@@ -57,7 +64,7 @@ class DeleteWithTitleWideDialogFragment(
 
     private fun navigateToLoginActivity() {
         // 추후 활성화해야 함
-        // startActivity(Intent(context, LoginActivity::class.java))
+        navigateTo<LoginActivity>(requireActivity())
     }
 
     override fun onDismiss(dialog: DialogInterface) {
