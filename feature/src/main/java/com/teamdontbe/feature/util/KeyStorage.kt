@@ -7,3 +7,7 @@ object KeyStorage {
     const val DELETE_POSTING = "delete_posting"
     const val BAN_POSTING = "ban_posting"
 }
+
+object DialogTag {
+    const val LOGOUT_AUTH = "logout_auth"
+}

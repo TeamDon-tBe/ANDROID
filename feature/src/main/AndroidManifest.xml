@@ -15,6 +15,25 @@
         android:theme="@style/Theme.DontBe"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="${kakaoApiKey}" />
+
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="oauth"
+                    android:scheme="kakao${kakaoApiKey}"
+                    tools:ignore="AppLinkUrlError" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -40,7 +59,8 @@
         <activity
             android:name=".signup.SignUpProfileActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".mypage.authinfo.MyPageAuthInfoActivity"
             android:exported="false"

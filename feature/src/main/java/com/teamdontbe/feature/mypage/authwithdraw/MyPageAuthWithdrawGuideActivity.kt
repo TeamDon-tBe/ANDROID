@@ -39,6 +39,7 @@ class MyPageAuthWithdrawGuideActivity :
                 DeleteWithTitleWideDialogFragment(
                     getString(R.string.my_page_auth_info_withdraw_content),
                     getString(R.string.my_page_auth_withdraw_guide_dialog_content),
+                    false
                 )
             dialog.show(supportFragmentManager, DELETE_AUTH)
         }
