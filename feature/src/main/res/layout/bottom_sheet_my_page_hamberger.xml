@@ -34,7 +34,7 @@
             android:drawablePadding="20dp"
             android:paddingHorizontal="22dp"
             android:paddingVertical="18dp"
-            android:text="@string/bottom_sheet_my_page_profile_edit"
+            android:text="@string/my_page_profile_edit"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
