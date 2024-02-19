@@ -14,6 +14,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentNotificationBinding
 import com.teamdontbe.feature.notification.adapter.NotificationAdapter
 import com.teamdontbe.feature.notification.adapter.NotificationItemDecorator
+import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -103,9 +104,5 @@ class NotificationFragment :
             R.id.action_notification_to_home_detail,
             bundleOf(KEY_NOTI_DATA to notiData.notificationTriggerId),
         )
-    }
-
-    companion object {
-        const val KEY_NOTI_DATA = "key_noti_data"
     }
 }

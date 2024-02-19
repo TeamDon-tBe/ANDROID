@@ -36,13 +36,13 @@ import com.teamdontbe.feature.home.HomeFeedAdapter
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.home.HomeFragment.Companion.KEY_HOME_DETAIL_FEED
 import com.teamdontbe.feature.home.HomeViewModel
-import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.AnimateProgressBar
-import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.snackbar.UploadingSnackBar
 import com.teamdontbe.feature.util.Debouncer
 import com.teamdontbe.feature.util.EventObserver
+import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
+import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -102,50 +102,52 @@ class HomeDetailFragment :
         }
 
     private fun initHomeDetailCommentAdapter(commentListData: List<CommentEntity>) {
-        homeDetailCommentAdapter = HomeDetailCommentAdapter(
-            onClickKebabBtn = { commentData, position ->
-                onKebabBtnClick(
-                    commentData.memberId, -1, commentData.commentId, true, position
-                )
-            },
-            onClickLikedBtn = ::onCommentLikedBtnClick,
-            onClickTransparentBtn = { commentData ->
-                onTransparentBtnClick(
-                    commentData.isGhost,
-                    commentData.memberId,
-                    commentData.commentId,
-                    ALARM_TRIGGER_TYPE_COMMENT
-                )
-            },
-            onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
-            userId = homeViewModel.getMemberId(),
-        ).apply {
-            submitList(commentListData)
-        }
+        homeDetailCommentAdapter =
+            HomeDetailCommentAdapter(
+                onClickKebabBtn = { commentData, position ->
+                    onKebabBtnClick(
+                        commentData.memberId, -1, commentData.commentId, true, position,
+                    )
+                },
+                onClickLikedBtn = ::onCommentLikedBtnClick,
+                onClickTransparentBtn = { commentData ->
+                    onTransparentBtnClick(
+                        commentData.isGhost,
+                        commentData.memberId,
+                        commentData.commentId,
+                        ALARM_TRIGGER_TYPE_COMMENT,
+                    )
+                },
+                onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
+                userId = homeViewModel.getMemberId(),
+            ).apply {
+                submitList(commentListData)
+            }
     }
 
     private fun initHomeFeedAdapter(feedListData: List<FeedEntity>) {
-        homeFeedAdapter = HomeFeedAdapter(
-            onClickKebabBtn = { feedData, position ->
-                onKebabBtnClick(
-                    feedData.memberId, feedData.contentId ?: -1, -1, false, position
-                )
-            },
-            onClickLikedBtn = ::onFeedLikedBtnClick,
-            onClickTransparentBtn = { feedData ->
-                onTransparentBtnClick(
-                    feedData.isGhost,
-                    feedData.memberId,
-                    feedData.contentId,
-                    ALARM_TRIGGER_TYPE_CONTENT
-                )
-            },
-            onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
-            userId = homeViewModel.getMemberId(),
-            onClickToNavigateToHomeDetail = {}
-        ).apply {
-            submitList(feedListData)
-        }
+        homeFeedAdapter =
+            HomeFeedAdapter(
+                onClickKebabBtn = { feedData, position ->
+                    onKebabBtnClick(
+                        feedData.memberId, feedData.contentId ?: -1, -1, false, position,
+                    )
+                },
+                onClickLikedBtn = ::onFeedLikedBtnClick,
+                onClickTransparentBtn = { feedData ->
+                    onTransparentBtnClick(
+                        feedData.isGhost,
+                        feedData.memberId,
+                        feedData.contentId,
+                        ALARM_TRIGGER_TYPE_CONTENT,
+                    )
+                },
+                onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
+                userId = homeViewModel.getMemberId(),
+                onClickToNavigateToHomeDetail = {},
+            ).apply {
+                submitList(feedListData)
+            }
     }
 
     private fun onKebabBtnClick(
@@ -153,10 +155,13 @@ class HomeDetailFragment :
         contentId: Int,
         commentId: Int,
         isComment: Boolean,
-        position: Int
+        position: Int,
     ) {
         initBottomSheet(
-            memberId == homeViewModel.getMemberId(), contentId, isComment, commentId
+            memberId == homeViewModel.getMemberId(),
+            contentId,
+            isComment,
+            commentId,
         )
         if (isComment) deleteCommentPosition = position
     }
@@ -173,24 +178,39 @@ class HomeDetailFragment :
         )
     }
 
-    private fun onFeedLikedBtnClick(id: Int, status: Boolean) {
-        if (status) homeViewModel.deleteFeedLiked(id)
-        else homeViewModel.postFeedLiked(id)
+    private fun onFeedLikedBtnClick(
+        id: Int,
+        status: Boolean,
+    ) {
+        if (status) {
+            homeViewModel.deleteFeedLiked(id)
+        } else {
+            homeViewModel.postFeedLiked(id)
+        }
     }
 
-    private fun onCommentLikedBtnClick(id: Int, status: Boolean) {
-        if (status) homeViewModel.deleteCommentLiked(id)
-        else homeViewModel.postCommentLiked(id)
+    private fun onCommentLikedBtnClick(
+        id: Int,
+        status: Boolean,
+    ) {
+        if (status) {
+            homeViewModel.deleteCommentLiked(id)
+        } else {
+            homeViewModel.postCommentLiked(id)
+        }
     }
 
     private fun onTransparentBtnClick(
         isGhost: Boolean,
         memberId: Int,
         alarmTriggerId: Int?,
-        alarmTriggerType: String
+        alarmTriggerType: String,
     ) {
-        if (isGhost) TransparentIsGhostSnackBar.make(binding.root).show()
-        else initTransparentDialog(alarmTriggerType, memberId, alarmTriggerId ?: -1)
+        if (isGhost) {
+            TransparentIsGhostSnackBar.make(binding.root).show()
+        } else {
+            initTransparentDialog(alarmTriggerType, memberId, alarmTriggerId ?: -1)
+        }
     }
 
     private fun initTransparentDialog(
@@ -205,7 +225,7 @@ class HomeDetailFragment :
     private fun navigateToMyPageFragment(memberId: Int) {
         findNavController().navigate(
             R.id.action_fragment_home_detail_to_fragment_my_page,
-            bundleOf(HomeFragment.KEY_FEED_DATA to memberId)
+            bundleOf(HomeFragment.KEY_FEED_DATA to memberId),
         )
     }
 
@@ -292,7 +312,7 @@ class HomeDetailFragment :
             deleteCommentPosition = -1
         }
         val dialog = DeleteCompleteDialogFragment()
-        dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+        dialog.show(childFragmentManager, DELETE_POSTING)
     }
 
     private fun observeDeleteFeed() {
@@ -362,21 +382,28 @@ class HomeDetailFragment :
         if (textLength >= MAX_COMMENT_LENGTH) R.drawable.shape_error_line_circle else R.drawable.shape_primary_line_circle
 
     private fun getButtonBackgroundTint(textLength: Int): ColorStateList =
-        if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH) ColorStateList.valueOf(
-            colorOf(R.color.primary)
-        ) else ColorStateList.valueOf(colorOf(R.color.gray_3))
-
+        if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH) {
+            ColorStateList.valueOf(
+                colorOf(R.color.primary),
+            )
+        } else {
+            ColorStateList.valueOf(colorOf(R.color.gray_3))
+        }
 
     private fun getButtonTextColor(textLength: Int): Int =
-        if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH) colorOf(R.color.black) else colorOf(
-            R.color.gray_9
-        )
+        if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH) {
+            colorOf(R.color.black)
+        } else {
+            colorOf(
+                R.color.gray_9,
+            )
+        }
 
     private fun updateUploadBar(
         textLength: Int,
         progressBarDrawableId: Int,
         btnBackgroundTint: ColorStateList,
-        btnTextColor: Int
+        btnTextColor: Int,
     ) {
         with(binding.bottomsheetHomeDetail.layoutUploadBar) {
             pbUploadBarInput.progressDrawable =
@@ -389,11 +416,12 @@ class HomeDetailFragment :
 
     private fun startProgressBarAnimation(textLength: Int) {
         val uploadBar = binding.bottomsheetHomeDetail.layoutUploadBar
-        val animateProgressBar = AnimateProgressBar(
-            uploadBar.pbUploadBarInput,
-            0f,
-            textLength.toFloat(),
-        )
+        val animateProgressBar =
+            AnimateProgressBar(
+                uploadBar.pbUploadBarInput,
+                0f,
+                textLength.toFloat(),
+            )
         uploadBar.pbUploadBarInput.startAnimation(animateProgressBar)
     }
 
@@ -415,7 +443,7 @@ class HomeDetailFragment :
     private fun initAppbarCancelClickListener() {
         binding.bottomsheetHomeDetail.tvCommentAppbarCancel.setOnClickListener {
             val dialog = DeleteDialogFragment(getString(R.string.comment_delete_dialog))
-            dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+            dialog.show(childFragmentManager, DELETE_POSTING)
         }
     }
 
