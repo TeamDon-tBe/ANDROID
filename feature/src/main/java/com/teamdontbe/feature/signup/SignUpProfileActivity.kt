@@ -126,17 +126,8 @@ class SignUpProfileActivity :
     private fun initNickNameDoubleStateObserve() {
         viewModel.nickNameDoubleState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> {
-                    if (it.data) {
-                        updateErrorMessage(true)
-                    } else {
-                        updateErrorMessage(false)
-                    }
-                }
-
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
+                is UiState.Success -> updateErrorMessage(it.data)
+                else -> Unit
             }
         }.launchIn(lifecycleScope)
     }
