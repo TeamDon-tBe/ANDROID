@@ -5,7 +5,6 @@ import android.graphics.Color
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.context.statusBarColorOf
 import com.teamdontbe.core_ui.util.context.toast
-import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivityMyPageAuthWithdrawReasonBinding
 
