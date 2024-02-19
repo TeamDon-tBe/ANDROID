@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_transparent_reason_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:text="@string/tv_transparent_reason_title"
+            android:textAppearance="@style/TextAppearance.DontBe.head_semi_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_transparent_reason_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="34dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/tv_transparent_reason_subtitle"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/gray_8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_transparent_reason_title" />
+
+        <RadioGroup
+            android:id="@+id/rg_transparent_reason_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="18dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_transparent_reason_subtitle">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rb_transparent_reason_content_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:drawableStart="@drawable/sel_my_page_auth_withdraw_reason_drawable_btn"
+                android:drawablePadding="7dp"
+                android:text="@string/rb_transparent_reason_content_1"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rb_transparent_reason_content_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:drawableStart="@drawable/sel_my_page_auth_withdraw_reason_drawable_btn"
+                android:drawablePadding="7dp"
+                android:text="@string/rb_transparent_reason_content_2"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rb_transparent_reason_content_3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:drawableStart="@drawable/sel_my_page_auth_withdraw_reason_drawable_btn"
+                android:drawablePadding="7dp"
+                android:text="@string/rb_transparent_reason_content_3"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rb_transparent_reason_content_4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:drawableStart="@drawable/sel_my_page_auth_withdraw_reason_drawable_btn"
+                android:drawablePadding="7dp"
+                android:text="@string/rb_transparent_reason_content_4"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rb_transparent_reason_content_5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:drawableStart="@drawable/sel_my_page_auth_withdraw_reason_drawable_btn"
+                android:drawablePadding="7dp"
+                android:text="@string/rb_transparent_reason_content_5"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rb_transparent_reason_content_6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:drawableStart="@drawable/sel_my_page_auth_withdraw_reason_drawable_btn"
+                android:drawablePadding="7dp"
+                android:text="@string/my_page_auth_withdraw_reason_content_7"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tv_transparent_reason_warning"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/tv_transparent_reason_warning"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_semi_12"
+            android:textColor="@color/error"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rg_transparent_reason_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_transparent_reason_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/gray_3"
+            android:paddingVertical="14dp"
+            android:text="@string/btn_transparent_dialog_no"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            android:textColor="@color/black"
+            app:cornerRadius="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_transparent_reason_yes"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_transparent_reason_warning"
+            app:layout_goneMarginBottom="20dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_transparent_reason_yes"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="18dp"
+            android:backgroundTint="@color/black"
+            android:text="@string/btn_transparent_reason_yes"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            android:textColor="@color/white"
+            app:cornerRadius="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/btn_transparent_reason_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/btn_transparent_reason_cancel"
+            app:layout_constraintTop_toTopOf="@id/btn_transparent_reason_cancel" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

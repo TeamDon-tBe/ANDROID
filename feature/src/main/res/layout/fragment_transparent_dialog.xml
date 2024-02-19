@@ -53,7 +53,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="20dp"
             android:backgroundTint="@color/gray_3"
-            android:paddingVertical="10dp"
+            android:paddingVertical="14dp"
             android:text="@string/btn_transparent_dialog_no"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
             android:textColor="@color/black"
