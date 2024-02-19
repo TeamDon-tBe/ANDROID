@@ -23,6 +23,8 @@ import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.dialog.PostingRestrictionDialogFragment
 import com.teamdontbe.feature.snackbar.UploadingSnackBar
 import com.teamdontbe.feature.util.Debouncer
+import com.teamdontbe.feature.util.KeyStorage.BAN_POSTING
+import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -212,8 +214,6 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     }
 
     companion object {
-        const val DELETE_POSTING = "delete_posting"
-        const val BAN_POSTING = "ban_posting"
         const val POSTING_MIN = 1
         const val POSTING_MAX = 499
         const val TRANSPARENT_LIMIT = -85

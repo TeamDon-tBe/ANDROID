@@ -5,6 +5,7 @@ import com.teamdontbe.core_ui.util.context.statusBarColorOf
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivityMyPageAuthWithdrawGuideBinding
 import com.teamdontbe.feature.dialog.DeleteWithTitleWideDialogFragment
+import com.teamdontbe.feature.util.KeyStorage.DELETE_AUTH
 
 class MyPageAuthWithdrawGuideActivity :
     BindingActivity<ActivityMyPageAuthWithdrawGuideBinding>(R.layout.activity_my_page_auth_withdraw_guide) {
@@ -18,8 +19,8 @@ class MyPageAuthWithdrawGuideActivity :
 
     private fun initCheckBoxClickListener() {
         with(binding) {
-            cbMyPageAuthWithdrawGuide.setOnCheckedChangeListener { _, _ ->
-                if (cbMyPageAuthWithdrawGuide.isChecked) {
+            cbMyPageAuthWithdrawGuide.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
                     btnMyPageAuthWithdrawGuideDelete.isEnabled = true
                     btnMyPageAuthWithdrawGuideDelete.setTextColor(resources.getColor(R.color.white))
 
@@ -47,9 +48,5 @@ class MyPageAuthWithdrawGuideActivity :
         binding.appbarMyPageAuthWithdrawGuide.btnAppbarBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-    }
-
-    companion object {
-        const val DELETE_AUTH = "delete_auth"
     }
 }
