@@ -57,7 +57,7 @@ class SignUpProfileActivity :
 
     private fun setUpInitMyPageProfileUi() = with(binding) {
         val myPageAppBarTitle =
-            intent.getStringExtra(MY_PAGE_PROFILE) ?: getString(R.string.my_page_nickname)
+            intent.getStringExtra(MY_PAGE_PROFILE) ?: getString(R.string.my_page_profile_edit)
         appbarSignUp.tvAppbarTitle.text = myPageAppBarTitle
         btnSignUpAgreeNext.text = getString(R.string.my_page_profile_edit_completed)
         etSignUpProfileNickname.setText(viewModel.getUserNickName() ?: "")
@@ -71,6 +71,7 @@ class SignUpProfileActivity :
     }
 
     private fun initializeSignUpAgree() {
+        binding.appbarSignUp.tvAppbarTitle.text = getString(R.string.sign_up_appbar_title)
         binding.groupSignUpIntroduce.visibility = View.INVISIBLE
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }

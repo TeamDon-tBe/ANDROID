@@ -24,9 +24,14 @@ class SignUpAgreeActivity :
     }
 
     override fun initView() {
+        initAppBarTextSetting()
         initBackBtnClickListener()
         initCheckBoxClickListener()
         initInfoUriBtnClickListener()
+    }
+
+    private fun initAppBarTextSetting() {
+        binding.appbarSignUp.tvAppbarTitle.text = getString(R.string.sign_up_appbar_title)
     }
 
     private fun initBackBtnClickListener() {
