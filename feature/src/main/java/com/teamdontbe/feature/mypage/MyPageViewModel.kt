@@ -32,6 +32,8 @@ class MyPageViewModel
 
     fun getMemberId() = userInfoRepository.getMemberId()
 
+    fun checkLogin(check: Boolean) = userInfoRepository.saveCheckLogin(check)
+
     private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
     val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
 
