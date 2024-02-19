@@ -134,6 +134,9 @@
     <string name="my_page_auth_withdraw_guide_btn_delete">계정 삭제하기</string>
     <string name="my_page_auth_withdraw_guide_dialog_content">계정을 삭제하시겠어요?</string>
     <string name="my_page_auth_withdraw_guide_dialog_check">확인</string>
+    <string name="my_page_auth_withdraw_guide_image_1">으앗!</string>
+    <string name="my_page_auth_withdraw_guide_image_2">님이 떠나면서\n돈비 전체가 조금 더 흐려지고 있어요!\n그럼에도 정말 떠나실 건가요?</string>
+
     <!--    투명도 인포 화면-->
     <string name="transparency_info_1_title">투명도가 무엇인가요?</string>
     <string name="transparency_info_1_description">투명도는 돈비 커뮤니티의 온화함을 만들어나가는\n기능으로, 상대의 감정을 반영한 온화 권장 수치예요.</string>
