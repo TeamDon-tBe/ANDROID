@@ -12,44 +12,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/gray_1">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <include
             android:id="@+id/appbar_my_page_auth_info"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:minHeight="0dp"
-                app:contentInsetStart="0dp"
-                app:layout_scrollFlags="scroll|enterAlways">
-
-                <ImageView
-                    android:id="@+id/iv_my_page_auth_info_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_circle_back_none_background" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/my_page_auth_info_appbar"
-                    android:textAppearance="@style/TextAppearance.DontBe.body_semi_16" />
-            </androidx.appcompat.widget.Toolbar>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray_2" />
-        </com.google.android.material.appbar.AppBarLayout>
+            layout="@layout/view_appbar_with_back" />
 
         <TextView
             android:id="@+id/tv_my_page_auth_info_social_title"
@@ -172,28 +140,17 @@
             app:layout_constraintTop_toTopOf="@id/tv_my_page_auth_info_conditions_title" />
 
         <TextView
-            android:id="@+id/tv_my_page_auth_info_withdraw_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="27dp"
-            android:clickable="true"
-            android:text="@string/my_page_auth_info_withdraw_title"
-            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_my_page_auth_info_conditions_title" />
-
-        <TextView
             android:id="@+id/tv_my_page_auth_info_withdraw_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="27dp"
             android:layout_marginEnd="15dp"
             android:clickable="true"
             android:text="@string/my_page_auth_info_withdraw_content"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/gray_7"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_my_page_auth_info_withdraw_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_my_page_auth_info_conditions_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

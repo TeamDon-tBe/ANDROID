@@ -359,7 +359,7 @@ class HomeDetailFragment :
     }
 
     private fun getProgressBarDrawableId(textLength: Int): Int =
-        if (textLength >= MAX_COMMENT_LENGTH) R.drawable.shape_error_line_10_ring else R.drawable.shape_primary_line_10_ring
+        if (textLength >= MAX_COMMENT_LENGTH) R.drawable.shape_error_line_circle else R.drawable.shape_primary_line_circle
 
     private fun getButtonBackgroundTint(textLength: Int): ColorStateList =
         if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH) ColorStateList.valueOf(
