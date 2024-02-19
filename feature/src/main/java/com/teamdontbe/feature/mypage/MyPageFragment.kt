@@ -127,15 +127,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         val textViewX =
             (
-                    (updateProgress * (progressBar.width - 2)) / progressBar.max - requireContext().pxToDp(
-                        12,
+                    (updateProgress * (progressBar.width - PROGRESSBAR_RADIUS_OFFSET)) / progressBar.max - requireContext().pxToDp(
+                        PROGRESS_LABEL_OFFSET,
                     )
-                    ) - (progressLabelTextView.width / 2)
+                    ) - (progressLabelTextView.width / PROGRESSBAR_RADIUS_OFFSET)
         val finalX =
-            if (progressLabelTextView.width + textViewX > maxX) (maxX - progressLabelTextView.width - 16) else textViewX + 16 /*your margin*/
+            if (progressLabelTextView.width + textViewX > maxX) (maxX - progressLabelTextView.width - LAYOUT_MARGIN) else textViewX + LAYOUT_MARGIN
 
         progressLabelTextView.apply {
-            x = if (finalX < 0) 16.toFloat() else finalX.toFloat()
+            x = if (finalX < 0) LAYOUT_MARGIN.toFloat() else finalX.toFloat()
             text = "$progressStatus%"
         }
     }
@@ -200,6 +200,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         const val TRANSPARENCY_INFO = "TransparencyInfo"
         const val MY_PAGE_BOTTOM_SHEET = "MyPageBottomSheet"
         const val MY_PAGE_ANOTHER_BOTTOM_SHEET = "MyPageAnotherBottomSheet"
+        const val PROGRESSBAR_RADIUS_OFFSET = 2
+        const val PROGRESS_LABEL_OFFSET = 12
+        const val LAYOUT_MARGIN = 16
     }
 
     override fun onResume() {
