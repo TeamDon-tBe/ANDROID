@@ -22,7 +22,7 @@ import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.FeedItemDecorator
-import com.teamdontbe.feature.util.KeyStorage
+import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -177,14 +177,18 @@ class MyPageCommentFragment :
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = MyPageTransparentDialogFragment(ALARM_TRIGGER_TYPE_COMMENT, targetMemberId, alarmTriggerId)
+        val dialog = MyPageTransparentDialogFragment(
+            ALARM_TRIGGER_TYPE_COMMENT,
+            targetMemberId,
+            alarmTriggerId
+        )
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 
     private fun navigateToHomeDetailFragment(id: Int) {
         findNavController().navigate(
             R.id.action_fragment_my_page_to_fragment_home_detail,
-            bundleOf(KeyStorage.KEY_NOTI_DATA to id),
+            bundleOf(KEY_NOTI_DATA to id),
         )
     }
 

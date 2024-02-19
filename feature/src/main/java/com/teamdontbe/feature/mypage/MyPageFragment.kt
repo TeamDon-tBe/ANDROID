@@ -15,6 +15,7 @@ import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.MyPageUserProfileEntity
+import com.teamdontbe.feature.ErrorActivity.Companion.navigateToErrorPage
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageBinding
@@ -22,7 +23,7 @@ import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet
 import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment.Companion.FROM_FEED
 import com.teamdontbe.feature.mypage.transperencyinfo.TransparencyInfoParentFragment
-import com.teamdontbe.feature.util.KeyStorage
+import com.teamdontbe.feature.util.KeyStorage.KEY_FEED_DATA
 import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +56,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             idFlag = true,
         )
         arguments?.let {
-            val parentData = it.getInt(KeyStorage.KEY_FEED_DATA, -1)
+            val parentData = it.getInt(KEY_FEED_DATA, -1)
             setUpCaseProcessing(memberProfile, parentData)
         }
         return memberProfile
@@ -83,11 +84,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         viewModel.getMyPageUserProfileInfo(memberProfile.id)
         viewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
-                is UiState.Loading -> Unit
                 is UiState.Success -> handleSuccessState(it.data, memberProfile)
-
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
+                is UiState.Failure -> navigateToErrorPage(requireContext())
+                else -> Unit
             }
         }.launchIn(lifecycleScope)
     }
@@ -128,15 +127,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         val textViewX =
             (
-                (updateProgress * (progressBar.width - 2)) / progressBar.max - requireContext().pxToDp(
-                    12,
-                )
-                ) - (progressLabelTextView.width / 2)
+                    (updateProgress * (progressBar.width - PROGRESSBAR_RADIUS_OFFSET)) / progressBar.max - requireContext().pxToDp(
+                        PROGRESS_LABEL_OFFSET,
+                    )
+                    ) - (progressLabelTextView.width / PROGRESSBAR_RADIUS_OFFSET)
         val finalX =
-            if (progressLabelTextView.width + textViewX > maxX) (maxX - progressLabelTextView.width - 16) else textViewX + 16 /*your margin*/
+            if (progressLabelTextView.width + textViewX > maxX) (maxX - progressLabelTextView.width - LAYOUT_MARGIN) else textViewX + LAYOUT_MARGIN
 
         progressLabelTextView.apply {
-            x = if (finalX < 0) 16.toFloat() else finalX.toFloat()
+            x = if (finalX < 0) LAYOUT_MARGIN.toFloat() else finalX.toFloat()
             text = "$progressStatus%"
         }
     }
@@ -201,6 +200,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         const val TRANSPARENCY_INFO = "TransparencyInfo"
         const val MY_PAGE_BOTTOM_SHEET = "MyPageBottomSheet"
         const val MY_PAGE_ANOTHER_BOTTOM_SHEET = "MyPageAnotherBottomSheet"
+        const val PROGRESSBAR_RADIUS_OFFSET = 2
+        const val PROGRESS_LABEL_OFFSET = 12
+        const val LAYOUT_MARGIN = 16
     }
 
     override fun onResume() {
