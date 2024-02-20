@@ -169,12 +169,14 @@
     <string name="error_to_home">홈으로 가기</string>
     <!-- 로딩 화면 -->
     <string name="loading_title">알고 계셨나요?</string>
-    <string name="loading_content_1">온라인 상에서도 비속어를\n사용하지 않은 사람들이\n실제 행복지수가 더 높다고 해요.</string>
-    <string name="loading_content_2">Don\'t be는 그저 온화한 커뮤니티가 아닌\n온화하면서도 재밌을 수 있는 커뮤니티를 지향해요.</string>
-    <string name="loading_content_3">Don\'t be의 온화함을 해치는 글이 보인다면\n직접 투명도 기능을 눌러보세요!</string>
-    <string name="loading_content_4">Don\'t be 팀은 온화한 커뮤니티를 만들기 위해\n저희부터 온화한 팀이 되고자 노력하고 있어요.</string>
-    <string name="loading_content_5">다른 사람들을 부드럽고 친절하게 대할 때\n가장 멋져보여요. 화가 날 만한 일이 있을 때에도\n침착함과 자제를 보여주세요!</string>
-    <string name="loading_content_6">낮아진 투명도는 시간이 지나면 다시 회복돼요.\n하지만 투명도가 너무 자주 낮아진다면\n그 시간이 늘어날 수 있어요!</string>
-    <string name="loading_content_7">Don\'t be는 누구도 상처 받지 않고\n스트레스 받지 않는 커뮤니티를 만들려고 해요.</string>
-    <string name="loading_content_8">저희는 Don\'t be를 통해 온라인 환경이\n조금 더 온화해지기를 바라요.</string>
+    <string-array name="loading_contents">
+        <item>온라인 상에서도 비속어를\n사용하지 않은 사람들이\n실제 행복지수가 더 높다고 해요.</item>
+        <item>Don\'t be는 그저 온화한 커뮤니티가 아닌\n온화하면서도 재밌을 수 있는 커뮤니티를 지향해요.</item>
+        <item>Don\'t be의 온화함을 해치는 글이 보인다면\n직접 투명도 기능을 눌러보세요!</item>
+        <item>Don\'t be 팀은 온화한 커뮤니티를 만들기 위해\n저희부터 온화한 팀이 되고자 노력하고 있어요.</item>
+        <item>다른 사람들을 부드럽고 친절하게 대할 때\n가장 멋져보여요. 화가 날 만한 일이 있을 때에도\n침착함과 자제를 보여주세요!</item>
+        <item>낮아진 투명도는 시간이 지나면 다시 회복돼요.\n하지만 투명도가 너무 자주 낮아진다면\n그 시간이 늘어날 수 있어요!</item>
+        <item>Don\'t be는 누구도 상처 받지 않고\n스트레스 받지 않는 커뮤니티를 만들려고 해요.</item>
+        <item>저희는 Don\'t be를 통해 온라인 환경이\n조금 더 온화해지기를 바라요.</item>
+    </string-array>
 </resources>
