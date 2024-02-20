@@ -1,6 +1,8 @@
 package com.teamdontbe.feature.notification
 
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -38,6 +40,24 @@ class NotificationFragment :
 
     private fun initSwipeRefreshData() {
         binding.swipeRefreshLayout.setOnRefreshListener {
+            val slideDown =
+                AnimationUtils.loadAnimation(context, R.anim.anim_swipe_refresh_slide_down)
+            val slideUp = AnimationUtils.loadAnimation(context, R.anim.anim_swipe_refresh_slide_up)
+
+            slideDown.setAnimationListener(
+                object : Animation.AnimationListener {
+                    override fun onAnimationStart(animation: Animation) {}
+
+                    override fun onAnimationEnd(animation: Animation) {
+                        // slideDown 애니메이션이 끝나면 slideUp 애니메이션 실행
+                        binding.rvNotification.startAnimation(slideUp)
+                    }
+
+                    override fun onAnimationRepeat(animation: Animation) {}
+                },
+            )
+            binding.rvNotification.startAnimation(slideDown)
+
             notiViewModel.getNotificationList()
             binding.swipeRefreshLayout.isRefreshing = false
         }
@@ -62,6 +82,7 @@ class NotificationFragment :
                     initNotificationAdapter(it.data)
                     notiViewModel.patchNotificationCheck()
                 }
+
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
