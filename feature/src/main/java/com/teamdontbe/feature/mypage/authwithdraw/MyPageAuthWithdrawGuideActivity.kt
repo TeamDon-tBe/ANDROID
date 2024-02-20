@@ -20,7 +20,7 @@ class MyPageAuthWithdrawGuideActivity :
 
     private fun initNickname() {
         binding.tvMyPageAuthWithdrawGuideImage.text =
-            getString(R.string.my_page_auth_withdraw_guide_image_1) + "돈비" + getString(R.string.my_page_auth_withdraw_guide_image_2)
+            getString(R.string.my_page_auth_withdraw_guide_image_1) + " " + "돈비" + getString(R.string.my_page_auth_withdraw_guide_image_2)
     }
 
     private fun initCheckBoxClickListener() {
