@@ -14,6 +14,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentNotificationBinding
 import com.teamdontbe.feature.notification.adapter.NotificationAdapter
 import com.teamdontbe.feature.notification.adapter.NotificationItemDecorator
+import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -37,17 +38,6 @@ class NotificationFragment :
 
     private fun initSwipeRefreshData() {
         binding.swipeRefreshLayout.setOnRefreshListener {
-//            // 새로 고침 시작 시에 RecyclerView를 약간 아래로 내리는 애니메이션
-//            val translateY = 10000f // 조절 가능한 값
-//            binding.rvNotification.animate().translationY(translateY).start()
-//
-//            notiViewModel.getNotificationList()
-//
-//            // 새로 고침이 완료된 후에 RecyclerView를 다시 원래 위치로 올리는 애니메이션
-//            binding.rvNotification.animate().translationY(0f).withEndAction {
-//                binding.swipeRefreshLayout.isRefreshing = false
-//            }.start()
-
             notiViewModel.getNotificationList()
             binding.swipeRefreshLayout.isRefreshing = false
         }
@@ -114,9 +104,5 @@ class NotificationFragment :
             R.id.action_notification_to_home_detail,
             bundleOf(KEY_NOTI_DATA to notiData.notificationTriggerId),
         )
-    }
-
-    companion object {
-        const val KEY_NOTI_DATA = "key_noti_data"
     }
 }

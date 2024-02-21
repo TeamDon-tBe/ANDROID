@@ -5,8 +5,11 @@ import android.net.Uri
 import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.BottomSheetMyPageHambergerBinding
+import com.teamdontbe.feature.dialog.DeleteWithTitleWideDialogFragment
 import com.teamdontbe.feature.mypage.authinfo.MyPageAuthInfoActivity
+import com.teamdontbe.feature.mypage.authwithdraw.MyPageAuthWithdrawGuideActivity
 import com.teamdontbe.feature.signup.SignUpProfileActivity
+import com.teamdontbe.feature.util.DialogTag.LOGOUT_AUTH
 
 class MyPageBottomSheet :
     BindingBottomSheetFragment<BottomSheetMyPageHambergerBinding>(R.layout.bottom_sheet_my_page_hamberger) {
@@ -15,6 +18,7 @@ class MyPageBottomSheet :
         navigateToSignUpProfileActivity()
         navigateToMyPageAuthInfoFragment()
         initCustomerCenterClickListener()
+        initLogoutClickListener()
     }
 
     private fun initBottomSheetCloseClickListener() {
@@ -52,6 +56,18 @@ class MyPageBottomSheet :
             Uri.parse(uri),
         )
         startActivity(urlIntentComplaint)
+    }
+
+    private fun initLogoutClickListener() {
+        binding.tvMyPageBottomSheetLogout.setOnClickListener {
+            val dialog =
+                DeleteWithTitleWideDialogFragment(
+                    getString(R.string.bottom_sheet_my_page_logout),
+                    getString(R.string.bottom_sheet_my_page_logout_description),
+                    true
+                )
+            dialog.show(childFragmentManager, LOGOUT_AUTH)
+        }
     }
 
     companion object {

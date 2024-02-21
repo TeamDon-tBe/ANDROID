@@ -32,16 +32,19 @@ class MyPageViewModel
 
     fun getMemberId() = userInfoRepository.getMemberId()
 
+    fun checkLogin(check: Boolean) = userInfoRepository.saveCheckLogin(check)
+
     private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
     val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
 
     fun getMyPageUserProfileInfo(viewMemberId: Int) {
         viewModelScope.launch {
+            _getMyPageUserProfileState.value = UiState.Loading
             myPageRepository.getMyPageUserProfile(viewMemberId).collectLatest {
                 if (it != null) {
                     _getMyPageUserProfileState.value = UiState.Success(it)
                 } else {
-                    UiState.Empty
+                    UiState.Failure("null")
                 }
             }
             _getMyPageUserProfileState.value = UiState.Loading
@@ -56,11 +59,12 @@ class MyPageViewModel
     val deleteFeed: SharedFlow<UiState<Boolean>> = _deleteFeed
     fun getMyPageFeedList(viewMemberId: Int) {
         viewModelScope.launch {
+            _getMyPageFeedListState.value = UiState.Loading
             myPageRepository.getMyPageFeedList(viewMemberId).collectLatest {
                 if (it != null) {
                     _getMyPageFeedListState.value = UiState.Success(it)
                 } else {
-                    UiState.Empty
+                    UiState.Failure("null")
                 }
             }
             _getMyPageFeedListState.value = UiState.Loading
@@ -94,14 +98,14 @@ class MyPageViewModel
 
     fun getMyPageCommentList(viewMemberId: Int) {
         viewModelScope.launch {
+            _getMyPageCommentListState.value = UiState.Loading
             myPageRepository.getMyPageCommentList(viewMemberId).collectLatest {
                 if (it != null) {
                     _getMyPageCommentListState.value = UiState.Success(it)
                 } else {
-                    UiState.Empty
+                    UiState.Failure("null")
                 }
             }
-            _getMyPageCommentListState.value = UiState.Loading
         }
     }
 
@@ -121,12 +125,14 @@ class MyPageViewModel
     }
 
     fun postTransparent(
+        alarmTriggerType: String,
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) = viewModelScope.launch {
-        homeRepository.postTransparent(targetMemberId, alarmTriggerId).collectLatest {
-            _postTransparent.emit(UiState.Success(it))
-        }
+        homeRepository.postTransparent(alarmTriggerType, targetMemberId, alarmTriggerId)
+            .collectLatest {
+                _postTransparent.emit(UiState.Success(it))
+            }
         _postTransparent.emit(UiState.Loading)
     }
 }

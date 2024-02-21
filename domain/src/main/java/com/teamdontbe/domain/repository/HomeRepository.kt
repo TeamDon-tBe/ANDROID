@@ -29,6 +29,7 @@ interface HomeRepository {
     suspend fun deleteCommentLiked(commentId: Int): Flow<Boolean>
 
     suspend fun postTransparent(
+        alarmTriggerType: String,
         targetMemberId: Int,
         alarmTriggerId: Int,
     ): Flow<Boolean>

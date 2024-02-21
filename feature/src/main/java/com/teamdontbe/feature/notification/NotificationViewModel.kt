@@ -30,7 +30,7 @@ class NotificationViewModel
         fun getNotificationCount() =
             viewModelScope.launch {
                 notificationRepository.getNotificationCount().collectLatest {
-                    if (it != null) _getNotiCount.value = UiState.Success(it) else UiState.Empty
+                    if (it != null) _getNotiCount.value = UiState.Success(it) else UiState.Failure("null")
                 }
                 _getNotiCount.value = UiState.Loading
             }
@@ -38,7 +38,7 @@ class NotificationViewModel
         fun getNotificationList() =
             viewModelScope.launch {
                 notificationRepository.getNotificationList().collectLatest {
-                    if (it != null) _getNotiList.value = UiState.Success(it) else UiState.Empty
+                    if (it != null) _getNotiList.value = UiState.Success(it) else UiState.Failure("null")
                 }
                 _getNotiList.value = UiState.Loading
             }

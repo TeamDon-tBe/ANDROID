@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -13,9 +12,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.teamdontbe.core_ui.base.BindingFragment
-import com.teamdontbe.core_ui.util.context.drawableOf
-import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.core_ui.util.context.pxToDp
+import com.teamdontbe.core_ui.util.fragment.colorOf
+import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.R
@@ -24,6 +23,8 @@ import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.dialog.PostingRestrictionDialogFragment
 import com.teamdontbe.feature.snackbar.UploadingSnackBar
 import com.teamdontbe.feature.util.Debouncer
+import com.teamdontbe.feature.util.KeyStorage.BAN_POSTING
+import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -35,7 +36,6 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private val postingViewModel by viewModels<PostingViewModel>()
 
     override fun initView() {
-        requireContext().openKeyboard(binding.etPostingContent)
         statusBarColorOf(R.color.white)
 
         initAnimation()
@@ -46,7 +46,6 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
         initCancelBtnClickListener()
         initObservePost()
-        showKeyboard()
     }
 
     private fun initObserveUser() {
@@ -55,7 +54,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
-                    if (it.data.memberGhost == -85) {
+                    if (it.data.memberGhost == TRANSPARENT_LIMIT) {
                         val dialog = PostingRestrictionDialogFragment()
                         dialog.show(childFragmentManager, BAN_POSTING)
                     } else {
@@ -83,9 +82,14 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         binding.tvPostingProfileNickname.text = postingViewModel.getNickName()
         Timber.tag("user")
             .d("shared preference에서 받아오는 사용자 profile img url : ${postingViewModel.getMemberProfileUrl()}")
-        binding.ivPostingProfileImg.load(
-            """https:\\github.com\TeamDon-tBe\SERVER\assets\97835512\fb3ea04c-661e-4221-a837-854d66cdb77e""",
-        )
+
+        if (postingViewModel.getMemberProfileUrl() == "") {
+            binding.ivPostingProfileImg.load(
+                """https:\\github.com\TeamDon-tBe\SERVER\assets\97835512\fb3ea04c-661e-4221-a837-854d66cdb77e""",
+            )
+        } else {
+            binding.ivPostingProfileImg.load(postingViewModel.getMemberProfileUrl())
+        }
     }
 
     private fun initAnimation() {
@@ -123,11 +127,11 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     }
 
     private fun initUploadingDeactivateBtnClickListener() {
-        binding.btnPostingUpload.setOnClickListener {}
+        binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {}
     }
 
     private fun initUploadingActivateBtnClickListener() {
-        binding.btnPostingUpload.setOnClickListener {
+        binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
             postingViewModel.posting(binding.etPostingContent.text.toString())
         }
     }
@@ -144,81 +148,74 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             etPostingContent.doAfterTextChanged {
                 val animateProgressBar =
                     AnimateProgressBar(
-                        pbPostingInput,
+                        layoutUploadBar.pbUploadBarInput,
                         0f,
                         etPostingContent.text.toString().length.toFloat(),
                     )
 
                 when {
-                    etPostingContent.text.toString().length in 1..499 -> {
-                        pbPostingInput.progressDrawable =
-                            context?.drawableOf(R.drawable.shape_primary_line_10_ring)
-                        pbPostingInput.progress = etPostingContent.text.toString().length
-
-                        btnPostingUpload.backgroundTintList =
-                            ColorStateList.valueOf(
-                                ContextCompat.getColor(
-                                    root.context,
-                                    R.color.primary,
-                                ),
-                            )
-                        btnPostingUpload.setTextColor(
-                            ContextCompat.getColor(
-                                root.context,
-                                R.color.black,
-                            ),
-                        )
-                        initUploadingActivateBtnClickListener()
-                        postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}
+                    etPostingContent.text.toString().length in POSTING_MIN..POSTING_MAX -> {
+                        updateProgress(
+                            R.drawable.shape_primary_line_circle,
+                            etPostingContent.text.toString().length,
+                            R.color.primary,
+                            R.color.black,
+                        ) {
+                            initUploadingActivateBtnClickListener()
+                        }
                     }
 
-                    etPostingContent.text.toString().length >= 500 -> {
-                        pbPostingInput.progressDrawable =
-                            context?.drawableOf(R.drawable.shape_error_line_10_ring)
-                        pbPostingInput.progress = etPostingContent.text.toString().length
-
-                        btnPostingUpload.backgroundTintList =
-                            ColorStateList.valueOf(
-                                ContextCompat.getColor(
-                                    root.context,
-                                    R.color.gray_3,
-                                ),
-                            )
-                        btnPostingUpload.setTextColor(
-                            ContextCompat.getColor(
-                                root.context,
-                                R.color.gray_9,
-                            ),
-                        )
-                        initUploadingDeactivateBtnClickListener()
+                    etPostingContent.text.toString().length >= POSTING_MAX + 1 -> {
+                        updateProgress(
+                            R.drawable.shape_error_line_circle,
+                            etPostingContent.text.toString().length,
+                            R.color.gray_3,
+                            R.color.gray_9,
+                        ) {
+                            initUploadingDeactivateBtnClickListener()
+                        }
                     }
 
                     else -> {
-                        pbPostingInput.progress = 0
-                        btnPostingUpload.backgroundTintList =
-                            ColorStateList.valueOf(
-                                ContextCompat.getColor(
-                                    root.context,
-                                    R.color.gray_3,
-                                ),
-                            )
-                        btnPostingUpload.setTextColor(
-                            ContextCompat.getColor(
-                                binding.root.context,
-                                R.color.gray_9,
-                            ),
-                        )
-                        initUploadingDeactivateBtnClickListener()
+                        updateProgress(
+                            R.drawable.shape_primary_line_circle,
+                            0,
+                            R.color.gray_3,
+                            R.color.gray_9,
+                        ) {
+                            initUploadingDeactivateBtnClickListener()
+                        }
                     }
                 }
-                pbPostingInput.startAnimation(animateProgressBar)
+                layoutUploadBar.pbUploadBarInput.startAnimation(animateProgressBar)
                 postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}
             }
         }
     }
 
+    private fun FragmentPostingBinding.updateProgress(
+        progressDrawableResId: Int,
+        textLength: Int,
+        backgroundTintResId: Int,
+        textColorResId: Int,
+        clickListener: () -> Unit,
+    ) {
+        layoutUploadBar.pbUploadBarInput.progressDrawable = drawableOf(progressDrawableResId)
+        layoutUploadBar.pbUploadBarInput.progress = textLength
+
+        layoutUploadBar.btnUploadBarUpload.backgroundTintList =
+            ColorStateList.valueOf(
+                colorOf(backgroundTintResId),
+            )
+        layoutUploadBar.btnUploadBarUpload.setTextColor(
+            colorOf(textColorResId),
+        )
+        clickListener.invoke()
+    }
+
     companion object {
-        const val DELETE_POSTING = "delete_posting"
-        const val BAN_POSTING = "ban_posting"
+        const val POSTING_MIN = 1
+        const val POSTING_MAX = 499
+        const val TRANSPARENT_LIMIT = -85
     }
 }

@@ -13,15 +13,17 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageCommentBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.home.HomeFragment
+import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.ALARM_TRIGGER_TYPE_COMMENT
 import com.teamdontbe.feature.mypage.MyPageModel
 import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
 import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment
-import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
-import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.FeedItemDecorator
+import com.teamdontbe.feature.util.KeyStorage
+import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
+import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -86,7 +88,7 @@ class MyPageCommentFragment :
                         deleteCommentPosition = -1
                     }
                     val dialog = DeleteCompleteDialogFragment()
-                    dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+                    dialog.show(childFragmentManager, DELETE_POSTING)
                 }
 
                 is UiState.Empty -> Unit
@@ -145,7 +147,7 @@ class MyPageCommentFragment :
                     if (position == -2) {
                         TransparentIsGhostSnackBar.make(binding.root).show()
                     } else {
-                        initTransparentDialog(data.memberId, data.contentId ?: -1)
+                        initTransparentDialog(data.memberId, data.commentId)
                     }
                 },
             ).apply {
@@ -176,7 +178,7 @@ class MyPageCommentFragment :
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = MyPageTransparentDialogFragment(targetMemberId, alarmTriggerId)
+        val dialog = MyPageTransparentDialogFragment(ALARM_TRIGGER_TYPE_COMMENT, targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 
