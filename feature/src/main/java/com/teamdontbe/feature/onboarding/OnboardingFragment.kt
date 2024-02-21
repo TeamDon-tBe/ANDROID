@@ -165,6 +165,8 @@ class OnboardingFragment :
         binding.tvOnboardingSkip.setOnClickListener {
             if (binding.tvOnboardingSkip.text == getString(R.string.tv_onboarding_skip_introduction)) {
                 navigateToHomeFragment()
+                onboardingViewModel.saveCheckLogin(true)
+                onboardingViewModel.saveCheckOnboarding(true)
             } else {
                 binding.vpOnboarding.setCurrentItem(
                     3,
