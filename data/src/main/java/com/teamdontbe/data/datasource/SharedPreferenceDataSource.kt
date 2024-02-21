@@ -8,6 +8,7 @@ interface SharedPreferenceDataSource {
     var nickName: String?
     var memberProfileUrl: String?
     var isNewUser: Boolean
+    var isOnboardingFirst: Boolean
 
     fun clear()
 }

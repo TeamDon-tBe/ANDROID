@@ -28,4 +28,8 @@ interface UserInfoRepository {
     fun getIsNewUser(): Boolean
 
     fun saveIsNewUser(isNewUser: Boolean)
+
+    fun getCheckOnboarding(): Boolean
+
+    fun saveCheckOnboarding(checkOnboarding: Boolean)
 }

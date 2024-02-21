@@ -57,8 +57,8 @@ class OnboardingFragment :
     }
 
     private fun checkIsNewUser() {
-        Timber.tag("새로운 유저 유무").d(onboardingViewModel.getIsNewUser().toString())
-        binding.tvOnboardingSkip.isVisible = onboardingViewModel.getNickName().isNotBlank()
+        binding.tvOnboardingSkip.isVisible =
+            !(onboardingViewModel.getIsNewUser()) && onboardingViewModel.getCheckOnboarding()
     }
 
     private fun initObserve() {
@@ -68,6 +68,7 @@ class OnboardingFragment :
                 is UiState.Success -> {
                     navigateToHomeFragment()
                     onboardingViewModel.saveCheckLogin(true)
+                    onboardingViewModel.saveCheckOnboarding(true)
                 }
 
                 is UiState.Empty -> Unit

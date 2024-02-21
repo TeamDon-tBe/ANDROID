@@ -67,4 +67,9 @@ constructor(
     fun getIsNewUser() = userInfoRepository.getIsNewUser()
 
     fun saveCheckLogin(checkLogin: Boolean) = userInfoRepository.saveCheckLogin(checkLogin)
+
+    fun getCheckOnboarding() = userInfoRepository.getCheckOnboarding()
+
+    fun saveCheckOnboarding(checkOnboarding: Boolean) =
+        userInfoRepository.saveCheckOnboarding(checkOnboarding)
 }
