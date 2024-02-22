@@ -42,7 +42,7 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
                 }
                 finish()
             },
-            3000,
+            800,
         ) // 3초
     }
 
