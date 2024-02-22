@@ -2,7 +2,9 @@ package com.teamdontbe.dontbe.interceptor
 
 import android.app.Application
 import android.content.Intent
+import android.os.Handler
 import com.teamdontbe.core_ui.util.context.toast
+import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.data.BuildConfig
 import com.teamdontbe.data.datasource.SharedPreferenceDataSource
 import com.teamdontbe.data.dto.BaseResponse
@@ -10,12 +12,15 @@ import com.teamdontbe.data.dto.response.ResponseRefreshAccessTokenDto
 import com.teamdontbe.feature.login.LoginActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.Response
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.concurrent.thread
 
 class TokenInterceptor
     @Inject
@@ -32,8 +37,8 @@ class TokenInterceptor
             val request =
                 chain.request().newBuilder().addHeader("Authorization", "Bearer $accessToken").build()
             val response = chain.proceed(request)
-            Timber.tag("interceptor").d(accessToken)
-            Timber.tag("interceptor").d(refreshToken)
+            Timber.tag("interceptor").d("accessToken $accessToken")
+            Timber.tag("interceptor").d("refreshToken $refreshToken")
 
             when (response.code) {
                 // 기존 request가 401 : access token 이상
@@ -77,20 +82,10 @@ class TokenInterceptor
 
                         // access token, refresh token 둘 다 만료되면
                         else -> {
-                            with(context) {
-                                Timber.d("refresh token도 만료됨!!!")
-                                refreshAccessTokenResponse.close()
-
-                                CoroutineScope(Dispatchers.Main).launch {
-                                    userInfoDataSource.clear()
-                                    Timber.tag("interceptor").d(userInfoDataSource.accessToken)
-                                    Timber.tag("interceptor").d(userInfoDataSource.refreshToken)
-                                    toast("인증 정보가 만료되었습니다. 다시 로그인 해주세요.")
-                                    val intent = Intent(this@with, LoginActivity::class.java)
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    startActivity(intent)
-                                }
-                            }
+                            Timber.d("refresh token도 만료됨!!!")
+                            Timber.tag("interceptor").d(userInfoDataSource.accessToken)
+                            Timber.tag("interceptor").d(userInfoDataSource.refreshToken)
+                            navigateTo<LoginActivity>(context)
                         }
                     }
                 }

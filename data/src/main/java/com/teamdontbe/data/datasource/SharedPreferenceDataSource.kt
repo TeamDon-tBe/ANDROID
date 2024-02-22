@@ -11,4 +11,5 @@ interface SharedPreferenceDataSource {
     var isOnboardingFirst: Boolean
 
     fun clear()
+    fun clearForRefreshToken()
 }

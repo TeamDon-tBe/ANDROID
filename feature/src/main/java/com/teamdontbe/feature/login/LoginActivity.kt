@@ -50,6 +50,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     }
 
     override fun initView() {
+        loginViewModel.saveCheckLogin(false)
         initKakaoLoginBtnClickListener()
         initObserve()
     }

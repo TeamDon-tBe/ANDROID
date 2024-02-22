@@ -44,8 +44,17 @@ class SharedPreferenceDataSourceImpl
             remove("CheckLogin")
             remove("MemberId")
             remove("NickName")
+            remove("MemberProfileUrl")
             remove("IsNewUser")
             remove("IsOnboardingFirst")
+        }
+    }
+
+    override fun clearForRefreshToken() {
+        sharedPreferences.edit {
+            remove("AccessToken")
+            remove("RefreshToken")
+            remove("CheckLogin")
         }
     }
 }
