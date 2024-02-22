@@ -13,8 +13,14 @@ class MyPageAuthWithdrawGuideActivity :
         statusBarColorOf(R.color.gray_1)
         binding.appbarMyPageAuthWithdrawGuide.tvAppbarTitle.setText(R.string.my_page_auth_info_withdraw_content)
 
+        initNickname()
         initBackBtnClickListener()
         initCheckBoxClickListener()
+    }
+
+    private fun initNickname() {
+        binding.tvMyPageAuthWithdrawGuideImage.text =
+            getString(R.string.my_page_auth_withdraw_guide_image_1) + " " + "돈비" + getString(R.string.my_page_auth_withdraw_guide_image_2)
     }
 
     private fun initCheckBoxClickListener() {
@@ -39,7 +45,7 @@ class MyPageAuthWithdrawGuideActivity :
                 DeleteWithTitleWideDialogFragment(
                     getString(R.string.my_page_auth_info_withdraw_content),
                     getString(R.string.my_page_auth_withdraw_guide_dialog_content),
-                    false
+                    false,
                 )
             dialog.show(supportFragmentManager, DELETE_AUTH)
         }

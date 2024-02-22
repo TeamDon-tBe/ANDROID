@@ -1,6 +1,8 @@
 package com.teamdontbe.feature.home
 
 import android.content.Intent
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -59,30 +61,36 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun initHomeFeedAdapter(feedListData: List<FeedEntity>) {
-        homeFeedAdapter = HomeFeedAdapter(
-            onClickKebabBtn = ::onKebabBtnClick,
-            onClickLikedBtn = ::onLikedBtnClick,
-            onClickTransparentBtn = ::onTransparentBtnClick,
-            onClickUserProfileBtn = ::navigateToMyPageFragment,
-            onClickToNavigateToHomeDetail = { feedData -> homeViewModel.openHomeDetail(feedData) },
-            userId = homeViewModel.getMemberId()
-        ).apply {
-            submitList(feedListData)
-        }
+        homeFeedAdapter =
+            HomeFeedAdapter(
+                onClickKebabBtn = ::onKebabBtnClick,
+                onClickLikedBtn = ::onLikedBtnClick,
+                onClickTransparentBtn = ::onTransparentBtnClick,
+                onClickUserProfileBtn = ::navigateToMyPageFragment,
+                onClickToNavigateToHomeDetail = { feedData -> homeViewModel.openHomeDetail(feedData) },
+                userId = homeViewModel.getMemberId(),
+            ).apply {
+                submitList(feedListData)
+            }
         binding.rvHome.adapter = homeFeedAdapter
     }
 
-    private fun onKebabBtnClick(feedData: FeedEntity, position: Int) {
+    private fun onKebabBtnClick(
+        feedData: FeedEntity,
+        position: Int,
+    ) {
         feedData.contentId?.let {
             initBottomSheet(
-                feedData.memberId == homeViewModel.getMemberId(), it
+                feedData.memberId == homeViewModel.getMemberId(),
+                it,
             )
             deleteFeedPosition = position
         }
     }
 
     private fun initBottomSheet(
-        isMember: Boolean, contentId: Int
+        isMember: Boolean,
+        contentId: Int,
     ) {
         HomeBottomSheet(isMember, contentId, false, -1).show(
             parentFragmentManager,
@@ -90,35 +98,48 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         )
     }
 
-    private fun onLikedBtnClick(contentId: Int, status: Boolean) {
-        if (status) homeViewModel.deleteFeedLiked(contentId)
-        else homeViewModel.postFeedLiked(contentId)
+    private fun onLikedBtnClick(
+        contentId: Int,
+        status: Boolean,
+    ) {
+        if (status) {
+            homeViewModel.deleteFeedLiked(contentId)
+        } else {
+            homeViewModel.postFeedLiked(contentId)
+        }
     }
 
     private fun onTransparentBtnClick(data: FeedEntity) {
-        if (data.isGhost) TransparentIsGhostSnackBar.make(binding.root).show()
-        else initTransparentDialog(data.memberId, data.contentId ?: -1)
+        if (data.isGhost) {
+            TransparentIsGhostSnackBar.make(binding.root).show()
+        } else {
+            initTransparentDialog(data.memberId, data.contentId ?: -1)
+        }
     }
 
     private fun initTransparentDialog(
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = TransparentDialogFragment(ALARM_TRIGGER_TYPE_CONTENT, targetMemberId, alarmTriggerId)
+        val dialog =
+            TransparentDialogFragment(ALARM_TRIGGER_TYPE_CONTENT, targetMemberId, alarmTriggerId)
         dialog.show(childFragmentManager, HOME_TRANSPARENT_DIALOG)
     }
 
     private fun navigateToMyPageFragment(memberId: Int) {
         findNavController().navigate(
             R.id.action_fragment_home_to_fragment_my_page,
-            bundleOf(KEY_FEED_DATA to memberId)
+            bundleOf(KEY_FEED_DATA to memberId),
         )
     }
 
     private fun observeOpenHomeDetail() {
-        homeViewModel.openHomeDetail.observe(viewLifecycleOwner, EventObserver {
-            navigateToHomeDetailFragment(it)
-        })
+        homeViewModel.openHomeDetail.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                navigateToHomeDetailFragment(it)
+            },
+        )
     }
 
     private fun navigateToHomeDetailFragment(feedData: FeedEntity) {
@@ -171,6 +192,24 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun initSwipeRefreshData() {
         binding.swipeRefreshLayout.setOnRefreshListener {
+            val slideDown =
+                AnimationUtils.loadAnimation(context, R.anim.anim_swipe_refresh_slide_down)
+            val slideUp = AnimationUtils.loadAnimation(context, R.anim.anim_swipe_refresh_slide_up)
+
+            slideDown.setAnimationListener(
+                object : Animation.AnimationListener {
+                    override fun onAnimationStart(animation: Animation) {}
+
+                    override fun onAnimationEnd(animation: Animation) {
+                        // slideDown 애니메이션이 끝나면 slideUp 애니메이션 실행
+                        binding.rvHome.startAnimation(slideUp)
+                    }
+
+                    override fun onAnimationRepeat(animation: Animation) {}
+                },
+            )
+            binding.rvHome.startAnimation(slideDown)
+
             homeViewModel.getFeedList()
             binding.swipeRefreshLayout.isRefreshing = false
         }
