@@ -19,11 +19,12 @@ import com.teamdontbe.feature.mypage.MyPageModel
 import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
-import com.teamdontbe.feature.notification.NotificationFragment.Companion.KEY_NOTI_DATA
 import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.FeedItemDecorator
+import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import com.teamdontbe.feature.util.KeyStorage
+import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -82,7 +83,7 @@ class MyPageFeedFragment :
                         deleteFeedPosition = -1
                     }
                     val dialog = DeleteCompleteDialogFragment()
-                    dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+                    dialog.show(childFragmentManager, DELETE_POSTING)
                 }
 
                 is UiState.Empty -> Unit
@@ -204,7 +205,7 @@ class MyPageFeedFragment :
     private fun navigateToPostingFragment(id: Int) {
         findNavController().navigate(
             R.id.action_fragment_my_page_to_fragment_posting,
-            bundleOf(KeyStorage.KEY_NOTI_DATA to id),
+            bundleOf(KEY_NOTI_DATA to id),
         )
     }
 

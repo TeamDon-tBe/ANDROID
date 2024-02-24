@@ -27,19 +27,19 @@ class LoginRepositoryImpl
             }
         }
 
-        override suspend fun getNickNameDoubleCheck(nickName: String): Flow<String> {
+        override suspend fun getNickNameDoubleCheck(nickName: String): Flow<Boolean> {
             return flow {
                 val result =
                     runCatching {
-                        loginDataSource.getNickNameDoubleCheck(nickName).message
+                        loginDataSource.getNickNameDoubleCheck(nickName).success
                     }
-                emit(result.getOrDefault(""))
+                emit(result.getOrDefault(false))
             }
         }
 
         override suspend fun patchProfileEdit(
             nickName: String,
-            allowed: Boolean,
+            allowed: Boolean?,
             intro: String,
             url: String?,
         ): Flow<Boolean> {

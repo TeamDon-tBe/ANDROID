@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">DontBe</string>
-    <!--    바텀 내비게이션 -->
+    <!-- 바텀 내비게이션 -->
     <string name="menu_item_home">홈</string>
     <string name="menu_item_posting">글쓰기</string>
     <string name="menu_item_notification">알림</string>
@@ -34,14 +34,12 @@
     <string name="feed_time_week">주 전</string>
     <string name="feed_time_month">달 전</string>
     <string name="feed_time_year">년 전</string>
-
     <!-- (답)글 삭제하기 다이얼로그 -->
     <string name="posting_delete_dialog">작성한 글을 삭제하시겠어요?</string>
     <string name="delete_dialog_cancel">취소</string>
     <string name="delete_dialog_delete">삭제</string>
     <string name="comment_delete_dialog">작성한 답글을 삭제하시겠어요?</string>
-
-    <!-- onboarding -->
+    <!-- 온보딩 화면 -->
     <string name="content_description_iv_onboarding_back">뒤로가기 입니다.</string>
     <string name="btn_onboarding_next">다음으로</string>
     <string name="btn_onboarding_start">시작하기</string>
@@ -57,8 +55,7 @@
     <string name="tv_onboarding_fourth_title">DON\'T BE에\n 첫인사를 남겨볼까요?</string>
     <string name="et_onboarding_fourth_introduction">한문장으로 소개를 남겨주세요!</string>
     <string name="tv_onboarding_fourth_description">설정한 닉네임, 한 줄 소개는 설정에서 변경 가능해요! \n작성한 한 줄 소개는 작성한 게시글로 업로드 돼요.</string>
-
-    <!--    약관동의 화면-->
+    <!-- 약관동의 화면 -->
     <string name="sign_up_agree_title">약관동의</string>
     <string name="sign_up_agree_description">DON’T BE와 함께하기 전\n필요한 약관들을 확인해주세요!</string>
     <string name="sign_up_agree_choose_all">전체선택</string>
@@ -68,7 +65,7 @@
     <string name="sign_up_agree_child_3">만 14세 이상입니다</string>
     <string name="sign_up_agree_child_4">마케팅 활용 / 광고성 정보 수신동의</string>
     <string name="sign_up_agree_choose">선택</string>
-    <!--    회원가입_프로필 화면-->
+    <!-- 회원가입 프로필 화면 -->
     <string name="sign_up_profile_nickname">닉네임</string>
     <string name="sign_up_profile_edit_hint">닉네임을 입력해주세요</string>
     <string name="sign_up_profile_double_check">중복확인</string>
@@ -79,23 +76,19 @@
     <string name="sign_up_profile_one_introduce">한 줄 소개</string>
     <string name="sign_up_profile_description">한 줄로 자신을 소개해주세요.</string>
     <string name="sign_up_profile_completed">완료하기</string>
-
     <!-- 홈 화면 -->
     <string name="tv_home_detail_appbar_title">게시글</string>
     <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
     <string name="tv_transparency">투명도 %1$d%% · %2$s</string>
-
     <!-- 글 작성 block 유저 제한 다이얼로그 -->
     <string name="posting_restriction_dialog_title">한동안 글을 쓸 수 없어요 :(</string>
     <string name="posting_restriction_dialog_content">투명도가 -85%까지 떨어졌네요!\n투명도가 회복되기 전까지 글을 쓸 수 없어요.</string>
     <string name="posting_restriction_dialog_caption">*회복 방법은 마이페이지 투명도 툴팁을 확인해보세요.</string>
     <string name="posting_restriction_dialog_btn">확인 했어요</string>
-
     <!-- 답글 -->
     <string name="tv_comment_appbar_title">답글 쓰기</string>
     <string name="tv_posting_loading">게시 중...</string>
-
-    <!--    마이 페이지 화면-->
+    <!-- 마이 페이지 화면 -->
     <string name="my_page_nickname">don’t be master</string>
     <string name="my_page_description">돈비 커뮤니티를 만드는 수호신입니다.</string>
     <string name="my_page_transperency">투명도</string>
@@ -133,7 +126,9 @@
     <string name="my_page_auth_withdraw_guide_btn_delete">계정 삭제하기</string>
     <string name="my_page_auth_withdraw_guide_dialog_content">계정을 삭제하시겠어요?</string>
     <string name="my_page_auth_withdraw_guide_dialog_check">확인</string>
-    <!--    투명도 인포 화면-->
+    <string name="my_page_auth_withdraw_guide_image_1">으앗!</string>
+    <string name="my_page_auth_withdraw_guide_image_2">님이 떠나면서\n돈비 전체가 조금 더 흐려지고 있어요!\n그럼에도 정말 떠나실 건가요?</string>
+    <!-- 투명도 인포 화면 -->
     <string name="transparency_info_1_title">투명도가 무엇인가요?</string>
     <string name="transparency_info_1_description">투명도는 돈비 커뮤니티의 온화함을 만들어나가는\n기능으로, 상대의 감정을 반영한 온화 권장 수치예요.</string>
     <string name="transparency_info_2_title">게시글의 투명도 주기 버튼을 클릭하면,</string>
@@ -145,15 +140,15 @@
     <string name="transparency_info_5_title">투명도 적용은 5일간 지속돼요.</string>
     <string name="transparency_info_5_description">투명도는 최근 5일 동안 버튼이 적용된 내용을 반영해요. 5일이 지나면 적용되었던 투명도가 다시 회복돼요.</string>
     <string name="tv_onboarding_skip_introduction">한 줄 소개 나중에 작성하기</string>
-    <!--마이페이지 바텀 시트 화면-->
-    <string name="bottom_sheet_my_page_profile_edit">프로필 편집</string>
+    <!-- 마이페이지 바텀 시트 화면 -->
     <string name="bottom_sheet_my_page_account_info">계정 정보</string>
     <string name="bottom_sheet_my_page_feedback">피드백 남기기</string>
     <string name="bottom_sheet_my_page_customer_service">고객센터</string>
-    <!--    마이페이지 프로필 편집-->
+    <string name="bottom_sheet_my_page_logout">로그아웃</string>
+    <string name="bottom_sheet_my_page_logout_description">계정에서 로그아웃하시겠어요?</string>
+    <!-- 마이페이지 프로필 편집 화면 -->
     <string name="my_page_profile_edit">프로필 편집</string>
     <string name="my_page_profile_edit_completed">수정 완료</string>
-
     <!-- 삭제, 신고하기 다이얼로그 -->
     <string name="tv_complete_dialog">삭제 완료</string>
     <string name="tv_delete_with_title_complain_dialog">신고하시겠어요?</string>
@@ -184,4 +179,16 @@
     <string name="tv_transparent_dialog_title">투명도 주기</string>
     <string name="tv_transparent_dialog_content">지금 누르신 투명도 기능이 Don\'t be를\n 더 온화한 커뮤니티를 만들기 위한 일이겠죠?</string>
     <string name="btn_transparent_dialog_no">조금 더 고민하기</string>
+    <!-- 로딩 화면 -->
+    <string name="loading_title">알고 계셨나요?</string>
+    <string-array name="loading_contents">
+        <item>온라인 상에서도 비속어를\n사용하지 않은 사람들이\n실제 행복지수가 더 높다고 해요.</item>
+        <item>Don\'t be는 그저 온화한 커뮤니티가 아닌\n온화하면서도 재밌을 수 있는 커뮤니티를 지향해요.</item>
+        <item>Don\'t be의 온화함을 해치는 글이 보인다면\n직접 투명도 기능을 눌러보세요!</item>
+        <item>Don\'t be 팀은 온화한 커뮤니티를 만들기 위해\n저희부터 온화한 팀이 되고자 노력하고 있어요.</item>
+        <item>다른 사람들을 부드럽고 친절하게 대할 때\n가장 멋져보여요. 화가 날 만한 일이 있을 때에도\n침착함과 자제를 보여주세요!</item>
+        <item>낮아진 투명도는 시간이 지나면 다시 회복돼요.\n하지만 투명도가 너무 자주 낮아진다면\n그 시간이 늘어날 수 있어요!</item>
+        <item>Don\'t be는 누구도 상처 받지 않고\n스트레스 받지 않는 커뮤니티를 만들려고 해요.</item>
+        <item>저희는 Don\'t be를 통해 온라인 환경이\n조금 더 온화해지기를 바라요.</item>
+    </string-array>
 </resources>

@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
@@ -28,10 +29,17 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val notiViewModel by viewModels<NotificationViewModel>()
 
     override fun initView() {
+        setOnBoardingNavigate()
         initKakaoUser()
         initMainBottomNavigation()
         notiViewModel.getNotificationCount()
         initObserve()
+    }
+
+    private fun setOnBoardingNavigate(){
+        val navController =
+            (supportFragmentManager.findFragmentById(R.id.fcv_main) as NavHostFragment).findNavController()
+        if(notiViewModel.checkLogin()) navController.navigate(R.id.action_onboarding_to_home)
     }
 
     private fun initObserve() {

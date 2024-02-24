@@ -19,10 +19,11 @@ import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
 import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment
-import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.FeedItemDecorator
 import com.teamdontbe.feature.util.KeyStorage
+import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
+import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -87,7 +88,7 @@ class MyPageCommentFragment :
                         deleteCommentPosition = -1
                     }
                     val dialog = DeleteCompleteDialogFragment()
-                    dialog.show(childFragmentManager, PostingFragment.DELETE_POSTING)
+                    dialog.show(childFragmentManager, DELETE_POSTING)
                 }
 
                 is UiState.Empty -> Unit
@@ -184,7 +185,7 @@ class MyPageCommentFragment :
     private fun navigateToHomeDetailFragment(id: Int) {
         findNavController().navigate(
             R.id.action_fragment_my_page_to_fragment_home_detail,
-            bundleOf(KeyStorage.KEY_NOTI_DATA to id),
+            bundleOf(KEY_NOTI_DATA to id),
         )
     }
 

@@ -45,10 +45,12 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         } else if (token != null) {
             Timber.i(ContentValues.TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
             loginViewModel.saveAccessToken(token.accessToken)
+            loginViewModel.postLogin("KAKAO")
         }
     }
 
     override fun initView() {
+        loginViewModel.saveCheckLogin(false)
         initKakaoLoginBtnClickListener()
         initObserve()
     }
@@ -76,8 +78,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                                 Timber.tag("kakao").i("카카오톡으로 로그인 성공 %s", token.accessToken)
                                 loginViewModel.saveAccessToken(token.accessToken)
                                 loginViewModel.postLogin("KAKAO")
-                                loginViewModel.saveCheckLogin(true)
-                                navigateToMainActivity()
                             }
                         }
                     }
@@ -99,7 +99,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                         it.data.memberId,
                         it.data.nickname,
                         it.data.memberProfileUrl,
-                        it.data.isNewUser,
                     )
                     navigateToMainActivity()
                 }
@@ -116,14 +115,15 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         memberId: Int,
         nickName: String,
         memberProfileUrl: String,
-        isNewUser: Boolean,
     ) {
         loginViewModel.saveAccessToken(accessToken)
         loginViewModel.saveRefreshToken(refreshToken)
         loginViewModel.saveMemberId(memberId)
         loginViewModel.saveNickName(nickName)
         loginViewModel.saveMemberProfileUrl(memberProfileUrl)
-        loginViewModel.saveIsNewUser(isNewUser)
+        if (nickName.isBlank()) loginViewModel.saveIsNewUser(true) else loginViewModel.saveIsNewUser(
+            false
+        )
     }
 
     private fun setKakaoCallback() {

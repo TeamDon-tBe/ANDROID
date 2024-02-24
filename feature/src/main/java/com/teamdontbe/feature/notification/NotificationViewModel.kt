@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.NotiEntity
 import com.teamdontbe.domain.repository.NotificationRepository
+import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +18,7 @@ class NotificationViewModel
     @Inject
     constructor(
         private val notificationRepository: NotificationRepository,
+        private val userInfoRepository: UserInfoRepository,
     ) : ViewModel() {
         private val _getNotiCount = MutableStateFlow<UiState<Int>>(UiState.Empty)
         val getNotiCount: StateFlow<UiState<Int>> = _getNotiCount
@@ -26,6 +28,8 @@ class NotificationViewModel
 
         private val _patchNotiCheck = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
         val patchNotiCheck: StateFlow<UiState<Boolean>> = _patchNotiCheck
+
+        fun checkLogin() = userInfoRepository.checkLogin()
 
         fun getNotificationCount() =
             viewModelScope.launch {
