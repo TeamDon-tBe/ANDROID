@@ -28,7 +28,7 @@ class MyPageAuthWithdrawReasonActivity :
 
                 val selectedRadioButton = findViewById<RadioButton>(checkedId)
                 val selectedText = selectedRadioButton.text.toString()
-                Timber.tag("radioBtn on reason").e(selectedText)
+                Timber.tag("radioBtn on reason").i(selectedText)
 
                 initNextBtnClickListener(selectedText)
             }
