@@ -12,11 +12,11 @@ class WithdrawRepositoryImpl
     constructor(
         private val withdrawDataSource: WithdrawDataSource,
     ) : WithdrawRepository {
-        override suspend fun deleteWithdraw(reason: String): Flow<Boolean> {
+        override suspend fun deleteWithdraw(withdrawalReason: String): Flow<Boolean> {
             return flow {
                 val result =
                     runCatching {
-                        withdrawDataSource.deleteWithdraw(RequestWithdrawDto(reason)).success
+                        withdrawDataSource.deleteWithdraw(RequestWithdrawDto(withdrawalReason)).success
                     }
                 emit(result.getOrDefault(false))
             }
