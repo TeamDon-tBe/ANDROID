@@ -63,9 +63,13 @@ class DeleteWithTitleWideDialogFragment(
     }
 
     private fun deleteObserve() {
-        withdrawViewModel.deleteWithdraw.flowWithLifecycle(viewLifeCycle).onEach {
+        withdrawViewModel.patchWithdraw.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
-                is UiState.Success -> Timber.tag("withdraw").i("계정 삭제 성공")
+                is UiState.Success -> {
+                    Timber.tag("withdraw").i("계정 삭제 성공")
+                    navigateToLoginActivity()
+                    dismiss()
+                }
                 is UiState.Failure -> startActivity(Intent(context, ErrorActivity::class.java))
                 else -> Unit
             }
@@ -75,21 +79,22 @@ class DeleteWithTitleWideDialogFragment(
     private fun initDeleteButtonClick() {
         binding.btnDeleteWithTitleWideDialogDelete.setOnClickListener {
             when (typeIsLogout) {
-                true -> withdrawViewModel.checkLogin(false)
+                true -> {
+                    withdrawViewModel.checkLogin(false)
+                    navigateToLoginActivity()
+                    dismiss()
+                }
                 false -> {
                     UserApiClient.instance.unlink { error ->
                         if (error != null) {
                             Timber.e("연결 끊기 실패", error)
                         } else {
                             Timber.i("연결 끊기 성공. SDK에서 토큰 삭제 됨")
-                            withdrawViewModel.deleteWithdraw(selectedReason)
+                            withdrawViewModel.patchWithdraw(selectedReason)
                         }
                     }
                 }
             }
-
-            navigateToLoginActivity()
-            dismiss()
         }
     }
 
