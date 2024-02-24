@@ -52,7 +52,7 @@ class MyPageAuthWithdrawGuideActivity :
     private fun initDeleteBtnClickListener() {
         binding.btnMyPageAuthWithdrawGuideDelete.setOnClickListener {
             val selectedReason = intent.getStringExtra(WITHDRAW_REASON)
-            Timber.tag("radioBtn on guide").e(selectedReason)
+            Timber.tag("radioBtn on guide").i(selectedReason)
 
             val dialog =
                 DeleteWithTitleWideDialogFragment(
