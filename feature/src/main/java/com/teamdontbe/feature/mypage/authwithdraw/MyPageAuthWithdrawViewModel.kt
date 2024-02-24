@@ -19,15 +19,15 @@ constructor(
     private val withdrawRepository: WithdrawRepository,
     private val userInfoRepository: UserInfoRepository,
 ) : ViewModel() {
-    private val _deleteWithdraw = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
-    val deleteWithdraw: StateFlow<UiState<Boolean>> = _deleteWithdraw
+    private val _patchWithdraw = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+    val patchWithdraw: StateFlow<UiState<Boolean>> = _patchWithdraw
 
-    fun deleteWithdraw(reason: String) =
+    fun patchWithdraw(reason: String) =
         viewModelScope.launch {
-            withdrawRepository.deleteWithdraw(reason).collectLatest {
-                _deleteWithdraw.value = UiState.Success(it)
+            withdrawRepository.patchWithdraw(reason).collectLatest {
+                _patchWithdraw.value = UiState.Success(it)
             }
-            _deleteWithdraw.value = UiState.Loading
+            _patchWithdraw.value = UiState.Loading
         }
 
     fun getNickName() = userInfoRepository.getNickName()
