@@ -11,6 +11,6 @@ class WithdrawDataSourceImpl
     constructor(
         private val withdrawApiService: WithdrawApiService,
     ) : WithdrawDataSource {
-        override suspend fun deleteWithdraw(requestWithdraw: RequestWithdrawDto): BaseResponse<Unit> =
-            withdrawApiService.deleteWithdraw(requestWithdraw)
+        override suspend fun patchWithdraw(requestWithdraw: RequestWithdrawDto): BaseResponse<Unit> =
+            withdrawApiService.patchWithdraw(requestWithdraw)
     }
