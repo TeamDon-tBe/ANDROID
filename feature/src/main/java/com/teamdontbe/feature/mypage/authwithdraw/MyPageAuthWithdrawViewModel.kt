@@ -31,4 +31,6 @@ constructor(
         }
 
     fun getNickName() = userInfoRepository.getNickName()
+
+    fun checkLogin(check: Boolean) = userInfoRepository.saveCheckLogin(check)
 }
