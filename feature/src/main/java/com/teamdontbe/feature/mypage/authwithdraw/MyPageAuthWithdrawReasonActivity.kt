@@ -7,6 +7,8 @@ import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.context.statusBarColorOf
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivityMyPageAuthWithdrawReasonBinding
+import com.teamdontbe.feature.util.KeyStorage.WITHDRAW_REASON
+import timber.log.Timber
 
 class MyPageAuthWithdrawReasonActivity :
     BindingActivity<ActivityMyPageAuthWithdrawReasonBinding>(R.layout.activity_my_page_auth_withdraw_reason) {
@@ -26,6 +28,7 @@ class MyPageAuthWithdrawReasonActivity :
 
                 val selectedRadioButton = findViewById<RadioButton>(checkedId)
                 val selectedText = selectedRadioButton.text.toString()
+                Timber.tag("radioBtn on reason").e(selectedText)
 
                 initNextBtnClickListener(selectedText)
             }
@@ -38,10 +41,10 @@ class MyPageAuthWithdrawReasonActivity :
         }
     }
 
-    private fun initNextBtnClickListener(selectedText: String) {
+    private fun initNextBtnClickListener(selectedReason: String) {
         binding.btnMyPageAuthWithdrawReasonNext.setOnClickListener {
             val intent = Intent(this, MyPageAuthWithdrawGuideActivity::class.java).apply {
-                putExtra("selected_reason", selectedText)
+                putExtra(WITHDRAW_REASON, selectedReason)
             }
             startActivity(intent)
         }
