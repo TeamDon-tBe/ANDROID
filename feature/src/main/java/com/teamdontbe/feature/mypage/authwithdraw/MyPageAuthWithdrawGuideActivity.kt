@@ -1,13 +1,24 @@
 package com.teamdontbe.feature.mypage.authwithdraw
 
+import android.content.Intent
 import androidx.activity.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.context.statusBarColorOf
+import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivityMyPageAuthWithdrawGuideBinding
 import com.teamdontbe.feature.dialog.DeleteWithTitleWideDialogFragment
-import com.teamdontbe.feature.util.KeyStorage.DELETE_AUTH
+import com.teamdontbe.feature.util.DialogTag.DELETE_AUTH
+import com.teamdontbe.feature.util.KeyStorage.WITHDRAW_REASON
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
+@AndroidEntryPoint
 class MyPageAuthWithdrawGuideActivity :
     BindingActivity<ActivityMyPageAuthWithdrawGuideBinding>(R.layout.activity_my_page_auth_withdraw_guide) {
     private val withdrawViewModel by viewModels<MyPageAuthWithdrawViewModel>()
@@ -19,6 +30,7 @@ class MyPageAuthWithdrawGuideActivity :
         initNickname()
         initBackBtnClickListener()
         initCheckBoxClickListener()
+        observeDelete()
     }
 
     private fun initNickname() {
@@ -45,9 +57,20 @@ class MyPageAuthWithdrawGuideActivity :
         }
     }
 
+    private fun observeDelete() {
+        withdrawViewModel.deleteWithdraw.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Success -> Timber.tag("withdraw").i("계정 삭제 성공")
+                is UiState.Failure -> startActivity(Intent(this, ErrorActivity::class.java))
+                else -> Unit
+            }
+        }.launchIn(lifecycleScope)
+    }
+
     private fun initDeleteBtnClickListener() {
         binding.btnMyPageAuthWithdrawGuideDelete.setOnClickListener {
-            val selectedReason = intent.getStringExtra("selected_reason")
+            val selectedReason = intent.getStringExtra(WITHDRAW_REASON)
+            Timber.tag("radioBtn on guide").e(selectedReason)
 
             val dialog =
                 DeleteWithTitleWideDialogFragment(
