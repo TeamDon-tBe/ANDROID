@@ -32,12 +32,12 @@ import kotlinx.coroutines.flow.onEach
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
-    private lateinit var homeFeedAdapter: HomeFeedAdapter
+    private lateinit var homeFeedAdapter: HomePagingFeedAdapter
     private var deleteFeedPosition: Int = -1
 
     override fun initView() {
         statusBarColorOf(R.color.gray_1)
-        homeViewModel.getFeedList()
+        homeViewModel.test()
         observeFeedList()
         observeOpenHomeDetail()
         observePostTransparentStatus()
@@ -62,7 +62,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun initHomeFeedAdapter(feedListData: List<FeedEntity>) {
         homeFeedAdapter =
-            HomeFeedAdapter(
+            HomePagingFeedAdapter(
                 onClickKebabBtn = ::onKebabBtnClick,
                 onClickLikedBtn = ::onLikedBtnClick,
                 onClickTransparentBtn = ::onTransparentBtnClick,
@@ -70,6 +70,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 onClickToNavigateToHomeDetail = { feedData -> homeViewModel.openHomeDetail(feedData) },
                 userId = homeViewModel.getMemberId(),
             ).apply {
+                paging
                 submitList(feedListData)
             }
         binding.rvHome.adapter = homeFeedAdapter

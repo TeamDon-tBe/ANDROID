@@ -1,11 +1,14 @@
 package com.teamdontbe.domain.repository
 
+import androidx.paging.PagingData
 import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
 import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
     suspend fun getFeedList(): Flow<List<FeedEntity>?>
+
+    suspend fun getFeedPagingList(): Flow<PagingData<FeedEntity>?>
 
     suspend fun getFeedLDetail(contentId: Int): Flow<FeedEntity?>
 

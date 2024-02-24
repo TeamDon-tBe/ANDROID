@@ -2,22 +2,21 @@ package com.teamdontbe.feature.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
-import com.teamdontbe.core_ui.view.ItemDiffCallback
+import androidx.paging.PagingDataAdapter
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
+import com.teamdontbe.feature.home.HomeFeedAdapter.Companion.HomeAdapterDiffCallback
 import com.teamdontbe.feature.home.viewholder.HomeFeedViewHolder
 
-class HomeFeedAdapter(
+class HomePagingFeedAdapter(
     private val userId: Int,
     private val onClickToNavigateToHomeDetail: (FeedEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
     private val onClickUserProfileBtn: (Int) -> Unit,
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit,
     private val onClickTransparentBtn: (FeedEntity) -> Unit,
-) : ListAdapter<FeedEntity, HomeFeedViewHolder>(
-    HomeAdapterDiffCallback,
-) {
+) :
+    PagingDataAdapter<FeedEntity, HomeFeedViewHolder>(HomeAdapterDiffCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -40,17 +39,10 @@ class HomeFeedAdapter(
         holder: HomeFeedViewHolder,
         position: Int,
     ) {
-        holder.bind(currentList[position])
+        getItem(position)?.let { holder.bind(it) }
     }
 
     fun deleteItem(position: Int) {
-        submitList(currentList.toMutableList().apply { removeAt(position) })
-    }
-
-    companion object {
-        val HomeAdapterDiffCallback = ItemDiffCallback<FeedEntity>(
-            onItemsTheSame = { old, new -> old.memberId == new.memberId },
-            onContentsTheSame = { old, new -> old == new },
-        )
+       // submitList(currentList.toMutableList().apply { removeAt(position) })
     }
 }
