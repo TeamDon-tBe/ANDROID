@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class RequestWithdrawDto(
+data class RequestWithdrawDto(
     @SerialName("withdrawalReason")
     val withdrawalReason: String,
 )
