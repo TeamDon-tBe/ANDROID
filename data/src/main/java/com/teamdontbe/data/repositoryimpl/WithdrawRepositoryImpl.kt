@@ -12,7 +12,7 @@ class WithdrawRepositoryImpl
     constructor(
         private val withdrawDataSource: WithdrawDataSource,
     ) : WithdrawRepository {
-        override suspend fun patchWithdraw(deletedReason: String): Flow<Boolean> {
+        override fun patchWithdraw(deletedReason: String): Flow<Boolean> {
             return flow {
                 val result =
                     runCatching {
