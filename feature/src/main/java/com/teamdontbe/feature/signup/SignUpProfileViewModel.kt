@@ -1,10 +1,12 @@
 package com.teamdontbe.feature.signup
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.domain.entity.ProfileEditInfoEntity
 import com.teamdontbe.domain.repository.LoginRepository
 import com.teamdontbe.domain.repository.MyPageRepository
 import com.teamdontbe.domain.repository.UserInfoRepository
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -82,6 +85,25 @@ class SignUpProfileViewModel
                 url,
             ).collectLatest {
                 _profileEditSuccess.value = it
+            }
+        }
+    }
+
+    fun patchUserProfileUri(info: ProfileEditInfoEntity, url: File?) {
+        viewModelScope.launch {
+            loginRepository.patchProfileUriEdit(
+                info,
+                url
+            ).onSuccess {
+//                _profileEditSuccess.value = it
+                Log.d("test_text", it.toString())
+                /*   if (it) {
+                       saveUserNickNameInLocal(info.nickname)
+                   } else {
+                       Log.d("fail", it.toString())
+                   }*/
+            }.onFailure {
+                Log.d("fail", it.message.toString())
             }
         }
     }
