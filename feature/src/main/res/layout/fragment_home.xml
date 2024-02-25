@@ -37,24 +37,14 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/nested_scroll_home"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<!--            <androidx.core.widget.NestedScrollView-->
+<!--                android:id="@+id/nested_scroll_home"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
-                    <ProgressBar
-                        android:id="@+id/progressbar_home"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:foregroundGravity="center"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_home"
@@ -64,7 +54,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_home_feed" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.core.widget.NestedScrollView>
+<!--            </androidx.core.widget.NestedScrollView>-->
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
