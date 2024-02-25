@@ -43,6 +43,6 @@ class HomePagingFeedAdapter(
     }
 
     fun deleteItem(position: Int) {
-       // submitList(currentList.toMutableList().apply { removeAt(position) })
+        notifyItemRemoved(position)
     }
 }

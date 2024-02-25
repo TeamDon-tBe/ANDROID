@@ -175,7 +175,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun handleDeleteFeedSuccess() {
         if (deleteFeedPosition != -1) {
-            // homeFeedAdapter.deleteItem(deleteFeedPosition)
+            homeFeedAdapter.deleteItem(deleteFeedPosition)
             deleteFeedPosition = -1
         }
         val dialog = DeleteCompleteDialogFragment()
