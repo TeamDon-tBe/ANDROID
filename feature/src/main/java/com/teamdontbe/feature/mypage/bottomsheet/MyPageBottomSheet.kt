@@ -1,11 +1,13 @@
 package com.teamdontbe.feature.mypage.bottomsheet
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.BottomSheetMyPageHambergerBinding
 import com.teamdontbe.feature.dialog.DeleteWithTitleWideDialogFragment
+import com.teamdontbe.feature.mypage.MyPageFragment
 import com.teamdontbe.feature.mypage.authinfo.MyPageAuthInfoActivity
 import com.teamdontbe.feature.signup.SignUpProfileActivity
 import com.teamdontbe.feature.util.DialogTag.LOGOUT_AUTH
@@ -69,6 +71,11 @@ class MyPageBottomSheet :
                 )
             dialog.show(childFragmentManager, LOGOUT_AUTH)
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        (parentFragment as MyPageFragment).updateUI() // AFrag은 A Fragment의 클래스 이름입니다.
     }
 
     companion object {
