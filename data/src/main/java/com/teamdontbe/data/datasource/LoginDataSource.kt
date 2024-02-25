@@ -4,6 +4,8 @@ import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.request.RequestLoginDto
 import com.teamdontbe.data.dto.request.RequestProfileEditDto
 import com.teamdontbe.data.dto.response.ResponseLoginDto
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 interface LoginDataSource {
     suspend fun postLogin(requestLogin: RequestLoginDto): BaseResponse<ResponseLoginDto>
@@ -11,4 +13,9 @@ interface LoginDataSource {
     suspend fun getNickNameDoubleCheck(nickname: String): BaseResponse<Unit>
 
     suspend fun patchProfileEdit(requestProfileEdit: RequestProfileEditDto): BaseResponse<Unit>
+
+    suspend fun patchUserProfileEdit(
+        info: RequestBody,
+        file: MultipartBody.Part?
+    ): BaseResponse<Unit>
 }
