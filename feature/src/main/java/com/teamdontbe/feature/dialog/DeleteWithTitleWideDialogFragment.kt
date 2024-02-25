@@ -52,16 +52,13 @@ class DeleteWithTitleWideDialogFragment(
     private fun initDeleteButtonClick() {
         binding.btnDeleteWithTitleWideDialogDelete.setOnClickListener {
             when (typeIsLogout) {
-                true -> {
-                    viewModel.checkLogin(false)
-                    navigateToLoginActivity()
-                    dismiss()
-                }
+                true -> viewModel.checkLogin(false)
                 false -> {
                     //계정 삭제 로직 적기
                 }
             }
-
+            navigateToLoginActivity()
+            dismiss()
         }
     }
 
