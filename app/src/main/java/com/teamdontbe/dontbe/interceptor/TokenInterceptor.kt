@@ -2,6 +2,9 @@ package com.teamdontbe.dontbe.interceptor
 
 import android.app.Application
 import android.content.Intent
+import android.os.Handler
+import com.teamdontbe.core_ui.util.context.toast
+import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.data.BuildConfig
 import com.teamdontbe.data.datasource.SharedPreferenceDataSource
 import com.teamdontbe.data.dto.BaseResponse
@@ -9,11 +12,15 @@ import com.teamdontbe.data.dto.response.ResponseRefreshAccessTokenDto
 import com.teamdontbe.feature.login.LoginActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
+import okhttp3.Response
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.concurrent.thread
 
 class TokenInterceptor
     @Inject
@@ -22,7 +29,7 @@ class TokenInterceptor
         private val json: Json,
         private val context: Application,
     ) : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+        override fun intercept(chain: Interceptor.Chain): Response {
             var accessToken = userInfoDataSource.accessToken
             var refreshToken = userInfoDataSource.refreshToken
 
@@ -30,12 +37,13 @@ class TokenInterceptor
             val request =
                 chain.request().newBuilder().addHeader("Authorization", "Bearer $accessToken").build()
             val response = chain.proceed(request)
-            Timber.tag("interceptor").d(accessToken)
+            Timber.tag("interceptor").d("accessToken $accessToken")
+            Timber.tag("interceptor").d("refreshToken $refreshToken")
 
             when (response.code) {
                 // 기존 request가 401 : access token 이상
                 401 -> {
-                    Timber.d("토큰 만료됨!!!")
+                    Timber.d("access token 만료됨!!!")
 
                     response.close()
                     // access token 재발급 request
@@ -58,6 +66,7 @@ class TokenInterceptor
                     when (refreshAccessToken.message) {
                         // access token 재발급 성공
                         "토큰 재발급 성공" -> {
+                            Timber.d("access token 재발급 성공!!!")
                             userInfoDataSource.accessToken = refreshAccessToken.data?.accessToken
 
                             refreshAccessTokenResponse.close()
@@ -73,14 +82,10 @@ class TokenInterceptor
 
                         // access token, refresh token 둘 다 만료되면
                         else -> {
-                            with(context) {
-                                CoroutineScope(Dispatchers.Main).launch {
-                                    val intent = Intent(this@with, LoginActivity::class.java)
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    startActivity(intent)
-                                    userInfoDataSource.clear()
-                                }
-                            }
+                            Timber.d("refresh token도 만료됨!!!")
+                            Timber.tag("interceptor").d(userInfoDataSource.accessToken)
+                            Timber.tag("interceptor").d(userInfoDataSource.refreshToken)
+                            navigateTo<LoginActivity>(context)
                         }
                     }
                 }

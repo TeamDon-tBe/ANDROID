@@ -50,6 +50,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     }
 
     override fun initView() {
+        loginViewModel.saveCheckLogin(false)
         initKakaoLoginBtnClickListener()
         initObserve()
     }
@@ -98,9 +99,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                         it.data.memberId,
                         it.data.nickname,
                         it.data.memberProfileUrl,
-                        it.data.isNewUser,
                     )
-                    loginViewModel.saveCheckLogin(true)
                     navigateToMainActivity()
                 }
 
@@ -116,14 +115,15 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         memberId: Int,
         nickName: String,
         memberProfileUrl: String,
-        isNewUser: Boolean,
     ) {
         loginViewModel.saveAccessToken(accessToken)
         loginViewModel.saveRefreshToken(refreshToken)
         loginViewModel.saveMemberId(memberId)
         loginViewModel.saveNickName(nickName)
         loginViewModel.saveMemberProfileUrl(memberProfileUrl)
-        loginViewModel.saveIsNewUser(isNewUser)
+        if (nickName.isBlank()) loginViewModel.saveIsNewUser(true) else loginViewModel.saveIsNewUser(
+            false
+        )
     }
 
     private fun setKakaoCallback() {
