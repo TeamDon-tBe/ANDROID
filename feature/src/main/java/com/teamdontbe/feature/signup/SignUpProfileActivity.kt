@@ -4,8 +4,13 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.READ_MEDIA_IMAGES
 import android.Manifest.permission.READ_MEDIA_VIDEO
 import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
-import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,6 +22,7 @@ import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.domain.entity.ProfileEditInfoEntity
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivitySignUpProfileBinding
@@ -25,11 +31,15 @@ import com.teamdontbe.feature.signup.SignUpAgreeActivity.Companion.SIGN_UP_AGREE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 
 @AndroidEntryPoint
 class SignUpProfileActivity :
     BindingActivity<ActivitySignUpProfileBinding>(R.layout.activity_sign_up_profile) {
     private val viewModel by viewModels<SignUpProfileViewModel>()
+    private var photoUri: Uri? = null
 
     // Register ActivityResult handler
     // Permission request handler
@@ -235,39 +245,95 @@ class SignUpProfileActivity :
         val nickName = viewModel.nickName.value.orEmpty()
         val optionalAgreementInSignUp = intent.getBooleanExtra(SIGN_UP_AGREE, false)
         val introduceText = viewModel.introduceText.value.orEmpty()
-        val imgUrl = null
+        val imgUrl = makeImageFile(photoUri)
+        Log.d("imgUrl", imgUrl.toString())
+        Log.d("photoUri", photoUri.toString())
 
         viewModel.saveUserNickNameInLocal(nickName)
 
-        when (flag) {
-            SIGN_UP_AGREE -> handleSignUpAgree(
-                nickName = nickName,
-                optionalAgreement = optionalAgreementInSignUp,
-                introduce = introduceText,
-                imgUrl = imgUrl
-            )
-            // 마이페이지 인 경우 선택 동의 null
-            MY_PAGE_PROFILE -> handleMyPageProfile(
-                nickName = nickName,
-                introduce = introduceText,
-                imgUrl = imgUrl
-            )
+        handleSignUpAgree(
+            nickName = nickName,
+            optionalAgreement = optionalAgreementInSignUp,
+            introduce = introduceText,
+            imgUrl = imgUrl
+        )
+
+        /*    when (flag) {
+                SIGN_UP_AGREE -> handleSignUpAgree(
+                    nickName = nickName,
+                    optionalAgreement = optionalAgreementInSignUp,
+                    introduce = introduceText,
+                    imgUrl = imgUrl
+                )
+                // 마이페이지 인 경우 선택 동의 null
+                MY_PAGE_PROFILE -> handleMyPageProfile(
+                    nickName = nickName,
+                    introduce = introduceText,
+                    imgUrl = imgUrl
+                )
+            }*/
+    }
+
+    private fun makeImageFile(uri: Uri?): File? {
+        // 파일 스트림으로 uri로 접근해 비트맵을 디코딩
+        if (uri == null) return null
+        val bitmap = contentResolver.openInputStream(uri).use {
+            BitmapFactory.decodeStream(it)
         }
+
+        // 캐시 파일 생성
+        val tempFile =
+            File.createTempFile("file", ".jpg", cacheDir)
+
+        // 파일 스트림을 통해 파일에 비트맵 저장
+        FileOutputStream(tempFile).use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+        }
+        return tempFile
     }
 
     private fun handleSignUpAgree(
         nickName: String,
         optionalAgreement: Boolean,
         introduce: String,
-        imgUrl: String?
+        imgUrl: File?
     ) {
-        viewModel.patchUserProfileEdit(nickName, optionalAgreement, introduce, imgUrl)
-        navigateToMainActivity(setUpUserProfile(nickName, optionalAgreement, introduce, imgUrl))
+        viewModel.patchUserProfileUri(
+            ProfileEditInfoEntity(
+                nickName,
+                optionalAgreement,
+                introduce,
+            ),
+            imgUrl
+        )
+        finish()
+
+//        navigateToMainActivity(setUpUserProfile(nickName, optionalAgreement, introduce, null))
     }
 
-    private fun handleMyPageProfile(nickName: String, introduce: String, imgUrl: String?) {
-        viewModel.patchUserProfileEdit(nickName, null, introduce, imgUrl)
-        finish()
+    /*  private fun handleMyPageProfile(nickName: String, introduce: String, imgUrl: String?) {
+          Log.d("uir", imgUrl.toString())
+          viewModel.patchUserProfileUri(
+              ProfileEditInfoEntity(
+                  nickName,
+                  null,
+                  introduce,
+              ),
+              imgUrl
+          )
+          finish()
+      }*/
+
+    private fun Uri.getFilePath(): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = applicationContext.contentResolver.query(this, projection, null, null, null)
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                return it.getString(columnIndex)
+            }
+        }
+        return null
     }
 
     private fun navigateToMainActivity(userProfile: UserProfileModel) {
@@ -287,7 +353,7 @@ class SignUpProfileActivity :
             inputNickName,
             allowedCheck,
             introduce,
-            imgUrl,
+            imgUrl
         )
     }
 
