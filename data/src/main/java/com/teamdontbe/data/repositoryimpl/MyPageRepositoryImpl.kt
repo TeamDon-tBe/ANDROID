@@ -14,14 +14,10 @@ class MyPageRepositoryImpl
 @Inject constructor(
     private val myPageDataSource: MyPageDataSource,
 ) : MyPageRepository {
-    override suspend fun getMyPageUserProfile(viewMemberId: Int): Flow<MyPageUserProfileEntity?> {
-        return flow {
-            val result = kotlin.runCatching {
-                myPageDataSource.getMyPageUserProfileSource(viewMemberId).data?.toMyPageUserProfileEntity()
-            }
-            emit(result.getOrDefault(MyPageUserProfileEntity(-1, "", "", "", -1)))
+    override suspend fun getMyPageUserProfile(viewMemberId: Int): Result<MyPageUserProfileEntity?> =
+        runCatching {
+            myPageDataSource.getMyPageUserProfileSource(viewMemberId).data?.toMyPageUserProfileEntity()
         }
-    }
 
     override suspend fun getMyPageFeedList(viewMemberId: Int): Flow<List<FeedEntity>?> {
         return flow {

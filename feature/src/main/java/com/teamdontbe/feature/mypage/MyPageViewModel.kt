@@ -40,14 +40,13 @@ class MyPageViewModel
     fun getMyPageUserProfileInfo(viewMemberId: Int) {
         viewModelScope.launch {
             _getMyPageUserProfileState.value = UiState.Loading
-            myPageRepository.getMyPageUserProfile(viewMemberId).collectLatest {
+            myPageRepository.getMyPageUserProfile(viewMemberId).onSuccess {
                 if (it != null) {
                     _getMyPageUserProfileState.value = UiState.Success(it)
                 } else {
                     UiState.Failure("null")
                 }
             }
-            _getMyPageUserProfileState.value = UiState.Loading
         }
     }
 

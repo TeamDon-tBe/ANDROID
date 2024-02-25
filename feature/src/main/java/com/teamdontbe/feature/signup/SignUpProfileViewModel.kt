@@ -63,7 +63,7 @@ class SignUpProfileViewModel
     fun getUserProfileIntroduce() {
         viewModelScope.launch {
             myPageRepository.getMyPageUserProfile(getMemberId ?: -1)
-                .collectLatest { userProfileInfo ->
+                .onSuccess { userProfileInfo ->
                     if (userProfileInfo != null) {
                         _myPageUserIntroduce.value = userProfileInfo.memberIntro
                     }
