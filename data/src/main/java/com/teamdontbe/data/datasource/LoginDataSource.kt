@@ -14,7 +14,7 @@ interface LoginDataSource {
 
     suspend fun patchProfileEdit(requestProfileEdit: RequestProfileEditDto): BaseResponse<Unit>
 
-    suspend fun patchUserProfileEdit(
+    suspend fun patchUserProfilePart(
         info: RequestBody,
         file: MultipartBody.Part?
     ): BaseResponse<Unit>

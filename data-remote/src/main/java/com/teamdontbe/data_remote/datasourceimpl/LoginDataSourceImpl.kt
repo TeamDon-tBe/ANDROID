@@ -24,9 +24,9 @@ constructor(
     override suspend fun patchProfileEdit(requestProfileEdit: RequestProfileEditDto): BaseResponse<Unit> =
         loginApiService.patchUserProfile(requestProfileEdit)
 
-    override suspend fun patchUserProfileEdit(
+    override suspend fun patchUserProfilePart(
         info: RequestBody,
         file: MultipartBody.Part?
     ): BaseResponse<Unit> =
-        loginApiService.patchUserProfile2(info, file)
+        loginApiService.patchUserProfilePart(info, file)
 }

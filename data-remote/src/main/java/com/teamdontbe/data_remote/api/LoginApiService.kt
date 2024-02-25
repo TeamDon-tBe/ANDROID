@@ -43,7 +43,7 @@ interface LoginApiService {
 
     @Multipart
     @PATCH("/$API/$V1/$USER_PROFILE_2")
-    suspend fun patchUserProfile2(
+    suspend fun patchUserProfilePart(
         @Part(INFO) requestProfileEdit: RequestBody,
         @Part file: MultipartBody.Part?,
     ): BaseResponse<Unit>
