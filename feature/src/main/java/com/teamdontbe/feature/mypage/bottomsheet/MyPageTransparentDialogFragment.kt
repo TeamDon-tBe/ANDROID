@@ -5,6 +5,7 @@ import androidx.fragment.app.activityViewModels
 import com.teamdontbe.core_ui.base.BindingDialogFragment
 import com.teamdontbe.core_ui.util.context.dialogFragmentResize
 import com.teamdontbe.core_ui.util.fragment.toast
+import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentTransparentDialogBinding
 import com.teamdontbe.feature.mypage.MyPageViewModel
@@ -34,7 +35,7 @@ class MyPageTransparentDialogFragment(
     }
 
     private fun initMyPageYesButtonClickListener() {
-        binding.btnTransparentDialogYes.setOnClickListener {
+        binding.btnTransparentDialogYes.setOnDuplicateBlockClick {
             toast(getGhostReason())
             if (getGhostReason().isEmpty()) {
                 binding.tvTransparentWarning.visibility = View.VISIBLE
