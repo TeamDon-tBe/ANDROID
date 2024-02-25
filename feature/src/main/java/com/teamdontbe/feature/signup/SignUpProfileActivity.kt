@@ -5,6 +5,8 @@ import android.Manifest.permission.READ_MEDIA_IMAGES
 import android.Manifest.permission.READ_MEDIA_VIDEO
 import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.view.View
@@ -17,7 +19,6 @@ import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.context.openKeyboard
-import com.teamdontbe.core_ui.util.context.uriToTempFile
 import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.ProfileEditInfoEntity
@@ -32,12 +33,14 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.FileOutputStream
 
 @AndroidEntryPoint
 class SignUpProfileActivity :
     BindingActivity<ActivitySignUpProfileBinding>(R.layout.activity_sign_up_profile) {
     private val viewModel by viewModels<SignUpProfileViewModel>()
     private var photoUri: Uri? = null
+    private var tempFile: File? = null
 
     // Permission request handler
     private val requestPermissions =
@@ -239,7 +242,7 @@ class SignUpProfileActivity :
         val nickName = viewModel.nickName.value.orEmpty()
         val optionalAgreementInSignUp = intent.getBooleanExtra(SIGN_UP_AGREE, false)
         val introduceText = viewModel.introduceText.value.orEmpty()
-        val imgUrl = this.uriToTempFile(photoUri)
+        val imgUrl = uriToTempFile(photoUri)
 
         when (flag) {
             SIGN_UP_AGREE -> handleSignUpAgree(
@@ -255,6 +258,25 @@ class SignUpProfileActivity :
                 imgUrl = imgUrl
             )
         }
+    }
+
+    private fun uriToTempFile(uri: Uri?): File? {
+        if (uri == null) return null
+
+        // 파일 스트림으로 uri로 접근해 비트맵을 디코딩
+        val bitmap = contentResolver.openInputStream(uri).use {
+            BitmapFactory.decodeStream(it)
+        } ?: return null
+
+        // 캐시 파일 생성
+        tempFile = File.createTempFile("file", ".jpg", cacheDir)
+
+        // 파일 스트림을 통해 파일에 비트맵 저장
+        FileOutputStream(tempFile).use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, it)
+        }
+
+        return tempFile
     }
 
     private fun handleSignUpAgree(
@@ -320,5 +342,12 @@ class SignUpProfileActivity :
         etSignUpAgreeIntroduce.setOnClickListener {
             openKeyboard(etSignUpAgreeIntroduce)
         }
+    }
+
+    override fun onDestroy() {
+        // 캐시 파일을 삭제
+        tempFile?.delete()
+        photoUri = null
+        super.onDestroy()
     }
 }
