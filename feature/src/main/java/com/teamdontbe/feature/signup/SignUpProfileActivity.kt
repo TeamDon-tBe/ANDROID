@@ -182,10 +182,7 @@ class SignUpProfileActivity :
         }
     }
 
-    private fun updateAgreeText(
-        messageResId: Int,
-        textColorResId: Int,
-    ) {
+    private fun updateAgreeText(messageResId: Int, textColorResId: Int) {
         binding.tvSignUpAgreeMessage.apply {
             text = context.getString(messageResId)
             setTextColor(colorOf(textColorResId))
@@ -229,7 +226,8 @@ class SignUpProfileActivity :
 
     private fun updateErrorMessage(doubleCheck: Boolean) {
         val messageResId =
-            if (doubleCheck) R.string.sign_up_profile_use_posssible else R.string.sign_up_profile_use_impossible
+            if (doubleCheck) R.string.sign_up_profile_use_posssible
+            else R.string.sign_up_profile_use_impossible
         val textColorResId = if (doubleCheck) R.color.primary else R.color.error
 
         updateAgreeText(messageResId, textColorResId)

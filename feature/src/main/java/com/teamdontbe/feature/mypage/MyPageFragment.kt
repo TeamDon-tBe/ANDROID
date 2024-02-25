@@ -127,10 +127,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         val textViewX =
             (
-                    (updateProgress * (progressBar.width - PROGRESSBAR_RADIUS_OFFSET)) / progressBar.max - requireContext().pxToDp(
-                        PROGRESS_LABEL_OFFSET,
-                    )
-                    ) - (progressLabelTextView.width / PROGRESSBAR_RADIUS_OFFSET)
+                (updateProgress * (progressBar.width - PROGRESSBAR_RADIUS_OFFSET)) / progressBar.max - requireContext().pxToDp(
+                    PROGRESS_LABEL_OFFSET,
+                )
+                ) - (progressLabelTextView.width / PROGRESSBAR_RADIUS_OFFSET)
         val finalX =
             if (progressLabelTextView.width + textViewX > maxX) (maxX - progressLabelTextView.width - LAYOUT_MARGIN) else textViewX + LAYOUT_MARGIN
 
