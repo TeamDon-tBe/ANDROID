@@ -1,5 +1,6 @@
 package com.teamdontbe.data.repositoryimpl
 
+import androidx.paging.PagingData
 import com.teamdontbe.data.datasource.HomeDataSource
 import com.teamdontbe.data.dto.request.RequestCommentPostingDto
 import com.teamdontbe.domain.entity.CommentEntity
@@ -14,17 +15,11 @@ class HomeRepositoryImpl
     constructor(
         private val homeDataSource: HomeDataSource,
     ) : HomeRepository {
-        override suspend fun getFeedList(): Flow<List<FeedEntity>?> {
-            return flow {
-                val result =
-                    runCatching {
-                        homeDataSource.getFeedList().data?.map { it.toFeedEntity() }
-                    }
-                emit(result.getOrDefault(emptyList()))
-            }
-        }
+    override fun getFeedList(): Flow<PagingData<FeedEntity>> {
+        return homeDataSource.getFeedList()
+    }
 
-        override suspend fun getFeedLDetail(contentId: Int): Flow<FeedEntity?> {
+    override suspend fun getFeedLDetail(contentId: Int): Flow<FeedEntity?> {
             return flow {
                 val result =
                     runCatching {

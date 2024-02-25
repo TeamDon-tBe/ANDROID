@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
@@ -12,7 +11,6 @@ import com.teamdontbe.domain.repository.HomeRepository
 import com.teamdontbe.domain.repository.UserInfoRepository
 import com.teamdontbe.feature.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -28,12 +26,6 @@ constructor(
     private val homeRepository: HomeRepository,
     private val userInfoRepository: UserInfoRepository,
 ) : ViewModel() {
-
-    private val _getFeedList = MutableStateFlow<UiState<List<FeedEntity>>>(UiState.Empty)
-    val getFeedList: StateFlow<UiState<List<FeedEntity>>> = _getFeedList
-
-    private val _getFeedPagingList = MutableStateFlow<UiState<PagingData<FeedEntity>?>>(UiState.Empty)
-    val getFeedPagingList: StateFlow<UiState<PagingData<FeedEntity>?>> = _getFeedPagingList
 
     private val _getFeedDetail = MutableSharedFlow<UiState<FeedEntity>>()
     val getFeedDetail: SharedFlow<UiState<FeedEntity>> = _getFeedDetail
@@ -62,24 +54,11 @@ constructor(
     private val _openHomeDetail = MutableLiveData<Event<FeedEntity>>()
     val openHomeDetail: LiveData<Event<FeedEntity>> = _openHomeDetail
 
-    fun test() = viewModelScope.launch {
-        homeRepository.getFeedPagingList().collectLatest {
-            _getFeedPagingList.value = UiState.Success(it)
-        }
-    }
-
     fun openHomeDetail(feedEntity: FeedEntity) {
         _openHomeDetail.value = Event(feedEntity)
     }
 
-    fun getFeedList() =
-        viewModelScope.launch {
-            _getFeedList.value = UiState.Loading
-            homeRepository.getFeedList().collectLatest {
-                if (it != null) _getFeedList.value =
-                    UiState.Success(it) else UiState.Failure("null")
-            }
-        }
+    fun getFeedList() = homeRepository.getFeedList()
 
     fun getFeedDetail(contentId: Int) =
         viewModelScope.launch {

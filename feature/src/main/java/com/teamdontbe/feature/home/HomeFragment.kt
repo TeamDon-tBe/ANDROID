@@ -8,13 +8,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.ErrorActivity
-import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
@@ -24,6 +22,8 @@ import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.EventObserver
 import com.teamdontbe.feature.util.FeedItemDecorator
 import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
+import com.teamdontbe.feature.util.PagingLoadingAdapter
+import com.teamdontbe.feature.util.pagingSubmitData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -37,30 +37,15 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     override fun initView() {
         statusBarColorOf(R.color.gray_1)
-        homeViewModel.test()
-        observeFeedList()
+        initHomeFeedAdapter()
         observeOpenHomeDetail()
         observePostTransparentStatus()
         observeDeleteFeedStatus()
         initSwipeRefreshData()
-        scrollRecyclerViewToTop()
+        //scrollRecyclerViewToTop()
     }
 
-    private fun observeFeedList() {
-        homeViewModel.getFeedList.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Success -> {
-                    initHomeFeedAdapter(it.data)
-                    setRecyclerViewItemDecoration()
-                }
-
-                is UiState.Failure -> navigateToErrorPage()
-                else -> Unit
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun initHomeFeedAdapter(feedListData: List<FeedEntity>) {
+    private fun initHomeFeedAdapter() {
         homeFeedAdapter =
             HomePagingFeedAdapter(
                 onClickKebabBtn = ::onKebabBtnClick,
@@ -69,11 +54,17 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 onClickUserProfileBtn = ::navigateToMyPageFragment,
                 onClickToNavigateToHomeDetail = { feedData -> homeViewModel.openHomeDetail(feedData) },
                 userId = homeViewModel.getMemberId(),
-            ).apply {
-                paging
-                submitList(feedListData)
-            }
-        binding.rvHome.adapter = homeFeedAdapter
+            )
+        homeFeedAdapter.apply {
+            pagingSubmitData(
+                viewLifecycleOwner,
+                homeViewModel.getFeedList(),
+                homeFeedAdapter
+            )
+        }
+        setRecyclerViewItemDecoration()
+        binding.rvHome.adapter =
+            homeFeedAdapter.withLoadStateFooter(footer = PagingLoadingAdapter())
     }
 
     private fun onKebabBtnClick(
@@ -184,7 +175,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun handleDeleteFeedSuccess() {
         if (deleteFeedPosition != -1) {
-            homeFeedAdapter.deleteItem(deleteFeedPosition)
+            // homeFeedAdapter.deleteItem(deleteFeedPosition)
             deleteFeedPosition = -1
         }
         val dialog = DeleteCompleteDialogFragment()
@@ -216,19 +207,19 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         }
     }
 
-    private fun scrollRecyclerViewToTop() {
-        val mainActivity = requireActivity() as? MainActivity
-        val nestedScrollMyPage = binding.nestedScrollHome
-
-        mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)
-            ?.setOnItemReselectedListener { item ->
-                if (item.itemId == R.id.fragment_home && nestedScrollMyPage != null) {
-                    nestedScrollMyPage.post {
-                        nestedScrollMyPage.smoothScrollTo(0, 0)
-                    }
-                }
-            }
-    }
+//    private fun scrollRecyclerViewToTop() {
+//        val mainActivity = requireActivity() as? MainActivity
+//        val nestedScrollMyPage = binding.nestedScrollHome
+//
+//        mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)
+//            ?.setOnItemReselectedListener { item ->
+//                if (item.itemId == R.id.fragment_home && nestedScrollMyPage != null) {
+//                    nestedScrollMyPage.post {
+//                        nestedScrollMyPage.smoothScrollTo(0, 0)
+//                    }
+//                }
+//            }
+//    }
 
     companion object {
         const val HOME_BOTTOM_SHEET = "home_bottom_sheet"
