@@ -46,7 +46,7 @@ constructor(
 
     fun patchUserProfileEdit(
         nickName: String,
-        allowed: Boolean,
+        allowed: Boolean?,
         intro: String,
         url: String?,
     ) {

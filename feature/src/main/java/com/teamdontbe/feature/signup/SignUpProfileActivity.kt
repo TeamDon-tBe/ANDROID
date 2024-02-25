@@ -19,6 +19,7 @@ import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.context.makeImageToFile
 import com.teamdontbe.core_ui.util.context.openKeyboard
+import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.ProfileEditInfoEntity
 import com.teamdontbe.feature.MainActivity
@@ -272,8 +273,7 @@ class SignUpProfileActivity :
             imgUrl
         )
         finish()
-
-        navigateToMainActivity(setUpUserProfile(nickName, optionalAgreement, introduce, null))
+        navigateTo<MainActivity>(this)
     }
 
     private fun handleMyPageProfile(nickName: String, introduce: String, imgUrl: File?) {
@@ -287,27 +287,6 @@ class SignUpProfileActivity :
             imgUrl
         )
         finish()
-    }
-
-    private fun navigateToMainActivity(userProfile: UserProfileModel) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra(SIGN_UP_AGREE, userProfile)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun setUpUserProfile(
-        inputNickName: String,
-        allowedCheck: Boolean,
-        introduce: String,
-        imgUrl: String?
-    ): UserProfileModel {
-        return UserProfileModel(
-            inputNickName,
-            allowedCheck,
-            introduce,
-            imgUrl
-        )
     }
 
     private fun initBackBtnClickListener(flag: String) {
