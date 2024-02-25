@@ -7,7 +7,6 @@ import com.teamdontbe.data.dto.request.RequestFeedLikedDto
 import com.teamdontbe.data.dto.request.RequestTransparentDto
 import com.teamdontbe.data.dto.response.ResponseCommentDto
 import com.teamdontbe.data.dto.response.ResponseFeedDto
-import com.teamdontbe.data.dto.response.ResponseFeedV2Dto
 import com.teamdontbe.data_remote.api.LoginApiService.Companion.API
 import com.teamdontbe.data_remote.api.LoginApiService.Companion.V1
 import retrofit2.http.Body
@@ -35,7 +34,7 @@ interface HomeApiService {
     @GET("$API/$V1/$CONTENTS")
     suspend fun getFeedList(
         @Query(value = CURSOR) contentId: Long = -1,
-    ): BaseResponse<List<ResponseFeedV2Dto>>
+    ): BaseResponse<List<ResponseFeedDto>>
 
     @GET("/$API/$V1/$CONTENT/{$CONTENT_ID}/$DETAIL")
     suspend fun getFeedDetail(

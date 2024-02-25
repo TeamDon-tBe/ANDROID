@@ -20,7 +20,7 @@ class HomePagingSourceImpl(private val homeApiService: HomeApiService) :
             val result = homeApiService.getFeedList(position)
             LoadResult.Page(
                 //매핑은 여기서
-                data = result.data?.map { it.toFeedEntityV2() } ?: emptyList(),
+                data = result.data?.map { it.toFeedEntity() } ?: emptyList(),
                 prevKey = if (position.toInt() == -1) null else result.data?.first()?.contentId?.toLong(),
                 nextKey = if (result.data.isNullOrEmpty()) null else result.data?.last()?.contentId?.toLong(),
             )
