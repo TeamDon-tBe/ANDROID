@@ -82,13 +82,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initMyPageStateObserve(memberProfile: MyPageModel) {
         viewModel.getMyPageUserProfileInfo(memberProfile.id)
-        viewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
+        viewModel.getMyPageUserProfileState.flowWithLifecycle(viewLifecycleOwner.lifecycle).onEach {
             when (it) {
                 is UiState.Success -> handleSuccessState(it.data, memberProfile)
                 is UiState.Failure -> navigateToErrorPage(requireContext())
                 else -> Unit
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun handleSuccessState(data: MyPageUserProfileEntity, memberProfile: MyPageModel) =
