@@ -26,13 +26,13 @@ class TransparentDialogFragment(
     }
 
     private fun initCancelButtonClickListener() {
-        binding.btnTransparentDialogCancel.setOnClickListener {
+        binding.btnTransparentCancel.setOnClickListener {
             dismiss()
         }
     }
 
     private fun initYesButtonClickListener() {
-        binding.btnTransparentDialogYes.setOnClickListener {
+        binding.btnTransparentYes.setOnClickListener {
             homeViewModel.postTransparent(alarmTriggerType, targetMemberId, alarmTriggerId)
             dismiss()
         }
