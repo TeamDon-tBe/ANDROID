@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponseFeedDto(
+data class ResponseFeedV2Dto(
     @SerialName("memberId") val memberId: Int,
     @SerialName("memberProfileUrl") val memberProfileUrl: String,
     @SerialName("memberNickname") val memberNickname: String,
@@ -17,8 +17,9 @@ data class ResponseFeedDto(
     @SerialName("isLiked") val isLiked: Boolean,
     @SerialName("likedNumber") val likedNumber: Int,
     @SerialName("commentNumber") val commentNumber: Int,
+    @SerialName("isDeleted") val isDeleted: Boolean,
 ) {
-    fun toFeedEntity() =
+    fun toFeedEntityV2() =
         FeedEntity(
             memberId,
             memberProfileUrl,
@@ -31,5 +32,6 @@ data class ResponseFeedDto(
             contentText,
             time,
             contentId,
+            isDeleted
         )
 }
