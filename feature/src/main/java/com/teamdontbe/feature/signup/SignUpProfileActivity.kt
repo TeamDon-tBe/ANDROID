@@ -1,8 +1,14 @@
 package com.teamdontbe.feature.signup
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.READ_MEDIA_IMAGES
+import android.Manifest.permission.READ_MEDIA_VIDEO
+import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
+import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.view.WindowManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +31,59 @@ class SignUpProfileActivity :
     BindingActivity<ActivitySignUpProfileBinding>(R.layout.activity_sign_up_profile) {
     private val viewModel by viewModels<SignUpProfileViewModel>()
 
+    // Register ActivityResult handler
+    // Permission request handler
+    private val requestPermissions =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions.all { it.value }) {
+                // Permission granted, get images
+                lifecycleScope.launch {
+                    try {
+                        selectImage()
+                    } catch (e: Exception) {
+                        // 오류 처리
+                        Log.e("YourActivity", "Error fetching images: ${e.message}", e)
+                    }
+                }
+            } else {
+                // Permission denied
+                // Handle permission denied case
+            }
+        }
+
+    // 포토피커 사용하는 경우
+    /*    private val getPictureLauncher =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri: Uri? ->
+                imageUri?.let { uri ->
+                    binding.ivSignUpProfile.setImageURI(uri)
+    //                val requestBody = ContentUriRequestBody(this, uri)
+    //                val multipartBody = requestBody.toFormData()
+    //                photoUri = multipartBody.toString()
+                    photoUri = uri
+                    Log.d("SignUpProfileActivity", "uri: $uri")
+                }
+            }*/
+    private val getPictureLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            if (activityResult.resultCode == RESULT_OK) {
+                val imageUri = activityResult.data?.data
+                imageUri?.let {
+                    binding.ivSignUpProfile.setImageURI(it)
+                    photoUri = it
+                }
+            }
+        }
+
+    private fun selectImage() {
+        //        포토피커 사용하는 경우
+        /*  getPictureLauncher.launch(
+              PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+          )*/
+        // 갤러리 사용하는 경우
+        val getPictureIntent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
+        getPictureLauncher.launch(getPictureIntent)
+    }
+
     override fun initView() {
         binding.vm = viewModel
 
@@ -34,6 +93,31 @@ class SignUpProfileActivity :
         initNextBtnStateObserve(flag)
         initBackBtnClickListener(flag)
         initKeyboardSetting()
+        initImagePlusBtnClickListener()
+    }
+
+    private fun initImagePlusBtnClickListener() {
+        binding.btnSignUpProfilePlus.setOnClickListener {
+            // 갤러리 이미지 가져오기
+            getGalleryPermission()
+        }
+    }
+
+    private fun getGalleryPermission() {
+        // Permission request logic
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            requestPermissions.launch(
+                arrayOf(
+                    READ_MEDIA_IMAGES,
+                    READ_MEDIA_VIDEO,
+                    READ_MEDIA_VISUAL_USER_SELECTED,
+                )
+            )
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO))
+        } else {
+            requestPermissions.launch(arrayOf(READ_EXTERNAL_STORAGE))
+        }
     }
 
     private fun initMyPageProfileAppBarTitle(): String {
