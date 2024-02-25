@@ -58,7 +58,7 @@ class OnboardingFragment :
 
     private fun checkIsNewUser() {
         binding.tvOnboardingSkip.isVisible =
-            !(onboardingViewModel.getIsNewUser()) && onboardingViewModel.getCheckOnboarding()
+            !(onboardingViewModel.getIsNewUser()) || onboardingViewModel.getCheckOnboarding()
     }
 
     private fun initObserve() {
