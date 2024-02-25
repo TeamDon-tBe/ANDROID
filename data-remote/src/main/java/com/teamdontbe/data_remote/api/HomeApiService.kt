@@ -14,10 +14,13 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface HomeApiService {
     companion object {
         const val CONTENT = "content"
+        const val CONTENTS = "contents"
+        const val CURSOR = "cursor"
         const val ALL = "all"
         const val COMMENT = "comment"
         const val DETAIL = "detail"
@@ -28,8 +31,10 @@ interface HomeApiService {
         const val GHOST = "ghost2"
     }
 
-    @GET("/$API/$V1/$CONTENT/$ALL")
-    suspend fun getFeedList(): BaseResponse<List<ResponseFeedDto>>
+    @GET("$API/$V1/$CONTENTS")
+    suspend fun getFeedList(
+        @Query(value = CURSOR) contentId: Long = -1,
+    ): BaseResponse<List<ResponseFeedDto>>
 
     @GET("/$API/$V1/$CONTENT/{$CONTENT_ID}/$DETAIL")
     suspend fun getFeedDetail(

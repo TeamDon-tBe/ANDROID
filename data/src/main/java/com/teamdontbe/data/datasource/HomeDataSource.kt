@@ -1,12 +1,15 @@
 package com.teamdontbe.data.datasource
 
+import androidx.paging.PagingData
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.request.RequestCommentPostingDto
 import com.teamdontbe.data.dto.response.ResponseCommentDto
 import com.teamdontbe.data.dto.response.ResponseFeedDto
+import com.teamdontbe.domain.entity.FeedEntity
+import kotlinx.coroutines.flow.Flow
 
 interface HomeDataSource {
-    suspend fun getFeedList(): BaseResponse<List<ResponseFeedDto>>
+    fun getFeedList(): Flow<PagingData<FeedEntity>>
 
     suspend fun getFeedDetail(contentId: Int): BaseResponse<ResponseFeedDto>
 

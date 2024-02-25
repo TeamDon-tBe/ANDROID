@@ -28,10 +28,6 @@ constructor(
     private val userInfoRepository: UserInfoRepository,
 ) : ViewModel() {
 
-    private val _getFeedList = MutableStateFlow<UiState<List<FeedEntity>>>(UiState.Empty)
-    val getFeedList: StateFlow<UiState<List<FeedEntity>>> = _getFeedList
-
-
     private val _getFeedDetail = MutableSharedFlow<UiState<FeedEntity>>()
     val getFeedDetail: SharedFlow<UiState<FeedEntity>> = _getFeedDetail
 
@@ -62,16 +58,8 @@ constructor(
     fun openHomeDetail(feedEntity: FeedEntity) {
         _openHomeDetail.value = Event(feedEntity)
     }
-     fun set(token:String) = userInfoRepository.saveRefreshToken(token)
-    fun seta(token:String) = userInfoRepository.saveAccessToken(token)
-    fun getFeedList() =
-        viewModelScope.launch {
-            _getFeedList.value = UiState.Loading
-            homeRepository.getFeedList().collectLatest {
-                if (it != null) _getFeedList.value =
-                    UiState.Success(it) else UiState.Failure("null")
-            }
-        }
+
+    fun getFeedList() = homeRepository.getFeedList()
 
     fun getFeedDetail(contentId: Int) =
         viewModelScope.launch {

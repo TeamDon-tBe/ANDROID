@@ -7,7 +7,6 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.BottomSheetMyPageHambergerBinding
 import com.teamdontbe.feature.dialog.DeleteWithTitleWideDialogFragment
 import com.teamdontbe.feature.mypage.authinfo.MyPageAuthInfoActivity
-import com.teamdontbe.feature.mypage.authwithdraw.MyPageAuthWithdrawGuideActivity
 import com.teamdontbe.feature.signup.SignUpProfileActivity
 import com.teamdontbe.feature.util.DialogTag.LOGOUT_AUTH
 
@@ -51,10 +50,11 @@ class MyPageBottomSheet :
     }
 
     private fun navigateToComplaintWeb(uri: String) {
-        val urlIntentComplaint = Intent(
-            Intent.ACTION_VIEW,
-            Uri.parse(uri),
-        )
+        val urlIntentComplaint =
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(uri),
+            )
         startActivity(urlIntentComplaint)
     }
 
@@ -64,7 +64,8 @@ class MyPageBottomSheet :
                 DeleteWithTitleWideDialogFragment(
                     getString(R.string.bottom_sheet_my_page_logout),
                     getString(R.string.bottom_sheet_my_page_logout_description),
-                    true
+                    true,
+                    "",
                 )
             dialog.show(childFragmentManager, LOGOUT_AUTH)
         }
