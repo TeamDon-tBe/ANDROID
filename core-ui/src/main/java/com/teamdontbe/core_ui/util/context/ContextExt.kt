@@ -3,8 +3,11 @@ package com.teamdontbe.core_ui.util.context
 import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
@@ -16,6 +19,8 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
+import java.io.File
+import java.io.FileOutputStream
 
 fun Context.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -82,4 +87,23 @@ fun Context.statusBarColorOf(
     if (this is Activity) {
         window?.statusBarColor = colorOf(resId)
     }
+}
+
+fun Context.uriToTempFile(uri: Uri?): File? {
+    if (uri == null) return null
+
+    // 파일 스트림으로 uri로 접근해 비트맵을 디코딩
+    val bitmap = contentResolver.openInputStream(uri).use {
+        BitmapFactory.decodeStream(it)
+    } ?: return null
+
+    // 캐시 파일 생성
+    val tempFile = File.createTempFile("file", ".jpg", cacheDir)
+
+    // 파일 스트림을 통해 파일에 비트맵 저장
+    FileOutputStream(tempFile).use {
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, it)
+    }
+
+    return tempFile
 }
