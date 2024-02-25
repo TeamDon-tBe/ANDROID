@@ -1,13 +1,17 @@
 package com.teamdontbe.feature.homedetail.viewholder
 
+import android.content.Context
 import android.graphics.Color
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.CommentEntity
+import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ItemHomeCommentBinding
+import com.teamdontbe.feature.util.CalculateTime
 import com.teamdontbe.feature.util.Transparent
 
 class HomeDetailCommentViewHolder(
+    private val context : Context,
     private val binding: ItemHomeCommentBinding,
     private val onClickKebabBtn: (CommentEntity, Int) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
@@ -27,8 +31,15 @@ class HomeDetailCommentViewHolder(
             dividerComment.isVisible = data.memberId !== userId
             btnCommentHeart.isSelected = data.isLiked
 
-            if (lastPosition == position) dividerCommentDivideBottom.isVisible = false
-            if (data.isGhost) setFeedTransparent(-85) else setFeedTransparent(data.memberGhost)
+            if (lastPosition == bindingAdapterPosition) dividerCommentDivideBottom.isVisible = false
+            if (data.isGhost){
+                setFeedTransparent(-85)
+                binding.tvCommentTransparency.text = context.getString(
+                    R.string.tv_transparency_complete,
+                    data.memberGhost,
+                    CalculateTime(context).getCalculateTime(data.time)
+                )
+            } else setFeedTransparent(data.memberGhost)
 
             initLikedBtnCLickListener(data)
             initProfileBtnClickListener(data)

@@ -48,6 +48,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initHomeFeedAdapter() {
         homeFeedAdapter =
             HomePagingFeedAdapter(
+                requireContext(),
                 onClickKebabBtn = ::onKebabBtnClick,
                 onClickLikedBtn = ::onLikedBtnClick,
                 onClickTransparentBtn = ::onTransparentBtnClick,

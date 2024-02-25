@@ -104,6 +104,7 @@ class HomeDetailFragment :
     private fun initHomeDetailCommentAdapter(commentListData: List<CommentEntity>) {
         homeDetailCommentAdapter =
             HomeDetailCommentAdapter(
+                requireContext(),
                 onClickKebabBtn = { commentData, position ->
                     onKebabBtnClick(
                         commentData.memberId, -1, commentData.commentId, true, position,
@@ -128,6 +129,7 @@ class HomeDetailFragment :
     private fun initHomeFeedAdapter(feedListData: List<FeedEntity>) {
         homeFeedAdapter =
             HomeFeedAdapter(
+                requireContext(),
                 onClickKebabBtn = { feedData, position ->
                     onKebabBtnClick(
                         feedData.memberId, feedData.contentId ?: -1, -1, false, position,

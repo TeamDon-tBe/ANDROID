@@ -1,5 +1,6 @@
 package com.teamdontbe.feature.home
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -9,6 +10,7 @@ import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 import com.teamdontbe.feature.home.viewholder.HomeFeedViewHolder
 
 class HomeFeedAdapter(
+    private val context: Context,
     private val userId: Int,
     private val onClickToNavigateToHomeDetail: (FeedEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
@@ -25,6 +27,7 @@ class HomeFeedAdapter(
         val binding =
             ItemHomeFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HomeFeedViewHolder(
+            context,
             binding,
             userId,
             onClickToNavigateToHomeDetail,
