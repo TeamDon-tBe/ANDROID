@@ -1,6 +1,5 @@
 package com.teamdontbe.feature.signup
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +14,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -94,16 +94,13 @@ class SignUpProfileViewModel
             loginRepository.patchProfileUriEdit(
                 info,
                 url
-            ).onSuccess {
-//                _profileEditSuccess.value = it
-                Log.d("test_text", it.toString())
-                /*   if (it) {
-                       saveUserNickNameInLocal(info.nickname)
-                   } else {
-                       Log.d("fail", it.toString())
-                   }*/
+            ).onSuccess { patchSuccess ->
+                _profileEditSuccess.value = patchSuccess
+                if (patchSuccess) {
+                    saveUserNickNameInLocal(info.nickname)
+                }
             }.onFailure {
-                Log.d("fail", it.message.toString())
+                Timber.d("fail", it.message.toString())
             }
         }
     }

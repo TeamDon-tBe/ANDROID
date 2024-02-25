@@ -20,5 +20,5 @@ interface LoginRepository {
     suspend fun patchProfileUriEdit(
         info: ProfileEditInfoEntity,
         file: File?
-    ): Result<String>
+    ): Result<Boolean>
 }

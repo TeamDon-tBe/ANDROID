@@ -1,6 +1,5 @@
 package com.teamdontbe.data.repositoryimpl
 
-import android.util.Log
 import com.teamdontbe.data.datasource.LoginDataSource
 import com.teamdontbe.data.dto.request.RequestLoginDto
 import com.teamdontbe.data.dto.request.RequestProfileEditDto
@@ -70,7 +69,7 @@ constructor(
     override suspend fun patchProfileUriEdit(
         info: ProfileEditInfoEntity,
         file: File?
-    ): Result<String> {
+    ): Result<Boolean> {
         return runCatching {
             // ProfileEditInfoEntity를 JSON 형식의 문자열로 변환하여 요청 본문에 추가
             val infoJson = JSONObject().apply {
@@ -79,28 +78,16 @@ constructor(
                 put("memberIntro", info.memberIntro)
             }.toString()
 
-            Log.d("infoJson", infoJson)
-
             // ProfileEditInfoEntity를 RequestBody로 변환
             val infoRequestBody = infoJson.toRequestBody("application/json".toMediaTypeOrNull())
 
             // 파일 데이터를 읽어와서 별도의 파트로 추가
             val filePart = file?.let {
-                val requestBody = it.asRequestBody("image/png".toMediaTypeOrNull())
+                val requestBody = it.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 MultipartBody.Part.createFormData("file", it.name, requestBody)
             }
 
-            Log.d("filePart", filePart.toString())
-
-            // patchUserProfile2 호출
-            val response = loginDataSource.patchUserProfileEdit(infoRequestBody, filePart).message
-            Log.d("response", response.toString())
-            response // 성공한 경우에는 응답 메시지를 반환
-        }.onFailure {
-//                it.printStackTrace() // 예외 출력
-            Log.d("error", it.toString())
+            loginDataSource.patchUserProfilePart(infoRequestBody, filePart).success
         }
-//        Log.d("result", result.toString())
-//            emit(result.getOrDefault("애초에 안됨"))
     }
 }
