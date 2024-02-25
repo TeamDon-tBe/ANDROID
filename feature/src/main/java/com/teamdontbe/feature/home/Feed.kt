@@ -17,7 +17,7 @@ data class Feed(
     val contentText: String,
     val time: String,
     val contentId: Int? = null,
-    val isDeleted: Boolean
+    val isDeleted: Boolean? = null
 ) : Parcelable {
     constructor(feedEntity: FeedEntity) : this(
         feedEntity.memberId,
