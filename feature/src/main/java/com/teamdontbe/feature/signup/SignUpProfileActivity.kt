@@ -7,7 +7,6 @@ import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,8 +16,8 @@ import androidx.lifecycle.lifecycleScope
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
-import com.teamdontbe.core_ui.util.context.makeImageToFile
 import com.teamdontbe.core_ui.util.context.openKeyboard
+import com.teamdontbe.core_ui.util.context.uriToTempFile
 import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.ProfileEditInfoEntity
@@ -240,7 +239,7 @@ class SignUpProfileActivity :
         val nickName = viewModel.nickName.value.orEmpty()
         val optionalAgreementInSignUp = intent.getBooleanExtra(SIGN_UP_AGREE, false)
         val introduceText = viewModel.introduceText.value.orEmpty()
-        val imgUrl = this.makeImageToFile(photoUri)
+        val imgUrl = this.uriToTempFile(photoUri)
 
         when (flag) {
             SIGN_UP_AGREE -> handleSignUpAgree(
@@ -277,7 +276,6 @@ class SignUpProfileActivity :
     }
 
     private fun handleMyPageProfile(nickName: String, introduce: String, imgUrl: File?) {
-        Log.d("uir", imgUrl.toString())
         viewModel.patchUserProfileUri(
             ProfileEditInfoEntity(
                 nickName,

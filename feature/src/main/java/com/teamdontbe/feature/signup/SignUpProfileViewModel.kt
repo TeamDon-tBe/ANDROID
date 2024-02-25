@@ -49,7 +49,7 @@ class SignUpProfileViewModel
 
     fun getUserNickName() = userInfoRepository.getNickName()
 
-    fun saveUserNickNameInLocal(nickName: String) {
+    private fun saveUserNickNameInLocal(nickName: String) {
         userInfoRepository.saveNickName(nickName)
     }
 
@@ -69,24 +69,6 @@ class SignUpProfileViewModel
                         _myPageUserInfo.value = userProfileInfo
                     }
                 }
-        }
-    }
-
-    fun patchUserProfileEdit(
-        nickName: String,
-        allowed: Boolean?,
-        intro: String,
-        url: String?,
-    ) {
-        viewModelScope.launch {
-            loginRepository.patchProfileEdit(
-                nickName,
-                allowed,
-                intro,
-                url,
-            ).collectLatest {
-                _profileEditSuccess.value = it
-            }
         }
     }
 
