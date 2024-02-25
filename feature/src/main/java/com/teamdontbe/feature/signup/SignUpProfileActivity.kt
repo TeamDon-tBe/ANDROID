@@ -28,6 +28,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivitySignUpProfileBinding
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet.Companion.MY_PAGE_PROFILE
 import com.teamdontbe.feature.signup.SignUpAgreeActivity.Companion.SIGN_UP_AGREE
+import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -161,6 +162,13 @@ class SignUpProfileActivity :
         viewModel.apply {
             getUserProfileIntroduce()
             checkOnMyPageInitialNickName()
+            updateProfileImage()
+        }
+    }
+
+    private fun updateProfileImage() {
+        viewModel.myPageUserInfo.observe(this) {
+            loadImage(binding.ivSignUpProfile, it.memberProfileUrl)
         }
     }
 

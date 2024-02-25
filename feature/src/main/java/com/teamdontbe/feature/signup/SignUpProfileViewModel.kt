@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.domain.entity.MyPageUserProfileEntity
 import com.teamdontbe.domain.entity.ProfileEditInfoEntity
 import com.teamdontbe.domain.repository.LoginRepository
 import com.teamdontbe.domain.repository.MyPageRepository
@@ -43,8 +44,8 @@ class SignUpProfileViewModel
     private var _profileEditSuccess = MutableLiveData<Boolean>()
     val profileEditSuccess: LiveData<Boolean> get() = _profileEditSuccess
 
-    private var _myPageUserIntroduce = MutableLiveData<String>()
-    val myPageUserIntroduce: LiveData<String> get() = _myPageUserIntroduce
+    private var _myPageUserInfo = MutableLiveData<MyPageUserProfileEntity>()
+    val myPageUserInfo: LiveData<MyPageUserProfileEntity> get() = _myPageUserInfo
 
     fun getUserNickName() = userInfoRepository.getNickName()
 
@@ -65,7 +66,7 @@ class SignUpProfileViewModel
             myPageRepository.getMyPageUserProfile(getMemberId ?: -1)
                 .onSuccess { userProfileInfo ->
                     if (userProfileInfo != null) {
-                        _myPageUserIntroduce.value = userProfileInfo.memberIntro
+                        _myPageUserInfo.value = userProfileInfo
                     }
                 }
         }
