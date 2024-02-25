@@ -126,14 +126,12 @@ class HomeRepositoryImpl
             alarmTriggerType: String,
             targetMemberId: Int,
             alarmTriggerId: Int,
-        ): Flow<Boolean> {
-            return flow {
-                val result = runCatching {
-                    homeDataSource.postTransparent(
-                        alarmTriggerType, targetMemberId, alarmTriggerId
-                    ).success
-                }
-                emit(result.getOrDefault(false))
+            ghostReason: String
+        ): Result<Boolean> {
+            return runCatching {
+                homeDataSource.postTransparent(
+                    alarmTriggerType, targetMemberId, alarmTriggerId, ghostReason
+                ).success
             }
         }
     }

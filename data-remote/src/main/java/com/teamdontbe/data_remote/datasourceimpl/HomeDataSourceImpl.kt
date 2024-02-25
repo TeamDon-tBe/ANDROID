@@ -65,12 +65,14 @@ class HomeDataSourceImpl
             alarmTriggerType: String,
             targetMemberId: Int,
             alarmTriggerId: Int,
+            ghostReason: String
         ): BaseResponse<Unit> {
             return homeApiService.postTransparent(
                 RequestTransparentDto(
                     alarmTriggerType,
                     targetMemberId,
                     alarmTriggerId,
+                    ghostReason
                 ),
             )
         }

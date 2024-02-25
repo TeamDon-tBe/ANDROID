@@ -8,4 +8,5 @@ data class RequestTransparentDto(
     @SerialName("alarmTriggerType") val alarmTriggerType: String,
     @SerialName("targetMemberId") val targetMemberId: Int,
     @SerialName("alarmTriggerId") val alarmTriggerId: Int,
+    @SerialName("ghostReason") val ghostReason: String,
 )

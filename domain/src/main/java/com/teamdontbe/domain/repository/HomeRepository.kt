@@ -32,5 +32,6 @@ interface HomeRepository {
         alarmTriggerType: String,
         targetMemberId: Int,
         alarmTriggerId: Int,
-    ): Flow<Boolean>
+        ghostReason: String
+    ): Result<Boolean>
 }
