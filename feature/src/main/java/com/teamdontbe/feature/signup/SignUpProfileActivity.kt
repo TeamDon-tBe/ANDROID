@@ -33,7 +33,6 @@ import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet.Companion.MY_
 import com.teamdontbe.feature.signup.SignUpAgreeActivity.Companion.SIGN_UP_AGREE
 import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -251,7 +250,7 @@ class SignUpProfileActivity :
         val optionalAgreementInSignUp = intent.getBooleanExtra(SIGN_UP_AGREE, false)
         val introduceText = viewModel.introduceText.value.orEmpty()
 
-        CoroutineScope(Dispatchers.Main).launch {
+        lifecycleScope.launch {
             val imgUrl = uriToTempFileWithCoil(photoUri)
 
             when (flag) {
