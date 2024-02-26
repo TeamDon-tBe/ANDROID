@@ -14,9 +14,11 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.NotiEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentNotificationBinding
-import com.teamdontbe.feature.notification.adapter.NotificationAdapter
 import com.teamdontbe.feature.notification.adapter.NotificationItemDecorator
+import com.teamdontbe.feature.notification.adapter.NotificationPagingAdapter
 import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
+import com.teamdontbe.feature.util.PagingLoadingAdapter
+import com.teamdontbe.feature.util.pagingSubmitData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -26,15 +28,14 @@ import timber.log.Timber
 class NotificationFragment :
     BindingFragment<FragmentNotificationBinding>(R.layout.fragment_notification) {
     private val notiViewModel by viewModels<NotificationViewModel>()
+    private var notiAdapter = NotificationPagingAdapter(click = { notiData, position -> })
 
     override fun initView() {
         statusBarColorOf(R.color.white)
         binding.appbarNotification.tvAppbarCancel.visibility = View.INVISIBLE
 
-        notiViewModel.getNotificationList()
-        initObserveList()
+        initNotificationAdapter()
         initObserveCheck()
-
         initSwipeRefreshData()
     }
 
@@ -58,6 +59,7 @@ class NotificationFragment :
             )
             binding.rvNotification.startAnimation(slideDown)
 
+            // 수정 해야 함
             notiViewModel.getNotificationList()
             binding.swipeRefreshLayout.isRefreshing = false
         }
@@ -74,51 +76,72 @@ class NotificationFragment :
         }.launchIn(lifecycleScope)
     }
 
-    private fun initObserveList() {
-        notiViewModel.getNotiList.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> {
-                    initNotificationAdapter(it.data)
-                    notiViewModel.patchNotificationCheck()
+    private fun initNotificationAdapter() {
+        notiAdapter =
+            NotificationPagingAdapter(click = { notiData, position ->
+                when (notiData.notificationTriggerType) {
+                    "contentLiked" -> navigateToHomeDetailFragment(notiData)
+                    "comment" -> navigateToHomeDetailFragment(notiData)
+                    "commentLiked" -> navigateToHomeDetailFragment(notiData)
+                    "actingContinue" -> findNavController().navigate(R.id.action_notification_to_posting)
+                    "beGhost" -> findNavController().navigate(R.id.action_notification_to_my_page)
+                    "contentGhost" -> navigateToHomeDetailFragment(notiData)
+                    "commentGhost" -> navigateToHomeDetailFragment(notiData)
+                    "userBan" -> Unit
+
+                    else ->
+                        Timber.tag("noti")
+                            .e("등록되지 않은 노티가 감지되었습니다 : ${notiData.notificationTriggerType}")
                 }
-
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun initNotificationAdapter(notiData: List<NotiEntity>) {
-        if (notiData.isEmpty()) {
-            binding.layoutNotificationEmpty.visibility = View.VISIBLE
-        } else {
-            binding.rvNotification.adapter =
-                NotificationAdapter(click = { notiData, position ->
-                    when (notiData.notificationTriggerType) {
-                        "contentLiked" -> navigateToHomeDetailFragment(notiData)
-                        "comment" -> navigateToHomeDetailFragment(notiData)
-                        "commentLiked" -> navigateToHomeDetailFragment(notiData)
-                        "actingContinue" -> findNavController().navigate(R.id.action_notification_to_posting)
-                        "beGhost" -> findNavController().navigate(R.id.action_notification_to_my_page)
-                        "contentGhost" -> navigateToHomeDetailFragment(notiData)
-                        "commentGhost" -> navigateToHomeDetailFragment(notiData)
-                        "userBan" -> Unit
-
-                        else ->
-                            Timber.tag("noti")
-                                .e("등록되지 않은 노티가 감지되었습니다 : ${notiData.notificationTriggerType}")
-                    }
-                }).apply {
-                    submitList(notiData)
-                }
-            if (binding.rvNotification.itemDecorationCount == 0) {
-                binding.rvNotification.addItemDecoration(
-                    NotificationItemDecorator(requireContext()),
-                )
-            }
+            })
+        notiAdapter.apply {
+            pagingSubmitData(
+                viewLifecycleOwner,
+                notiViewModel.getNotificationList(),
+                notiAdapter,
+            )
         }
+        if (binding.rvNotification.itemDecorationCount == 0) {
+            binding.rvNotification.addItemDecoration(
+                NotificationItemDecorator(requireContext()),
+            )
+        }
+        binding.rvNotification.adapter =
+            notiAdapter.withLoadStateFooter(footer = PagingLoadingAdapter())
+
+        notiViewModel.patchNotificationCheck()
     }
+
+//    private fun initNotificationAdapter(notiData: List<NotiEntity>) {
+//        if (notiData.isEmpty()) {
+//            binding.layoutNotificationEmpty.visibility = View.VISIBLE
+//        } else {
+//            binding.rvNotification.adapter =
+//                NotificationAdapter(click = { notiData, position ->
+//                    when (notiData.notificationTriggerType) {
+//                        "contentLiked" -> navigateToHomeDetailFragment(notiData)
+//                        "comment" -> navigateToHomeDetailFragment(notiData)
+//                        "commentLiked" -> navigateToHomeDetailFragment(notiData)
+//                        "actingContinue" -> findNavController().navigate(R.id.action_notification_to_posting)
+//                        "beGhost" -> findNavController().navigate(R.id.action_notification_to_my_page)
+//                        "contentGhost" -> navigateToHomeDetailFragment(notiData)
+//                        "commentGhost" -> navigateToHomeDetailFragment(notiData)
+//                        "userBan" -> Unit
+//
+//                        else ->
+//                            Timber.tag("noti")
+//                                .e("등록되지 않은 노티가 감지되었습니다 : ${notiData.notificationTriggerType}")
+//                    }
+//                }).apply {
+//                    submitList(notiData)
+//                }
+//            if (binding.rvNotification.itemDecorationCount == 0) {
+//                binding.rvNotification.addItemDecoration(
+//                    NotificationItemDecorator(requireContext()),
+//                )
+//            }
+//        }
+//    }
 
     private fun navigateToHomeDetailFragment(notiData: NotiEntity) {
         findNavController().navigate(
