@@ -378,10 +378,18 @@ class SignUpProfileActivity :
         }
     }
 
-    override fun onDestroy() {
+    private fun deleteCache() {
         // 캐시 파일을 삭제
         tempFile?.delete()
+        tempFile = null
         photoUri = null
+        cacheDir.listFiles()?.forEach {
+            it.delete()
+        }
+    }
+
+    override fun onDestroy() {
+        deleteCache()
         super.onDestroy()
     }
 }
