@@ -30,7 +30,7 @@ class NotificationAdapter(
     }
 
     companion object {
-        private val NotificationAdapterDiffCallback =
+        val NotificationAdapterDiffCallback =
             ItemDiffCallback<NotiEntity>(
                 onItemsTheSame = { old, new -> old.memberId == new.memberId },
                 onContentsTheSame = { old, new -> old == new },
