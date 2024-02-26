@@ -13,6 +13,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
+import coil.load
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.hideKeyboard
@@ -453,6 +454,7 @@ class HomeDetailFragment :
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomsheetHomeDetail.root)
         binding.bottomsheetHomeDetail.tvCommentProfileNickname.text =
             homeViewModel.getUserNickname()
+        binding.bottomsheetHomeDetail.ivCommentProfileImg.load(homeViewModel.getUserProfile())
         bottomSheetBehavior.isHideable = true
         bottomSheetBehavior.expandedOffset = 28
         bottomSheetBehavior.peekHeight = 0
