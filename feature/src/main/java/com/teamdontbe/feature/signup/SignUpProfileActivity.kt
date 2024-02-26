@@ -6,7 +6,7 @@ import android.Manifest.permission.READ_MEDIA_VIDEO
 import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.view.View
@@ -15,6 +15,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import coil.ImageLoader
+import coil.load
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
@@ -35,6 +39,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 
@@ -73,7 +78,7 @@ class SignUpProfileActivity :
             if (activityResult.resultCode == RESULT_OK) {
                 val imageUri = activityResult.data?.data
                 imageUri?.let {
-                    binding.ivSignUpProfile.setImageURI(it)
+                    binding.ivSignUpProfile.load(it)
                     photoUri = it
                 }
             }
@@ -247,7 +252,7 @@ class SignUpProfileActivity :
         val introduceText = viewModel.introduceText.value.orEmpty()
 
         CoroutineScope(Dispatchers.Main).launch {
-            val imgUrl = uriToTempFile(photoUri)
+            val imgUrl = uriToTempFileWithCoil(photoUri)
 
             when (flag) {
                 SIGN_UP_AGREE -> handleSignUpAgree(
@@ -266,20 +271,43 @@ class SignUpProfileActivity :
         }
     }
 
-    private suspend fun uriToTempFile(uri: Uri?): File? = withContext(Dispatchers.IO) {
+    private suspend fun uriToTempFileWithCoil(uri: Uri?): File? = withContext(Dispatchers.IO) {
         if (uri == null) return@withContext null
 
-        // 파일 스트림으로 uri로 접근해 비트맵을 디코딩
-        val bitmap = contentResolver.openInputStream(uri).use {
-            BitmapFactory.decodeStream(it)
-        } ?: return@withContext null
+        // Coil 이미지 로더 초기화
+        val imageLoader = ImageLoader(this@SignUpProfileActivity)
+
+        // 이미지 요청 생성
+        val request = ImageRequest.Builder(this@SignUpProfileActivity)
+            .data(uri)
+            .build()
+
+        // 이미지 로드
+        val result = (imageLoader.execute(request) as SuccessResult).drawable
+
+        // 비트맵을 ByteArray로 압축
+        val bitmap = (result as BitmapDrawable).bitmap
+        var stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        var byteArr = stream.toByteArray()
+
+        // 이미지 크기가 3MB를 초과하는 경우 압축하여 크기 줄이기
+        var quality = 100
+        while (byteArr.size > 3 * 1024 * 1024) {
+            stream = ByteArrayOutputStream()
+
+            // 퀄리티를 10% 감소
+            quality = (quality * 0.9).toInt()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream)
+            byteArr = stream.toByteArray()
+        }
 
         // 캐시 파일 생성
-        tempFile = File.createTempFile("file", ".jpg", cacheDir)
+        tempFile = File.createTempFile("file", ".jpg", this@SignUpProfileActivity.cacheDir)
 
-        // 파일 스트림을 통해 파일에 비트맵 저장
+        // 압축된 이미지를 파일에 저장
         FileOutputStream(tempFile).use {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, it)
+            it.write(byteArr)
         }
 
         return@withContext tempFile
