@@ -90,6 +90,8 @@ constructor(
 
     fun getUserNickname() = userInfoRepository.getNickName()
 
+    fun getUserProfile() = userInfoRepository.getMemberProfileUrl()
+
     fun postFeedLiked(contentId: Int) =
         viewModelScope.launch {
             homeRepository.postFeedLiked(contentId).collectLatest {

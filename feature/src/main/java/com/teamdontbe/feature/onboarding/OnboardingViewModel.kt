@@ -32,6 +32,8 @@ constructor(
     private val _profileEditSuccess = MutableLiveData<Boolean>()
     val profileEditSuccess: LiveData<Boolean> get() = _profileEditSuccess
 
+    fun getUserProfile() = userInfoRepository.getMemberProfileUrl()
+
     fun posting(contentText: String) =
         viewModelScope.launch {
             postingRepository.posting(contentText).collectLatest {
