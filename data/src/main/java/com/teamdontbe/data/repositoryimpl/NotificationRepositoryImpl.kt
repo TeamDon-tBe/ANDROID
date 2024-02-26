@@ -1,5 +1,6 @@
 package com.teamdontbe.data.repositoryimpl
 
+import androidx.paging.PagingData
 import com.teamdontbe.data.datasource.NotificationDataSource
 import com.teamdontbe.domain.entity.NotiEntity
 import com.teamdontbe.domain.repository.NotificationRepository
@@ -12,15 +13,7 @@ class NotificationRepositoryImpl
     constructor(
         private val notificationDataSource: NotificationDataSource,
     ) : NotificationRepository {
-        override suspend fun getNotificationList(): Flow<List<NotiEntity>?> {
-            return flow {
-                val result =
-                    runCatching {
-                        notificationDataSource.getNotificationList().data?.map { it.toNotificationEntity() }
-                    }
-                emit(result.getOrDefault(emptyList()))
-            }
-        }
+        override fun getNotificationList(): Flow<PagingData<NotiEntity>> = notificationDataSource.getNotificationList()
 
         override suspend fun getNotificationCount(): Flow<Int?> {
             return flow {
