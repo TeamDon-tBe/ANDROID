@@ -38,7 +38,7 @@
 
         <RadioGroup
             android:id="@+id/rg_transparent_content"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="18dp"
             android:layout_marginTop="26dp"
@@ -49,59 +49,118 @@
                 android:id="@+id/rb_transparent_content_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/transparent"
                 android:button="@null"
                 android:drawableStart="@drawable/sel_my_page_auth_withdraw_reason_drawable_btn"
                 android:drawablePadding="7dp"
-                android:text="@string/rb_transparent_reason_content_1"
                 android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/rb_transparent_content_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/transparent"
                 android:button="@null"
                 android:drawableStart="@drawable/sel_my_page_auth_withdraw_reason_drawable_btn"
                 android:drawablePadding="7dp"
-                android:text="@string/rb_transparent_reason_content_2"
                 android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/rb_transparent_content_3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/transparent"
                 android:button="@null"
                 android:drawableStart="@drawable/sel_my_page_auth_withdraw_reason_drawable_btn"
                 android:drawablePadding="7dp"
-                android:text="@string/rb_transparent_reason_content_3"
                 android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/rb_transparent_content_4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/transparent"
                 android:button="@null"
                 android:drawableStart="@drawable/sel_my_page_auth_withdraw_reason_drawable_btn"
                 android:drawablePadding="7dp"
-                android:text="@string/rb_transparent_reason_content_4"
                 android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/rb_transparent_content_5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/transparent"
                 android:button="@null"
                 android:drawableStart="@drawable/sel_my_page_auth_withdraw_reason_drawable_btn"
                 android:drawablePadding="7dp"
-                android:text="@string/rb_transparent_reason_content_5"
                 android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/rb_transparent_content_6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/transparent"
                 android:button="@null"
                 android:drawableStart="@drawable/sel_my_page_auth_withdraw_reason_drawable_btn"
                 android:drawablePadding="7dp"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rg_transparent_content_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            app:layout_constraintBottom_toBottomOf="@id/rg_transparent_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/rg_transparent_content"
+            app:layout_constraintTop_toTopOf="@id/rg_transparent_content">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:clickable="false"
+                android:text="@string/rb_transparent_reason_content_1"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:clickable="false"
+                android:text="@string/rb_transparent_reason_content_2"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:clickable="false"
+                android:text="@string/rb_transparent_reason_content_3"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:clickable="false"
+                android:text="@string/rb_transparent_reason_content_4"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:clickable="false"
+                android:text="@string/rb_transparent_reason_content_5"
+                android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:clickable="false"
                 android:text="@string/my_page_auth_withdraw_reason_content_7"
                 android:textAppearance="@style/TextAppearance.DontBe.body_regular_16" />
         </RadioGroup>
