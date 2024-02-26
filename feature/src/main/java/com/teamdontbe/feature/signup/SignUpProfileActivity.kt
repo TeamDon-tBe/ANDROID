@@ -29,9 +29,12 @@ import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet.Companion.MY_
 import com.teamdontbe.feature.signup.SignUpAgreeActivity.Companion.SIGN_UP_AGREE
 import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 
@@ -242,31 +245,34 @@ class SignUpProfileActivity :
         val nickName = viewModel.nickName.value.orEmpty()
         val optionalAgreementInSignUp = intent.getBooleanExtra(SIGN_UP_AGREE, false)
         val introduceText = viewModel.introduceText.value.orEmpty()
-        val imgUrl = uriToTempFile(photoUri)
 
-        when (flag) {
-            SIGN_UP_AGREE -> handleSignUpAgree(
-                nickName = nickName,
-                optionalAgreement = optionalAgreementInSignUp,
-                introduce = introduceText,
-                imgUrl = imgUrl
-            )
-            // 마이페이지 인 경우 선택 동의 null
-            MY_PAGE_PROFILE -> handleMyPageProfile(
-                nickName = nickName,
-                introduce = introduceText,
-                imgUrl = imgUrl
-            )
+        CoroutineScope(Dispatchers.Main).launch {
+            val imgUrl = uriToTempFile(photoUri)
+
+            when (flag) {
+                SIGN_UP_AGREE -> handleSignUpAgree(
+                    nickName = nickName,
+                    optionalAgreement = optionalAgreementInSignUp,
+                    introduce = introduceText,
+                    imgUrl = imgUrl
+                )
+
+                MY_PAGE_PROFILE -> handleMyPageProfile(
+                    nickName = nickName,
+                    introduce = introduceText,
+                    imgUrl = imgUrl
+                )
+            }
         }
     }
 
-    private fun uriToTempFile(uri: Uri?): File? {
-        if (uri == null) return null
+    private suspend fun uriToTempFile(uri: Uri?): File? = withContext(Dispatchers.IO) {
+        if (uri == null) return@withContext null
 
         // 파일 스트림으로 uri로 접근해 비트맵을 디코딩
         val bitmap = contentResolver.openInputStream(uri).use {
             BitmapFactory.decodeStream(it)
-        } ?: return null
+        } ?: return@withContext null
 
         // 캐시 파일 생성
         tempFile = File.createTempFile("file", ".jpg", cacheDir)
@@ -276,7 +282,7 @@ class SignUpProfileActivity :
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, it)
         }
 
-        return tempFile
+        return@withContext tempFile
     }
 
     private fun handleSignUpAgree(
