@@ -31,7 +31,7 @@ class HomeDetailCommentViewHolder(
             dividerComment.isVisible = data.memberId !== userId
             btnCommentHeart.isSelected = data.isLiked
 
-            if (lastPosition == bindingAdapterPosition) dividerCommentDivideBottom.isVisible = false
+            if (lastPosition == position) dividerCommentDivideBottom.isVisible = false
             if (data.isGhost){
                 setFeedTransparent(-85)
                 binding.tvCommentTransparency.text = context.getString(
