@@ -66,8 +66,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             )
         }
         setRecyclerViewItemDecoration()
-        binding.rvHome.adapter =
-            homeFeedAdapter.withLoadStateFooter(footer = PagingLoadingAdapter())
+        binding.rvHome.adapter = homeFeedAdapter.withLoadStateHeaderAndFooter(
+            header = PagingLoadingAdapter(),
+            footer = PagingLoadingAdapter()
+        )
     }
 
     private fun onKebabBtnClick(

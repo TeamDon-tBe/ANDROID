@@ -4,36 +4,38 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.teamdontbe.data_remote.api.HomeApiService
 import com.teamdontbe.domain.entity.FeedEntity
-import timber.log.Timber
 
 class HomePagingSourceImpl(private val homeApiService: HomeApiService) :
     PagingSource<Long, FeedEntity>() {
 
+    private var prevKey: Long? = null
+
     companion object {
-        var prevKey: Long? = null
-        var refreshKey: Long = -1
+        var refreshKey: MutableList<Pair<Long, Long?>> = mutableListOf()
     }
 
     override fun getRefreshKey(state: PagingState<Long, FeedEntity>): Long? {
-        val anchorPosition = state.anchorPosition ?: return null
-        prevKey = state.closestPageToPosition(anchorPosition)?.prevKey
-//        prevKey.
-//        Timber.tag("tttrefreshkey").d(prevKey.la)
-        Timber.tag("position?").d(state.closestPageToPosition(anchorPosition).toString())
-        return refreshKey
+        return state.anchorPosition?.let { position ->
+            prevKey = state.closestPageToPosition(position)?.prevKey
+            refreshKey.find { it.second == state.closestPageToPosition(position)?.prevKey }?.first
+        }
     }
 
     override suspend fun load(params: LoadParams<Long>): LoadResult<Long, FeedEntity> {
         val position = params.key ?: -1
-        refreshKey = position
-        Timber.tag("tttposition").d(position.toString())
-        Timber.tag("tttprevkey").d(prevKey.toString())
+        if (!refreshKey.any { it.first == position }) refreshKey.add(
+            Pair(
+                position,
+                prevKey
+            )
+        )
+
         return runCatching {
             val result = homeApiService.getFeedList(position)
             LoadResult.Page(
                 // 매핑은 여기서
                 data = result.data?.map { it.toFeedEntity() } ?: emptyList(),
-                prevKey = prevKey,
+                prevKey = refreshKey.find { it.first == position }?.second,
                 nextKey = if (result.data.isNullOrEmpty()) null else result.data?.last()?.contentId?.toLong(),
             ).also {
                 prevKey = position
