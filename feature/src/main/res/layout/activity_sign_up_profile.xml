@@ -220,7 +220,7 @@
             android:enabled="@{vm.isBtnSelected}"
             android:focusable="true"
             android:paddingVertical="14dp"
-            android:text="@string/btn_onboarding_next"
+            android:text="@string/sign_up_profile_completed"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
             android:textColor="@{vm.isBtnSelected ? @color/white : @color/gray_9}"
             android:visibility="visible"
