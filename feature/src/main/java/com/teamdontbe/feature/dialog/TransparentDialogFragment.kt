@@ -19,6 +19,7 @@ class TransparentDialogFragment(
     override fun initView() {
         initYesButtonClickListener()
         initCancelButtonClickListener()
+        initGhostReasonClickListener()
     }
 
     override fun onResume() {
@@ -37,9 +38,10 @@ class TransparentDialogFragment(
             if (getGhostReason().isEmpty()) {
                 binding.tvTransparentWarning.visibility = View.VISIBLE
             } else {
-                binding.tvTransparentWarning.visibility = View.INVISIBLE
                 homeViewModel.postTransparent(
-                    alarmTriggerType, targetMemberId, alarmTriggerId,
+                    alarmTriggerType,
+                    targetMemberId,
+                    alarmTriggerId,
                     getGhostReason()
                 )
                 dismiss()
@@ -58,6 +60,12 @@ class TransparentDialogFragment(
                 rbTransparentContent6.isChecked -> getString(R.string.my_page_auth_withdraw_reason_content_7)
                 else -> ""
             }
+        }
+    }
+
+    private fun initGhostReasonClickListener() {
+        binding.rgTransparentContent.setOnCheckedChangeListener { radioGroup, i ->
+            binding.tvTransparentWarning.visibility = View.INVISIBLE
         }
     }
 }
