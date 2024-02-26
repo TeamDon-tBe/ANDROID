@@ -101,47 +101,30 @@ class NotificationFragment :
                 notiAdapter,
             )
         }
+
         if (binding.rvNotification.itemDecorationCount == 0) {
             binding.rvNotification.addItemDecoration(
                 NotificationItemDecorator(requireContext()),
             )
         }
+
         binding.rvNotification.adapter =
             notiAdapter.withLoadStateFooter(footer = PagingLoadingAdapter())
 
+        notiAdapter.addLoadStateListener { combinedLoadStates ->
+            if (combinedLoadStates.append.endOfPaginationReached) {
+                // 아이템 수가 1보다 작으면 Empty View 보이도록 처리
+                if (notiAdapter.itemCount < 1) {
+                    binding.layoutNotificationEmpty.visibility = View.VISIBLE
+                } else {
+                    // 아이템 수가 1보다 크면 Empty View 안보이도록 처리
+                    binding.layoutNotificationEmpty.visibility = View.INVISIBLE
+                }
+            }
+        }
+
         notiViewModel.patchNotificationCheck()
     }
-
-//    private fun initNotificationAdapter(notiData: List<NotiEntity>) {
-//        if (notiData.isEmpty()) {
-//            binding.layoutNotificationEmpty.visibility = View.VISIBLE
-//        } else {
-//            binding.rvNotification.adapter =
-//                NotificationAdapter(click = { notiData, position ->
-//                    when (notiData.notificationTriggerType) {
-//                        "contentLiked" -> navigateToHomeDetailFragment(notiData)
-//                        "comment" -> navigateToHomeDetailFragment(notiData)
-//                        "commentLiked" -> navigateToHomeDetailFragment(notiData)
-//                        "actingContinue" -> findNavController().navigate(R.id.action_notification_to_posting)
-//                        "beGhost" -> findNavController().navigate(R.id.action_notification_to_my_page)
-//                        "contentGhost" -> navigateToHomeDetailFragment(notiData)
-//                        "commentGhost" -> navigateToHomeDetailFragment(notiData)
-//                        "userBan" -> Unit
-//
-//                        else ->
-//                            Timber.tag("noti")
-//                                .e("등록되지 않은 노티가 감지되었습니다 : ${notiData.notificationTriggerType}")
-//                    }
-//                }).apply {
-//                    submitList(notiData)
-//                }
-//            if (binding.rvNotification.itemDecorationCount == 0) {
-//                binding.rvNotification.addItemDecoration(
-//                    NotificationItemDecorator(requireContext()),
-//                )
-//            }
-//        }
-//    }
 
     private fun navigateToHomeDetailFragment(notiData: NotiEntity) {
         findNavController().navigate(
