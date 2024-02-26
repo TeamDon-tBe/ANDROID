@@ -3,7 +3,6 @@ package com.teamdontbe.feature.notification
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
-import com.teamdontbe.domain.entity.NotiEntity
 import com.teamdontbe.domain.repository.NotificationRepository
 import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,9 +22,6 @@ class NotificationViewModel
         private val _getNotiCount = MutableStateFlow<UiState<Int>>(UiState.Empty)
         val getNotiCount: StateFlow<UiState<Int>> = _getNotiCount
 
-        private val _getNotiList = MutableStateFlow<UiState<List<NotiEntity>>>(UiState.Empty)
-        val getNotiList: StateFlow<UiState<List<NotiEntity>>> = _getNotiList
-
         private val _patchNotiCheck = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
         val patchNotiCheck: StateFlow<UiState<Boolean>> = _patchNotiCheck
 
@@ -34,18 +30,17 @@ class NotificationViewModel
         fun getNotificationCount() =
             viewModelScope.launch {
                 notificationRepository.getNotificationCount().collectLatest {
-                    if (it != null) _getNotiCount.value = UiState.Success(it) else UiState.Failure("null")
+                    if (it != null) {
+                        _getNotiCount.value =
+                            UiState.Success(it)
+                    } else {
+                        UiState.Failure("null")
+                    }
                 }
                 _getNotiCount.value = UiState.Loading
             }
 
-        fun getNotificationList() =
-            viewModelScope.launch {
-                notificationRepository.getNotificationList().collectLatest {
-                    if (it != null) _getNotiList.value = UiState.Success(it) else UiState.Failure("null")
-                }
-                _getNotiList.value = UiState.Loading
-            }
+        fun getNotificationList() = notificationRepository.getNotificationList()
 
         fun patchNotificationCheck() =
             viewModelScope.launch {
