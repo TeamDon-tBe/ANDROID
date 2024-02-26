@@ -14,7 +14,6 @@
             android:id="@+id/tv_onboarding_second_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="39dp"
             android:text="@string/tv_onboarding_second_subtitle"
             android:textAppearance="@style/TextAppearance.DontBe.head_semi_18"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,10 +34,10 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="20dp"
             android:contentDescription="@string/content_description_iv_onboarding_second"
             android:src="@drawable/ic_onboarding_second"
-            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_onboarding_second_title" />
