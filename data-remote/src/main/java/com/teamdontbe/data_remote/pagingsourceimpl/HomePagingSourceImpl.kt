@@ -4,26 +4,40 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.teamdontbe.data_remote.api.HomeApiService
 import com.teamdontbe.domain.entity.FeedEntity
+import timber.log.Timber
 
 class HomePagingSourceImpl(private val homeApiService: HomeApiService) :
     PagingSource<Long, FeedEntity>() {
+
+    companion object {
+        var prevKey: Long? = null
+        var refreshKey: Long = -1
+    }
+
     override fun getRefreshKey(state: PagingState<Long, FeedEntity>): Long? {
-        return state.anchorPosition?.let { anchorPosition ->
-            //contentId가 cursor -> 현재 페이지의 마지막 아이템 contentId를 key로 반환
-            state.closestPageToPosition(anchorPosition)?.data?.last()?.contentId?.toLong() ?: -1
-        }
+        val anchorPosition = state.anchorPosition ?: return null
+        prevKey = state.closestPageToPosition(anchorPosition)?.prevKey
+//        prevKey.
+//        Timber.tag("tttrefreshkey").d(prevKey.la)
+        Timber.tag("position?").d(state.closestPageToPosition(anchorPosition).toString())
+        return refreshKey
     }
 
     override suspend fun load(params: LoadParams<Long>): LoadResult<Long, FeedEntity> {
         val position = params.key ?: -1
+        refreshKey = position
+        Timber.tag("tttposition").d(position.toString())
+        Timber.tag("tttprevkey").d(prevKey.toString())
         return runCatching {
             val result = homeApiService.getFeedList(position)
             LoadResult.Page(
-                //매핑은 여기서
+                // 매핑은 여기서
                 data = result.data?.map { it.toFeedEntity() } ?: emptyList(),
-                prevKey = if (position.toInt() == -1) null else result.data?.first()?.contentId?.toLong(),
+                prevKey = prevKey,
                 nextKey = if (result.data.isNullOrEmpty()) null else result.data?.last()?.contentId?.toLong(),
-            )
+            ).also {
+                prevKey = position
+            }
         }.getOrElse {
             LoadResult.Error(it)
         }

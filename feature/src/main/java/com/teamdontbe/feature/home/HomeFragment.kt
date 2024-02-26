@@ -10,6 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.ErrorActivity
@@ -42,7 +44,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         observePostTransparentStatus()
         observeDeleteFeedStatus()
         initSwipeRefreshData()
-        //scrollRecyclerViewToTop()
+        // scrollRecyclerViewToTop()
     }
 
     private fun initHomeFeedAdapter() {
@@ -155,13 +157,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun observePostTransparentStatus() {
-        homeViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
+        homeViewModel.postTransparent.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
-                is UiState.Success -> homeViewModel.getFeedList()
+                is UiState.Success -> homeFeedAdapter.refresh()
                 is UiState.Failure -> navigateToErrorPage()
                 else -> Unit
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun observeDeleteFeedStatus() {
@@ -203,7 +205,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             )
             binding.rvHome.startAnimation(slideDown)
 
-            homeViewModel.getFeedList()
+            homeFeedAdapter.refresh()
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }
