@@ -21,7 +21,6 @@ import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
-import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.MainActivity
@@ -43,6 +42,8 @@ import com.teamdontbe.feature.util.Debouncer
 import com.teamdontbe.feature.util.EventObserver
 import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
 import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
+import com.teamdontbe.feature.util.PagingLoadingAdapter
+import com.teamdontbe.feature.util.pagingSubmitData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -58,14 +59,13 @@ class HomeDetailFragment :
     private var deleteCommentPosition: Int = -1
 
     private lateinit var homeFeedAdapter: HomeFeedAdapter
-    private lateinit var homeDetailCommentAdapter: HomeDetailCommentAdapter
+    private lateinit var homeDetailCommentAdapter: HomeDetailPagingCommentAdapter
 
     override fun initView() {
         binding.root.context.hideKeyboard(binding.root)
         statusBarColorOf(R.color.white)
         observeGetFeedDetail()
         getHomeDetail()
-        observeGetCommentList()
         observeDeleteFeed()
         observeDeleteComment()
         observePostTransparent()
@@ -82,13 +82,13 @@ class HomeDetailFragment :
 
         if (newContentId > 0) {
             contentId = newContentId
-            homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
-            homeViewModel.getCommentList(requireArguments().getInt(KEY_NOTI_DATA))
+            initHomeDetailCommentAdapter(requireArguments().getInt(KEY_NOTI_DATA))
+            initHomeDetailCommentAdapter(requireArguments().getInt(KEY_NOTI_DATA))
         } else {
             getHomeFeedDetailData()?.toFeedEntity()?.let {
                 initHomeFeedAdapter(listOf(it))
                 contentId = it.contentId ?: return
-                homeViewModel.getCommentList(contentId)
+                initHomeDetailCommentAdapter(contentId)
                 binding.feed = it
             }
         }
@@ -101,53 +101,72 @@ class HomeDetailFragment :
             requireArguments().getParcelable(KEY_HOME_DETAIL_FEED) as? Feed
         }
 
-    private fun initHomeDetailCommentAdapter(commentListData: List<CommentEntity>) {
-        homeDetailCommentAdapter =
-            HomeDetailCommentAdapter(
-                onClickKebabBtn = { commentData, position ->
-                    onKebabBtnClick(
-                        commentData.memberId, -1, commentData.commentId, true, position,
-                    )
-                },
-                onClickLikedBtn = ::onCommentLikedBtnClick,
-                onClickTransparentBtn = { commentData ->
-                    onTransparentBtnClick(
-                        commentData.isGhost,
-                        commentData.memberId,
-                        commentData.commentId,
-                        ALARM_TRIGGER_TYPE_COMMENT,
-                    )
-                },
-                onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
-                userId = homeViewModel.getMemberId(),
-            ).apply {
-                submitList(commentListData)
-            }
+    private fun initHomeDetailCommentAdapter(contentId: Int) {
+        homeDetailCommentAdapter = HomeDetailPagingCommentAdapter(
+            onClickKebabBtn = { commentData, position ->
+                onKebabBtnClick(
+                    commentData.memberId,
+                    -1,
+                    commentData.commentId,
+                    true,
+                    position,
+                )
+            },
+            onClickLikedBtn = ::onCommentLikedBtnClick,
+            onClickTransparentBtn = { commentData ->
+                onTransparentBtnClick(
+                    commentData.isGhost,
+                    commentData.memberId,
+                    commentData.commentId,
+                    ALARM_TRIGGER_TYPE_COMMENT,
+                )
+            },
+            onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
+            userId = homeViewModel.getMemberId(),
+        )
+        initHomeDetailAdapterPagingData()
+        concatFeedCommentAdapter()
+    }
+
+    private fun initHomeDetailAdapterPagingData() {
+        homeDetailCommentAdapter.apply {
+            pagingSubmitData(
+                viewLifecycleOwner,
+                homeViewModel.getCommentList(contentId),
+                homeDetailCommentAdapter
+            )
+        }.withLoadStateHeaderAndFooter(
+            header = PagingLoadingAdapter(),
+            footer = PagingLoadingAdapter()
+        )
     }
 
     private fun initHomeFeedAdapter(feedListData: List<FeedEntity>) {
-        homeFeedAdapter =
-            HomeFeedAdapter(
-                onClickKebabBtn = { feedData, position ->
-                    onKebabBtnClick(
-                        feedData.memberId, feedData.contentId ?: -1, -1, false, position,
-                    )
-                },
-                onClickLikedBtn = ::onFeedLikedBtnClick,
-                onClickTransparentBtn = { feedData ->
-                    onTransparentBtnClick(
-                        feedData.isGhost,
-                        feedData.memberId,
-                        feedData.contentId,
-                        ALARM_TRIGGER_TYPE_CONTENT,
-                    )
-                },
-                onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
-                userId = homeViewModel.getMemberId(),
-                onClickToNavigateToHomeDetail = {},
-            ).apply {
-                submitList(feedListData)
-            }
+        homeFeedAdapter = HomeFeedAdapter(
+            onClickKebabBtn = { feedData, position ->
+                onKebabBtnClick(
+                    feedData.memberId,
+                    feedData.contentId ?: -1,
+                    -1,
+                    false,
+                    position,
+                )
+            },
+            onClickLikedBtn = ::onFeedLikedBtnClick,
+            onClickTransparentBtn = { feedData ->
+                onTransparentBtnClick(
+                    feedData.isGhost,
+                    feedData.memberId,
+                    feedData.contentId,
+                    ALARM_TRIGGER_TYPE_CONTENT,
+                )
+            },
+            onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
+            userId = homeViewModel.getMemberId(),
+            onClickToNavigateToHomeDetail = {},
+        ).apply {
+            submitList(feedListData)
+        }
     }
 
     private fun onKebabBtnClick(
@@ -246,8 +265,7 @@ class HomeDetailFragment :
 
     private fun concatFeedCommentAdapter() {
         if (::homeFeedAdapter.isInitialized && ::homeDetailCommentAdapter.isInitialized) {
-            binding.rvHomeDetail.adapter =
-                ConcatAdapter(homeFeedAdapter, homeDetailCommentAdapter)
+            binding.rvHomeDetail.adapter = ConcatAdapter(homeFeedAdapter, homeDetailCommentAdapter)
             setRecyclerViewItemDecoration()
         }
     }
@@ -262,20 +280,6 @@ class HomeDetailFragment :
 
     private fun navigateToErrorPage() {
         startActivity(Intent(requireActivity(), ErrorActivity::class.java))
-    }
-
-    private fun observeGetCommentList() {
-        homeViewModel.getCommentList.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Success -> {
-                    initHomeDetailCommentAdapter(it.data)
-                    concatFeedCommentAdapter()
-                }
-
-                is UiState.Failure -> navigateToErrorPage()
-                else -> Unit
-            }
-        }.launchIn(lifecycleScope)
     }
 
     private fun observePostCommentPosting() {
@@ -330,7 +334,7 @@ class HomeDetailFragment :
             when (it) {
                 is UiState.Success -> {
                     homeViewModel.getFeedDetail(contentId)
-                    homeViewModel.getCommentList(contentId)
+                    homeDetailCommentAdapter.refresh()
                 }
 
                 is UiState.Failure -> navigateToErrorPage()
@@ -406,8 +410,7 @@ class HomeDetailFragment :
         btnTextColor: Int,
     ) {
         with(binding.bottomsheetHomeDetail.layoutUploadBar) {
-            pbUploadBarInput.progressDrawable =
-                drawableOf(progressBarDrawableId)
+            pbUploadBarInput.progressDrawable = drawableOf(progressBarDrawableId)
             pbUploadBarInput.progress = textLength
             btnUploadBarUpload.backgroundTintList = btnBackgroundTint
             btnUploadBarUpload.setTextColor(btnTextColor)
@@ -416,12 +419,11 @@ class HomeDetailFragment :
 
     private fun startProgressBarAnimation(textLength: Int) {
         val uploadBar = binding.bottomsheetHomeDetail.layoutUploadBar
-        val animateProgressBar =
-            AnimateProgressBar(
-                uploadBar.pbUploadBarInput,
-                0f,
-                textLength.toFloat(),
-            )
+        val animateProgressBar = AnimateProgressBar(
+            uploadBar.pbUploadBarInput,
+            0f,
+            textLength.toFloat(),
+        )
         uploadBar.pbUploadBarInput.startAnimation(animateProgressBar)
     }
 

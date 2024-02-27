@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
-import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.domain.repository.HomeRepository
 import com.teamdontbe.domain.repository.UserInfoRepository
@@ -29,9 +28,6 @@ constructor(
 
     private val _getFeedDetail = MutableSharedFlow<UiState<FeedEntity>>()
     val getFeedDetail: SharedFlow<UiState<FeedEntity>> = _getFeedDetail
-
-    private val _getCommentList = MutableStateFlow<UiState<List<CommentEntity>>>(UiState.Empty)
-    val getCommentList: StateFlow<UiState<List<CommentEntity>>> = _getCommentList
 
     private val _deleteFeed = MutableSharedFlow<UiState<Boolean>>()
     val deleteFeed: SharedFlow<UiState<Boolean>> = _deleteFeed
@@ -68,14 +64,7 @@ constructor(
             }
         }
 
-    fun getCommentList(contentId: Int) =
-        viewModelScope.launch {
-            _getCommentList.value = UiState.Loading
-            homeRepository.getCommentList(contentId).collectLatest {
-                if (it != null) _getCommentList.value =
-                    UiState.Success(it) else UiState.Failure("null")
-            }
-        }
+    fun getCommentList(contentId: Int) = homeRepository.getCommentList(contentId)
 
     fun deleteFeed(contentId: Int) =
         viewModelScope.launch {
