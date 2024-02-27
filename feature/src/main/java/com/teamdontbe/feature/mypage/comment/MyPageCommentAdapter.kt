@@ -3,20 +3,20 @@ package com.teamdontbe.feature.mypage.comment
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import com.teamdontbe.core_ui.view.ItemDiffCallback
 import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.feature.databinding.ItemMyPageCommentBinding
 
 class MyPageCommentAdapter(
+    private val context: Context,
+    private val idFlag: Boolean,
     private val onClickKebabBtn: (MyPageCommentEntity, Int) -> Unit,
     private val onItemClicked: (MyPageCommentEntity) -> Unit,
-    private val onClickLikedBtn: (Int, Boolean) -> Unit = { _, _ -> },
-    context: Context,
-    private val idFlag: Boolean,
-    private val onClickTransparentBtn: (MyPageCommentEntity, Int) -> Unit = { _, _ -> },
+    private val onClickLikedBtn: (Int, Boolean) -> Unit,
+    private val onClickTransparentBtn: (MyPageCommentEntity) -> Unit,
 ) :
-    ListAdapter<MyPageCommentEntity, MyPageCommentViewHolder>(ExampleDiffCallback) {
+    PagingDataAdapter<MyPageCommentEntity, MyPageCommentViewHolder>(ExampleDiffCallback) {
     private val inflater by lazy { LayoutInflater.from(context) }
 
     override fun onCreateViewHolder(
@@ -25,12 +25,12 @@ class MyPageCommentAdapter(
     ): MyPageCommentViewHolder {
         val binding = ItemMyPageCommentBinding.inflate(inflater, parent, false)
         return MyPageCommentViewHolder(
-            binding,
-            onClickKebabBtn,
-            onItemClicked,
-            onClickLikedBtn,
-            idFlag,
-            onClickTransparentBtn,
+            binding = binding,
+            onClickKebabBtn = onClickKebabBtn,
+            onItemClicked = onItemClicked,
+            onClickLikedBtn = onClickLikedBtn,
+            idFlag = idFlag,
+            onClickTransparentBtn = onClickTransparentBtn,
         )
     }
 
@@ -38,11 +38,11 @@ class MyPageCommentAdapter(
         holder: MyPageCommentViewHolder,
         position: Int,
     ) {
-        holder.onBind(currentList[position])
+        getItem(position)?.let { holder.onBind(it) }
     }
 
     fun deleteItem(position: Int) {
-        submitList(currentList.toMutableList().apply { removeAt(position) })
+        notifyItemRemoved(position)
     }
 
     companion object {
