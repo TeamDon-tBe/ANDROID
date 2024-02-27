@@ -4,11 +4,14 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
@@ -21,8 +24,10 @@ import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.FeedItemDecorator
-import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
+import com.teamdontbe.feature.util.KeyStorage
 import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
+import com.teamdontbe.feature.util.PagingLoadingAdapter
+import com.teamdontbe.feature.util.pagingSubmitData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -33,15 +38,21 @@ class MyPageFeedFragment :
     private val myPageFeedViewModel by activityViewModels<MyPageViewModel>()
 
     private lateinit var memberProfile: MyPageModel
-    private lateinit var myPageFeedAdapter: MyPageFeedAdapter
     private var deleteFeedPosition: Int = -1
+
+    private var _myPageFeedAdapter: MyPageFeedAdapter? = null
+    private val myPageFeedAdapter: MyPageFeedAdapter
+        get() = requireNotNull(_myPageFeedAdapter)
+
+    private var deletedItemCount: Int = 0
 
     override fun initView() {
         // Arguments에서 memberProfile 값을 가져오기
         initMemberProfile()
-        initFeedObserve()
+        initFeedRecyclerView()
         initDeleteObserve()
         initTransparentObserve()
+        stateFeedItemNull()
     }
 
     private fun initMemberProfile() {
@@ -54,114 +65,60 @@ class MyPageFeedFragment :
         }
     }
 
-    private fun initFeedObserve() {
-        myPageFeedViewModel.getMyPageFeedList(memberProfile.id)
-        myPageFeedViewModel.getMyPageFeedListState.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> {
-                    initDeleteObserve()
-                    handleSuccessState(it.data)
-                }
-
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun initDeleteObserve() {
-        myPageFeedViewModel.deleteFeed.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-
-                is UiState.Success -> {
-                    if (deleteFeedPosition != -1) {
-                        myPageFeedAdapter.deleteItem(deleteFeedPosition)
-                        deleteFeedPosition = -1
-                    }
-                    val dialog = DeleteCompleteDialogFragment()
-                    dialog.show(childFragmentManager, DELETE_POSTING)
-                }
-
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun initTransparentObserve() {
-        myPageFeedViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> myPageFeedViewModel.getMyPageFeedList(memberProfile.id)
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun handleSuccessState(feedList: List<FeedEntity>) {
-        if (feedList.isNotEmpty() || !memberProfile.idFlag) {
-            initFeedRecyclerView(feedList)
-        } else {
-            updateNoFeedUI()
-        }
-    }
-
-    private fun updateNoFeedUI() =
-        with(binding) {
-            rvMyPagePosting.visibility = View.GONE
-            viewMyPageNoFeedNickname.clNoFeed.visibility = View.VISIBLE
-            viewMyPageNoFeedNickname.tvNoFeedNickname.text =
-                getString(R.string.my_page_no_feed_text, memberProfile.nickName)
-            viewMyPageNoFeedNickname.btnNoFeedPosting.setOnClickListener {
-                navigateToPostingFragment(memberProfile.id)
-            }
-        }
-
-    private fun initFeedRecyclerView(feedEntity: List<FeedEntity>) {
-        myPageFeedAdapter =
+    private fun initFeedRecyclerView() {
+        _myPageFeedAdapter =
             MyPageFeedAdapter(
-                onClickKebabBtn = { feedEntity, position ->
-                    // Kebab 버튼 클릭 이벤트 처리
-                    feedEntity.contentId?.let {
-                        initBottomSheet(
-                            feedEntity.memberId == myPageFeedViewModel.getMemberId(),
-                            contentId = it,
-                            commentId = -1,
-                            whereFrom = FROM_FEED,
-                        )
-                        deleteFeedPosition = position
-                    }
-                },
+                context = requireContext(),
+                idFlag = memberProfile.idFlag,
+                onClickKebabBtn = ::clickKebabBtn,
                 onItemClicked = { feedEntity ->
-                    // RecyclerView 항목 클릭 이벤트 처리
                     navigateToHomeDetailFragment(feedEntity.contentId ?: -1)
                 },
-                onClickLikedBtn = { contentId, status ->
-                    if (status) {
-                        myPageFeedViewModel.deleteFeedLiked(contentId)
-                    } else {
-                        myPageFeedViewModel.postFeedLiked(
-                            contentId,
-                        )
-                    }
-                },
-                context = requireContext(),
-                memberProfile.idFlag,
-                onClickTransparentBtn = { data, position ->
-                    if (position == -2) {
-                        TransparentIsGhostSnackBar.make(binding.root).show()
-                    } else {
-                        initTransparentDialog(data.memberId, data.contentId ?: -1)
-                    }
-                },
-            ).apply {
-                submitList(feedEntity)
-            }
+                onClickLikedBtn = ::onLikedBtnClick,
+                onClickTransparentBtn = ::onTransparentBtnClick,
 
-        setUpFeedAdapter(myPageFeedAdapter)
+            ).apply {
+                pagingSubmitData(
+                    viewLifecycleOwner,
+                    myPageFeedViewModel.getMyPageFeedList(memberProfile.id),
+                    this
+                )
+            }
+        binding.rvMyPagePosting.adapter =
+            myPageFeedAdapter.withLoadStateFooter(footer = PagingLoadingAdapter())
+
+        setUpItemDecorator()
+    }
+
+    private fun clickKebabBtn(feedEntity: FeedEntity, position: Int) {
+        feedEntity.contentId?.let {
+            initBottomSheet(
+                feedEntity.memberId == myPageFeedViewModel.getMemberId(),
+                contentId = it,
+                commentId = -1,
+                whereFrom = FROM_FEED,
+            )
+            deleteFeedPosition = position
+        }
+    }
+
+    private fun onLikedBtnClick(
+        contentId: Int,
+        status: Boolean,
+    ) {
+        if (status) {
+            myPageFeedViewModel.deleteFeedLiked(contentId)
+        } else {
+            myPageFeedViewModel.postFeedLiked(contentId)
+        }
+    }
+
+    private fun onTransparentBtnClick(data: FeedEntity) {
+        if (data.isGhost) {
+            TransparentIsGhostSnackBar.make(binding.root).show()
+        } else {
+            initTransparentDialog(data.memberId, data.contentId ?: -1)
+        }
     }
 
     private fun initTransparentDialog(
@@ -188,13 +145,46 @@ class MyPageFeedFragment :
         )
     }
 
-    private fun setUpFeedAdapter(myPageFeedAdapter: MyPageFeedAdapter) {
-        binding.rvMyPagePosting.adapter = myPageFeedAdapter
+    private fun setUpItemDecorator() {
         if (binding.rvMyPagePosting.itemDecorationCount == 0) {
             binding.rvMyPagePosting.addItemDecoration(
                 FeedItemDecorator(requireContext()),
             )
         }
+    }
+
+    private fun initDeleteObserve() {
+        myPageFeedViewModel.deleteFeed.flowWithLifecycle(viewLifeCycle).onEach {
+            when (it) {
+                is UiState.Success -> handleDeleteFeedSuccess()
+                is UiState.Failure -> ErrorActivity.navigateToErrorPage(requireContext())
+                else -> Unit
+            }
+        }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun handleDeleteFeedSuccess() {
+        if (deleteFeedPosition != -1) {
+            myPageFeedAdapter.deleteItem(deleteFeedPosition)
+            deleteFeedPosition = -1
+        }
+        if (deletedItemCount == myPageFeedAdapter.itemCount) {
+            stateFeedItemNull()
+        }
+        deletedItemCount = 0
+        val dialog = DeleteCompleteDialogFragment()
+        dialog.show(childFragmentManager, KeyStorage.DELETE_POSTING)
+    }
+
+    private fun initTransparentObserve() {
+        myPageFeedViewModel.postTransparent.flowWithLifecycle(viewLifeCycle).onEach {
+            when (it) {
+                is UiState.Loading -> Unit
+                is UiState.Success -> myPageFeedViewModel.getMyPageFeedList(memberProfile.id)
+                is UiState.Empty -> Unit
+                is UiState.Failure -> Unit
+            }
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun navigateToHomeDetailFragment(id: Int) {
@@ -209,6 +199,31 @@ class MyPageFeedFragment :
             R.id.action_fragment_my_page_to_fragment_posting,
             bundleOf(KEY_NOTI_DATA to id),
         )
+    }
+
+    private fun stateFeedItemNull() {
+        if (!memberProfile.idFlag) return
+        myPageFeedAdapter.addLoadStateListener { combinedLoadStates ->
+            val isEmpty =
+                myPageFeedAdapter.itemCount == 0 && combinedLoadStates.refresh is LoadState.NotLoading
+            if (isEmpty) {
+                updateNoFeedUI()
+            } else {
+                binding.viewMyPageNoFeedNickname.clNoFeed.visibility = View.GONE
+                binding.rvMyPagePosting.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun updateNoFeedUI() = with(binding) {
+        rvMyPagePosting.visibility = View.GONE
+        viewMyPageNoFeedNickname.apply {
+            clNoFeed.visibility = View.VISIBLE
+            tvNoFeedNickname.text = getString(R.string.my_page_no_feed_text, memberProfile.nickName)
+            btnNoFeedPosting.setOnClickListener {
+                navigateToPostingFragment(memberProfile.id)
+            }
+        }
     }
 
     companion object {
@@ -228,5 +243,10 @@ class MyPageFeedFragment :
     override fun onResume() {
         super.onResume()
         binding.root.requestLayout()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _myPageFeedAdapter = null
     }
 }
