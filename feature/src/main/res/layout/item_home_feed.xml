@@ -31,6 +31,7 @@
             imageUrl="@{feed.memberProfileUrl}"
             android:layout_width="44dp"
             android:layout_height="0dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_sign_up_profile_person"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintStart_toStartOf="@id/guide_home_start_10"

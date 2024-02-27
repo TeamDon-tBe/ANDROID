@@ -6,6 +6,8 @@ import com.teamdontbe.data.dto.request.RequestLoginDto
 import com.teamdontbe.data.dto.request.RequestProfileEditDto
 import com.teamdontbe.data.dto.response.ResponseLoginDto
 import com.teamdontbe.data_remote.api.LoginApiService
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class LoginDataSourceImpl
@@ -21,4 +23,10 @@ constructor(
 
     override suspend fun patchProfileEdit(requestProfileEdit: RequestProfileEditDto): BaseResponse<Unit> =
         loginApiService.patchUserProfile(requestProfileEdit)
+
+    override suspend fun patchUserProfilePart(
+        info: RequestBody,
+        file: MultipartBody.Part?
+    ): BaseResponse<Unit> =
+        loginApiService.patchUserProfilePart(info, file)
 }

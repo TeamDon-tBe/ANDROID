@@ -30,23 +30,40 @@ class MyPageViewModel
     val getMyPageUserProfileState: StateFlow<UiState<MyPageUserProfileEntity>> =
         _getMyPageUserProfileState
 
-    fun getMemberId() = userInfoRepository.getMemberId()
-
     private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
     val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
+
+    private val _imageUrl = MutableStateFlow<String>("")
+
+    fun getMemberId() = userInfoRepository.getMemberId()
 
     fun getMyPageUserProfileInfo(viewMemberId: Int) {
         viewModelScope.launch {
             _getMyPageUserProfileState.value = UiState.Loading
-            myPageRepository.getMyPageUserProfile(viewMemberId).collectLatest {
+            myPageRepository.getMyPageUserProfile(viewMemberId).onSuccess {
                 if (it != null) {
                     _getMyPageUserProfileState.value = UiState.Success(it)
+                    updateImageUrl(it.memberProfileUrl)
                 } else {
                     UiState.Failure("null")
                 }
             }
-            _getMyPageUserProfileState.value = UiState.Loading
         }
+    }
+
+    // 이미지 변화 감지
+    private fun updateImageUrl(newUrl: String) {
+        if (_imageUrl.value != newUrl) {
+            _imageUrl.value = newUrl
+            viewModelScope.launch {
+                saveUserProfileUriLocal(newUrl)
+            }
+        }
+    }
+
+    // 이미지 url 로컬 저장
+    private fun saveUserProfileUriLocal(uri: String) {
+        userInfoRepository.saveMemberProfileUrl(uri)
     }
 
     //    feed

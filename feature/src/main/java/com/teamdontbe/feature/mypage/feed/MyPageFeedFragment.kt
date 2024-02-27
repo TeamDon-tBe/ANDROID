@@ -19,12 +19,10 @@ import com.teamdontbe.feature.mypage.MyPageModel
 import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
-import com.teamdontbe.feature.posting.PostingFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.FeedItemDecorator
-import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
-import com.teamdontbe.feature.util.KeyStorage
 import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
+import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -104,10 +102,10 @@ class MyPageFeedFragment :
     }
 
     private fun handleSuccessState(feedList: List<FeedEntity>) {
-        if (feedList.isEmpty()) {
-            updateNoFeedUI()
-        } else {
+        if (feedList.isNotEmpty() || !memberProfile.idFlag) {
             initFeedRecyclerView(feedList)
+        } else {
+            updateNoFeedUI()
         }
     }
 
@@ -170,7 +168,11 @@ class MyPageFeedFragment :
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = MyPageTransparentDialogFragment(ALARM_TRIGGER_TYPE_CONTENT, targetMemberId, alarmTriggerId)
+        val dialog = MyPageTransparentDialogFragment(
+            ALARM_TRIGGER_TYPE_CONTENT,
+            targetMemberId,
+            alarmTriggerId
+        )
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 

@@ -134,30 +134,13 @@ class OnboardingFragment :
         binding.btnOnboardingStart.setOnClickListener {
             val inputNickName = onboardingViewModel.getNickName()
 
-            var allowedCheckd = signUpAgree?.allowedCheck
-            if (allowedCheckd == null) {
-                Timber.tag("my_page").e("my page에서 받아오는 sign up agree의 allowedCheck null error")
-                allowedCheckd = false
-
-                onboardingViewModel.posting(introduction)
-                onboardingViewModel.patchUserProfileEdit(
-                    inputNickName,
-                    allowedCheckd,
-                    introduction,
-                    null,
-                )
-            } else {
-                Timber.tag("my_page")
-                    .d("my page에서 받아오는 sign up agree의 allowedCheck : $allowedCheckd")
-
-                onboardingViewModel.posting(introduction)
-                onboardingViewModel.patchUserProfileEdit(
-                    inputNickName,
-                    allowedCheckd,
-                    introduction,
-                    null,
-                )
-            }
+            onboardingViewModel.posting(introduction)
+            onboardingViewModel.patchUserProfileEdit(
+                inputNickName,
+                null,
+                introduction,
+                null,
+            )
         }
     }
 

@@ -7,7 +7,7 @@ import com.teamdontbe.domain.entity.MyPageUserProfileEntity
 import kotlinx.coroutines.flow.Flow
 
 interface MyPageRepository {
-    suspend fun getMyPageUserProfile(viewMemberId: Int): Flow<MyPageUserProfileEntity?>
+    suspend fun getMyPageUserProfile(viewMemberId: Int): Result<MyPageUserProfileEntity?>
 
     suspend fun getMyPageFeedList(viewMemberId: Int): Flow<List<FeedEntity>?>
 

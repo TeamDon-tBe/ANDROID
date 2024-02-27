@@ -5,14 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.domain.entity.MyPageUserProfileEntity
+import com.teamdontbe.domain.entity.ProfileEditInfoEntity
 import com.teamdontbe.domain.repository.LoginRepository
 import com.teamdontbe.domain.repository.MyPageRepository
 import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,15 +42,15 @@ class SignUpProfileViewModel
     private val _nickNameDoubleState = MutableSharedFlow<UiState<Boolean>>()
     val nickNameDoubleState: SharedFlow<UiState<Boolean>> = _nickNameDoubleState
 
-    private var _profileEditSuccess = MutableLiveData<Boolean>()
-    val profileEditSuccess: LiveData<Boolean> get() = _profileEditSuccess
+    private var _profileEditSuccess = MutableStateFlow<Boolean>(false)
+    val profileEditSuccess: SharedFlow<Boolean> get() = _profileEditSuccess
 
-    private var _myPageUserIntroduce = MutableLiveData<String>()
-    val myPageUserIntroduce: LiveData<String> get() = _myPageUserIntroduce
+    private var _myPageUserInfo = MutableLiveData<MyPageUserProfileEntity>()
+    val myPageUserInfo: LiveData<MyPageUserProfileEntity> get() = _myPageUserInfo
 
     fun getUserNickName() = userInfoRepository.getNickName()
 
-    fun saveUserNickNameInLocal(nickName: String) {
+    private fun saveUserNickNameInLocal(nickName: String) {
         userInfoRepository.saveNickName(nickName)
     }
 
@@ -60,28 +65,26 @@ class SignUpProfileViewModel
     fun getUserProfileIntroduce() {
         viewModelScope.launch {
             myPageRepository.getMyPageUserProfile(getMemberId ?: -1)
-                .collectLatest { userProfileInfo ->
+                .onSuccess { userProfileInfo ->
                     if (userProfileInfo != null) {
-                        _myPageUserIntroduce.value = userProfileInfo.memberIntro
+                        _myPageUserInfo.value = userProfileInfo
                     }
                 }
         }
     }
 
-    fun patchUserProfileEdit(
-        nickName: String,
-        allowed: Boolean?,
-        intro: String,
-        url: String?,
-    ) {
+    fun patchUserProfileUri(info: ProfileEditInfoEntity, url: File?) {
         viewModelScope.launch {
-            loginRepository.patchProfileEdit(
-                nickName,
-                allowed,
-                intro,
-                url,
-            ).collectLatest {
-                _profileEditSuccess.value = it
+            loginRepository.patchProfileUriEdit(
+                info,
+                url
+            ).onSuccess { patchSuccess ->
+                _profileEditSuccess.value = patchSuccess
+                if (patchSuccess) {
+                    saveUserNickNameInLocal(info.nickname)
+                }
+            }.onFailure {
+                Timber.d("fail", it.message.toString())
             }
         }
     }
