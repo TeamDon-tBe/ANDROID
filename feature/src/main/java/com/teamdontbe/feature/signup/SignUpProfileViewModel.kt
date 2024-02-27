@@ -12,6 +12,7 @@ import com.teamdontbe.domain.repository.MyPageRepository
 import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -41,8 +42,8 @@ class SignUpProfileViewModel
     private val _nickNameDoubleState = MutableSharedFlow<UiState<Boolean>>()
     val nickNameDoubleState: SharedFlow<UiState<Boolean>> = _nickNameDoubleState
 
-    private var _profileEditSuccess = MutableLiveData<Boolean>()
-    val profileEditSuccess: LiveData<Boolean> get() = _profileEditSuccess
+    private var _profileEditSuccess = MutableStateFlow<Boolean>(false)
+    val profileEditSuccess: SharedFlow<Boolean> get() = _profileEditSuccess
 
     private var _myPageUserInfo = MutableLiveData<MyPageUserProfileEntity>()
     val myPageUserInfo: LiveData<MyPageUserProfileEntity> get() = _myPageUserInfo

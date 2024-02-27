@@ -26,6 +26,7 @@ import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.ProfileEditInfoEntity
+import com.teamdontbe.feature.ErrorActivity.Companion.navigateToErrorPage
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivitySignUpProfileBinding
@@ -34,10 +35,12 @@ import com.teamdontbe.feature.signup.SignUpAgreeActivity.Companion.SIGN_UP_AGREE
 import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -312,7 +315,7 @@ class SignUpProfileActivity :
         return@withContext tempFile
     }
 
-    private fun handleSignUpAgree(
+    private suspend fun handleSignUpAgree(
         nickName: String,
         optionalAgreement: Boolean,
         introduce: String,
@@ -326,11 +329,22 @@ class SignUpProfileActivity :
             ),
             imgUrl
         )
-        finish()
-        navigateTo<MainActivity>(this)
+        // Profile edit 성공 여부를 대기하고, timeout을 설정하여 처리
+        val success = withTimeoutOrNull(10_000) {
+            viewModel.profileEditSuccess.first { it }
+        }
+
+        // Profile edit이 성공했을 경우에만 UI 업데이트 및 네비게이션 수행
+        if (success == true) {
+            finish()
+            navigateTo<MainActivity>(this@SignUpProfileActivity)
+        } else {
+            // Profile edit이 실패한 경우에 대한 처리
+            navigateToErrorPage(this@SignUpProfileActivity)
+        }
     }
 
-    private fun handleMyPageProfile(nickName: String, introduce: String, imgUrl: File?) {
+    private suspend fun handleMyPageProfile(nickName: String, introduce: String, imgUrl: File?) {
         viewModel.patchUserProfileUri(
             ProfileEditInfoEntity(
                 nickName,
@@ -339,7 +353,15 @@ class SignUpProfileActivity :
             ),
             imgUrl
         )
-        finish()
+        val success = withTimeoutOrNull(10_000) {
+            viewModel.profileEditSuccess.first { it }
+        }
+
+        if (success == true) {
+            finish()
+        } else {
+            navigateToErrorPage(this@SignUpProfileActivity)
+        }
     }
 
     private fun initBackBtnClickListener(flag: String) {
