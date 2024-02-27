@@ -17,11 +17,10 @@ interface MyPageApiService {
         const val VIEW_MEMBER = "viewmember"
         const val VIEW_MEMBER_ID = "viewmemberId"
         const val MEMBER = "member"
-        const val CONTENTS = "contents"
-        const val COMMENTS = "comments"
         const val MEMBER_DATA = "member-data"
         const val MEMBER_ID = "memberId"
         const val MEMBER_CONTENTS = "member-contents"
+        const val MEMBER_COMMENTS = "member-comments"
     }
 
     @GET("/$API/$V1/$VIEW_MEMBER/{$VIEW_MEMBER_ID}")
@@ -35,9 +34,10 @@ interface MyPageApiService {
         @Query(CURSOR) cursor: Long = -1
     ): BaseResponse<List<ResponseFeedDto>>
 
-    @GET("/$API/$V1/$MEMBER/{$VIEW_MEMBER_ID}/$COMMENTS")
+    @GET("/$API/$V1/$MEMBER/{$MEMBER_ID}/$MEMBER_COMMENTS")
     suspend fun getMyPageCommentList(
-        @Path(VIEW_MEMBER_ID) viewMemberID: Int,
+        @Path(MEMBER_ID) viewMemberID: Int,
+        @Query(CURSOR) cursor: Long = -1
     ): BaseResponse<List<ResponseMyPageCommentDto>>
 
     @GET("/$API/$V1/$MEMBER_DATA")
