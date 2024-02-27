@@ -10,4 +10,6 @@ data class NotiEntity(
     val notificationTriggerId: Int,
     val notificationText: String,
     val isNotificationChecked: Boolean,
+    val isDeleted: Boolean,
+    val notificationId: Int,
 )

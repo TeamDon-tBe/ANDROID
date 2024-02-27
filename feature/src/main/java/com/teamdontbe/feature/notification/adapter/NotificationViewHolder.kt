@@ -12,7 +12,7 @@ import timber.log.Timber
 
 class NotificationViewHolder(
     private val binding: ItemNotificationFeedBinding,
-    private val click: (NotiEntity, Int) -> Unit = { _, _ -> },
+    private val click: (NotiEntity, Int) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(data: NotiEntity) {
         with(binding) {
