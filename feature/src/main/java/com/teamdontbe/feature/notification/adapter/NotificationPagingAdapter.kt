@@ -3,12 +3,12 @@ package com.teamdontbe.feature.notification.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
+import com.teamdontbe.core_ui.view.ItemDiffCallback
 import com.teamdontbe.domain.entity.NotiEntity
 import com.teamdontbe.feature.databinding.ItemNotificationFeedBinding
-import com.teamdontbe.feature.notification.adapter.NotificationAdapter.Companion.NotificationAdapterDiffCallback
 
 class NotificationPagingAdapter(
-    private val click: (NotiEntity, Int) -> Unit = { _, _ -> },
+    private val click: (NotiEntity, Int) -> Unit,
 ) :
     PagingDataAdapter<NotiEntity, NotificationViewHolder>(NotificationAdapterDiffCallback) {
     override fun onCreateViewHolder(
@@ -25,5 +25,13 @@ class NotificationPagingAdapter(
         position: Int,
     ) {
         getItem(position)?.let { holder.bind(it) }
+    }
+
+    companion object {
+        private val NotificationAdapterDiffCallback =
+            ItemDiffCallback<NotiEntity>(
+                onItemsTheSame = { old, new -> old.memberId == new.memberId },
+                onContentsTheSame = { old, new -> old == new },
+            )
     }
 }
