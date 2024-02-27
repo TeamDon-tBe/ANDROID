@@ -50,7 +50,6 @@ class SignUpProfileActivity :
     BindingActivity<ActivitySignUpProfileBinding>(R.layout.activity_sign_up_profile) {
     private val viewModel by viewModels<SignUpProfileViewModel>()
     private var photoUri: Uri? = null
-    private var tempFile: File? = null
 
     // Permission request handler
     private val requestPermissions =
@@ -305,7 +304,7 @@ class SignUpProfileActivity :
         }
 
         // 캐시 파일 생성
-        tempFile = File.createTempFile("file", ".jpg", this@SignUpProfileActivity.cacheDir)
+        val tempFile = File.createTempFile("file", ".jpg", this@SignUpProfileActivity.cacheDir)
 
         // 압축된 이미지를 파일에 저장
         FileOutputStream(tempFile).use {
@@ -401,11 +400,18 @@ class SignUpProfileActivity :
 
     private fun deleteCache() {
         // 캐시 파일을 삭제
-        tempFile?.delete()
-        tempFile = null
-        photoUri = null
         cacheDir.listFiles()?.forEach {
             it.delete()
+        }
+        // 삭제할 폴더 경로
+        val imageCacheDir = File(cacheDir, "image_cache")
+
+        // 해당 폴더가 존재하고 디렉토리인지 확인
+        if (imageCacheDir.exists() && imageCacheDir.isDirectory) {
+            // 폴더 내의 모든 파일을 반복하면서 삭제
+            imageCacheDir.listFiles()?.forEach { file ->
+                file.delete()
+            }
         }
     }
 
