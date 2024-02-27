@@ -11,7 +11,7 @@ import com.teamdontbe.data.dto.request.RequestTransparentDto
 import com.teamdontbe.data.dto.response.ResponseCommentDto
 import com.teamdontbe.data.dto.response.ResponseFeedDto
 import com.teamdontbe.data_remote.api.HomeApiService
-import com.teamdontbe.data_remote.pagingsourceimpl.HomePagingSourceImpl
+import com.teamdontbe.data_remote.pagingsourceimpl.HomeFeedPagingSourceImpl
 import com.teamdontbe.domain.entity.FeedEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -25,7 +25,7 @@ class HomeDataSourceImpl
             //PagingConfig(페이지가 로드되는 시점 : 1인 이유는 30개의 마지막 아이템이 보였을 때 로드된다는 의미)
             //만약에 5로 바뀌면 25번째 아이템이 보일 때 다음 페이지 로드됨
             return Pager(PagingConfig(1)) {
-                HomePagingSourceImpl(homeApiService)
+                HomeFeedPagingSourceImpl(homeApiService)
             }.flow
         }
 

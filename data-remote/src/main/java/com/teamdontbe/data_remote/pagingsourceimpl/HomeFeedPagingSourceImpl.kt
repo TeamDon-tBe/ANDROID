@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.teamdontbe.data_remote.api.HomeApiService
 import com.teamdontbe.domain.entity.FeedEntity
 
-class HomePagingSourceImpl(private val homeApiService: HomeApiService) :
+class HomeFeedPagingSourceImpl(private val homeApiService: HomeApiService) :
     PagingSource<Long, FeedEntity>() {
     override fun getRefreshKey(state: PagingState<Long, FeedEntity>): Long? {
         return state.anchorPosition?.let { anchorPosition ->
