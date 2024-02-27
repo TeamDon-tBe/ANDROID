@@ -72,19 +72,7 @@ class MyPageViewModel
 
     private val _deleteFeed = MutableSharedFlow<UiState<Boolean>>()
     val deleteFeed: SharedFlow<UiState<Boolean>> = _deleteFeed
-    fun getMyPageFeedList(viewMemberId: Int) {
-        viewModelScope.launch {
-            _getMyPageFeedListState.value = UiState.Loading
-            myPageRepository.getMyPageFeedList(viewMemberId).collectLatest {
-                if (it != null) {
-                    _getMyPageFeedListState.value = UiState.Success(it)
-                } else {
-                    UiState.Failure("null")
-                }
-            }
-            _getMyPageFeedListState.value = UiState.Loading
-        }
-    }
+    fun getMyPageFeedList(viewMemberId: Int) = myPageRepository.getMyPageFeedList(viewMemberId)
 
     fun postFeedLiked(commentId: Int) = viewModelScope.launch {
         homeRepository.postFeedLiked(commentId).collectLatest {}
