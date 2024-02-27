@@ -1,5 +1,6 @@
 package com.teamdontbe.data.repositoryimpl
 
+import androidx.paging.PagingData
 import com.teamdontbe.data.datasource.MyPageDataSource
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.domain.entity.MyPageCommentEntity
@@ -19,18 +20,8 @@ class MyPageRepositoryImpl
             myPageDataSource.getMyPageUserProfileSource(viewMemberId).data?.toMyPageUserProfileEntity()
         }
 
-    override suspend fun getMyPageFeedList(viewMemberId: Int): Flow<List<FeedEntity>?> {
-        return flow {
-            val result = kotlin.runCatching {
-                myPageDataSource.getMyPageUserFeedListSource(viewMemberId).data?.map {
-                    it.toFeedEntity()
-                }
-            }
-            emit(
-                result.getOrDefault(result.getOrDefault(emptyList())),
-            )
-        }
-    }
+    override fun getMyPageFeedList(viewMemberId: Int): Flow<PagingData<FeedEntity>> =
+        myPageDataSource.getMyPageUserFeedListSource(viewMemberId)
 
     override suspend fun getMyPageCommentList(viewMemberId: Int): Flow<List<MyPageCommentEntity>?> {
         return flow {
