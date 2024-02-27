@@ -10,7 +10,7 @@ interface HomeRepository {
 
     suspend fun getFeedLDetail(contentId: Int): Flow<FeedEntity?>
 
-    suspend fun getCommentList(contentId: Int): Flow<List<CommentEntity>?>
+    fun getCommentList(contentId: Int): Flow<PagingData<CommentEntity>>
 
     suspend fun deleteFeed(contentId: Int): Flow<Boolean>
 
