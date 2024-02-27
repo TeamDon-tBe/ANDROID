@@ -12,7 +12,7 @@ import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
-import com.teamdontbe.feature.ErrorActivity
+import com.teamdontbe.feature.ErrorActivity.Companion.navigateToErrorPage
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
@@ -84,7 +84,7 @@ class MyPageFeedFragment :
                 pagingSubmitData(
                     viewLifecycleOwner,
                     myPageFeedViewModel.getMyPageFeedList(memberProfile.id),
-                    this
+                    pagingAdapter = this
                 )
             }
         binding.rvMyPagePosting.adapter =
@@ -160,7 +160,7 @@ class MyPageFeedFragment :
         myPageFeedViewModel.deleteFeed.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
                 is UiState.Success -> handleDeleteFeedSuccess()
-                is UiState.Failure -> ErrorActivity.navigateToErrorPage(requireContext())
+                is UiState.Failure -> navigateToErrorPage(requireContext())
                 else -> Unit
             }
         }.launchIn(viewLifeCycleScope)
@@ -177,6 +177,35 @@ class MyPageFeedFragment :
         deletedItemCount = 0
         val dialog = DeleteCompleteDialogFragment()
         dialog.show(childFragmentManager, KeyStorage.DELETE_POSTING)
+    }
+
+    private fun stateFeedItemNull() {
+        if (!memberProfile.idFlag) return
+        myPageFeedAdapter.addLoadStateListener { combinedLoadStates ->
+            val isEmpty =
+                myPageFeedAdapter.itemCount == 0 && combinedLoadStates.refresh is LoadState.NotLoading
+            if (isEmpty) {
+                updateNoFeedUI()
+            } else {
+                updateExistFeedUi()
+            }
+        }
+    }
+
+    private fun updateNoFeedUI() = with(binding) {
+        rvMyPagePosting.visibility = View.GONE
+        viewMyPageNoFeedNickname.apply {
+            clNoFeed.visibility = View.VISIBLE
+            tvNoFeedNickname.text = getString(R.string.my_page_no_feed_text, memberProfile.nickName)
+            btnNoFeedPosting.setOnClickListener {
+                navigateToPostingFragment(memberProfile.id)
+            }
+        }
+    }
+
+    private fun updateExistFeedUi() {
+        binding.viewMyPageNoFeedNickname.clNoFeed.visibility = View.GONE
+        binding.rvMyPagePosting.visibility = View.VISIBLE
     }
 
     private fun initTransparentObserve() {
@@ -202,31 +231,6 @@ class MyPageFeedFragment :
             R.id.action_fragment_my_page_to_fragment_posting,
             bundleOf(KEY_NOTI_DATA to id),
         )
-    }
-
-    private fun stateFeedItemNull() {
-        if (!memberProfile.idFlag) return
-        myPageFeedAdapter.addLoadStateListener { combinedLoadStates ->
-            val isEmpty =
-                myPageFeedAdapter.itemCount == 0 && combinedLoadStates.refresh is LoadState.NotLoading
-            if (isEmpty) {
-                updateNoFeedUI()
-            } else {
-                binding.viewMyPageNoFeedNickname.clNoFeed.visibility = View.GONE
-                binding.rvMyPagePosting.visibility = View.VISIBLE
-            }
-        }
-    }
-
-    private fun updateNoFeedUI() = with(binding) {
-        rvMyPagePosting.visibility = View.GONE
-        viewMyPageNoFeedNickname.apply {
-            clNoFeed.visibility = View.VISIBLE
-            tvNoFeedNickname.text = getString(R.string.my_page_no_feed_text, memberProfile.nickName)
-            btnNoFeedPosting.setOnClickListener {
-                navigateToPostingFragment(memberProfile.id)
-            }
-        }
     }
 
     private fun scrollRecyclerViewToTop() {
