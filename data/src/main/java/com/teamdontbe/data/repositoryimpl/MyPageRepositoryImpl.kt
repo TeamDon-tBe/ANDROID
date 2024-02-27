@@ -23,18 +23,8 @@ class MyPageRepositoryImpl
     override fun getMyPageFeedList(viewMemberId: Int): Flow<PagingData<FeedEntity>> =
         myPageDataSource.getMyPageUserFeedListSource(viewMemberId)
 
-    override suspend fun getMyPageCommentList(viewMemberId: Int): Flow<List<MyPageCommentEntity>?> {
-        return flow {
-            val result = kotlin.runCatching {
-                myPageDataSource.getMyPageUserCommentListSource(viewMemberId).data?.map {
-                    it.toMyPageCommentEntity()
-                }
-            }
-            emit(
-                result.getOrDefault(result.getOrDefault(emptyList())),
-            )
-        }
-    }
+    override fun getMyPageCommentList(viewMemberId: Int): Flow<PagingData<MyPageCommentEntity>> =
+        myPageDataSource.getMyPageUserCommentListSource(viewMemberId)
 
     override suspend fun getMyPageUserAccountInfo(): Flow<MyPageUserAccountInfoEntity?> {
         return flow {
