@@ -14,39 +14,39 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationViewModel
-    @Inject
-    constructor(
-        private val notificationRepository: NotificationRepository,
-        private val userInfoRepository: UserInfoRepository,
-    ) : ViewModel() {
-        private val _getNotiCount = MutableStateFlow<UiState<Int>>(UiState.Empty)
-        val getNotiCount: StateFlow<UiState<Int>> = _getNotiCount
+@Inject
+constructor(
+    private val notificationRepository: NotificationRepository,
+    private val userInfoRepository: UserInfoRepository,
+) : ViewModel() {
+    private val _getNotiCount = MutableStateFlow<UiState<Int>>(UiState.Empty)
+    val getNotiCount: StateFlow<UiState<Int>> = _getNotiCount
 
-        private val _patchNotiCheck = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
-        val patchNotiCheck: StateFlow<UiState<Boolean>> = _patchNotiCheck
+    private val _patchNotiCheck = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+    val patchNotiCheck: StateFlow<UiState<Boolean>> = _patchNotiCheck
 
-        fun checkLogin() = userInfoRepository.checkLogin()
+    fun checkLogin() = userInfoRepository.checkLogin()
 
-        fun getNotificationCount() =
-            viewModelScope.launch {
-                notificationRepository.getNotificationCount().collectLatest {
-                    if (it != null) {
-                        _getNotiCount.value =
-                            UiState.Success(it)
-                    } else {
-                        UiState.Failure("null")
-                    }
+    fun getNotificationCount() =
+        viewModelScope.launch {
+            notificationRepository.getNotificationCount().collectLatest {
+                if (it != null) {
+                    _getNotiCount.value =
+                        UiState.Success(it)
+                } else {
+                    UiState.Failure("null")
                 }
-                _getNotiCount.value = UiState.Loading
             }
+            _getNotiCount.value = UiState.Loading
+        }
 
-        fun getNotificationList() = notificationRepository.getNotificationList()
+    fun getNotificationList() = notificationRepository.getNotificationList()
 
-        fun patchNotificationCheck() =
-            viewModelScope.launch {
-                notificationRepository.patchNotificationCheck().collectLatest {
-                    _patchNotiCheck.value = UiState.Success(it)
-                }
-                _patchNotiCheck.value = UiState.Loading
+    fun patchNotificationCheck() =
+        viewModelScope.launch {
+            notificationRepository.patchNotificationCheck().collectLatest {
+                _patchNotiCheck.value = UiState.Success(it)
             }
-    }
+            _patchNotiCheck.value = UiState.Loading
+        }
+}
