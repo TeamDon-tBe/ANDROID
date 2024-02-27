@@ -8,8 +8,7 @@ import com.teamdontbe.domain.entity.FeedEntity
 class MyPageFeedPagingSourceImpl(
     private val myPageApiService: MyPageApiService,
     private val memberId: Int
-) :
-    PagingSource<Long, FeedEntity>() {
+) : PagingSource<Long, FeedEntity>() {
 
     private var prevKey: Long? = null
 

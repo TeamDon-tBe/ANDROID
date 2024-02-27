@@ -8,8 +8,7 @@ import com.teamdontbe.domain.entity.MyPageCommentEntity
 class MyPageCommentPagingSourceImpl(
     private val myPageApiService: MyPageApiService,
     private val memberId: Int
-) :
-    PagingSource<Long, MyPageCommentEntity>() {
+) : PagingSource<Long, MyPageCommentEntity>() {
 
     private var prevKey: Long? = null
 
