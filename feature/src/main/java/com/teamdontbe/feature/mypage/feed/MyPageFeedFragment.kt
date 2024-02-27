@@ -6,12 +6,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.ErrorActivity
+import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageFeedBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
@@ -53,6 +55,7 @@ class MyPageFeedFragment :
         initDeleteObserve()
         initTransparentObserve()
         stateFeedItemNull()
+        scrollRecyclerViewToTop()
     }
 
     private fun initMemberProfile() {
@@ -224,6 +227,19 @@ class MyPageFeedFragment :
                 navigateToPostingFragment(memberProfile.id)
             }
         }
+    }
+
+    private fun scrollRecyclerViewToTop() {
+        val mainActivity = requireActivity() as? MainActivity
+
+        mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)
+            ?.setOnItemReselectedListener { item ->
+                if (item.itemId == R.id.fragment_my_page) {
+                    binding.rvMyPagePosting.post {
+                        binding.rvMyPagePosting.smoothScrollToPosition(0)
+                    }
+                }
+            }
     }
 
     companion object {
