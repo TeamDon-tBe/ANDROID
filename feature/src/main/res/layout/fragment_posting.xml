@@ -49,6 +49,7 @@
 
             <EditText
                 android:id="@+id/et_posting_content"
+                style="@style/EditTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="7dp"

@@ -5,12 +5,6 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/secondary</item>
         <item name="android:windowBackground">@color/gray_1</item>
-        <item name="android:colorControlActivated">@color/primary</item>
-        <item name="android:textSelectHandle">@color/primary</item>
-        <item name="android:textColorHighlight">@color/primary</item>
-        <item name="android:textCursorDrawable">@color/primary</item>
-        <item name="android:textSelectHandleLeft">@drawable/shape_primary_fill_left10_rect</item>
-        <item name="android:textSelectHandleRight">@drawable/shape_primary_fill_right10_rect</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -24,5 +18,14 @@
 
     <style name="Theme.DontBe.RemoveSplash" parent="Theme.DontBe">
         <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:colorControlActivated">@color/primary</item>
+        <item name="android:textSelectHandle">@color/primary</item>
+        <item name="android:textColorHighlight">@color/primary</item>
+        <item name="android:textCursorDrawable">@color/primary</item>
+        <item name="android:textSelectHandleLeft">@drawable/shape_primary_fill_left10_rect</item>
+        <item name="android:textSelectHandleRight">@drawable/shape_primary_fill_right10_rect</item>
     </style>
 </resources>
