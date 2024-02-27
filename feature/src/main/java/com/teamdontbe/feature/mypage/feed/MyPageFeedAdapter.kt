@@ -3,20 +3,20 @@ package com.teamdontbe.feature.mypage.feed
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import com.teamdontbe.core_ui.view.ItemDiffCallback
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 
 class MyPageFeedAdapter(
+    context: Context,
+    private val idFlag: Boolean,
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit,
     private val onItemClicked: (FeedEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
-    context: Context,
-    private val idFlag: Boolean,
-    private val onClickTransparentBtn: (FeedEntity, Int) -> Unit = { _, _ -> },
+    private val onClickTransparentBtn: (FeedEntity) -> Unit,
 ) :
-    ListAdapter<FeedEntity, MyPageFeedViewHolder>(ExampleDiffCallback) {
+    PagingDataAdapter<FeedEntity, MyPageFeedViewHolder>(myPageFeedItemDiffCallback) {
     private val inflater by lazy { LayoutInflater.from(context) }
 
     override fun onCreateViewHolder(
@@ -25,12 +25,12 @@ class MyPageFeedAdapter(
     ): MyPageFeedViewHolder {
         val binding = ItemHomeFeedBinding.inflate(inflater, parent, false)
         return MyPageFeedViewHolder(
-            binding,
-            onClickKebabBtn,
-            onItemClicked,
-            onClickLikedBtn,
-            idFlag,
-            onClickTransparentBtn,
+            binding = binding,
+            idFlag = idFlag,
+            onClickKebabBtn = onClickKebabBtn,
+            onItemClicked = onItemClicked,
+            onClickLikedBtn = onClickLikedBtn,
+            onClickTransparentBtn = onClickTransparentBtn,
         )
     }
 
@@ -38,15 +38,15 @@ class MyPageFeedAdapter(
         holder: MyPageFeedViewHolder,
         position: Int,
     ) {
-        holder.onBind(currentList[position])
+        getItem(position)?.let { holder.onBind(it) }
     }
 
     fun deleteItem(position: Int) {
-        submitList(currentList.toMutableList().apply { removeAt(position) })
+        notifyItemRemoved(position)
     }
 
     companion object {
-        private val ExampleDiffCallback =
+        private val myPageFeedItemDiffCallback =
             ItemDiffCallback<FeedEntity>(
                 onItemsTheSame = { old, new -> old.contentId == new.contentId },
                 onContentsTheSame = { old, new -> old == new },
