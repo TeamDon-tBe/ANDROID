@@ -13,7 +13,7 @@ interface MyPageDataSource {
 
     fun getMyPageUserFeedListSource(viewMemberId: Int): Flow<PagingData<FeedEntity>>
 
-    suspend fun getMyPageUserCommentListSource(viewMemberId: Int): Flow<PagingData<MyPageCommentEntity>>
+    fun getMyPageUserCommentListSource(viewMemberId: Int): Flow<PagingData<MyPageCommentEntity>>
 
     suspend fun getMyPageUserAccountInfo(): BaseResponse<ResponseMyPageUserAccountInfoDto>
 }
