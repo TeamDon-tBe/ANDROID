@@ -1,11 +1,13 @@
 package com.teamdontbe.feature
 
-import android.os.Handler
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.lifecycle.lifecycleScope
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.feature.databinding.ActivityLoadingBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activity_loading) {
@@ -19,8 +21,10 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
     }
 
     private fun initAnimation() {
-        Handler().postDelayed({
-            fadeOutAnim = AnimationUtils.loadAnimation(this, R.anim.anim_loading_fade_out)
+        lifecycleScope.launch {
+            delay(1800)
+            fadeOutAnim =
+                AnimationUtils.loadAnimation(this@LoadingActivity, R.anim.anim_loading_fade_out)
             fadeOutAnim.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {}
 
@@ -33,7 +37,7 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
                 override fun onAnimationRepeat(animation: Animation?) {}
             })
             binding.layoutLoading.startAnimation(fadeOutAnim)
-        }, 1800)
+        }
     }
 
     private fun initLoadingContent() {
