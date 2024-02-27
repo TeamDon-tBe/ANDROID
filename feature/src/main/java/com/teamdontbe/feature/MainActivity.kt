@@ -6,19 +6,15 @@ import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingActivity
-import com.teamdontbe.core_ui.util.intent.getParcelable
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.databinding.ActivityMainBinding
 import com.teamdontbe.feature.notification.NotificationViewModel
-import com.teamdontbe.feature.signup.SignUpAgreeActivity.Companion.SIGN_UP_AGREE
-import com.teamdontbe.feature.signup.UserProfileModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -36,10 +32,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         initObserve()
     }
 
-    private fun setOnBoardingNavigate(){
+    private fun setOnBoardingNavigate() {
         val navController =
             (supportFragmentManager.findFragmentById(R.id.fcv_main) as NavHostFragment).findNavController()
-        if(notiViewModel.checkLogin()) navController.navigate(R.id.action_onboarding_to_home)
+        if (notiViewModel.checkLogin()) navController.navigate(R.id.action_onboarding_to_home)
     }
 
     private fun initObserve() {
@@ -93,6 +89,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         setBottomNaviVisible(navController)
 
         initBottomNavPostingClickListener(navController)
+        selectedHomeIcon(navController)
     }
 
     private fun removeBadgeOnNotification(navController: NavController) {
@@ -118,16 +115,30 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             binding.bnvMain.visibility =
                 if (destination.id in
                     listOf(
-                        R.id.fragment_home,
-                        R.id.fragment_notification,
-                        R.id.fragment_my_page,
-                        R.id.fragment_home_detail,
-                    )
+                            R.id.fragment_home,
+                            R.id.fragment_notification,
+                            R.id.fragment_my_page,
+                            R.id.fragment_home_detail,
+                        )
                 ) {
                     View.VISIBLE
                 } else {
                     View.GONE
                 }
+        }
+    }
+
+    private fun selectedHomeIcon(navController: NavController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.fragment_home, R.id.fragment_home_detail -> {
+                    binding.bnvMain.menu.findItem(R.id.fragment_home).isChecked = true
+                }
+
+                R.id.fragment_my_page -> {
+                    binding.bnvMain.menu.findItem(R.id.fragment_my_page).isChecked = true
+                }
+            }
         }
     }
 }
