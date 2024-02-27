@@ -2,17 +2,15 @@ package com.teamdontbe.feature.notification.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import com.teamdontbe.core_ui.view.ItemDiffCallback
 import com.teamdontbe.domain.entity.NotiEntity
 import com.teamdontbe.feature.databinding.ItemNotificationFeedBinding
 
-class NotificationAdapter(
-    private val click: (NotiEntity, Int) -> Unit = { _, _ -> },
+class NotificationPagingAdapter(
+    private val click: (NotiEntity, Int) -> Unit,
 ) :
-    ListAdapter<NotiEntity, NotificationViewHolder>(
-            NotificationAdapterDiffCallback,
-        ) {
+    PagingDataAdapter<NotiEntity, NotificationViewHolder>(NotificationAdapterDiffCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -26,7 +24,7 @@ class NotificationAdapter(
         holder: NotificationViewHolder,
         position: Int,
     ) {
-        holder.bind(currentList[position])
+        getItem(position)?.let { holder.bind(it) }
     }
 
     companion object {
