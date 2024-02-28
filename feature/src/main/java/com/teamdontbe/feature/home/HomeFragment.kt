@@ -52,7 +52,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun initHomeFeedAdapter() {
         homeFeedAdapter = HomePagingFeedAdapter(
-            requireContext(),
+            context = requireContext(),
             onClickKebabBtn = ::onKebabBtnClick,
             onClickLikedBtn = ::onLikedBtnClick,
             onClickTransparentBtn = ::onTransparentBtnClick,
@@ -231,7 +231,9 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)
             ?.setOnItemReselectedListener { item ->
                 if (item.itemId == R.id.fragment_home) {
-                    binding.rvHome.smoothScrollToPosition(0)
+                    binding.rvHome.post{
+                        binding.rvHome.smoothScrollToPosition(0)
+                    }
                 }
             }
     }
