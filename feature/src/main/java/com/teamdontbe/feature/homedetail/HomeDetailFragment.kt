@@ -13,6 +13,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
+import coil.load
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.hideKeyboard
@@ -104,6 +105,7 @@ class HomeDetailFragment :
     private fun initHomeDetailCommentAdapter(commentListData: List<CommentEntity>) {
         homeDetailCommentAdapter =
             HomeDetailCommentAdapter(
+                requireContext(),
                 onClickKebabBtn = { commentData, position ->
                     onKebabBtnClick(
                         commentData.memberId, -1, commentData.commentId, true, position,
@@ -128,6 +130,7 @@ class HomeDetailFragment :
     private fun initHomeFeedAdapter(feedListData: List<FeedEntity>) {
         homeFeedAdapter =
             HomeFeedAdapter(
+                requireContext(),
                 onClickKebabBtn = { feedData, position ->
                     onKebabBtnClick(
                         feedData.memberId, feedData.contentId ?: -1, -1, false, position,
@@ -451,6 +454,7 @@ class HomeDetailFragment :
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomsheetHomeDetail.root)
         binding.bottomsheetHomeDetail.tvCommentProfileNickname.text =
             homeViewModel.getUserNickname()
+        binding.bottomsheetHomeDetail.ivCommentProfileImg.load(homeViewModel.getUserProfile())
         bottomSheetBehavior.isHideable = true
         bottomSheetBehavior.expandedOffset = 28
         bottomSheetBehavior.peekHeight = 0

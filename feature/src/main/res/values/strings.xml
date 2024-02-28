@@ -80,6 +80,7 @@
     <string name="tv_home_detail_appbar_title">게시글</string>
     <string name="et_home_detail_input">don\'t be master님에게 답글 남기기</string>
     <string name="tv_transparency">투명도 %1$d%% · %2$s</string>
+    <string name="tv_transparency_complete">투명도 적용 완료 · %2$s</string>
     <!-- 글 작성 block 유저 제한 다이얼로그 -->
     <string name="posting_restriction_dialog_title">한동안 글을 쓸 수 없어요 :(</string>
     <string name="posting_restriction_dialog_content">투명도가 -85%까지 떨어졌네요!\n투명도가 회복되기 전까지 글을 쓸 수 없어요.</string>
@@ -160,13 +161,25 @@
     <string name="tv_delete_with_title_delete_comment_dialog">댓글을 삭제하시겠어요?</string>
     <string name="tv_delete_with_title_delete_content_dialog">삭제된 게시글은 영구히 사라져요.</string>
     <string name="tv_delete_with_title_delete_comment_content_dialog">삭제된 댓글은 영구히 사라져요.</string>
-    <string name="tv_transparent_dialog_title">투명도 주기</string>
-    <string name="tv_transparent_dialog_content">지금 누르신 투명도 기능이 Don\'t be를\n 더 온화한 커뮤니티를 만들기 위한 일이겠죠?</string>
-    <string name="btn_transparent_dialog_no">조금 더 고민하기</string>
-    <string name="btn_transparent_dialog_yes">네, 맞아요</string>
+
     <!-- 404 에러 화면 -->
     <string name="error_404">이런!\n현재 요청하신 페이지를 찾을 수 없어요!</string>
     <string name="error_to_home">홈으로 가기</string>
+    <string name="btn_transparent_dialog_yes">네, 맞아요</string>
+
+    <!-- 투명도 다이얼로그 -->
+    <string name="tv_transparent_reason_title">투명도 버튼을 눌렀어요.</string>
+    <string name="tv_transparent_reason_subtitle">Don’t be의 온화함을 해친다고 생각하셨나요?\n어떤 이유로 누르신 건지 알려주세요!</string>
+    <string name="rb_transparent_reason_content_1">누군가를 비하하고 있어요</string>
+    <string name="rb_transparent_reason_content_2">오해를 불러일으키는 내용을 말해요</string>
+    <string name="rb_transparent_reason_content_3">불쾌한 표현을 사용해요</string>
+    <string name="rb_transparent_reason_content_4">갈등을 조장하고 있어요</string>
+    <string name="rb_transparent_reason_content_5">의미가 없는 내용을 도배해요</string>
+    <string name="tv_transparent_reason_warning">투명도 주기를 누르신 사유 1가지를 선택해주세요.</string>
+    <string name="btn_transparent_reason_yes">투명도 주기</string>
+    <string name="tv_transparent_dialog_title">투명도 주기</string>
+    <string name="tv_transparent_dialog_content">지금 누르신 투명도 기능이 Don\'t be를\n 더 온화한 커뮤니티를 만들기 위한 일이겠죠?</string>
+    <string name="btn_transparent_dialog_no">조금 더 고민하기</string>
     <!-- 로딩 화면 -->
     <string name="loading_title">알고 계셨나요?</string>
     <string-array name="loading_contents">

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -89,6 +90,8 @@ constructor(
 
     fun getUserNickname() = userInfoRepository.getNickName()
 
+    fun getUserProfile() = userInfoRepository.getMemberProfileUrl()
+
     fun postFeedLiked(contentId: Int) =
         viewModelScope.launch {
             homeRepository.postFeedLiked(contentId).collectLatest {
@@ -134,14 +137,17 @@ constructor(
         }
 
     fun postTransparent(
-        alarmTriggerType: String,
-        targetMemberId: Int,
-        alarmTriggerId: Int,
+        alarmTriggerType: String, targetMemberId: Int, alarmTriggerId: Int, ghostReason: String
     ) = viewModelScope.launch {
         _postTransparent.emit(UiState.Loading)
-        homeRepository.postTransparent(alarmTriggerType, targetMemberId, alarmTriggerId)
-            .collectLatest {
-                _postTransparent.emit(UiState.Success(it))
-            }
+        homeRepository.postTransparent(
+            alarmTriggerType, targetMemberId, alarmTriggerId, ghostReason
+        ).fold({
+            if (it) _postTransparent.emit(UiState.Success(true)) else _postTransparent.emit(
+                UiState.Failure(
+                    "400"
+                )
+            )
+        }, { Timber.d("500") })
     }
 }

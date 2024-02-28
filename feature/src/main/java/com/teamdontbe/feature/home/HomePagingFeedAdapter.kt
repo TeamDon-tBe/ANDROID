@@ -1,5 +1,6 @@
 package com.teamdontbe.feature.home
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -9,6 +10,7 @@ import com.teamdontbe.feature.home.HomeFeedAdapter.Companion.HomeAdapterDiffCall
 import com.teamdontbe.feature.home.viewholder.HomeFeedViewHolder
 
 class HomePagingFeedAdapter(
+    private val context : Context,
     private val userId: Int,
     private val onClickToNavigateToHomeDetail: (FeedEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
@@ -24,6 +26,7 @@ class HomePagingFeedAdapter(
         val binding =
             ItemHomeFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HomeFeedViewHolder(
+            context,
             binding,
             userId,
             onClickToNavigateToHomeDetail,

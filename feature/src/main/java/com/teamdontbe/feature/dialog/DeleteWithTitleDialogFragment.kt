@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.fragment.app.activityViewModels
 import com.teamdontbe.core_ui.base.BindingDialogFragment
 import com.teamdontbe.core_ui.util.context.dialogFragmentResize
+import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentDeleteWithTitleDialogBinding
 import com.teamdontbe.feature.home.HomeBottomSheet
@@ -50,7 +51,7 @@ class DeleteWithTitleDialogFragment(
     }
 
     private fun initDeleteButtonClickListener() {
-        binding.btnDeleteWithTitleDialogDelete.setOnClickListener {
+        binding.btnDeleteWithTitleDialogDelete.setOnDuplicateBlockClick {
             when {
                 !isMember && !isComment -> homeViewModel.deleteFeed(contentId)
                 !isMember && isComment -> homeViewModel.deleteComment(commentId)

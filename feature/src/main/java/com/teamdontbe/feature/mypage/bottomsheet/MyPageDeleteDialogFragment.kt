@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.fragment.app.activityViewModels
 import com.teamdontbe.core_ui.base.BindingDialogFragment
 import com.teamdontbe.core_ui.util.context.dialogFragmentResize
+import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentDeleteWithTitleDialogBinding
 import com.teamdontbe.feature.mypage.MyPageViewModel
@@ -69,7 +70,7 @@ class MyPageDeleteDialogFragment(
     }
 
     private fun initDeclareBtnClickListener() {
-        binding.btnDeleteWithTitleDialogDelete.setOnClickListener {
+        binding.btnDeleteWithTitleDialogDelete.setOnDuplicateBlockClick {
             if (isMember) deleteFeedOrComment() else navigateToComplaintWeb()
             dismiss()
         }

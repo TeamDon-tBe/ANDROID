@@ -1,13 +1,17 @@
 package com.teamdontbe.feature.home.viewholder
 
+import android.content.Context
 import android.graphics.Color
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
+import com.teamdontbe.feature.util.CalculateTime
 import com.teamdontbe.feature.util.Transparent
 
 class HomeFeedViewHolder(
+    private val context : Context,
     private val binding: ItemHomeFeedBinding,
     private val userId: Int,
     private val onClickToNavigateToHomeDetail: (FeedEntity) -> Unit,
@@ -21,8 +25,14 @@ class HomeFeedViewHolder(
             feed = data
             executePendingBindings()
 
-
-            if (data.isGhost) setFeedTransparent(-85) else setFeedTransparent(data.memberGhost)
+            if (data.isGhost){
+                setFeedTransparent(-85)
+               binding.tvHomeFeedTransparency.text = context.getString(
+                    R.string.tv_transparency_complete,
+                    data.memberGhost,
+                    CalculateTime(context).getCalculateTime(data.time)
+                )
+            } else setFeedTransparent(data.memberGhost)
 
             ivHomeGhostFillGreen.isVisible = data.memberId !== userId
             ivHomeLinePale.isVisible = data.memberId !== userId
