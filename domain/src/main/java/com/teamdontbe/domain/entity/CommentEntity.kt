@@ -11,4 +11,5 @@ data class CommentEntity(
     val contentText: String,
     val time: String,
     val commentId: Int,
+    val isDeleted: Boolean? = null,
 )

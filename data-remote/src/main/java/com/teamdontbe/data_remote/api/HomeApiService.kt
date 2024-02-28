@@ -21,8 +21,8 @@ interface HomeApiService {
         const val CONTENT = "content"
         const val CONTENTS = "contents"
         const val CURSOR = "cursor"
-        const val ALL = "all"
         const val COMMENT = "comment"
+        const val COMMENTS = "comments"
         const val DETAIL = "detail"
         const val CONTENT_ID = "contentId"
         const val LIKED = "liked"
@@ -41,9 +41,10 @@ interface HomeApiService {
         @Path(value = CONTENT_ID) contentId: Int,
     ): BaseResponse<ResponseFeedDto>
 
-    @GET("$API/$V1/$CONTENT/{$CONTENT_ID}/$COMMENT/$ALL")
+    @GET("$API/$V1/$CONTENT/{$CONTENT_ID}/$COMMENTS")
     suspend fun getCommentList(
         @Path(value = CONTENT_ID) contentId: Int,
+        @Query(value = CURSOR) commentId: Long = -1,
     ): BaseResponse<List<ResponseCommentDto>>
 
     @DELETE("/$API/$V1/$CONTENT/{$CONTENT_ID}")

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/fragment_onboarding">
+    app:startDestination="@id/fragment_home">
 
     <fragment
         android:id="@+id/fragment_home"
@@ -19,6 +19,11 @@
             android:id="@+id/action_fragment_home_to_fragment_my_page"
             app:destination="@id/fragment_my_page"
             app:popUpTo="@id/fragment_my_page"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_home_to_onboarding"
+            app:destination="@id/fragment_onboarding"
+            app:popUpTo="@id/fragment_home"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment

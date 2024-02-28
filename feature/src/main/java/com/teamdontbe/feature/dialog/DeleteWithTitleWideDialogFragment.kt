@@ -67,6 +67,7 @@ class DeleteWithTitleWideDialogFragment(
             when (it) {
                 is UiState.Success -> {
                     Timber.tag("withdraw").i("계정 삭제 성공")
+                    withdrawViewModel.clearInfo()
                     navigateToLoginActivity()
                     dismiss()
                 }

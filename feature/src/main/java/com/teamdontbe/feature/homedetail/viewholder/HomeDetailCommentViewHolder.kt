@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ItemHomeCommentBinding
@@ -11,7 +12,7 @@ import com.teamdontbe.feature.util.CalculateTime
 import com.teamdontbe.feature.util.Transparent
 
 class HomeDetailCommentViewHolder(
-    private val context : Context,
+    private val context: Context,
     private val binding: ItemHomeCommentBinding,
     private val onClickKebabBtn: (CommentEntity, Int) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
@@ -31,8 +32,8 @@ class HomeDetailCommentViewHolder(
             dividerComment.isVisible = data.memberId !== userId
             btnCommentHeart.isSelected = data.isLiked
 
-            if (lastPosition == position) dividerCommentDivideBottom.isVisible = false
-            if (data.isGhost){
+            dividerCommentDivideBottom.isVisible = (lastPosition !== position)
+            if (data.isGhost) {
                 setFeedTransparent(-85)
                 binding.tvCommentTransparency.text = context.getString(
                     R.string.tv_transparency_complete,
@@ -42,17 +43,27 @@ class HomeDetailCommentViewHolder(
             } else setFeedTransparent(data.memberGhost)
 
             initLikedBtnCLickListener(data)
-            initProfileBtnClickListener(data)
+            memberIsDeleted(data)
             initKebabBtnClickListener(data)
             initGhostBtnClickListener(data)
         }
     }
 
-    private fun initProfileBtnClickListener(data: CommentEntity) =
+    private fun memberIsDeleted(data: CommentEntity) {
+        when (data.isDeleted ?: true) {
+            true -> binding.tvCommentUserName.setTextColor(context.colorOf(R.color.gray_12))
+            else -> initProfileBtnClickListener(data)
+        }
+    }
+
+    private fun initProfileBtnClickListener(data: CommentEntity) {
         binding.ivCommentProfile.setOnClickListener {
             onClickUserProfileBtn(data.memberId)
         }
-
+        binding.tvCommentUserName.setOnClickListener {
+            onClickUserProfileBtn(data.memberId)
+        }
+    }
 
     private fun initLikedBtnCLickListener(data: CommentEntity) {
         with(binding) {
@@ -71,12 +82,10 @@ class HomeDetailCommentViewHolder(
             onClickKebabBtn(data, bindingAdapterPosition)
         }
 
-
     private fun initGhostBtnClickListener(data: CommentEntity) =
         binding.ivCommentGhostFillGreen.setOnClickListener {
             onClickTransparentBtn(data)
         }
-
 
     private fun setFeedTransparent(memberGhostPercent: Int) {
         val color = Transparent().calculateColorWithOpacity(memberGhostPercent)

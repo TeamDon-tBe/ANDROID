@@ -35,7 +35,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private fun setOnBoardingNavigate() {
         val navController =
             (supportFragmentManager.findFragmentById(R.id.fcv_main) as NavHostFragment).findNavController()
-        if (notiViewModel.checkLogin()) navController.navigate(R.id.action_onboarding_to_home)
+        if (!notiViewModel.checkLogin()) navController.navigate(R.id.action_home_to_onboarding)
     }
 
     private fun initObserve() {

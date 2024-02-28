@@ -32,4 +32,6 @@ interface UserInfoRepository {
     fun getCheckOnboarding(): Boolean
 
     fun saveCheckOnboarding(checkOnboarding: Boolean)
+
+    fun clear()
 }

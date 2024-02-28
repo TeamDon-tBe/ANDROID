@@ -3,8 +3,8 @@ package com.teamdontbe.data.datasource
 import androidx.paging.PagingData
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.request.RequestCommentPostingDto
-import com.teamdontbe.data.dto.response.ResponseCommentDto
 import com.teamdontbe.data.dto.response.ResponseFeedDto
+import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -13,7 +13,7 @@ interface HomeDataSource {
 
     suspend fun getFeedDetail(contentId: Int): BaseResponse<ResponseFeedDto>
 
-    suspend fun getCommentList(contentId: Int): BaseResponse<List<ResponseCommentDto>>
+    fun getCommentList(contentId: Int): Flow<PagingData<CommentEntity>>
 
     suspend fun deleteFeed(contentId: Int): BaseResponse<Unit>
 

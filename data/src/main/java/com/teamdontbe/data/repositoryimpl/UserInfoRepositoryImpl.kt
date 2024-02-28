@@ -74,4 +74,8 @@ constructor(
     override fun saveCheckOnboarding(checkOnboarding: Boolean) {
         sharedPreferenceDataSource.isOnboardingFirst = checkOnboarding
     }
+
+    override fun clear() {
+        sharedPreferenceDataSource.clear()
+    }
 }
