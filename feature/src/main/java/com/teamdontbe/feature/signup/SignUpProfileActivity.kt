@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -62,6 +63,8 @@ class SignUpProfileActivity :
                         // 오류 처리
                     }
                 }
+            } else {
+                Timber.tag("permission").d("권한 거부")
             }
         }
 
@@ -109,7 +112,8 @@ class SignUpProfileActivity :
     private fun initImagePlusBtnClickListener() {
         binding.btnSignUpProfilePlus.setOnClickListener {
             // 갤러리 이미지 가져오기
-            getGalleryPermission()
+//            getGalleryPermission()
+            selectImage()
         }
     }
 
