@@ -29,14 +29,8 @@ class HomeRepositoryImpl
             }
         }
 
-        override suspend fun getCommentList(contentId: Int): Flow<List<CommentEntity>?> {
-            return flow {
-                val result =
-                    runCatching {
-                        homeDataSource.getCommentList(contentId).data?.map { it.toCommentEntity() }
-                    }
-                emit(result.getOrDefault(emptyList()))
-            }
+        override fun getCommentList(contentId: Int): Flow<PagingData<CommentEntity>> {
+            return homeDataSource.getCommentList(contentId)
         }
 
         override suspend fun deleteFeed(contentId: Int): Flow<Boolean> {

@@ -168,7 +168,7 @@ class OnboardingFragment :
 
     override fun onDestroyView() {
         _onboardingAdapter = null
-        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         super.onDestroyView()
     }
 }

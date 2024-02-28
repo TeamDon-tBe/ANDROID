@@ -1,7 +1,6 @@
 package com.teamdontbe.feature.login
 
 import android.content.ContentValues
-import android.content.Intent
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +10,7 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingActivity
+import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
@@ -137,9 +137,9 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     private fun navigateToMainActivity() {
         // 로그인 -> 성공 화면(원래는 온보딩 화면으로 넘어가야 함)
         if (loginViewModel.getNickName().isEmpty()) {
-            startActivity(Intent(this, SignUpAgreeActivity::class.java))
+            navigateTo<SignUpAgreeActivity>(this)
         } else {
-            startActivity(Intent(this, MainActivity::class.java))
+            navigateTo<MainActivity>(this)
         }
     }
 }

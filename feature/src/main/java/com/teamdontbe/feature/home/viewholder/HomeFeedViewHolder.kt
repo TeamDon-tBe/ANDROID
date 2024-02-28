@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
@@ -11,7 +12,7 @@ import com.teamdontbe.feature.util.CalculateTime
 import com.teamdontbe.feature.util.Transparent
 
 class HomeFeedViewHolder(
-    private val context : Context,
+    private val context: Context,
     private val binding: ItemHomeFeedBinding,
     private val userId: Int,
     private val onClickToNavigateToHomeDetail: (FeedEntity) -> Unit,
@@ -25,9 +26,9 @@ class HomeFeedViewHolder(
             feed = data
             executePendingBindings()
 
-            if (data.isGhost){
+            if (data.isGhost) {
                 setFeedTransparent(-85)
-               binding.tvHomeFeedTransparency.text = context.getString(
+                binding.tvHomeFeedTransparency.text = context.getString(
                     R.string.tv_transparency_complete,
                     data.memberGhost,
                     CalculateTime(context).getCalculateTime(data.time)
@@ -41,19 +42,32 @@ class HomeFeedViewHolder(
             root.setOnClickListener {
                 onClickToNavigateToHomeDetail(data)
             }
+            binding.tvHomeFeedContent.setOnClickListener {
+                onClickToNavigateToHomeDetail(data)
+            }
 
             initLikedBtnCLickListener(data)
-            initProfileBtnClickListener(data)
+            memberIsDeleted(data)
             initKebabBtnClickListener(data)
             initGhostBtnClickListener(data)
         }
     }
 
-    private fun initProfileBtnClickListener(data: FeedEntity) =
+    private fun memberIsDeleted(data: FeedEntity) {
+        when (data.isDeleted ?: true) {
+            true -> binding.tvHomeFeedUserName.setTextColor(context.colorOf(R.color.gray_12))
+            else -> initProfileBtnClickListener(data)
+        }
+    }
+
+    private fun initProfileBtnClickListener(data: FeedEntity) {
         binding.ivHomeProfile.setOnClickListener {
             onClickUserProfileBtn(data.memberId)
         }
-
+        binding.tvHomeFeedUserName.setOnClickListener {
+            onClickUserProfileBtn(data.memberId)
+        }
+    }
 
     private fun initLikedBtnCLickListener(data: FeedEntity) {
         with(binding) {
@@ -74,12 +88,10 @@ class HomeFeedViewHolder(
             onClickKebabBtn(data, bindingAdapterPosition)
         }
 
-
     private fun initGhostBtnClickListener(data: FeedEntity) =
         binding.ivHomeGhostFillGreen.setOnClickListener {
             onClickTransparentBtn(data)
         }
-
 
     private fun setFeedTransparent(memberGhostPercent: Int) {
         val color = Transparent().calculateColorWithOpacity(memberGhostPercent)

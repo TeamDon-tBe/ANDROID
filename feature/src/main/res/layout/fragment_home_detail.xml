@@ -8,6 +8,10 @@
         <variable
             name="feed"
             type="com.teamdontbe.domain.entity.FeedEntity" />
+
+        <variable
+            name="vm"
+            type="com.teamdontbe.feature.home.HomeViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -114,6 +118,7 @@
         <include
             android:id="@+id/bottomsheet_home_detail"
             layout="@layout/bottomsheet_comment"
-            app:feed="@{feed}" />
+            app:feed="@{feed}"
+            app:vm="@{vm}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

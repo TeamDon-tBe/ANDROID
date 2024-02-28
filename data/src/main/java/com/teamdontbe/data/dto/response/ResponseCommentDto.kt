@@ -16,6 +16,7 @@ data class ResponseCommentDto(
     @SerialName("commentText") val commentText: String,
     @SerialName("time") val time: String,
     @SerialName("commentId") val commentId: Int,
+    @SerialName("isDeleted") val isDeleted: Boolean? = null,
 ) {
     fun toCommentEntity() =
         CommentEntity(
@@ -29,5 +30,6 @@ data class ResponseCommentDto(
             commentText,
             time,
             commentId,
+            isDeleted
         )
 }
