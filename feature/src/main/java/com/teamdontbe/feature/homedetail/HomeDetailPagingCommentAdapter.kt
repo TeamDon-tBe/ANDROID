@@ -1,5 +1,6 @@
 package com.teamdontbe.feature.homedetail
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -9,6 +10,7 @@ import com.teamdontbe.feature.databinding.ItemHomeCommentBinding
 import com.teamdontbe.feature.homedetail.viewholder.HomeDetailCommentViewHolder
 
 class HomeDetailPagingCommentAdapter(
+    private val context: Context,
     private val onClickKebabBtn: (CommentEntity, Int) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
     private val onClickTransparentBtn: (CommentEntity) -> Unit,
@@ -23,6 +25,7 @@ class HomeDetailPagingCommentAdapter(
         val binding =
             ItemHomeCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HomeDetailCommentViewHolder(
+            context,
             binding,
             onClickKebabBtn,
             onClickLikedBtn,

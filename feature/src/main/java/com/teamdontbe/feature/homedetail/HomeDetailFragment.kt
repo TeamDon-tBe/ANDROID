@@ -103,6 +103,7 @@ class HomeDetailFragment :
 
     private fun initHomeDetailCommentAdapter(contentId: Int) {
         homeDetailCommentAdapter = HomeDetailPagingCommentAdapter(
+            context = requireContext(),
             onClickKebabBtn = { commentData, position ->
                 onKebabBtnClick(
                     commentData.memberId,
@@ -124,11 +125,11 @@ class HomeDetailFragment :
             onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
             userId = homeViewModel.getMemberId(),
         )
-        initHomeDetailAdapterPagingData()
+        initHomeDetailAdapterPagingData(contentId)
         concatFeedCommentAdapter()
     }
 
-    private fun initHomeDetailAdapterPagingData() {
+    private fun initHomeDetailAdapterPagingData(contentId: Int) {
         homeDetailCommentAdapter.apply {
             pagingSubmitData(
                 viewLifecycleOwner,
@@ -143,6 +144,7 @@ class HomeDetailFragment :
 
     private fun initHomeFeedAdapter(feedListData: List<FeedEntity>) {
         homeFeedAdapter = HomeFeedAdapter(
+            context = requireContext(),
             onClickKebabBtn = { feedData, position ->
                 onKebabBtnClick(
                     feedData.memberId,

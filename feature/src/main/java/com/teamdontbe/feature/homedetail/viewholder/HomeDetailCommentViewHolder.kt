@@ -11,7 +11,7 @@ import com.teamdontbe.feature.util.CalculateTime
 import com.teamdontbe.feature.util.Transparent
 
 class HomeDetailCommentViewHolder(
-    private val context : Context,
+    private val context: Context,
     private val binding: ItemHomeCommentBinding,
     private val onClickKebabBtn: (CommentEntity, Int) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
