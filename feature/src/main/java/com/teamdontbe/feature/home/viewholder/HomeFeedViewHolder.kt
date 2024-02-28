@@ -41,6 +41,9 @@ class HomeFeedViewHolder(
             root.setOnClickListener {
                 onClickToNavigateToHomeDetail(data)
             }
+            binding.tvHomeFeedContent.setOnClickListener {
+                onClickToNavigateToHomeDetail(data)
+            }
 
             initLikedBtnCLickListener(data)
             initProfileBtnClickListener(data)
