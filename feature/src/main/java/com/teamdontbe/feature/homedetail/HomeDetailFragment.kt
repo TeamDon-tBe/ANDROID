@@ -62,6 +62,7 @@ class HomeDetailFragment :
     private lateinit var homeDetailCommentAdapter: HomeDetailPagingCommentAdapter
 
     override fun initView() {
+        binding.vm = homeViewModel
         binding.root.context.hideKeyboard(binding.root)
         statusBarColorOf(R.color.white)
         observeGetFeedDetail()
@@ -454,8 +455,6 @@ class HomeDetailFragment :
 
     private fun initCommentBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomsheetHomeDetail.root)
-        binding.bottomsheetHomeDetail.tvCommentProfileNickname.text =
-            homeViewModel.getUserNickname()
         bottomSheetBehavior.isHideable = true
         bottomSheetBehavior.expandedOffset = 28
         bottomSheetBehavior.peekHeight = 0
