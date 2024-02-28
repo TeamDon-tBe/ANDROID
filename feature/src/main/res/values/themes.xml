@@ -22,11 +22,12 @@
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:colorControlActivated">@color/primary</item>
-        <item name="android:textSelectHandle">@color/primary</item>
         <item name="android:textColorHighlight">@color/primary</item>
         <item name="android:textCursorDrawable">@color/primary</item>
         <item name="android:textSelectHandleLeft">@drawable/shape_primary_fill_left10_rect</item>
         <item name="android:textSelectHandleRight">@drawable/shape_primary_fill_right10_rect</item>
+        <item name="android:textSelectHandle">@drawable/shape_primary_fill_right10_rect</item>
+        <item name="colorAccent">@color/primary</item>
     </style>
 
     <style name="NoAnimationTheme" parent="Theme.DontBe">
