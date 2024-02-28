@@ -31,8 +31,8 @@ class HomeDetailCommentViewHolder(
             dividerComment.isVisible = data.memberId !== userId
             btnCommentHeart.isSelected = data.isLiked
 
-            if (lastPosition == position) dividerCommentDivideBottom.isVisible = false
-            if (data.isGhost){
+            dividerCommentDivideBottom.isVisible = (lastPosition !== position)
+            if (data.isGhost) {
                 setFeedTransparent(-85)
                 binding.tvCommentTransparency.text = context.getString(
                     R.string.tv_transparency_complete,
@@ -53,7 +53,6 @@ class HomeDetailCommentViewHolder(
             onClickUserProfileBtn(data.memberId)
         }
 
-
     private fun initLikedBtnCLickListener(data: CommentEntity) {
         with(binding) {
             btnCommentHeart.setOnClickListener {
@@ -71,12 +70,10 @@ class HomeDetailCommentViewHolder(
             onClickKebabBtn(data, bindingAdapterPosition)
         }
 
-
     private fun initGhostBtnClickListener(data: CommentEntity) =
         binding.ivCommentGhostFillGreen.setOnClickListener {
             onClickTransparentBtn(data)
         }
-
 
     private fun setFeedTransparent(memberGhostPercent: Int) {
         val color = Transparent().calculateColorWithOpacity(memberGhostPercent)

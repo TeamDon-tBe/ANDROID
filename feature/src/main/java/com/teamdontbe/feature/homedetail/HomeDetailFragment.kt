@@ -82,7 +82,7 @@ class HomeDetailFragment :
 
         if (newContentId > 0) {
             contentId = newContentId
-            initHomeDetailCommentAdapter(requireArguments().getInt(KEY_NOTI_DATA))
+            homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
             initHomeDetailCommentAdapter(requireArguments().getInt(KEY_NOTI_DATA))
         } else {
             getHomeFeedDetailData()?.toFeedEntity()?.let {
@@ -136,10 +136,7 @@ class HomeDetailFragment :
                 homeViewModel.getCommentList(contentId),
                 homeDetailCommentAdapter
             )
-        }.withLoadStateHeaderAndFooter(
-            header = PagingLoadingAdapter(),
-            footer = PagingLoadingAdapter()
-        )
+        }
     }
 
     private fun initHomeFeedAdapter(feedListData: List<FeedEntity>) {
@@ -255,8 +252,8 @@ class HomeDetailFragment :
             when (result) {
                 is UiState.Success -> {
                     initHomeFeedAdapter(listOf(result.data))
-                    concatFeedCommentAdapter()
                     binding.feed = result.data
+                    concatFeedCommentAdapter()
                 }
 
                 is UiState.Failure -> navigateToErrorPage()
@@ -267,8 +264,14 @@ class HomeDetailFragment :
 
     private fun concatFeedCommentAdapter() {
         if (::homeFeedAdapter.isInitialized && ::homeDetailCommentAdapter.isInitialized) {
-            binding.rvHomeDetail.adapter = ConcatAdapter(homeFeedAdapter, homeDetailCommentAdapter)
             setRecyclerViewItemDecoration()
+            binding.rvHomeDetail.adapter = ConcatAdapter(
+                homeFeedAdapter,
+                homeDetailCommentAdapter.withLoadStateHeaderAndFooter(
+                    header = PagingLoadingAdapter(),
+                    footer = PagingLoadingAdapter()
+                )
+            )
         }
     }
 
@@ -294,7 +297,7 @@ class HomeDetailFragment :
     }
 
     private fun handleCommentPostingSuccess() {
-        getHomeDetail()
+        homeDetailCommentAdapter.refresh()
         requireContext().hideKeyboard(binding.root)
         (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
             View.VISIBLE
@@ -313,10 +316,7 @@ class HomeDetailFragment :
     }
 
     private fun handleDeleteCommentSuccess() {
-        if (deleteCommentPosition != -1) {
-            homeDetailCommentAdapter.deleteItem(deleteCommentPosition)
-            deleteCommentPosition = -1
-        }
+        homeDetailCommentAdapter.refresh()
         val dialog = DeleteCompleteDialogFragment()
         dialog.show(childFragmentManager, DELETE_POSTING)
     }
@@ -440,6 +440,7 @@ class HomeDetailFragment :
                     contentId,
                     binding.bottomsheetHomeDetail.etCommentContent.text.toString(),
                 )
+                binding.bottomsheetHomeDetail.etCommentContent.text.clear()
             }
         }
     }
