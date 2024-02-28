@@ -89,7 +89,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         setBottomNaviVisible(navController)
 
         initBottomNavPostingClickListener(navController)
-        selectedHomeIcon(navController)
+//        selectedHomeIcon(navController)
     }
 
     private fun removeBadgeOnNotification(navController: NavController) {
