@@ -55,7 +55,7 @@ class MyPageFeedFragment :
         initDeleteObserve()
         initTransparentObserve()
         stateFeedItemNull()
-//        scrollRecyclerViewToTop()
+        scrollRecyclerViewToTop()
     }
 
     private fun initMemberProfile() {
@@ -224,9 +224,9 @@ class MyPageFeedFragment :
             R.id.action_fragment_my_page_to_fragment_home_detail,
             bundleOf(KEY_NOTI_DATA to id),
         )
-        /* val mainActivity = requireActivity() as? MainActivity
-         mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)!!.selectedItemId =
-             R.id.fragment_home*/
+        val mainActivity = requireActivity() as? MainActivity
+        mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)!!.selectedItemId =
+            R.id.fragment_home
     }
 
     private fun navigateToPostingFragment(id: Int) {
