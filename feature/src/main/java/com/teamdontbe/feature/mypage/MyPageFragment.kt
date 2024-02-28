@@ -82,13 +82,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initMyPageStateObserve(memberProfile: MyPageModel) {
         viewModel.getMyPageUserProfileInfo(memberProfile.id)
-        viewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
+        viewModel.getMyPageUserProfileState.flowWithLifecycle(viewLifecycleOwner.lifecycle).onEach {
             when (it) {
                 is UiState.Success -> handleSuccessState(it.data, memberProfile)
                 is UiState.Failure -> navigateToErrorPage(requireContext())
                 else -> Unit
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun handleSuccessState(data: MyPageUserProfileEntity, memberProfile: MyPageModel) =
@@ -127,10 +127,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         val textViewX =
             (
-                    (updateProgress * (progressBar.width - PROGRESSBAR_RADIUS_OFFSET)) / progressBar.max - requireContext().pxToDp(
-                        PROGRESS_LABEL_OFFSET,
-                    )
-                    ) - (progressLabelTextView.width / PROGRESSBAR_RADIUS_OFFSET)
+                (updateProgress * (progressBar.width - PROGRESSBAR_RADIUS_OFFSET)) / progressBar.max - requireContext().pxToDp(
+                    PROGRESS_LABEL_OFFSET,
+                )
+                ) - (progressLabelTextView.width / PROGRESSBAR_RADIUS_OFFSET)
         val finalX =
             if (progressLabelTextView.width + textViewX > maxX) (maxX - progressLabelTextView.width - LAYOUT_MARGIN) else textViewX + LAYOUT_MARGIN
 
@@ -194,6 +194,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    fun updateUI() {
+        val memberProfile: MyPageModel = setUpMemberProfile()
+        initMyPageStateObserve(memberProfile)
+        initMyPageTabLayout(memberProfile)
+    }
+
     companion object {
         const val POSTING = "게시글"
         const val COMMENT = "답글"
@@ -203,12 +209,5 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         const val PROGRESSBAR_RADIUS_OFFSET = 2
         const val PROGRESS_LABEL_OFFSET = 12
         const val LAYOUT_MARGIN = 16
-    }
-
-    override fun onResume() {
-        val memberProfile: MyPageModel = setUpMemberProfile()
-        initMyPageStateObserve(memberProfile)
-        initMyPageTabLayout(memberProfile)
-        super.onResume()
     }
 }

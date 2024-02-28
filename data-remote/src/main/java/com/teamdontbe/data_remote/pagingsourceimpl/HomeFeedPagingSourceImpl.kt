@@ -7,23 +7,39 @@ import com.teamdontbe.domain.entity.FeedEntity
 
 class HomeFeedPagingSourceImpl(private val homeApiService: HomeApiService) :
     PagingSource<Long, FeedEntity>() {
+
+    private var prevKey: Long? = null
+
+    companion object {
+        var refreshKey: MutableList<Pair<Long, Long?>> = mutableListOf()
+    }
+
     override fun getRefreshKey(state: PagingState<Long, FeedEntity>): Long? {
-        return state.anchorPosition?.let { anchorPosition ->
-            //contentId가 cursor -> 현재 페이지의 마지막 아이템 contentId를 key로 반환
-            state.closestPageToPosition(anchorPosition)?.data?.last()?.contentId?.toLong() ?: -1
+        return state.anchorPosition?.let { position ->
+            prevKey = state.closestPageToPosition(position)?.prevKey
+            refreshKey.find { it.second == state.closestPageToPosition(position)?.prevKey }?.first
         }
     }
 
     override suspend fun load(params: LoadParams<Long>): LoadResult<Long, FeedEntity> {
         val position = params.key ?: -1
+        if (!refreshKey.any { it.first == position }) refreshKey.add(
+            Pair(
+                position,
+                prevKey
+            )
+        )
+
         return runCatching {
             val result = homeApiService.getFeedList(position)
             LoadResult.Page(
-                //매핑은 여기서
+                // 매핑은 여기서
                 data = result.data?.map { it.toFeedEntity() } ?: emptyList(),
-                prevKey = if (position.toInt() == -1) null else result.data?.first()?.contentId?.toLong(),
+                prevKey = refreshKey.find { it.first == position }?.second,
                 nextKey = if (result.data.isNullOrEmpty()) null else result.data?.last()?.contentId?.toLong(),
-            )
+            ).also {
+                prevKey = position
+            }
         }.getOrElse {
             LoadResult.Error(it)
         }

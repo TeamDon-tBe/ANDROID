@@ -41,7 +41,7 @@ class OnboardingFragment :
         initIvOnboardingBackClickListener()
         initObserve()
         initSkipTextClickListener()
-        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
     override fun onAttach(context: Context) {
@@ -58,7 +58,7 @@ class OnboardingFragment :
 
     private fun checkIsNewUser() {
         binding.tvOnboardingSkip.isVisible =
-            !(onboardingViewModel.getIsNewUser()) && onboardingViewModel.getCheckOnboarding()
+            !(onboardingViewModel.getIsNewUser()) || onboardingViewModel.getCheckOnboarding()
     }
 
     private fun initObserve() {
@@ -91,7 +91,8 @@ class OnboardingFragment :
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
                 binding.ivOnboardingBack.visibility =
                     if (position == 0) View.INVISIBLE else View.VISIBLE
-                binding.btnOnboardingNext.isVisible = position != 3
+                binding.btnOnboardingNext.visibility =
+                    if (position == 3) View.INVISIBLE else View.VISIBLE
                 binding.btnOnboardingStart.isVisible = position == 3
                 binding.tvOnboardingSkip.text =
                     if (position == 3) {
@@ -134,30 +135,13 @@ class OnboardingFragment :
         binding.btnOnboardingStart.setOnClickListener {
             val inputNickName = onboardingViewModel.getNickName()
 
-            var allowedCheckd = signUpAgree?.allowedCheck
-            if (allowedCheckd == null) {
-                Timber.tag("my_page").e("my page에서 받아오는 sign up agree의 allowedCheck null error")
-                allowedCheckd = false
-
-                onboardingViewModel.posting(introduction)
-                onboardingViewModel.patchUserProfileEdit(
-                    inputNickName,
-                    allowedCheckd,
-                    introduction,
-                    null,
-                )
-            } else {
-                Timber.tag("my_page")
-                    .d("my page에서 받아오는 sign up agree의 allowedCheck : $allowedCheckd")
-
-                onboardingViewModel.posting(introduction)
-                onboardingViewModel.patchUserProfileEdit(
-                    inputNickName,
-                    allowedCheckd,
-                    introduction,
-                    null,
-                )
-            }
+            onboardingViewModel.posting(introduction)
+            onboardingViewModel.patchUserProfileEdit(
+                inputNickName,
+                null,
+                introduction,
+                null,
+            )
         }
     }
 
@@ -184,7 +168,7 @@ class OnboardingFragment :
 
     override fun onDestroyView() {
         _onboardingAdapter = null
-        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
         super.onDestroyView()
     }
 }

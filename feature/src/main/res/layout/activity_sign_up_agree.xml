@@ -358,9 +358,9 @@
             android:enabled="false"
             android:focusable="true"
             android:paddingVertical="14dp"
-            android:text="@string/sign_up_profile_completed"
+            android:text="@string/btn_onboarding_next"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
-            android:textColor="@color/white"
+            android:textColor="@color/gray_9"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

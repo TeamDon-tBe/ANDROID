@@ -74,17 +74,19 @@ constructor(
         return homeApiService.deleteCommentLiked(commentId)
     }
 
-    override suspend fun postTransparent(
-        alarmTriggerType: String,
-        targetMemberId: Int,
-        alarmTriggerId: Int,
-    ): BaseResponse<Unit> {
-        return homeApiService.postTransparent(
-            RequestTransparentDto(
-                alarmTriggerType,
-                targetMemberId,
-                alarmTriggerId,
-            ),
-        )
+        override suspend fun postTransparent(
+            alarmTriggerType: String,
+            targetMemberId: Int,
+            alarmTriggerId: Int,
+            ghostReason: String
+        ): BaseResponse<Unit> {
+            return homeApiService.postTransparent(
+                RequestTransparentDto(
+                    alarmTriggerType,
+                    targetMemberId,
+                    alarmTriggerId,
+                    ghostReason
+                ),
+            )
+        }
     }
-}

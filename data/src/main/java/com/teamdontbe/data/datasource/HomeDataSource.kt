@@ -36,5 +36,6 @@ interface HomeDataSource {
         alarmTriggerType: String,
         targetMemberId: Int,
         alarmTriggerId: Int,
+        ghostReason: String
     ): BaseResponse<Unit>
 }

@@ -70,9 +70,12 @@ class SignUpAgreeActivity :
         binding.btnSignUpAgreeNext.apply {
             isEnabled = allChecked
             if (isEnabled) {
+                setTextColor(getColor(R.color.white))
                 setOnClickListener {
                     navigateUpToSignUpProfileActivity()
                 }
+            } else {
+                setTextColor(getColor(R.color.gray_9))
             }
         }
     }

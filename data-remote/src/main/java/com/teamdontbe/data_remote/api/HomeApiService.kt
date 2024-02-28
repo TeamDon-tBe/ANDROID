@@ -28,7 +28,7 @@ interface HomeApiService {
         const val LIKED = "liked"
         const val UNLIKED = "unliked"
         const val COMMENT_ID = "commentId"
-        const val GHOST = "ghost"
+        const val GHOST = "ghost2"
     }
 
     @GET("$API/$V1/$CONTENTS")
