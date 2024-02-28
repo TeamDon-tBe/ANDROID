@@ -89,7 +89,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         setBottomNaviVisible(navController)
 
         initBottomNavPostingClickListener(navController)
-//        selectedHomeIcon(navController)
+        selectedHomeIcon(navController)
     }
 
     private fun removeBadgeOnNotification(navController: NavController) {
@@ -138,6 +138,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 R.id.fragment_my_page -> {
                     binding.bnvMain.menu.findItem(R.id.fragment_my_page).isChecked = true
                 }
+            }
+
+            // HomeDetail Fragment가 활성화되어 있는 경우에는 Home 아이콘이 클릭되지 않도록 설정
+            if (destination.id == R.id.fragment_home_detail) {
+                binding.bnvMain.menu.findItem(R.id.fragment_home).isEnabled = false
+            } else {
+                binding.bnvMain.menu.findItem(R.id.fragment_home).isEnabled = true
             }
         }
     }
