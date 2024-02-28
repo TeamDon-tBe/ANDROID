@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -140,14 +141,17 @@ class MyPageViewModel
     }
 
     fun postTransparent(
-        alarmTriggerType: String,
-        targetMemberId: Int,
-        alarmTriggerId: Int,
+        alarmTriggerType: String, targetMemberId: Int, alarmTriggerId: Int, ghostReason: String
     ) = viewModelScope.launch {
-        homeRepository.postTransparent(alarmTriggerType, targetMemberId, alarmTriggerId)
-            .collectLatest {
-                _postTransparent.emit(UiState.Success(it))
-            }
         _postTransparent.emit(UiState.Loading)
+        homeRepository.postTransparent(
+            alarmTriggerType, targetMemberId, alarmTriggerId, ghostReason
+        ).fold({
+            if (it) _postTransparent.emit(UiState.Success(true)) else _postTransparent.emit(
+                UiState.Failure(
+                    "400"
+                )
+            )
+        }, { Timber.d("500") })
     }
 }
