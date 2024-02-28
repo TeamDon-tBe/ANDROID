@@ -38,6 +38,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     override fun initView() {
         statusBarColorOf(R.color.white)
 
+        showKeyboard()
         initAnimation()
 
         initObserveUser()
@@ -57,6 +58,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                     if (it.data.memberGhost == TRANSPARENT_LIMIT) {
                         val dialog = PostingRestrictionDialogFragment()
                         dialog.show(childFragmentManager, BAN_POSTING)
+                        hideKeyboard()
                     } else {
                         showKeyboard()
                     }
@@ -66,6 +68,12 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 is UiState.Failure -> Unit
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(binding.etPostingContent.windowToken, 0)
     }
 
     private fun showKeyboard() {
