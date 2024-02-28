@@ -4,19 +4,18 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.READ_MEDIA_IMAGES
 import android.Manifest.permission.READ_MEDIA_VIDEO
 import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.view.View
 import android.view.WindowManager
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
-import coil.load
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.teamdontbe.core_ui.base.BindingActivity
@@ -67,32 +66,32 @@ class SignUpProfileActivity :
         }
 
     // 포토피커 사용하는 경우
-    /*    private val getPictureLauncher =
-            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri: Uri? ->
-                imageUri?.let { uri ->
-                    binding.ivSignUpProfile.setImageURI(uri)
-                    photoUri = uri
-                }
-            }*/
     private val getPictureLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-            if (activityResult.resultCode == RESULT_OK) {
-                val imageUri = activityResult.data?.data
-                imageUri?.let {
-                    binding.ivSignUpProfile.load(it)
-                    photoUri = it
-                }
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri: Uri? ->
+            imageUri?.let { uri ->
+                binding.ivSignUpProfile.setImageURI(uri)
+                photoUri = uri
             }
         }
+    /*   private val getPictureLauncher =
+           registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+               if (activityResult.resultCode == RESULT_OK) {
+                   val imageUri = activityResult.data?.data
+                   imageUri?.let {
+                       binding.ivSignUpProfile.load(it)
+                       photoUri = it
+                   }
+               }
+           }*/
 
     private fun selectImage() {
         //        포토피커 사용하는 경우
-        /*  getPictureLauncher.launch(
-              PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-          )*/
-        // 갤러리 사용하는 경우
-        val getPictureIntent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-        getPictureLauncher.launch(getPictureIntent)
+        getPictureLauncher.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        )
+//        // 갤러리 사용하는 경우
+//        val getPictureIntent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
+//        getPictureLauncher.launch(getPictureIntent)
     }
 
     override fun initView() {
