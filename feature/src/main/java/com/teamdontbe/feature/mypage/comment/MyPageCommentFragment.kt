@@ -4,26 +4,33 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.MyPageCommentEntity
+import com.teamdontbe.feature.ErrorActivity.Companion.navigateToErrorPage
+import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageCommentBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.ALARM_TRIGGER_TYPE_COMMENT
+import com.teamdontbe.feature.mypage.MyPageFragment.Companion.MY_PAGE_BOTTOM_SHEET
 import com.teamdontbe.feature.mypage.MyPageModel
 import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
-import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment
+import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment.Companion.ARG_MEMBER_PROFILE
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.FeedItemDecorator
-import com.teamdontbe.feature.util.KeyStorage
 import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
 import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
+import com.teamdontbe.feature.util.PagingLoadingAdapter
+import com.teamdontbe.feature.util.pagingSubmitData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -33,20 +40,26 @@ class MyPageCommentFragment :
     BindingFragment<FragmentMyPageCommentBinding>(R.layout.fragment_my_page_comment) {
     private val myPageCommentViewModel by activityViewModels<MyPageViewModel>()
 
-    private lateinit var memberId: MyPageModel
-    private lateinit var myPageCommentAdapter: MyPageCommentAdapter
+    private lateinit var memberProfile: MyPageModel
     private var deleteCommentPosition: Int = -1
+
+    private var _myPageCommentAdapter: MyPageCommentAdapter? = null
+    private val myPageCommentAdapter: MyPageCommentAdapter
+        get() = requireNotNull(_myPageCommentAdapter)
+
+    private var deletedItemCount: Int = 0
 
     override fun initView() {
         initMemberProfile()
-        initFeedObserve(memberId.id)
-        initTransparentObserve(memberId.id)
+        initCommentRecyclerView()
         initDeleteObserve()
+        initTransparentObserve(memberProfile.id)
+        stateCommentItemNull()
     }
 
     private fun initMemberProfile() {
         arguments?.let {
-            memberId = it.getParcelable(MyPageFeedFragment.ARG_MEMBER_PROFILE) ?: MyPageModel(
+            memberProfile = it.getParcelable(ARG_MEMBER_PROFILE) ?: MyPageModel(
                 -1,
                 getString(R.string.my_page_nickname),
                 false,
@@ -54,111 +67,40 @@ class MyPageCommentFragment :
         }
     }
 
-    private fun initFeedObserve(memberId: Int) {
-        myPageCommentViewModel.getMyPageCommentList(memberId)
-        myPageCommentViewModel.getMyPageCommentListState.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> handleSuccessState(it.data)
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun initTransparentObserve(memberId: Int) {
-        myPageCommentViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> myPageCommentViewModel.getMyPageCommentList(memberId)
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun initDeleteObserve() {
-        myPageCommentViewModel.deleteComment.flowWithLifecycle(lifecycle).onEach {
-            when (it) {
-                is UiState.Loading -> Unit
-
-                is UiState.Success -> {
-                    if (deleteCommentPosition != -1) {
-                        myPageCommentAdapter.deleteItem(deleteCommentPosition)
-                        deleteCommentPosition = -1
-                    }
-                    val dialog = DeleteCompleteDialogFragment()
-                    dialog.show(childFragmentManager, DELETE_POSTING)
-                }
-
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun handleSuccessState(feedList: List<MyPageCommentEntity>) {
-        if (feedList.isEmpty()) {
-            updateNoCommentUI()
-        } else {
-            initCommentRecyclerView(feedList)
-        }
-    }
-
-    private fun updateNoCommentUI() =
-        with(binding) {
-            rvMyPageComment.visibility = View.GONE
-            tvMyPageCommentNoData.visibility = View.VISIBLE
-        }
-
-    private fun initCommentRecyclerView(commentData: List<MyPageCommentEntity>) {
-        myPageCommentAdapter =
+    private fun initCommentRecyclerView() {
+        _myPageCommentAdapter =
             MyPageCommentAdapter(
-                onClickKebabBtn = { commentData, position ->
-                    // Kebab 버튼 클릭 이벤트 처리
-                    commentData.let {
-                        initBottomSheet(
-                            commentData.memberId == myPageCommentViewModel.getMemberId(),
-                            contentId = it.contentId,
-                            commentId = it.commentId,
-                            whereFrom = FROM_COMMENT,
-                        )
-                        deleteCommentPosition = position
-                    }
-                },
-                onItemClicked = { commentData ->
-                    // RecyclerView 항목 클릭 이벤트 처리
-                    navigateToHomeDetailFragment(
-                        commentData.contentId,
-                    )
-                },
-                onClickLikedBtn = { commentId, status ->
-                    if (status) {
-                        myPageCommentViewModel.deleteCommentLiked(commentId)
-                    } else {
-                        myPageCommentViewModel.postCommentLiked(
-                            commentId,
-                        )
-                    }
-                },
                 context = requireContext(),
-                memberId.idFlag,
-                onClickTransparentBtn = { data, position ->
-                    if (position == -2) {
-                        TransparentIsGhostSnackBar.make(binding.root).show()
-                    } else {
-                        initTransparentDialog(data.memberId, data.commentId)
-                    }
+                idFlag = memberProfile.idFlag,
+                onClickKebabBtn = ::clickKebabBtn,
+                onItemClicked = { commentData ->
+                    navigateToHomeDetailFragment(commentData.contentId)
                 },
+                onClickLikedBtn = ::onLikedBtnClick,
+                onClickTransparentBtn = ::onTransparentBtnClick,
             ).apply {
-                submitList(commentData)
+                pagingSubmitData(
+                    viewLifecycleOwner,
+                    myPageCommentViewModel.getMyPageCommentList(memberProfile.id),
+                    pagingAdapter = this
+                )
             }
 
-        binding.rvMyPageComment.adapter = myPageCommentAdapter
-        if (binding.rvMyPageComment.itemDecorationCount == 0) {
-            binding.rvMyPageComment.addItemDecoration(
-                FeedItemDecorator(requireContext()),
+        binding.rvMyPageComment.adapter =
+            myPageCommentAdapter.withLoadStateFooter(footer = PagingLoadingAdapter())
+
+        setUpItemDecorator()
+    }
+
+    private fun clickKebabBtn(commentEntity: MyPageCommentEntity, position: Int) {
+        commentEntity.let {
+            initBottomSheet(
+                it.memberId == myPageCommentViewModel.getMemberId(),
+                contentId = it.contentId,
+                commentId = it.commentId,
+                whereFrom = FROM_COMMENT,
             )
+            deleteCommentPosition = position
         }
     }
 
@@ -170,15 +112,102 @@ class MyPageCommentFragment :
     ) {
         MyPageAnotherUserBottomSheet(isMember, contentId, commentId, whereFrom).show(
             childFragmentManager,
-            "myPageBottomSheet",
+            MY_PAGE_BOTTOM_SHEET,
         )
+    }
+
+    private fun onLikedBtnClick(
+        contentId: Int,
+        status: Boolean,
+    ) {
+        if (status) {
+            myPageCommentViewModel.deleteCommentLiked(contentId)
+        } else {
+            myPageCommentViewModel.postCommentLiked(contentId)
+        }
+    }
+
+    private fun onTransparentBtnClick(data: MyPageCommentEntity) {
+        if (data.isGhost) {
+            TransparentIsGhostSnackBar.make(binding.root).show()
+        } else {
+            initTransparentDialog(data.memberId, data.commentId ?: -1)
+        }
+    }
+
+    private fun setUpItemDecorator() {
+        if (binding.rvMyPageComment.itemDecorationCount == 0) {
+            binding.rvMyPageComment.addItemDecoration(
+                FeedItemDecorator(requireContext()),
+            )
+        }
+    }
+
+    private fun initDeleteObserve() {
+        myPageCommentViewModel.deleteComment.flowWithLifecycle(viewLifeCycle).onEach {
+            when (it) {
+                is UiState.Success -> handleDeleteCommentSuccess()
+                is UiState.Failure -> navigateToErrorPage(requireContext())
+                else -> Unit
+            }
+        }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun handleDeleteCommentSuccess() {
+        if (deleteCommentPosition != -1) {
+            myPageCommentAdapter.deleteItem(deleteCommentPosition)
+            deleteCommentPosition = -1
+        }
+        if (deletedItemCount == myPageCommentAdapter.itemCount) {
+            stateCommentItemNull()
+        }
+        deletedItemCount = 0
+        val dialog = DeleteCompleteDialogFragment()
+        dialog.show(childFragmentManager, DELETE_POSTING)
+    }
+
+    private fun stateCommentItemNull() {
+//        if (!memberProfile.idFlag) return
+        myPageCommentAdapter.addLoadStateListener { combinedLoadStates ->
+            val isEmpty =
+                myPageCommentAdapter.itemCount == 0 && combinedLoadStates.refresh is LoadState.NotLoading
+            if (isEmpty) {
+                hideCommentListUI()
+            } else {
+                showCommentListUI()
+            }
+        }
+    }
+
+    private fun hideCommentListUI() = with(binding) {
+        rvMyPageComment.visibility = View.GONE
+        tvMyPageCommentNoData.visibility = View.VISIBLE
+    }
+
+    private fun showCommentListUI() = with(binding) {
+        rvMyPageComment.visibility = View.VISIBLE
+        tvMyPageCommentNoData.visibility = View.GONE
+    }
+
+    private fun initTransparentObserve(memberId: Int) {
+        myPageCommentViewModel.postTransparent.flowWithLifecycle(viewLifeCycle).onEach {
+            when (it) {
+                is UiState.Success -> myPageCommentViewModel.getMyPageCommentList(memberId)
+                is UiState.Failure -> navigateToErrorPage(requireContext())
+                else -> Unit
+            }
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun initTransparentDialog(
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog = MyPageTransparentDialogFragment(ALARM_TRIGGER_TYPE_COMMENT, targetMemberId, alarmTriggerId)
+        val dialog = MyPageTransparentDialogFragment(
+            ALARM_TRIGGER_TYPE_COMMENT,
+            targetMemberId,
+            alarmTriggerId
+        )
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
 
@@ -187,6 +216,9 @@ class MyPageCommentFragment :
             R.id.action_fragment_my_page_to_fragment_home_detail,
             bundleOf(KEY_NOTI_DATA to id),
         )
+        val mainActivity = requireActivity() as? MainActivity
+        mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)!!.selectedItemId =
+            R.id.fragment_home
     }
 
     companion object {
@@ -195,7 +227,7 @@ class MyPageCommentFragment :
             return MyPageCommentFragment().apply {
                 arguments =
                     bundleOf(
-                        MyPageFeedFragment.ARG_MEMBER_PROFILE to memberProfile,
+                        ARG_MEMBER_PROFILE to memberProfile,
                     )
             }
         }
@@ -204,5 +236,10 @@ class MyPageCommentFragment :
     override fun onResume() {
         super.onResume()
         binding.root.requestLayout()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _myPageCommentAdapter = null
     }
 }

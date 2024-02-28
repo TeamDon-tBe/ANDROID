@@ -89,6 +89,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         setBottomNaviVisible(navController)
 
         initBottomNavPostingClickListener(navController)
+        selectedHomeIcon(navController)
     }
 
     private fun removeBadgeOnNotification(navController: NavController) {
@@ -124,6 +125,20 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 } else {
                     View.GONE
                 }
+        }
+    }
+
+    private fun selectedHomeIcon(navController: NavController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.fragment_home, R.id.fragment_home_detail -> {
+                    binding.bnvMain.menu.findItem(R.id.fragment_home).isChecked = true
+                }
+
+                R.id.fragment_my_page -> {
+                    binding.bnvMain.menu.findItem(R.id.fragment_my_page).isChecked = true
+                }
+            }
         }
     }
 }
