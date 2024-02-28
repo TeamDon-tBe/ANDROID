@@ -17,6 +17,7 @@ import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.ErrorActivity
+import com.teamdontbe.feature.LoadingActivity
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
@@ -41,6 +42,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private var deleteFeedPosition: Int = -1
 
     override fun initView() {
+        startActivity(Intent(requireActivity(), LoadingActivity::class.java))
         statusBarColorOf(R.color.gray_1)
         initHomeFeedAdapter()
         observeOpenHomeDetail()
@@ -231,7 +233,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)
             ?.setOnItemReselectedListener { item ->
                 if (item.itemId == R.id.fragment_home) {
-                    binding.rvHome.post{
+                    binding.rvHome.post {
                         binding.rvHome.smoothScrollToPosition(0)
                     }
                 }
