@@ -26,7 +26,7 @@
         <item name="android:textCursorDrawable">@color/primary</item>
         <item name="android:textSelectHandleLeft">@drawable/shape_primary_fill_left10_rect</item>
         <item name="android:textSelectHandleRight">@drawable/shape_primary_fill_right10_rect</item>
-        <item name="android:textSelectHandle">@drawable/shape_primary_fill_right10_rect</item>
+        <item name="android:textSelectHandle">@drawable/shape_primary_fill_circle</item>
         <item name="colorAccent">@color/primary</item>
     </style>
 

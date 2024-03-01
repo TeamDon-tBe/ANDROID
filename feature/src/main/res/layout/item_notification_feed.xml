@@ -27,15 +27,16 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_notification_profile"
+            imageUrl="@{noti.triggerMemberProfileUrl}"
             android:layout_width="42dp"
             android:layout_height="0dp"
-            imageUrl="@{noti.triggerMemberProfileUrl}"
-            tools:src="@drawable/img_posting_profile"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintStart_toStartOf="@id/guide_notification_start_12"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+            tools:src="@drawable/img_posting_profile" />
 
         <TextView
             android:id="@+id/tv_notification_feed"
