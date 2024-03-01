@@ -3,6 +3,7 @@ package com.teamdontbe.feature.homedetail
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
@@ -10,6 +11,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.teamdontbe.core_ui.base.BindingFragment
@@ -19,7 +21,6 @@ import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
-import com.teamdontbe.core_ui.util.intent.getParcelable
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.domain.entity.FeedEntity
@@ -67,6 +68,7 @@ class HomeDetailFragment :
         statusBarColorOf(R.color.white)
         observeGetFeedDetail()
         getHomeDetail()
+        handleGetContentError()
         observeDeleteFeed()
         observeDeleteComment()
         observePostTransparent()
@@ -86,7 +88,7 @@ class HomeDetailFragment :
             homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
             initHomeDetailCommentAdapter(requireArguments().getInt(KEY_NOTI_DATA))
         } else {
-            requireActivity().intent.getParcelable(KEY_HOME_DETAIL_FEED, Feed::class.java)?.toFeedEntity()?.let {
+            getHomeFeedDetailData()?.toFeedEntity()?.let {
                 initHomeFeedAdapter(listOf(it))
                 contentId = it.contentId ?: return
                 initHomeDetailCommentAdapter(contentId)
@@ -94,6 +96,13 @@ class HomeDetailFragment :
             }
         }
     }
+
+    private fun getHomeFeedDetailData(): Feed? =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireArguments().getParcelable(KEY_HOME_DETAIL_FEED, Feed::class.java)
+        } else {
+            requireArguments().getParcelable(KEY_HOME_DETAIL_FEED) as? Feed
+        }
 
     private fun initHomeDetailCommentAdapter(contentId: Int) {
         homeDetailCommentAdapter = HomeDetailPagingCommentAdapter(
@@ -239,6 +248,15 @@ class HomeDetailFragment :
             R.id.action_fragment_home_detail_to_fragment_my_page,
             bundleOf(HomeFragment.KEY_FEED_DATA to memberId),
         )
+    }
+
+    private fun handleGetContentError() {
+        homeDetailCommentAdapter.addLoadStateListener { state ->
+            when (state.refresh) {
+                is LoadState.Error -> navigateToErrorPage()
+                else -> Unit
+            }
+        }
     }
 
     private fun observeGetFeedDetail() {
