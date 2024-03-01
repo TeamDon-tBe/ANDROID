@@ -10,7 +10,6 @@ import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -19,6 +18,8 @@ import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.fragment.colorOf
 import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.domain.entity.FeedEntity
@@ -249,7 +250,7 @@ class HomeDetailFragment :
     }
 
     private fun observeGetFeedDetail() {
-        homeViewModel.getFeedDetail.flowWithLifecycle(lifecycle).onEach { result ->
+        homeViewModel.getFeedDetail.flowWithLifecycle(viewLifeCycle).onEach { result ->
             when (result) {
                 is UiState.Success -> {
                     initHomeFeedAdapter(listOf(result.data))
@@ -260,7 +261,7 @@ class HomeDetailFragment :
                 is UiState.Failure -> navigateToErrorPage()
                 else -> Unit
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun concatFeedCommentAdapter() {
@@ -290,7 +291,7 @@ class HomeDetailFragment :
 
     private fun observePostCommentPosting() {
         homeViewModel.postCommentPosting.observe(
-            this,
+            viewLifecycleOwner,
             EventObserver {
                 handleCommentPostingSuccess()
             },
@@ -307,13 +308,13 @@ class HomeDetailFragment :
     }
 
     private fun observeDeleteComment() {
-        homeViewModel.deleteComment.flowWithLifecycle(lifecycle).onEach {
+        homeViewModel.deleteComment.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
                 is UiState.Success -> handleDeleteCommentSuccess()
                 is UiState.Failure -> navigateToErrorPage()
                 else -> Unit
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun handleDeleteCommentSuccess() {
@@ -323,17 +324,17 @@ class HomeDetailFragment :
     }
 
     private fun observeDeleteFeed() {
-        homeViewModel.deleteFeed.flowWithLifecycle(lifecycle).onEach {
+        homeViewModel.deleteFeed.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
                 is UiState.Success -> findNavController().navigateUp()
                 is UiState.Failure -> navigateToErrorPage()
                 else -> Unit
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun observePostTransparent() {
-        homeViewModel.postTransparent.flowWithLifecycle(lifecycle).onEach {
+        homeViewModel.postTransparent.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
                 is UiState.Success -> {
                     homeViewModel.getFeedDetail(contentId)
@@ -343,7 +344,7 @@ class HomeDetailFragment :
                 is UiState.Failure -> navigateToErrorPage()
                 else -> Unit
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun initBackBtnClickListener() {

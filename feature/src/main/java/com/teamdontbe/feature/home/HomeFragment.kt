@@ -6,7 +6,6 @@ import android.view.animation.AnimationUtils
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -173,13 +172,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun observeDeleteFeedStatus() {
-        homeViewModel.deleteFeed.flowWithLifecycle(lifecycle).onEach {
+        homeViewModel.deleteFeed.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
                 is UiState.Success -> handleDeleteFeedSuccess()
                 is UiState.Failure -> navigateToErrorPage()
                 else -> Unit
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun handleDeleteFeedSuccess() {
