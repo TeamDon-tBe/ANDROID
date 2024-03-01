@@ -3,7 +3,6 @@ package com.teamdontbe.feature.homedetail
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
@@ -20,6 +19,7 @@ import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
+import com.teamdontbe.core_ui.util.intent.getParcelable
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.domain.entity.FeedEntity
@@ -40,7 +40,6 @@ import com.teamdontbe.feature.posting.AnimateProgressBar
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.snackbar.UploadingSnackBar
 import com.teamdontbe.feature.util.Debouncer
-import com.teamdontbe.feature.util.EventObserver
 import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
 import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import com.teamdontbe.feature.util.PagingLoadingAdapter
@@ -87,7 +86,7 @@ class HomeDetailFragment :
             homeViewModel.getFeedDetail(requireArguments().getInt(KEY_NOTI_DATA))
             initHomeDetailCommentAdapter(requireArguments().getInt(KEY_NOTI_DATA))
         } else {
-            getHomeFeedDetailData()?.toFeedEntity()?.let {
+            requireActivity().intent.getParcelable(KEY_HOME_DETAIL_FEED, Feed::class.java)?.toFeedEntity()?.let {
                 initHomeFeedAdapter(listOf(it))
                 contentId = it.contentId ?: return
                 initHomeDetailCommentAdapter(contentId)
@@ -95,13 +94,6 @@ class HomeDetailFragment :
             }
         }
     }
-
-    private fun getHomeFeedDetailData(): Feed? =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getParcelable(KEY_HOME_DETAIL_FEED, Feed::class.java)
-        } else {
-            requireArguments().getParcelable(KEY_HOME_DETAIL_FEED) as? Feed
-        }
 
     private fun initHomeDetailCommentAdapter(contentId: Int) {
         homeDetailCommentAdapter = HomeDetailPagingCommentAdapter(
@@ -290,12 +282,13 @@ class HomeDetailFragment :
     }
 
     private fun observePostCommentPosting() {
-        homeViewModel.postCommentPosting.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                handleCommentPostingSuccess()
-            },
-        )
+        homeViewModel.postCommentPosting.flowWithLifecycle(viewLifeCycle).onEach { result ->
+            when (result) {
+                is UiState.Success -> handleCommentPostingSuccess()
+                is UiState.Failure -> navigateToErrorPage()
+                else -> Unit
+            }
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun handleCommentPostingSuccess() {
