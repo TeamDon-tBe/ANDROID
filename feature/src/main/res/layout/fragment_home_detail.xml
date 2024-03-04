@@ -104,14 +104,16 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_home_detail_profile_img"
+                    imageUrl="@{vm.userProfile}"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
-                    android:src="@drawable/ic_sign_up_profile_person"
+                    android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                    tools:src="@drawable/ic_sign_up_profile_person" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
