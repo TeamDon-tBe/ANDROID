@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -59,8 +58,8 @@ class HomeViewModel
         _getFeedDetail.emit(UiState.Loading)
         homeRepository.getFeedLDetail(contentId)
             .fold(
-                { if (it != null) _getFeedDetail.emit(UiState.Success(it)) else UiState.Failure("null") },
-                { UiState.Failure("null") }
+                { _getFeedDetail.emit(if (it != null) UiState.Success(it) else UiState.Failure("null")) },
+                { _getFeedDetail.emit(UiState.Failure(it.message.toString())) }
             )
     }
 
@@ -68,11 +67,10 @@ class HomeViewModel
 
     fun deleteFeed(contentId: Int) = viewModelScope.launch {
         _deleteFeed.emit(UiState.Loading)
-        homeRepository.deleteFeed(contentId)
-            .fold(
-                { if (it) _deleteFeed.emit(UiState.Success(true)) else UiState.Failure("null") },
-                {}
-            )
+        homeRepository.deleteFeed(contentId).fold(
+            { _deleteFeed.emit(UiState.Success(true)) },
+            { _deleteFeed.emit(UiState.Failure(it.message.toString())) }
+        )
     }
 
     fun getMemberId() = userInfoRepository.getMemberId()
@@ -82,13 +80,17 @@ class HomeViewModel
     fun getUserProfile() = userInfoRepository.getMemberProfileUrl()
 
     fun postFeedLiked(contentId: Int) = viewModelScope.launch {
-        homeRepository.postFeedLiked(contentId)
-            .fold({ _postFeedLiked.emit(UiState.Success(it)) }, {})
+        homeRepository.postFeedLiked(contentId).fold({ _postFeedLiked.emit(UiState.Success(it)) }, {
+            _postFeedLiked.emit(UiState.Failure(it.message.toString()))
+        })
     }
 
     fun deleteFeedLiked(contentId: Int) = viewModelScope.launch {
         homeRepository.deleteFeedLiked(contentId)
-            .fold({ _deleteFeedLiked.emit(UiState.Success(it)) }, {})
+            .fold(
+                { _deleteFeedLiked.emit(UiState.Success(it)) },
+                { _deleteFeedLiked.emit(UiState.Failure(it.message.toString())) }
+            )
     }
 
     fun postCommentPosting(
@@ -97,22 +99,24 @@ class HomeViewModel
     ) = viewModelScope.launch {
         homeRepository.postCommentPosting(contentId, commentText)
             .fold(
-                { if (it) _deleteFeed.emit(UiState.Success(it)) else UiState.Failure("null") },
-                {}
+                { _postCommentPosting.emit(UiState.Success(it)) },
+                { _postCommentPosting.emit(UiState.Failure(it.message.toString())) }
             )
     }
 
     fun deleteComment(commentId: Int) = viewModelScope.launch {
-        homeRepository.deleteComment(commentId)
-            .fold(
-                { if (it) _deleteFeed.emit(UiState.Success(it)) else UiState.Failure("null") },
-                {}
-            )
-        _deleteComment.value = UiState.Loading
+        homeRepository.deleteComment(commentId).fold(
+            { _deleteFeed.emit(UiState.Success(it)) },
+            { _deleteFeed.emit(UiState.Failure(it.message.toString())) }
+        )
     }
 
     fun postCommentLiked(commentId: Int) = viewModelScope.launch {
-        homeRepository.postCommentLiked(commentId).fold({}, {})
+        homeRepository.postCommentLiked(commentId).fold({
+            _postCommentPosting.emit((UiState.Success(it)))
+        }, {
+            _postCommentPosting.emit(UiState.Failure(it.message.toString()))
+        })
     }
 
     fun deleteCommentLiked(commentId: Int) = viewModelScope.launch {
@@ -132,11 +136,7 @@ class HomeViewModel
             alarmTriggerId,
             ghostReason
         ).fold({
-            if (it) _postTransparent.emit(UiState.Success(true)) else _postTransparent.emit(
-                UiState.Failure(
-                    "400"
-                )
-            )
-        }, { Timber.d("500") })
+            _postTransparent.emit(UiState.Success(true))
+        }, { _postTransparent.emit(UiState.Failure("error")) })
     }
 }
