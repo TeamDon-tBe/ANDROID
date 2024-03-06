@@ -22,7 +22,7 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
 
     private fun initAnimation() {
         lifecycleScope.launch {
-            delay(1800)
+            delay(1400)
             fadeOutAnim =
                 AnimationUtils.loadAnimation(this@LoadingActivity, R.anim.anim_loading_fade_out)
             fadeOutAnim.setAnimationListener(object : Animation.AnimationListener {
