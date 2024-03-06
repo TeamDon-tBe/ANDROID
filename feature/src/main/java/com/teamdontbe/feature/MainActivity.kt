@@ -1,6 +1,7 @@
 package com.teamdontbe.feature
 
 import android.content.ContentValues
+import android.content.Intent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -90,6 +91,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         initBottomNavPostingClickListener(navController)
 //        selectedHomeIcon(navController)
+        initLoadingView(navController)
     }
 
     private fun removeBadgeOnNotification(navController: NavController) {
@@ -139,6 +141,20 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     binding.bnvMain.menu.findItem(R.id.fragment_my_page).isChecked = true
                 }
             }
+        }
+    }
+
+    private fun initLoadingView(navController: NavController) {
+        binding.bnvMain.setOnItemSelectedListener { item ->
+            if (item.itemId == R.id.fragment_home) {
+                startActivity(
+                    Intent(
+                        this,
+                        LoadingActivity::class.java
+                    )
+                )
+            }
+            item.onNavDestinationSelected(navController)
         }
     }
 }
