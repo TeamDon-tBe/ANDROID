@@ -5,6 +5,7 @@ import android.graphics.Color
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.core_ui.util.context.colorOf
+import com.teamdontbe.core_ui.view.setOnShortClickListener
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
@@ -42,10 +43,9 @@ class HomeFeedViewHolder(
             root.setOnClickListener {
                 onClickToNavigateToHomeDetail(data)
             }
-            binding.tvHomeFeedContent.setOnClickListener {
+            binding.tvHomeFeedContent.setOnShortClickListener {
                 onClickToNavigateToHomeDetail(data)
             }
-
             initLikedBtnCLickListener(data)
             memberIsDeleted(data)
             initKebabBtnClickListener(data)
