@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -78,8 +77,11 @@ class MyPageViewModel
     }
 
     fun deleteFeed(contentId: Int) = viewModelScope.launch {
-        homeRepository.deleteFeed(contentId).fold({ _deleteFeed.emit(UiState.Success(it)) }, {})
         _deleteFeed.emit(UiState.Loading)
+        homeRepository.deleteFeed(contentId).fold(
+            { _deleteFeed.emit(UiState.Success(true)) },
+            { _deleteFeed.emit(UiState.Failure(it.message.toString())) }
+        )
     }
 
     //    comment
@@ -98,9 +100,11 @@ class MyPageViewModel
     }
 
     fun deleteComment(commentId: Int) = viewModelScope.launch {
-        homeRepository.deleteComment(commentId)
-            .fold({ _deleteComment.value = UiState.Success(it) }, {})
-        _deleteComment.value = UiState.Loading
+        _deleteComment.emit(UiState.Loading)
+        homeRepository.deleteComment(commentId).fold(
+            { _deleteComment.emit(UiState.Success(it)) },
+            { _deleteComment.emit(UiState.Failure(it.message.toString())) }
+        )
     }
 
     fun postTransparent(
@@ -116,11 +120,7 @@ class MyPageViewModel
             alarmTriggerId,
             ghostReason
         ).fold({
-            if (it) _postTransparent.emit(UiState.Success(true)) else _postTransparent.emit(
-                UiState.Failure(
-                    "400"
-                )
-            )
-        }, { Timber.d("500") })
+            _postTransparent.emit(UiState.Success(true))
+        }, { _postTransparent.emit(UiState.Failure(it.message.toString())) })
     }
 }
