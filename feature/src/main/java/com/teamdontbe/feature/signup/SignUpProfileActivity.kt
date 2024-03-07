@@ -3,7 +3,6 @@ package com.teamdontbe.feature.signup
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.READ_MEDIA_IMAGES
 import android.Manifest.permission.READ_MEDIA_VIDEO
-import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -16,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
+import coil.load
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.teamdontbe.core_ui.base.BindingActivity
@@ -68,33 +68,18 @@ class SignUpProfileActivity :
             }
         }
 
-    // 포토피커 사용하는 경우
     private val getPictureLauncher =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri: Uri? ->
             imageUri?.let { uri ->
-                binding.ivSignUpProfile.setImageURI(uri)
+                binding.ivSignUpProfile.load(uri)
                 photoUri = uri
             }
         }
-    /*   private val getPictureLauncher =
-           registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-               if (activityResult.resultCode == RESULT_OK) {
-                   val imageUri = activityResult.data?.data
-                   imageUri?.let {
-                       binding.ivSignUpProfile.load(it)
-                       photoUri = it
-                   }
-               }
-           }*/
 
     private fun selectImage() {
-        //        포토피커 사용하는 경우
         getPictureLauncher.launch(
             PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
         )
-//        // 갤러리 사용하는 경우
-//        val getPictureIntent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-//        getPictureLauncher.launch(getPictureIntent)
     }
 
     override fun initView() {
@@ -112,21 +97,14 @@ class SignUpProfileActivity :
     private fun initImagePlusBtnClickListener() {
         binding.btnSignUpProfilePlus.setOnClickListener {
             // 갤러리 이미지 가져오기
-//            getGalleryPermission()
-            selectImage()
+            getGalleryPermission()
         }
     }
 
     private fun getGalleryPermission() {
-        // Permission request logic
+        // api 34 이상인 경우
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            requestPermissions.launch(
-                arrayOf(
-                    READ_MEDIA_IMAGES,
-                    READ_MEDIA_VIDEO,
-                    READ_MEDIA_VISUAL_USER_SELECTED,
-                )
-            )
+            selectImage()
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO))
         } else {
