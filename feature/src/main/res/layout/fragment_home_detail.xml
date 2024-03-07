@@ -94,7 +94,7 @@
                     android:background="@drawable/shape_pale_fill_38_rect"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    android:text="@{feed.memberNickname + `님에게 답글 남기기`}"
+                    android:text="@{feed.memberNickname + @string/tv_home_detail_input}"
                     android:textAppearance="@style/TextAppearance.DontBe.cap_regular_13"
                     android:textColor="@color/gray_9"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -116,11 +116,5 @@
                     tools:src="@drawable/ic_sign_up_profile_person" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <include
-            android:id="@+id/bottomsheet_home_detail"
-            layout="@layout/bottomsheet_comment"
-            app:feed="@{feed}"
-            app:vm="@{vm}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
