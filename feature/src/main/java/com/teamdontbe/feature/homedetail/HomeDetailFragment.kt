@@ -1,35 +1,26 @@
 package com.teamdontbe.feature.homedetail
 
-import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.os.Build
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.hideKeyboard
-import com.teamdontbe.core_ui.util.fragment.colorOf
-import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
-import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeDetailBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
-import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.home.Feed
 import com.teamdontbe.feature.home.HomeBottomSheet
@@ -37,11 +28,10 @@ import com.teamdontbe.feature.home.HomeFeedAdapter
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.home.HomeFragment.Companion.KEY_HOME_DETAIL_FEED
 import com.teamdontbe.feature.home.HomeViewModel
-import com.teamdontbe.feature.posting.AnimateProgressBar
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.snackbar.UploadingSnackBar
-import com.teamdontbe.feature.util.Debouncer
-import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
+import com.teamdontbe.feature.util.BottomSheetTag.COMMENT
+import com.teamdontbe.feature.util.DialogTag.DELETE_COMPLETE
 import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import com.teamdontbe.feature.util.PagingLoadingAdapter
 import com.teamdontbe.feature.util.pagingSubmitData
@@ -52,11 +42,8 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class HomeDetailFragment :
     BindingFragment<FragmentHomeDetailBinding>(R.layout.fragment_home_detail) {
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
-    private val commentDebouncer = Debouncer<String>()
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private var contentId: Int = -1
-
     private var deleteCommentPosition: Int = -1
 
     private lateinit var homeFeedAdapter: HomeFeedAdapter
@@ -74,10 +61,7 @@ class HomeDetailFragment :
         observePostTransparent()
         observePostCommentPosting()
         initBackBtnClickListener()
-        initEditText()
         initInputEditTextClickListener()
-        initAppbarCancelClickListener()
-        initCommentBottomSheet()
     }
 
     private fun getHomeDetail() {
@@ -314,7 +298,6 @@ class HomeDetailFragment :
         requireContext().hideKeyboard(binding.root)
         (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
             View.VISIBLE
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         UploadingSnackBar.make(binding.root).show()
     }
 
@@ -331,7 +314,7 @@ class HomeDetailFragment :
     private fun handleDeleteCommentSuccess() {
         homeDetailCommentAdapter.refresh()
         val dialog = DeleteCompleteDialogFragment()
-        dialog.show(childFragmentManager, DELETE_POSTING)
+        dialog.show(childFragmentManager, DELETE_COMPLETE)
     }
 
     private fun observeDeleteFeed() {
@@ -366,116 +349,21 @@ class HomeDetailFragment :
 
     private fun initInputEditTextClickListener() {
         binding.tvHomeDetailInput.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            bottomSheetBehavior.isDraggable = false
-
-            val inputMethodManager =
-                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.showSoftInput(
-                binding.bottomsheetHomeDetail.etCommentContent,
-                InputMethodManager.SHOW_IMPLICIT,
-            )
-
-            binding.bottomsheetHomeDetail.etCommentContent.requestFocus()
-
-            (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
-                View.GONE
+            binding.feed?.let { initCommentBottomSheet(contentId, it) }
         }
     }
 
-    private fun initEditText() {
-        binding.bottomsheetHomeDetail.etCommentContent.doAfterTextChanged { text ->
-            val textLength = text?.length ?: 0
-            val progressBarDrawableId = getProgressBarDrawableId(textLength)
-            val btnBackgroundTint = getButtonBackgroundTint(textLength)
-            val btnTextColor = getButtonTextColor(textLength)
-
-            updateUploadBar(textLength, progressBarDrawableId, btnBackgroundTint, btnTextColor)
-            initUploadingBtnClickListener(textLength)
-            startProgressBarAnimation(textLength)
-            debounceComment(text.toString())
-        }
-    }
-
-    private fun getProgressBarDrawableId(textLength: Int): Int =
-        if (textLength >= MAX_COMMENT_LENGTH) R.drawable.shape_error_line_circle else R.drawable.shape_primary_line_circle
-
-    private fun getButtonBackgroundTint(textLength: Int): ColorStateList =
-        if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH) {
-            ColorStateList.valueOf(
-                colorOf(R.color.primary),
-            )
-        } else {
-            ColorStateList.valueOf(colorOf(R.color.gray_3))
-        }
-
-    private fun getButtonTextColor(textLength: Int): Int =
-        if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH) {
-            colorOf(R.color.black)
-        } else {
-            colorOf(
-                R.color.gray_9,
-            )
-        }
-
-    private fun updateUploadBar(
-        textLength: Int,
-        progressBarDrawableId: Int,
-        btnBackgroundTint: ColorStateList,
-        btnTextColor: Int,
+    private fun initCommentBottomSheet(
+        contentId: Int,
+        feed: FeedEntity
     ) {
-        with(binding.bottomsheetHomeDetail.layoutUploadBar) {
-            pbUploadBarInput.progressDrawable = drawableOf(progressBarDrawableId)
-            pbUploadBarInput.progress = textLength
-            btnUploadBarUpload.backgroundTintList = btnBackgroundTint
-            btnUploadBarUpload.setTextColor(btnTextColor)
-        }
-    }
-
-    private fun startProgressBarAnimation(textLength: Int) {
-        val uploadBar = binding.bottomsheetHomeDetail.layoutUploadBar
-        val animateProgressBar = AnimateProgressBar(
-            uploadBar.pbUploadBarInput,
-            0f,
-            textLength.toFloat(),
+        CommentBottomSheet(contentId, feed).show(
+            parentFragmentManager,
+            COMMENT,
         )
-        uploadBar.pbUploadBarInput.startAnimation(animateProgressBar)
-    }
-
-    private fun debounceComment(commentText: String) {
-        commentDebouncer.setDelay(commentText, COMMENT_DEBOUNCE_DELAY) {}
-    }
-
-    private fun initUploadingBtnClickListener(textLength: Int) {
-        binding.bottomsheetHomeDetail.layoutUploadBar.btnUploadBarUpload.setOnDuplicateBlockClick {
-            if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH) {
-                homeViewModel.postCommentPosting(
-                    contentId,
-                    binding.bottomsheetHomeDetail.etCommentContent.text.toString(),
-                )
-                binding.bottomsheetHomeDetail.etCommentContent.text.clear()
-            }
-        }
-    }
-
-    private fun initAppbarCancelClickListener() {
-        binding.bottomsheetHomeDetail.tvCommentAppbarCancel.setOnClickListener {
-            val dialog = DeleteDialogFragment(getString(R.string.comment_delete_dialog))
-            dialog.show(childFragmentManager, DELETE_POSTING)
-        }
-    }
-
-    private fun initCommentBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomsheetHomeDetail.root)
-        bottomSheetBehavior.isHideable = true
-        bottomSheetBehavior.expandedOffset = 28
-        bottomSheetBehavior.peekHeight = 0
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        bottomSheetBehavior.skipCollapsed = true
     }
 
     companion object {
-        const val HOME_DETAIL_BOTTOM_SHEET = "home_detail_bottom_sheet"
         const val MAX_COMMENT_LENGTH = 500
         const val MIN_COMMENT_LENGTH = 1
         const val COMMENT_DEBOUNCE_DELAY = 1000L
