@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.core_ui.view.setOnShortClickListener
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
@@ -47,25 +46,18 @@ class HomeFeedViewHolder(
                 onClickToNavigateToHomeDetail(data)
             }
             initLikedBtnCLickListener(data)
-            memberIsDeleted(data)
+            initProfileBtnClickListener(data)
             initKebabBtnClickListener(data)
             initGhostBtnClickListener(data)
         }
     }
 
-    private fun memberIsDeleted(data: FeedEntity) {
-        when (data.isDeleted ?: true) {
-            true -> binding.tvHomeFeedUserName.setTextColor(context.colorOf(R.color.gray_12))
-            else -> initProfileBtnClickListener(data)
-        }
-    }
-
     private fun initProfileBtnClickListener(data: FeedEntity) {
         binding.ivHomeProfile.setOnClickListener {
-            onClickUserProfileBtn(data.memberId)
+            if (data.isDeleted == false) onClickUserProfileBtn(data.memberId)
         }
         binding.tvHomeFeedUserName.setOnClickListener {
-            onClickUserProfileBtn(data.memberId)
+            if (data.isDeleted == false) onClickUserProfileBtn(data.memberId)
         }
     }
 
