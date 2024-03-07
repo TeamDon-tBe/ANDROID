@@ -11,9 +11,7 @@ import com.teamdontbe.domain.repository.UserInfoRepository
 import com.teamdontbe.feature.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,8 +37,8 @@ class HomeViewModel
     private val _postCommentPosting = MutableSharedFlow<UiState<Boolean>>()
     val postCommentPosting: SharedFlow<UiState<Boolean>> get() = _postCommentPosting
 
-    private val _deleteComment = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
-    val deleteComment: StateFlow<UiState<Boolean>> get() = _deleteComment
+    private val _deleteComment = MutableSharedFlow<UiState<Boolean>>()
+    val deleteComment: SharedFlow<UiState<Boolean>> get() = _deleteComment
 
     private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
     val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
@@ -80,17 +78,11 @@ class HomeViewModel
     fun getUserProfile() = userInfoRepository.getMemberProfileUrl()
 
     fun postFeedLiked(contentId: Int) = viewModelScope.launch {
-        homeRepository.postFeedLiked(contentId).fold({ _postFeedLiked.emit(UiState.Success(it)) }, {
-            _postFeedLiked.emit(UiState.Failure(it.message.toString()))
-        })
+        homeRepository.postFeedLiked(contentId).fold({ }, {})
     }
 
     fun deleteFeedLiked(contentId: Int) = viewModelScope.launch {
-        homeRepository.deleteFeedLiked(contentId)
-            .fold(
-                { _deleteFeedLiked.emit(UiState.Success(it)) },
-                { _deleteFeedLiked.emit(UiState.Failure(it.message.toString())) }
-            )
+        homeRepository.deleteFeedLiked(contentId).fold({ }, { })
     }
 
     fun postCommentPosting(
@@ -106,17 +98,13 @@ class HomeViewModel
 
     fun deleteComment(commentId: Int) = viewModelScope.launch {
         homeRepository.deleteComment(commentId).fold(
-            { _deleteFeed.emit(UiState.Success(it)) },
-            { _deleteFeed.emit(UiState.Failure(it.message.toString())) }
+            { _deleteComment.emit(UiState.Success(it)) },
+            { _deleteComment.emit(UiState.Failure(it.message.toString())) }
         )
     }
 
     fun postCommentLiked(commentId: Int) = viewModelScope.launch {
-        homeRepository.postCommentLiked(commentId).fold({
-            _postCommentPosting.emit((UiState.Success(it)))
-        }, {
-            _postCommentPosting.emit(UiState.Failure(it.message.toString()))
-        })
+        homeRepository.postCommentLiked(commentId).fold({}, {})
     }
 
     fun deleteCommentLiked(commentId: Int) = viewModelScope.launch {
@@ -137,6 +125,6 @@ class HomeViewModel
             ghostReason
         ).fold({
             _postTransparent.emit(UiState.Success(true))
-        }, { _postTransparent.emit(UiState.Failure("error")) })
+        }, { _postTransparent.emit(UiState.Failure(it.message.toString())) })
     }
 }
