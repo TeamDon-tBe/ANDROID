@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ItemHomeCommentBinding
@@ -59,7 +60,7 @@ class HomeDetailCommentViewHolder(
 
     private fun initLikedBtnCLickListener(data: CommentEntity) {
         with(binding) {
-            btnCommentHeart.setOnClickListener {
+            btnCommentHeart.setOnDuplicateBlockClick {
                 onClickLikedBtn(data.commentId, btnCommentHeart.isSelected)
                 val likeNumber = tvCommentLikeNum.text.toString()
                 tvCommentLikeNum.text =
