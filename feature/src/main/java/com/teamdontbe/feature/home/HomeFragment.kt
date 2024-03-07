@@ -8,7 +8,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
@@ -16,7 +15,6 @@ import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.ErrorActivity
-import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
 import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
@@ -31,6 +29,7 @@ import com.teamdontbe.feature.util.pagingSubmitData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -224,17 +223,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         })
     }
 
-    private fun scrollRecyclerViewToTop() {
-        val mainActivity = requireActivity() as? MainActivity
-
-        mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)
-            ?.setOnItemReselectedListener { item ->
-                if (item.itemId == R.id.fragment_home) {
-                    binding.rvHome.post {
-                        binding.rvHome.smoothScrollToPosition(0)
-                    }
-                }
-            }
+    fun scrollRecyclerViewToTop() {
+        binding.rvHome.post {
+            binding.rvHome.smoothScrollToPosition(0)
+        }
     }
 
     companion object {
