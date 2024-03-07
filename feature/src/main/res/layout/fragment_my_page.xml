@@ -103,6 +103,7 @@
                         android:background="@android:color/transparent"
                         android:clickable="true"
                         android:src="@drawable/ic_my_page_edit_profile_gray_28"
+                        android:visibility="invisible"
                         app:layout_constraintBottom_toBottomOf="@id/iv_my_page_profile"
                         app:layout_constraintDimensionRatio="1"
                         app:layout_constraintEnd_toEndOf="@id/iv_my_page_profile" />
