@@ -11,4 +11,11 @@ object KeyStorage {
 object DialogTag {
     const val LOGOUT_AUTH = "logout_auth"
     const val DELETE_AUTH = "delete_auth"
+    const val DELETE_COMMENT = "delete_comment"
+    const val DELETE_COMPLETE = "delete_complete"
+}
+
+object BottomSheetTag {
+    const val COMMENT = "comment"
+    const val HOME_DETAIL_BOTTOM_SHEET = "home_detail_bottom_sheet"
 }
