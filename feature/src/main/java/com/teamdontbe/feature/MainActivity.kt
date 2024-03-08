@@ -150,7 +150,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         binding.bnvMain.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.fragment_home -> startActivity(Intent(this, LoadingActivity::class.java))
-                R.id.fragment_my_page -> if (navController.currentDestination?.id == R.id.fragment_home_detail) navController.popBackStack()
+                //my page는 타 유저 프로필 피드 들어갈 때도 있어서
+                R.id.fragment_my_page -> if (navController.currentDestination?.id == R.id.fragment_home_detail) {
+                    navController.navigate(R.id.fragment_my_page)
+                    navController.popBackStack(R.id.fragment_home_detail, true)
+                }
+
                 R.id.fragment_notification -> if (navController.currentDestination?.id == R.id.fragment_home_detail) navController.popBackStack()
             }
             item.onNavDestinationSelected(navController)
