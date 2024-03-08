@@ -1,22 +1,17 @@
 package com.teamdontbe.feature.dialog
 
-import android.content.DialogInterface
-import android.os.Bundle
-import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.teamdontbe.core_ui.base.BindingDialogFragment
 import com.teamdontbe.core_ui.util.context.dialogFragmentResize
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentDeleteDialogBinding
+import com.teamdontbe.feature.homedetail.DeleteDialogListener
+import com.teamdontbe.feature.util.DialogTag.DELETE_COMMENT
+import com.teamdontbe.feature.util.KeyStorage
 
 class DeleteDialogFragment(private val content: String) :
     BindingDialogFragment<FragmentDeleteDialogBinding>(R.layout.fragment_delete_dialog) {
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
-        super.onViewCreated(view, savedInstanceState)
-    }
+    private var deleteDialogListener: DeleteDialogListener? = null
 
     override fun initView() {
         initContentText()
@@ -41,7 +36,10 @@ class DeleteDialogFragment(private val content: String) :
 
     private fun initDeleteButtonClick() {
         binding.btnDeleteDialogDelete.setOnClickListener {
-            navigateToPreviousActivity()
+            when (tag) {
+                KeyStorage.DELETE_POSTING -> navigateToPreviousActivity()
+                DELETE_COMMENT -> deleteDialogListener?.onDeleteDialogDismissed()
+            }
             dismiss()
         }
     }
@@ -50,7 +48,7 @@ class DeleteDialogFragment(private val content: String) :
         findNavController().navigateUp()
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
+    fun setDeleteDialogListener(listener: DeleteDialogListener) {
+        deleteDialogListener = listener
     }
 }

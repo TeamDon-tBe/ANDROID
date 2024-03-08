@@ -52,9 +52,9 @@
     <string name="tv_onboarding_third_title">표현의 자유를 남용하는 유저는</string>
     <string name="tv_onboarding_third_title_gradient">점점 투명해져요.</string>
     <string name="content_description_iv_onboarding_third">온보딩 세번째 사진입니다.</string>
-    <string name="tv_onboarding_fourth_title">DON\'T BE에\n 첫인사를 남겨볼까요?</string>
+    <string name="tv_onboarding_fourth_title">DON\'T BE에\n 첫 인사를 남겨볼까요?</string>
     <string name="et_onboarding_fourth_introduction">한문장으로 소개를 남겨주세요!</string>
-    <string name="tv_onboarding_fourth_description">설정한 닉네임, 한 줄 소개는 설정에서 변경 가능해요! \n작성한 한 줄 소개는 작성한 게시글로 업로드 돼요.</string>
+    <string name="tv_onboarding_fourth_description">설정한 닉네임, 한 줄 소개는 설정에서 변경 가능해요! \n작성한 한 줄 소개는 게시글로 업로드 돼요.</string>
     <!-- 약관동의 화면 -->
     <string name="sign_up_agree_title">약관동의</string>
     <string name="sign_up_agree_description">DON’T BE와 함께하기 전\n필요한 약관들을 확인해주세요!</string>
@@ -89,6 +89,8 @@
     <!-- 답글 -->
     <string name="tv_comment_appbar_title">답글 쓰기</string>
     <string name="tv_posting_loading">게시 중...</string>
+    <string name="et_comment_hint">님에게 답글 남기기...\n\n\n\n\n\n\n\n\n\n\n\</string>
+    <string name="tv_home_detail_input">님에게 답글 남기기</string>
     <!-- 마이 페이지 화면 -->
     <string name="my_page_nickname">don’t be master</string>
     <string name="my_page_description">돈비 커뮤니티를 만드는 수호신입니다.</string>
