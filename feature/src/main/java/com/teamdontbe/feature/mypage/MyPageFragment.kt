@@ -50,7 +50,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun setUpMemberProfile(): MyPageModel {
         val memberProfile = MyPageModel(
             id = viewModel.getMemberId() ?: -1,
-            nickName = getString(R.string.my_page_nickname),
+            nickName = viewModel.getUserNickName() ?: getString(R.string.my_page_nickname),
             idFlag = true,
         )
         arguments?.let {

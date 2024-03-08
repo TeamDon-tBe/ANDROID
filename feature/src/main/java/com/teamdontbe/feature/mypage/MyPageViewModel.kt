@@ -35,6 +35,7 @@ class MyPageViewModel
     private val _imageUrl = MutableStateFlow<String>("")
 
     fun getMemberId() = userInfoRepository.getMemberId()
+    fun getUserNickName() = userInfoRepository.getNickName()
 
     fun getMyPageUserProfileInfo(viewMemberId: Int) {
         viewModelScope.launch {
@@ -80,7 +81,11 @@ class MyPageViewModel
     fun deleteFeed(contentId: Int) =
         viewModelScope.launch {
             homeRepository.deleteFeed(contentId).collectLatest {
-                _deleteFeed.emit(UiState.Success(it))
+                if (it) {
+                    _deleteFeed.emit(UiState.Success(it))
+                } else {
+                    _deleteFeed.emit(UiState.Failure("400"))
+                }
             }
             _deleteFeed.emit(UiState.Loading)
         }
@@ -108,11 +113,17 @@ class MyPageViewModel
     }
 
     fun postTransparent(
-        alarmTriggerType: String, targetMemberId: Int, alarmTriggerId: Int, ghostReason: String
+        alarmTriggerType: String,
+        targetMemberId: Int,
+        alarmTriggerId: Int,
+        ghostReason: String
     ) = viewModelScope.launch {
         _postTransparent.emit(UiState.Loading)
         homeRepository.postTransparent(
-            alarmTriggerType, targetMemberId, alarmTriggerId, ghostReason
+            alarmTriggerType,
+            targetMemberId,
+            alarmTriggerId,
+            ghostReason
         ).fold({
             if (it) _postTransparent.emit(UiState.Success(true)) else _postTransparent.emit(
                 UiState.Failure(
