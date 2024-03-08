@@ -67,9 +67,7 @@
         tools:layout="@layout/fragment_my_page">
         <action
             android:id="@+id/action_fragment_my_page_to_fragment_home_detail"
-            app:destination="@id/fragment_home_detail"
-            app:popUpTo="@id/fragment_home_detail"
-            app:popUpToInclusive="false" />
+            app:destination="@id/fragment_home_detail" />
         <action
             android:id="@+id/action_fragment_my_page_to_fragment_posting"
             app:destination="@id/fragment_posting"
@@ -114,8 +112,6 @@
         tools:layout="@layout/fragment_home_detail">
         <action
             android:id="@+id/action_fragment_home_detail_to_fragment_my_page"
-            app:destination="@id/fragment_my_page"
-            app:popUpTo="@id/fragment_my_page"
-            app:popUpToInclusive="true" />
+            app:destination="@id/fragment_my_page" />
     </fragment>
 </navigation>
