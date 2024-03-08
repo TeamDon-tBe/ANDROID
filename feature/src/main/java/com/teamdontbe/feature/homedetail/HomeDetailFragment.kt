@@ -247,7 +247,7 @@ class HomeDetailFragment :
         homeViewModel.getFeedDetail.flowWithLifecycle(viewLifeCycle).onEach { result ->
             when (result) {
                 is UiState.Success -> {
-                    initHomeFeedAdapter(listOf(result.data))
+                    initHomeFeedAdapter(listOf(result.data.copy(contentId = contentId)))
                     binding.feed = result.data
                     concatFeedCommentAdapter()
                 }
