@@ -7,6 +7,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.util.fragment.setScrollTopOnReselect
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
@@ -53,6 +54,7 @@ class MyPageCommentFragment :
         initDeleteObserve()
         initTransparentObserve(memberProfile.id)
         stateCommentItemNull()
+        scrollRecyclerViewToTop()
     }
 
     private fun initMemberProfile() {
@@ -214,9 +216,15 @@ class MyPageCommentFragment :
             R.id.action_fragment_my_page_to_fragment_home_detail,
             bundleOf(KEY_NOTI_DATA to id),
         )
-        /* val mainActivity = requireActivity() as? MainActivity
-         mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)!!.selectedItemId =
-             R.id.fragment_home*/
+    }
+
+    private fun scrollRecyclerViewToTop() {
+        // (reselect하는 icon, 바텀네비 ,scroll할 리사이클러뷰)
+        setScrollTopOnReselect(
+            R.id.fragment_my_page,
+            R.id.bnv_main,
+            binding.rvMyPageComment
+        )
     }
 
     companion object {

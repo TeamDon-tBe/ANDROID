@@ -44,14 +44,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initMyPageTabLayout(memberProfile)
         initMyPageHambergerClickListner(memberProfile)
         initTransparencyInfoDialogBtnClickListener()
-//        scrollRecyclerViewToTop()
         initBackBtnClickListener()
     }
 
     private fun setUpMemberProfile(): MyPageModel {
         val memberProfile = MyPageModel(
             id = viewModel.getMemberId() ?: -1,
-            nickName = getString(R.string.my_page_nickname),
+            nickName = viewModel.getUserNickName() ?: getString(R.string.my_page_nickname),
             idFlag = true,
         )
         arguments?.let {
@@ -90,19 +89,31 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun handleSuccessState(data: MyPageUserProfileEntity, memberProfile: MyPageModel) =
-        with(binding) {
-            initMyPageProgressBarUI(data.memberGhost)
-            tvMyPageTitle.text = data.nickname
-            tvMyPageDescription.text = data.memberIntro
-            if (data.memberProfileUrl == "") {
-                ivMyPageProfile.setImageResource(R.drawable.ic_sign_up_profile_person)
-            } else {
-                loadImage(ivMyPageProfile, data.memberProfileUrl)
-            }
+    private fun handleSuccessState(data: MyPageUserProfileEntity, memberProfile: MyPageModel) {
+        initMyPageProgressBarUI(data.memberGhost)
+        setProfileData(data)
+        updateImageUrlIfChanged(data, memberProfile)
+    }
 
-            memberProfile.nickName = data.nickname
+    private fun setProfileData(data: MyPageUserProfileEntity) = with(binding) {
+        tvMyPageTitle.text = data.nickname
+        tvMyPageDescription.text = data.memberIntro
+        setProfileImage(data.memberProfileUrl)
+    }
+
+    private fun setProfileImage(url: String) = with(binding) {
+        if (url == "") {
+            ivMyPageProfile.setImageResource(R.drawable.ic_sign_up_profile_person)
+        } else {
+            loadImage(ivMyPageProfile, url)
         }
+    }
+
+    private fun updateImageUrlIfChanged(data: MyPageUserProfileEntity, memberProfile: MyPageModel) {
+        if (memberProfile.idFlag) {
+            viewModel.updateImageUrl(data.memberProfileUrl)
+        }
+    }
 
     private fun initMyPageProgressBarUI(progressTransparency: Int) {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {

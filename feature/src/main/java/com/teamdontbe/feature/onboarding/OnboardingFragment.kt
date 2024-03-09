@@ -1,6 +1,5 @@
 package com.teamdontbe.feature.onboarding
 
-import android.content.Context
 import android.view.View
 import android.view.WindowManager
 import androidx.core.view.isVisible
@@ -11,16 +10,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teamdontbe.core_ui.base.BindingFragment
-import com.teamdontbe.core_ui.util.intent.getParcelable
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentOnboardingBinding
-import com.teamdontbe.feature.signup.SignUpAgreeActivity
-import com.teamdontbe.feature.signup.UserProfileModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 @AndroidEntryPoint
 class OnboardingFragment :
@@ -29,8 +24,6 @@ class OnboardingFragment :
     private var _onboardingAdapter: OnboardingAdapter? = null
     private val onboardingAdapter
         get() = requireNotNull(_onboardingAdapter) { "adapter 초기화 안됨" }
-
-    private var signUpAgree: UserProfileModel? = null
 
     override fun initView() {
         binding.vm = onboardingViewModel
@@ -42,18 +35,6 @@ class OnboardingFragment :
         initObserve()
         initSkipTextClickListener()
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        signUpAgree =
-            requireActivity().intent.getParcelable(
-                SignUpAgreeActivity.SIGN_UP_AGREE,
-                UserProfileModel::class.java,
-            )
-
-        Timber.tag("my_page").d("my page에서 받아오는 sign up agree on attach : $signUpAgree")
     }
 
     private fun checkIsNewUser() {

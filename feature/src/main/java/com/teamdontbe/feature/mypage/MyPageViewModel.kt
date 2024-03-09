@@ -33,6 +33,7 @@ class MyPageViewModel
     private val _imageUrl = MutableStateFlow<String>("")
 
     fun getMemberId() = userInfoRepository.getMemberId()
+    fun getUserNickName() = userInfoRepository.getNickName()
 
     fun getMyPageUserProfileInfo(viewMemberId: Int) {
         viewModelScope.launch {
@@ -40,7 +41,6 @@ class MyPageViewModel
             myPageRepository.getMyPageUserProfile(viewMemberId).onSuccess {
                 if (it != null) {
                     _getMyPageUserProfileState.value = UiState.Success(it)
-                    updateImageUrl(it.memberProfileUrl)
                 } else {
                     UiState.Failure("null")
                 }
@@ -49,7 +49,7 @@ class MyPageViewModel
     }
 
     // 이미지 변화 감지
-    private fun updateImageUrl(newUrl: String) {
+    fun updateImageUrl(newUrl: String) {
         if (_imageUrl.value != newUrl) {
             _imageUrl.value = newUrl
             viewModelScope.launch {
