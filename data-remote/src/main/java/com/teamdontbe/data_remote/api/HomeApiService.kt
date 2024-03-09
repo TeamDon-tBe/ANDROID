@@ -29,6 +29,7 @@ interface HomeApiService {
         const val UNLIKED = "unliked"
         const val COMMENT_ID = "commentId"
         const val GHOST = "ghost2"
+        const val V2 = "v2"
     }
 
     @GET("$API/$V1/$CONTENTS")
@@ -36,7 +37,7 @@ interface HomeApiService {
         @Query(value = CURSOR) contentId: Long = -1,
     ): BaseResponse<List<ResponseFeedDto>>
 
-    @GET("/$API/$V1/$CONTENT/{$CONTENT_ID}/$DETAIL")
+    @GET("/$API/$V2/$CONTENT/{$CONTENT_ID}/$DETAIL")
     suspend fun getFeedDetail(
         @Path(value = CONTENT_ID) contentId: Int,
     ): BaseResponse<ResponseFeedDto>
