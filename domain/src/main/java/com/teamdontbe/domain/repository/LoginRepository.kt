@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import java.io.File
 
 interface LoginRepository {
-    suspend fun postLogin(requestLogin: String): Flow<LoginEntity?>
+    suspend fun postLogin(requestLogin: String): Result<LoginEntity?>
 
     suspend fun getNickNameDoubleCheck(nickName: String): Flow<Boolean>
 

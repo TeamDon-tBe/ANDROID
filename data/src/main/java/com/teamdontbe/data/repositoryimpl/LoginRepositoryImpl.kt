@@ -18,28 +18,23 @@ import java.io.File
 import javax.inject.Inject
 
 class LoginRepositoryImpl
-@Inject
-constructor(
+@Inject constructor(
     private val loginDataSource: LoginDataSource,
 ) : LoginRepository {
-    override suspend fun postLogin(socialType: String): Flow<LoginEntity?> {
-        return flow {
+    override suspend fun postLogin(socialType: String): Result<LoginEntity?> {
+        return runCatching {
             val result =
-                runCatching {
-                    loginDataSource.postLogin(RequestLoginDto(socialType)).data?.toLoginDataEntity()
-                }
-
+                loginDataSource.postLogin(RequestLoginDto(socialType)).data?.toLoginDataEntity()
             Timber.d(result.toString())
-            emit(result.getOrDefault(LoginEntity("", -1, "", "", "", false)))
+            result
         }
     }
 
     override suspend fun getNickNameDoubleCheck(nickName: String): Flow<Boolean> {
         return flow {
-            val result =
-                runCatching {
-                    loginDataSource.getNickNameDoubleCheck(nickName).success
-                }
+            val result = runCatching {
+                loginDataSource.getNickNameDoubleCheck(nickName).success
+            }
             emit(result.getOrDefault(false))
         }
     }
@@ -51,17 +46,16 @@ constructor(
         url: String?,
     ): Flow<Boolean> {
         return flow {
-            val result =
-                runCatching {
-                    loginDataSource.patchProfileEdit(
-                        RequestProfileEditDto(
-                            nickName,
-                            allowed,
-                            intro,
-                            url,
-                        ),
-                    ).success
-                }
+            val result = runCatching {
+                loginDataSource.patchProfileEdit(
+                    RequestProfileEditDto(
+                        nickName,
+                        allowed,
+                        intro,
+                        url,
+                    ),
+                ).success
+            }
             emit(result.getOrDefault(false))
         }
     }

@@ -10,6 +10,7 @@
     <!-- 회원가입 화면 -->
     <string name="login_description">온화한 커뮤니티\nDON\'T BE에서 만나요.</string>
     <string name="sign_up_appbar_title">회원가입</string>
+    <string name="error_sign_in_mesaage">재가입은 30일 이후에 가능합니다.</string>
     <!-- 글 작성하기 화면 -->
     <string name="posting_appbar_title">새로운 글</string>
     <string name="posting_content_hint">무슨 고민이 있나요?...</string>
