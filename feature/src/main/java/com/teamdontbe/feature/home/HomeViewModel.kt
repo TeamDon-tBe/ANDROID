@@ -11,18 +11,13 @@ import com.teamdontbe.domain.repository.UserInfoRepository
 import com.teamdontbe.feature.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel
-@Inject
-constructor(
+@Inject constructor(
     private val homeRepository: HomeRepository,
     private val userInfoRepository: UserInfoRepository,
 ) : ViewModel() {
@@ -39,11 +34,11 @@ constructor(
     private val _deleteFeedLiked = MutableSharedFlow<UiState<Boolean>>()
     val deleteFeedLiked: SharedFlow<UiState<Boolean>> get() = _deleteFeedLiked
 
-    private val _postCommentPosting = MutableLiveData<Event<Boolean>>()
-    val postCommentPosting: LiveData<Event<Boolean>> get() = _postCommentPosting
+    private val _postCommentPosting = MutableSharedFlow<UiState<Boolean>>()
+    val postCommentPosting: SharedFlow<UiState<Boolean>> get() = _postCommentPosting
 
-    private val _deleteComment = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
-    val deleteComment: StateFlow<UiState<Boolean>> get() = _deleteComment
+    private val _deleteComment = MutableSharedFlow<UiState<Boolean>>()
+    val deleteComment: SharedFlow<UiState<Boolean>> get() = _deleteComment
 
     private val _postTransparent = MutableSharedFlow<UiState<Boolean>>()
     val postTransparent: SharedFlow<UiState<Boolean>> get() = _postTransparent
@@ -57,23 +52,24 @@ constructor(
 
     fun getFeedList() = homeRepository.getFeedList()
 
-    fun getFeedDetail(contentId: Int) =
-        viewModelScope.launch {
-            _getFeedDetail.emit(UiState.Loading)
-            homeRepository.getFeedLDetail(contentId).collectLatest {
-                if (it != null) _getFeedDetail.emit(UiState.Success(it)) else UiState.Failure("null")
-            }
-        }
+    fun getFeedDetail(contentId: Int) = viewModelScope.launch {
+        _getFeedDetail.emit(UiState.Loading)
+        homeRepository.getFeedLDetail(contentId)
+            .fold(
+                { _getFeedDetail.emit(if (it != null) UiState.Success(it) else UiState.Failure("null")) },
+                { _getFeedDetail.emit(UiState.Failure(it.message.toString())) }
+            )
+    }
 
     fun getCommentList(contentId: Int) = homeRepository.getCommentList(contentId)
 
-    fun deleteFeed(contentId: Int) =
-        viewModelScope.launch {
-            _deleteFeed.emit(UiState.Loading)
-            homeRepository.deleteFeed(contentId).collectLatest {
-                _deleteFeed.emit(UiState.Success(it))
-            }
-        }
+    fun deleteFeed(contentId: Int) = viewModelScope.launch {
+        _deleteFeed.emit(UiState.Loading)
+        homeRepository.deleteFeed(contentId).fold(
+            { _deleteFeed.emit(UiState.Success(true)) },
+            { _deleteFeed.emit(UiState.Failure(it.message.toString())) }
+        )
+    }
 
     fun getMemberId() = userInfoRepository.getMemberId()
 
@@ -81,62 +77,54 @@ constructor(
 
     fun getUserProfile() = userInfoRepository.getMemberProfileUrl()
 
-    fun postFeedLiked(contentId: Int) =
-        viewModelScope.launch {
-            homeRepository.postFeedLiked(contentId).collectLatest {
-                _postFeedLiked.emit(UiState.Success(it))
-            }
-        }
+    fun postFeedLiked(contentId: Int) = viewModelScope.launch {
+        homeRepository.postFeedLiked(contentId).fold({ }, {})
+    }
 
-    fun deleteFeedLiked(contentId: Int) =
-        viewModelScope.launch {
-            homeRepository.deleteFeedLiked(contentId).collectLatest {
-                _deleteFeedLiked.emit(UiState.Success(it))
-            }
-        }
+    fun deleteFeedLiked(contentId: Int) = viewModelScope.launch {
+        homeRepository.deleteFeedLiked(contentId).fold({ }, { })
+    }
 
     fun postCommentPosting(
         contentId: Int,
         commentText: String,
     ) = viewModelScope.launch {
-        homeRepository.postCommentPosting(contentId, commentText).collectLatest {
-            _postCommentPosting.value = Event(it)
-        }
-        _postCommentPosting.value = Event(false)
+        homeRepository.postCommentPosting(contentId, commentText)
+            .fold(
+                { _postCommentPosting.emit(UiState.Success(it)) },
+                { _postCommentPosting.emit(UiState.Failure(it.message.toString())) }
+            )
     }
 
-    fun deleteComment(commentId: Int) =
-        viewModelScope.launch {
-            homeRepository.deleteComment(commentId).collectLatest {
-                _deleteComment.value = UiState.Success(it)
-            }
-            _deleteComment.value = UiState.Loading
-        }
+    fun deleteComment(commentId: Int) = viewModelScope.launch {
+        homeRepository.deleteComment(commentId).fold(
+            { _deleteComment.emit(UiState.Success(it)) },
+            { _deleteComment.emit(UiState.Failure(it.message.toString())) }
+        )
+    }
 
-    fun postCommentLiked(commentId: Int) =
-        viewModelScope.launch {
-            homeRepository.postCommentLiked(commentId).collectLatest {
-            }
-        }
+    fun postCommentLiked(commentId: Int) = viewModelScope.launch {
+        homeRepository.postCommentLiked(commentId).fold({}, {})
+    }
 
-    fun deleteCommentLiked(commentId: Int) =
-        viewModelScope.launch {
-            homeRepository.deleteCommentLiked(commentId).collectLatest {
-            }
-        }
+    fun deleteCommentLiked(commentId: Int) = viewModelScope.launch {
+        homeRepository.deleteCommentLiked(commentId).fold({}, {})
+    }
 
     fun postTransparent(
-        alarmTriggerType: String, targetMemberId: Int, alarmTriggerId: Int, ghostReason: String
+        alarmTriggerType: String,
+        targetMemberId: Int,
+        alarmTriggerId: Int,
+        ghostReason: String
     ) = viewModelScope.launch {
         _postTransparent.emit(UiState.Loading)
         homeRepository.postTransparent(
-            alarmTriggerType, targetMemberId, alarmTriggerId, ghostReason
+            alarmTriggerType,
+            targetMemberId,
+            alarmTriggerId,
+            ghostReason
         ).fold({
-            if (it) _postTransparent.emit(UiState.Success(true)) else _postTransparent.emit(
-                UiState.Failure(
-                    "400"
-                )
-            )
-        }, { Timber.d("500") })
+            _postTransparent.emit(UiState.Success(true))
+        }, { _postTransparent.emit(UiState.Failure(it.message.toString())) })
     }
 }

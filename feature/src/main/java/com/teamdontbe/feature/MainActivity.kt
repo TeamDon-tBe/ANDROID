@@ -1,6 +1,7 @@
 package com.teamdontbe.feature
 
 import android.content.ContentValues
+import android.content.Intent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -14,6 +15,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.databinding.ActivityMainBinding
+import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.notification.NotificationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -90,6 +92,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         initBottomNavPostingClickListener(navController)
         selectedHomeIcon(navController)
+        initLoadingView(navController)
+        setOnBottomNaviReselectedListener(navController)
     }
 
     private fun removeBadgeOnNotification(navController: NavController) {
@@ -139,13 +143,40 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     binding.bnvMain.menu.findItem(R.id.fragment_my_page).isChecked = true
                 }
             }
+        }
+    }
 
-            // HomeDetail Fragment가 활성화되어 있는 경우에는 Home 아이콘이 클릭되지 않도록 설정
-            if (destination.id == R.id.fragment_home_detail) {
-                binding.bnvMain.menu.findItem(R.id.fragment_home).isEnabled = false
-            } else {
-                binding.bnvMain.menu.findItem(R.id.fragment_home).isEnabled = true
+    private fun initLoadingView(navController: NavController) {
+        binding.bnvMain.setOnItemSelectedListener { item ->
+            if (item.itemId == R.id.fragment_home) {
+                startActivity(
+                    Intent(
+                        this,
+                        LoadingActivity::class.java
+                    )
+                )
             }
+            item.onNavDestinationSelected(navController)
+        }
+    }
+
+    private fun setOnBottomNaviReselectedListener(navController: NavController) {
+        binding.bnvMain.setOnItemReselectedListener { item ->
+            val homeFragment =
+                supportFragmentManager.findFragmentById(R.id.fcv_main)?.let { hostFragment ->
+                    hostFragment.childFragmentManager.fragments.firstOrNull { it is HomeFragment } as? HomeFragment
+                }
+
+            when (item.itemId) {
+                R.id.fragment_home -> {
+                    if (navController.currentDestination?.id == R.id.fragment_home) {
+                        homeFragment?.scrollRecyclerViewToTop()
+                    } else {
+                        navController.popBackStack()
+                    }
+                }
+            }
+            item.onNavDestinationSelected(navController)
         }
     }
 }

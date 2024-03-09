@@ -36,12 +36,16 @@ class HomeCommentPagingSourceImpl(
         )
         return runCatching {
             val result = homeApiService.getCommentList(contentId, position)
-            LoadResult.Page(
-                data = result.data?.map { it.toCommentEntity() } ?: emptyList(),
-                prevKey = refreshKey.find { it.first == position }?.second,
-                nextKey = if (result.data.isNullOrEmpty()) null else result.data?.last()?.commentId?.toLong(),
-            ).also {
-                prevKey = position
+            if(result.success){
+                LoadResult.Page(
+                    data = result.data?.map { it.toCommentEntity() } ?: emptyList(),
+                    prevKey = refreshKey.find { it.first == position }?.second,
+                    nextKey = if (result.data.isNullOrEmpty()) null else result.data?.last()?.commentId?.toLong(),
+                ).also {
+                    prevKey = position
+                }
+            }else{
+                LoadResult.Error(Exception("400"))
             }
         }.getOrElse {
             LoadResult.Error(it)

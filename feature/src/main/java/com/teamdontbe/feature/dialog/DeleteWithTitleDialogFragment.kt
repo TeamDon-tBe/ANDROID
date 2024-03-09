@@ -10,7 +10,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentDeleteWithTitleDialogBinding
 import com.teamdontbe.feature.home.HomeBottomSheet
 import com.teamdontbe.feature.home.HomeViewModel
-import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.HOME_DETAIL_BOTTOM_SHEET
+import com.teamdontbe.feature.util.BottomSheetTag.HOME_DETAIL_BOTTOM_SHEET
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -63,11 +63,10 @@ class DeleteWithTitleDialogFragment(
     }
 
     private fun navigateToComplaintWeb() {
-        val urlIntentComplaint =
-            Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLSdjhidNLgk_99uHZ24pCIZX5V0Tn0CQ2sqpW4Aqahr3azQYyA/viewform"),
-            )
+        val urlIntentComplaint = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLSdjhidNLgk_99uHZ24pCIZX5V0Tn0CQ2sqpW4Aqahr3azQYyA/viewform"),
+        )
         startActivity(urlIntentComplaint)
     }
 }

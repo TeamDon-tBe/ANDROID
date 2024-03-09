@@ -18,7 +18,7 @@ class UploadingSnackBar(view: View) {
     }
 
     private val context = view.context
-    private val snackbar = Snackbar.make(view, "", 4000)
+    private val snackbar = Snackbar.make(view, "", 1600)
     private val snackbarLayout = snackbar.view as Snackbar.SnackbarLayout
 
     private val inflater = LayoutInflater.from(context)

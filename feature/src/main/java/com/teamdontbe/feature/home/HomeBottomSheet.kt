@@ -5,7 +5,7 @@ import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.BottomsheetComplaintDeleteBinding
 import com.teamdontbe.feature.dialog.DeleteWithTitleDialogFragment
-import com.teamdontbe.feature.homedetail.HomeDetailFragment
+import com.teamdontbe.feature.util.BottomSheetTag.HOME_DETAIL_BOTTOM_SHEET
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,7 +42,7 @@ class HomeBottomSheet(
                     contentId,
                     true,
                     commentId,
-                ).show(parentFragmentManager, HomeDetailFragment.HOME_DETAIL_BOTTOM_SHEET)
+                ).show(parentFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
             } else {
                 DeleteWithTitleDialogFragment(
                     getString(R.string.tv_delete_with_title_complain_dialog),
@@ -51,7 +51,7 @@ class HomeBottomSheet(
                     contentId,
                     false,
                     commentId,
-                ).show(parentFragmentManager, HomeDetailFragment.HOME_DETAIL_BOTTOM_SHEET)
+                ).show(parentFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
             }
         }
     }
@@ -66,7 +66,7 @@ class HomeBottomSheet(
                     contentId,
                     true,
                     commentId,
-                ).show(parentFragmentManager, HomeDetailFragment.HOME_DETAIL_BOTTOM_SHEET)
+                ).show(parentFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
             } else {
                 DeleteWithTitleDialogFragment(
                     getString(R.string.tv_delete_with_title_delete_dialog),
@@ -75,7 +75,7 @@ class HomeBottomSheet(
                     contentId,
                     false,
                     commentId,
-                ).show(parentFragmentManager, HomeDetailFragment.HOME_DETAIL_BOTTOM_SHEET)
+                ).show(parentFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
             }
             dismiss()
         }

@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.teamdontbe.core_ui.util.context.colorOf
+import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ItemHomeCommentBinding
@@ -43,31 +43,24 @@ class HomeDetailCommentViewHolder(
             } else setFeedTransparent(data.memberGhost)
 
             initLikedBtnCLickListener(data)
-            memberIsDeleted(data)
+            initProfileBtnClickListener(data)
             initKebabBtnClickListener(data)
             initGhostBtnClickListener(data)
         }
     }
 
-    private fun memberIsDeleted(data: CommentEntity) {
-        when (data.isDeleted ?: true) {
-            true -> binding.tvCommentUserName.setTextColor(context.colorOf(R.color.gray_12))
-            else -> initProfileBtnClickListener(data)
-        }
-    }
-
     private fun initProfileBtnClickListener(data: CommentEntity) {
         binding.ivCommentProfile.setOnClickListener {
-            onClickUserProfileBtn(data.memberId)
+            if (data.isDeleted == false) onClickUserProfileBtn(data.memberId)
         }
         binding.tvCommentUserName.setOnClickListener {
-            onClickUserProfileBtn(data.memberId)
+            if (data.isDeleted == false) onClickUserProfileBtn(data.memberId)
         }
     }
 
     private fun initLikedBtnCLickListener(data: CommentEntity) {
         with(binding) {
-            btnCommentHeart.setOnClickListener {
+            btnCommentHeart.setOnDuplicateBlockClick {
                 onClickLikedBtn(data.commentId, btnCommentHeart.isSelected)
                 val likeNumber = tvCommentLikeNum.text.toString()
                 tvCommentLikeNum.text =
