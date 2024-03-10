@@ -154,16 +154,26 @@ class MyPageCommentFragment :
     }
 
     private fun handleDeleteCommentSuccess() {
+        deleteCommentAndUpdateUI()
+        showDeleteCompleteDialog()
+    }
+
+    private fun deleteCommentAndUpdateUI() {
         if (deleteCommentPosition != -1) {
             myPageCommentAdapter.deleteItem(deleteCommentPosition)
+            deletedItemCount++
+            updateUiBasedOnItemCount()
             deleteCommentPosition = -1
         }
-        if (deletedItemCount == myPageCommentAdapter.itemCount) {
-            stateCommentItemNull()
-        }
-        deletedItemCount = 0
+    }
+
+    private fun updateUiBasedOnItemCount() {
+        if (myPageCommentAdapter.itemCount == deletedItemCount) updateNoCommentUI() else updateExistCommentUI()
+    }
+
+    private fun showDeleteCompleteDialog() {
         val dialog = DeleteCompleteDialogFragment()
-        dialog.show(childFragmentManager, DELETE_POSTING)
+        dialog.show(childFragmentManager, KeyStorage.DELETE_POSTING)
     }
 
     private fun stateCommentItemNull() {
@@ -247,5 +257,6 @@ class MyPageCommentFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         _myPageCommentAdapter = null
+        deletedItemCount = 0
     }
 }
