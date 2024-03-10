@@ -7,7 +7,7 @@
 
         <variable
             name="feed"
-            type="com.teamdontbe.domain.entity.MyPageCommentEntity" />
+            type="com.teamdontbe.domain.entity.CommentEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,6 +52,7 @@
 
         <TextView
             android:id="@+id/tv_comment_transparency"
+            setTransparencyAndTimeText="@{feed}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
@@ -68,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
             android:layout_marginEnd="11dp"
-            android:text="@{feed.commentText}"
+            android:text="@{feed.contentText}"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/black"
             android:textIsSelectable="true"

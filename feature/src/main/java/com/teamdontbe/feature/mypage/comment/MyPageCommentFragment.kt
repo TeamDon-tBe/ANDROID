@@ -12,7 +12,7 @@ import com.teamdontbe.core_ui.util.fragment.setScrollTopOnReselect
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
-import com.teamdontbe.domain.entity.MyPageCommentEntity
+import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.feature.ErrorActivity.Companion.navigateToErrorPage
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageCommentBinding
@@ -75,7 +75,7 @@ class MyPageCommentFragment :
                 idFlag = memberProfile.idFlag,
                 onClickKebabBtn = ::clickKebabBtn,
                 onItemClicked = { commentData ->
-                    navigateToHomeDetailFragment(commentData.contentId)
+                    navigateToHomeDetailFragment(commentData.contentId ?: -1)
                 },
                 onClickLikedBtn = ::onLikedBtnClick,
                 onClickTransparentBtn = ::onTransparentBtnClick,
@@ -93,11 +93,11 @@ class MyPageCommentFragment :
         setUpItemDecorator()
     }
 
-    private fun clickKebabBtn(commentEntity: MyPageCommentEntity, position: Int) {
+    private fun clickKebabBtn(commentEntity: CommentEntity, position: Int) {
         commentEntity.let {
             initBottomSheet(
                 it.memberId == myPageCommentViewModel.getMemberId(),
-                contentId = it.contentId,
+                contentId = it.contentId ?: -1,
                 commentId = it.commentId,
                 whereFrom = FROM_COMMENT,
             )
@@ -128,7 +128,7 @@ class MyPageCommentFragment :
         }
     }
 
-    private fun onTransparentBtnClick(data: MyPageCommentEntity) {
+    private fun onTransparentBtnClick(data: CommentEntity) {
         if (data.isGhost) {
             TransparentIsGhostSnackBar.make(binding.root).show()
         } else {

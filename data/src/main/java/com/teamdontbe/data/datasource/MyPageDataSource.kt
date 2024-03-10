@@ -4,8 +4,8 @@ import ResponseMyPageUserAccountInfoDto
 import androidx.paging.PagingData
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.response.ResponseMyPageUserProfileDto
+import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
-import com.teamdontbe.domain.entity.MyPageCommentEntity
 import kotlinx.coroutines.flow.Flow
 
 interface MyPageDataSource {
@@ -13,7 +13,7 @@ interface MyPageDataSource {
 
     fun getMyPageUserFeedListSource(viewMemberId: Int): Flow<PagingData<FeedEntity>>
 
-    fun getMyPageUserCommentListSource(viewMemberId: Int): Flow<PagingData<MyPageCommentEntity>>
+    fun getMyPageUserCommentListSource(viewMemberId: Int): Flow<PagingData<CommentEntity>>
 
     suspend fun getMyPageUserAccountInfo(): BaseResponse<ResponseMyPageUserAccountInfoDto>
 }

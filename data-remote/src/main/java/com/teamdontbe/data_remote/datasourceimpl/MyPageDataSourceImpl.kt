@@ -10,8 +10,8 @@ import com.teamdontbe.data.dto.response.ResponseMyPageUserProfileDto
 import com.teamdontbe.data_remote.api.MyPageApiService
 import com.teamdontbe.data_remote.pagingsourceimpl.MyPageCommentPagingSourceImpl
 import com.teamdontbe.data_remote.pagingsourceimpl.MyPageFeedPagingSourceImpl
+import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
-import com.teamdontbe.domain.entity.MyPageCommentEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -27,7 +27,7 @@ class MyPageDataSourceImpl @Inject constructor(
         }.flow
     }
 
-    override fun getMyPageUserCommentListSource(viewMemberId: Int): Flow<PagingData<MyPageCommentEntity>> {
+    override fun getMyPageUserCommentListSource(viewMemberId: Int): Flow<PagingData<CommentEntity>> {
         return Pager(PagingConfig(1)) {
             MyPageCommentPagingSourceImpl(myPageApiService, viewMemberId)
         }.flow

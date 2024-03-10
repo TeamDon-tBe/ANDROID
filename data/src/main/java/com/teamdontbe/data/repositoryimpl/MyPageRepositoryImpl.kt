@@ -2,8 +2,8 @@ package com.teamdontbe.data.repositoryimpl
 
 import androidx.paging.PagingData
 import com.teamdontbe.data.datasource.MyPageDataSource
+import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
-import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.domain.entity.MyPageUserAccountInfoEntity
 import com.teamdontbe.domain.entity.MyPageUserProfileEntity
 import com.teamdontbe.domain.repository.MyPageRepository
@@ -23,7 +23,7 @@ class MyPageRepositoryImpl
     override fun getMyPageFeedList(viewMemberId: Int): Flow<PagingData<FeedEntity>> =
         myPageDataSource.getMyPageUserFeedListSource(viewMemberId)
 
-    override fun getMyPageCommentList(viewMemberId: Int): Flow<PagingData<MyPageCommentEntity>> =
+    override fun getMyPageCommentList(viewMemberId: Int): Flow<PagingData<CommentEntity>> =
         myPageDataSource.getMyPageUserCommentListSource(viewMemberId)
 
     override suspend fun getMyPageUserAccountInfo(): Flow<MyPageUserAccountInfoEntity?> {

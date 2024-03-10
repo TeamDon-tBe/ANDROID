@@ -3,19 +3,19 @@ package com.teamdontbe.feature.mypage.comment
 import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.teamdontbe.domain.entity.MyPageCommentEntity
+import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.feature.databinding.ItemMyPageCommentBinding
 import com.teamdontbe.feature.util.Transparent
 
 class MyPageCommentViewHolder(
     private val binding: ItemMyPageCommentBinding,
     private val idFlag: Boolean,
-    private val onItemClicked: (MyPageCommentEntity) -> Unit,
+    private val onItemClicked: (CommentEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
-    private val onClickKebabBtn: (MyPageCommentEntity, Int) -> Unit,
-    private val onClickTransparentBtn: (MyPageCommentEntity) -> Unit,
+    private val onClickKebabBtn: (CommentEntity, Int) -> Unit,
+    private val onClickTransparentBtn: (CommentEntity) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
-    private var item: MyPageCommentEntity? = null
+    private var item: CommentEntity? = null
 
     init {
         binding.root.setOnClickListener {
@@ -29,7 +29,7 @@ class MyPageCommentViewHolder(
         }
     }
 
-    fun onBind(data: MyPageCommentEntity) = with(binding) {
+    fun onBind(data: CommentEntity) = with(binding) {
         if (!idFlag) {
             setVisibility()
         }
@@ -52,7 +52,7 @@ class MyPageCommentViewHolder(
         binding.viewHomeTransparentBg.setBackgroundColor(Color.parseColor(color))
     }
 
-    private fun initLikedBtnCLickListener(data: MyPageCommentEntity) = with(binding) {
+    private fun initLikedBtnCLickListener(data: CommentEntity) = with(binding) {
         btnCommentHeart.setOnClickListener {
             onClickLikedBtn(data.commentId, btnCommentHeart.isSelected)
             val likeNumber = tvCommentLikeNum.text.toString()

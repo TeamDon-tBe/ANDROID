@@ -3,12 +3,12 @@ package com.teamdontbe.data_remote.pagingsourceimpl
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.teamdontbe.data_remote.api.MyPageApiService
-import com.teamdontbe.domain.entity.MyPageCommentEntity
+import com.teamdontbe.domain.entity.CommentEntity
 
 class MyPageCommentPagingSourceImpl(
     private val myPageApiService: MyPageApiService,
     private val memberId: Int
-) : PagingSource<Long, MyPageCommentEntity>() {
+) : PagingSource<Long, CommentEntity>() {
 
     private var prevKey: Long? = null
 
@@ -16,14 +16,14 @@ class MyPageCommentPagingSourceImpl(
         var refreshKey: MutableList<Pair<Long, Long?>> = mutableListOf()
     }
 
-    override fun getRefreshKey(state: PagingState<Long, MyPageCommentEntity>): Long? {
+    override fun getRefreshKey(state: PagingState<Long, CommentEntity>): Long? {
         return state.anchorPosition?.let { position ->
             prevKey = state.closestPageToPosition(position)?.prevKey
             refreshKey.find { it.second == state.closestPageToPosition(position)?.prevKey }?.first
         }
     }
 
-    override suspend fun load(params: LoadParams<Long>): LoadResult<Long, MyPageCommentEntity> {
+    override suspend fun load(params: LoadParams<Long>): LoadResult<Long, CommentEntity> {
         val position = params.key ?: -1
         if (!refreshKey.any { it.first == position }) refreshKey.add(
             Pair(
