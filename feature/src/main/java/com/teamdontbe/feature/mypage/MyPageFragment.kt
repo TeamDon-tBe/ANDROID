@@ -111,7 +111,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun updateImageUrlIfChanged(data: MyPageUserProfileEntity, memberProfile: MyPageModel) {
-        if (memberProfile.idFlag) {
+        if (!memberProfile.idFlag) return
+        if (viewModel.getUserImgUrl() != data.memberProfileUrl) {
             viewModel.updateImageUrl(data.memberProfileUrl)
         }
     }
