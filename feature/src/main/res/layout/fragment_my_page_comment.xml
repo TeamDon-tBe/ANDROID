@@ -29,17 +29,16 @@
             android:id="@+id/tv_my_page_comment_no_data"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="36dp"
             android:gravity="center"
+            android:paddingHorizontal="25dp"
             android:paddingVertical="42dp"
-            android:text="@string/my_page_comment_not_yet"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_16"
             android:textColor="@color/gray_7"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/my_page_no_feed_text" />
+            tools:text="@string/my_page_comment_my_not_yet" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
