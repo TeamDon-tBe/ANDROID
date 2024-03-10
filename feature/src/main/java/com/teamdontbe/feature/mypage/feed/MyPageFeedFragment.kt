@@ -2,6 +2,8 @@ package com.teamdontbe.feature.mypage.feed
 
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
@@ -284,5 +286,6 @@ class MyPageFeedFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         _myPageFeedAdapter = null
+        deletedItemCount = 0
     }
 }
