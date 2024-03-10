@@ -33,7 +33,8 @@ class MyPageViewModel
     private val _imageUrl = MutableStateFlow<String>("")
 
     fun getMemberId() = userInfoRepository.getMemberId()
-    fun getUserNickName() = userInfoRepository.getNickName()
+
+    fun getUserImgUrl() = userInfoRepository.getMemberProfileUrl()
 
     fun getMyPageUserProfileInfo(viewMemberId: Int) {
         viewModelScope.launch {

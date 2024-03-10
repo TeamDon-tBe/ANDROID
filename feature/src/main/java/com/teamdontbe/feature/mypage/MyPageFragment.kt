@@ -41,7 +41,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         initMyPageCollapseAppearance()
         initMyPageStateObserve(memberProfile)
-        initMyPageTabLayout(memberProfile)
         initMyPageHambergerClickListner(memberProfile)
         initTransparencyInfoDialogBtnClickListener()
         initBackBtnClickListener()
@@ -50,7 +49,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun setUpMemberProfile(): MyPageModel {
         val memberProfile = MyPageModel(
             id = viewModel.getMemberId() ?: -1,
-            nickName = viewModel.getUserNickName() ?: getString(R.string.my_page_nickname),
+            nickName = getString(R.string.my_page_nickname),
             idFlag = true,
         )
         arguments?.let {
@@ -93,6 +92,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initMyPageProgressBarUI(data.memberGhost)
         setProfileData(data)
         updateImageUrlIfChanged(data, memberProfile)
+        memberProfile.nickName = data.nickname
+        initMyPageTabLayout(memberProfile)
     }
 
     private fun setProfileData(data: MyPageUserProfileEntity) = with(binding) {
@@ -193,7 +194,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     fun updateUI() {
         val memberProfile: MyPageModel = setUpMemberProfile()
         initMyPageStateObserve(memberProfile)
-        initMyPageTabLayout(memberProfile)
     }
 
     companion object {
