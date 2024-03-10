@@ -155,16 +155,12 @@ class MyPageCommentFragment :
     }
 
     private fun handleDeleteCommentSuccess() {
-        deleteCommentAndUpdateUI()
-        showDeleteCompleteDialog()
-    }
-
-    private fun deleteCommentAndUpdateUI() {
         if (deleteCommentPosition != -1) {
             myPageCommentAdapter.deleteItem(deleteCommentPosition)
             deletedItemCount++
             updateUiBasedOnItemCount()
             deleteCommentPosition = -1
+            showDeleteCompleteDialog()
         }
     }
 
@@ -264,6 +260,5 @@ class MyPageCommentFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         _myPageCommentAdapter = null
-        deletedItemCount = 0
     }
 }
