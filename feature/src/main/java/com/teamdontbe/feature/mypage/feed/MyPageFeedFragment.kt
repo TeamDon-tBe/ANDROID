@@ -166,29 +166,27 @@ class MyPageFeedFragment :
     }
 
     private fun handleDeleteFeedSuccess() {
-        if (deleteFeedPosition != -1) {
-            myPageFeedAdapter.deleteItem(deleteFeedPosition)
-            deleteFeedPosition = -1
-        }
-        if (deletedItemCount == myPageFeedAdapter.itemCount) {
-            stateFeedItemNull()
-        }
-        deletedItemCount = 0
-        val dialog = DeleteCompleteDialogFragment()
-        dialog.show(childFragmentManager, KeyStorage.DELETE_POSTING)
+        deleteFeedAndUpdateUI()
+        showDeleteCompleteDialog()
     }
 
-    private fun stateFeedItemNull() {
-        if (!memberProfile.idFlag) return
-        myPageFeedAdapter.addLoadStateListener { combinedLoadStates ->
-            val isEmpty =
-                myPageFeedAdapter.itemCount == 0 && combinedLoadStates.refresh is LoadState.NotLoading
-            if (isEmpty) {
-                updateNoFeedUI()
-            } else {
-                updateExistFeedUi()
-            }
+    private fun deleteFeedAndUpdateUI() {
+        if (deleteFeedPosition != -1) {
+            myPageFeedAdapter.deleteItem(deleteFeedPosition)
+            deletedItemCount++
+            updateUiBasedOnItemCount()
+            deleteFeedPosition = -1
         }
+    }
+
+    // 삭제된 아이템의 갯수와 처음 로드된 어뎁터의 아이템 갯수가 같은 경우 데이터 삭제
+    private fun updateUiBasedOnItemCount() {
+        if (myPageFeedAdapter.itemCount == deletedItemCount) updateNoFeedUI() else updateExistFeedUi()
+    }
+
+    private fun showDeleteCompleteDialog() {
+        val dialog = DeleteCompleteDialogFragment()
+        dialog.show(childFragmentManager, KeyStorage.DELETE_POSTING)
     }
 
     private fun updateNoFeedUI() = with(binding) {
@@ -205,6 +203,16 @@ class MyPageFeedFragment :
     private fun updateExistFeedUi() {
         binding.viewMyPageNoFeedNickname.clNoFeed.visibility = View.GONE
         binding.rvMyPagePosting.visibility = View.VISIBLE
+    }
+
+    private fun updateOtherUserNoFeedUI() = with(binding) {
+        rvMyPagePosting.isGone = true
+        viewMyPageNoFeedNickname.apply {
+            clNoFeed.isVisible = true
+            tvNoFeedNickname.text =
+                getString(R.string.my_page_other_no_feed_text, memberProfile.nickName)
+            btnNoFeedPosting.isVisible = false
+        }
     }
 
     private fun initTransparentObserve() {
@@ -230,6 +238,19 @@ class MyPageFeedFragment :
             R.id.action_fragment_my_page_to_fragment_posting,
             bundleOf(KEY_NOTI_DATA to id),
         )
+    }
+
+    private fun stateFeedItemNull() {
+        myPageFeedAdapter.addLoadStateListener { combinedLoadStates ->
+            val isEmpty =
+                combinedLoadStates.source.refresh is
+                LoadState.NotLoading && combinedLoadStates.append.endOfPaginationReached && myPageFeedAdapter.itemCount < 1
+            when {
+                memberProfile.idFlag && isEmpty -> updateNoFeedUI()
+                !memberProfile.idFlag && isEmpty -> updateOtherUserNoFeedUI()
+                else -> updateExistFeedUi()
+            }
+        }
     }
 
     private fun scrollRecyclerViewToTop() {
