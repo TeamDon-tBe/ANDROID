@@ -5,18 +5,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import com.teamdontbe.core_ui.view.ItemDiffCallback
-import com.teamdontbe.domain.entity.MyPageCommentEntity
+import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.feature.databinding.ItemMyPageCommentBinding
 
 class MyPageCommentAdapter(
     private val context: Context,
     private val idFlag: Boolean,
-    private val onClickKebabBtn: (MyPageCommentEntity, Int) -> Unit,
-    private val onItemClicked: (MyPageCommentEntity) -> Unit,
+    private val onClickKebabBtn: (CommentEntity, Int) -> Unit,
+    private val onItemClicked: (CommentEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
-    private val onClickTransparentBtn: (MyPageCommentEntity) -> Unit,
+    private val onClickTransparentBtn: (CommentEntity) -> Unit,
 ) :
-    PagingDataAdapter<MyPageCommentEntity, MyPageCommentViewHolder>(ExampleDiffCallback) {
+    PagingDataAdapter<CommentEntity, MyPageCommentViewHolder>(ExampleDiffCallback) {
     private val inflater by lazy { LayoutInflater.from(context) }
 
     override fun onCreateViewHolder(
@@ -47,7 +47,7 @@ class MyPageCommentAdapter(
 
     companion object {
         private val ExampleDiffCallback =
-            ItemDiffCallback<MyPageCommentEntity>(
+            ItemDiffCallback<CommentEntity>(
                 onItemsTheSame = { old, new -> old.commentId == new.commentId },
                 onContentsTheSame = { old, new -> old == new },
             )

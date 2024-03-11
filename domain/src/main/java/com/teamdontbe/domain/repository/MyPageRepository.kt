@@ -1,8 +1,8 @@
 package com.teamdontbe.domain.repository
 
 import androidx.paging.PagingData
+import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
-import com.teamdontbe.domain.entity.MyPageCommentEntity
 import com.teamdontbe.domain.entity.MyPageUserAccountInfoEntity
 import com.teamdontbe.domain.entity.MyPageUserProfileEntity
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +12,7 @@ interface MyPageRepository {
 
     fun getMyPageFeedList(viewMemberId: Int): Flow<PagingData<FeedEntity>>
 
-    fun getMyPageCommentList(viewMemberId: Int): Flow<PagingData<MyPageCommentEntity>>
+    fun getMyPageCommentList(viewMemberId: Int): Flow<PagingData<CommentEntity>>
 
     suspend fun getMyPageUserAccountInfo(): Flow<MyPageUserAccountInfoEntity?>
 }

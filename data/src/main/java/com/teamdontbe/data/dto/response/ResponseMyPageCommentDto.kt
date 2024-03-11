@@ -1,6 +1,6 @@
 package com.teamdontbe.data.dto.response
 
-import com.teamdontbe.domain.entity.MyPageCommentEntity
+import com.teamdontbe.domain.entity.CommentEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -29,7 +29,7 @@ data class ResponseMyPageCommentDto(
     @SerialName("contentId")
     val contentId: Int,
 ) {
-    fun toMyPageCommentEntity() = MyPageCommentEntity(
+    fun toMyPageCommentEntity() = CommentEntity(
         memberId,
         memberProfileUrl,
         memberNickname,
@@ -40,6 +40,7 @@ data class ResponseMyPageCommentDto(
         commentText,
         time,
         commentId,
+        isDeleted = null,
         contentId,
     )
 }

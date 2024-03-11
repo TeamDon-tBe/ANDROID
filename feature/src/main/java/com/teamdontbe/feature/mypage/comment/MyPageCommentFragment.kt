@@ -1,7 +1,8 @@
 package com.teamdontbe.feature.mypage.comment
 
-import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
@@ -11,7 +12,7 @@ import com.teamdontbe.core_ui.util.fragment.setScrollTopOnReselect
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
-import com.teamdontbe.domain.entity.MyPageCommentEntity
+import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.feature.ErrorActivity.Companion.navigateToErrorPage
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentMyPageCommentBinding
@@ -26,7 +27,7 @@ import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
 import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment.Companion.ARG_MEMBER_PROFILE
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.util.FeedItemDecorator
-import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
+import com.teamdontbe.feature.util.KeyStorage
 import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import com.teamdontbe.feature.util.PagingLoadingAdapter
 import com.teamdontbe.feature.util.pagingSubmitData
@@ -74,7 +75,7 @@ class MyPageCommentFragment :
                 idFlag = memberProfile.idFlag,
                 onClickKebabBtn = ::clickKebabBtn,
                 onItemClicked = { commentData ->
-                    navigateToHomeDetailFragment(commentData.contentId)
+                    navigateToHomeDetailFragment(commentData.contentId ?: -1)
                 },
                 onClickLikedBtn = ::onLikedBtnClick,
                 onClickTransparentBtn = ::onTransparentBtnClick,
@@ -92,11 +93,11 @@ class MyPageCommentFragment :
         setUpItemDecorator()
     }
 
-    private fun clickKebabBtn(commentEntity: MyPageCommentEntity, position: Int) {
+    private fun clickKebabBtn(commentEntity: CommentEntity, position: Int) {
         commentEntity.let {
             initBottomSheet(
                 it.memberId == myPageCommentViewModel.getMemberId(),
-                contentId = it.contentId,
+                contentId = it.contentId ?: -1,
                 commentId = it.commentId,
                 whereFrom = FROM_COMMENT,
             )
@@ -127,7 +128,7 @@ class MyPageCommentFragment :
         }
     }
 
-    private fun onTransparentBtnClick(data: MyPageCommentEntity) {
+    private fun onTransparentBtnClick(data: CommentEntity) {
         if (data.isGhost) {
             TransparentIsGhostSnackBar.make(binding.root).show()
         } else {
@@ -156,37 +157,49 @@ class MyPageCommentFragment :
     private fun handleDeleteCommentSuccess() {
         if (deleteCommentPosition != -1) {
             myPageCommentAdapter.deleteItem(deleteCommentPosition)
+            deletedItemCount++
+            updateUiBasedOnItemCount()
             deleteCommentPosition = -1
+            showDeleteCompleteDialog()
         }
-        if (deletedItemCount == myPageCommentAdapter.itemCount) {
-            stateCommentItemNull()
-        }
-        deletedItemCount = 0
+    }
+
+    private fun updateUiBasedOnItemCount() {
+        if (myPageCommentAdapter.itemCount == deletedItemCount) updateNoCommentUI() else updateExistCommentUI()
+    }
+
+    private fun showDeleteCompleteDialog() {
         val dialog = DeleteCompleteDialogFragment()
-        dialog.show(childFragmentManager, DELETE_POSTING)
+        dialog.show(childFragmentManager, KeyStorage.DELETE_POSTING)
     }
 
     private fun stateCommentItemNull() {
-//        if (!memberProfile.idFlag) return
         myPageCommentAdapter.addLoadStateListener { combinedLoadStates ->
-            val isEmpty =
-                myPageCommentAdapter.itemCount == 0 && combinedLoadStates.refresh is LoadState.NotLoading
+            val isEmpty = combinedLoadStates.source.refresh is
+            LoadState.NotLoading && combinedLoadStates.append.endOfPaginationReached && myPageCommentAdapter.itemCount < 1
             if (isEmpty) {
-                hideCommentListUI()
+                updateNoCommentUI()
             } else {
-                showCommentListUI()
+                updateExistCommentUI()
             }
         }
     }
 
-    private fun hideCommentListUI() = with(binding) {
-        rvMyPageComment.visibility = View.GONE
-        tvMyPageCommentNoData.visibility = View.VISIBLE
+    private fun updateNoCommentUI() = with(binding) {
+        rvMyPageComment.isGone = true
+        tvMyPageCommentNoData.apply {
+            isVisible = true
+            text = if (memberProfile.idFlag) getString(R.string.my_page_comment_my_not_yet)
+            else getString(
+                R.string.my_page_comment_other_not_yet,
+                memberProfile.nickName
+            )
+        }
     }
 
-    private fun showCommentListUI() = with(binding) {
-        rvMyPageComment.visibility = View.VISIBLE
-        tvMyPageCommentNoData.visibility = View.GONE
+    private fun updateExistCommentUI() = with(binding) {
+        rvMyPageComment.isVisible = true
+        tvMyPageCommentNoData.isGone = true
     }
 
     private fun initTransparentObserve(memberId: Int) {

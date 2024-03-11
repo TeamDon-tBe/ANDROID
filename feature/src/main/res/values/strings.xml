@@ -97,7 +97,9 @@
     <string name="my_page_transperency">투명도</string>
     <string name="my_page_no_feed_text">%s님, 아직 글을 작성하지 않았네요!\n왠지 텅 빈 게시글이 허전하게 느껴져요.</string>
     <string name="my_page_no_feed_first">첫 게시글 남기기</string>
-    <string name="my_page_comment_not_yet">아직 작성한 답글이 없어요.</string>
+    <string name="my_page_comment_other_not_yet">아직 %s님이 답글을 작성하지 않았어요.</string>
+    <string name="my_page_comment_my_not_yet">아직 작성한 답글이 없어요.</string>
+    <string name="my_page_other_no_feed_text">아직 %s님이 글을 작성하지 않았어요.</string>
     <!-- 마이 페이지 계정 정보 화면 -->
     <string name="my_page_auth_info_appbar">계정 정보</string>
     <string name="my_page_auth_info_social">소셜 로그인</string>
