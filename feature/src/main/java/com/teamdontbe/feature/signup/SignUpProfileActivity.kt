@@ -1,19 +1,19 @@
 package com.teamdontbe.feature.signup
 
-import android.Manifest
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.READ_MEDIA_IMAGES
+import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
@@ -24,7 +24,6 @@ import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.context.openKeyboard
-import com.teamdontbe.core_ui.util.context.toast
 import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.ProfileEditInfoEntity
@@ -68,7 +67,7 @@ class SignUpProfileActivity :
                 }
             } else {
                 Timber.tag("permission").d("권한 거부")
-                toast(getString(R.string.sign_up_profile_permission))
+                requestPermissionAppSettings()
             }
         }
 
@@ -123,40 +122,36 @@ class SignUpProfileActivity :
         }
     }
 
+    // 앱 설정으로 이동하여 사용자에게 권한을 다시 요청하는 함수
+    private fun requestPermissionAppSettings() {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.sign_up_profile_permission_title))
+            .setMessage(getString(R.string.sign_up_profile_permission_description))
+            .setPositiveButton(getString(R.string.sign_up_profile_permission_move)) { dialog, _ ->
+                navigateToAppSettings()
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.sign_up_profile_permission_cancle)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun navigateToAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivity(intent)
+    }
+
     private fun getGalleryPermission() {
-        // api 34 (UPSIDE_DOWN_CAKE) 이상인 경우
+        // api 34 이상인 경우
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             selectImage()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions.launch(READ_MEDIA_IMAGES)
         } else {
-            // TIRAMISU(버전 33) 이상부터 READ_MEDIA_IMAGES 권한 사용
-            // TIRAMISU 미만 버전에서는 READ_EXTERNAL_STORAGE 권한 사용
-            val permissionToRequest = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                Manifest.permission.READ_MEDIA_IMAGES
-            } else {
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            }
-            // 사용자가 권한을 거부했는지 확인하고, 거부했다면 다시 권한 요청
-            if (ContextCompat.checkSelfPermission(
-                    this@SignUpProfileActivity,
-                    permissionToRequest
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        this@SignUpProfileActivity,
-                        permissionToRequest
-                    )
-                ) {
-                    // 여기서 사용자에게 권한이 필요한 이유를 설명하는 다이얼로그를 표시할 수도 있습니다.
-                    // 설명 후 권한 요청을 다시 시도합니다.
-                    requestPermissions.launch(permissionToRequest)
-                } else {
-                    // 권한 요청을 직접 수행합니다. 사용자가 이전에 거부했더라도 다시 요청합니다.
-                    requestPermissions.launch(permissionToRequest)
-                }
-            } else {
-                // 이미 권한이 부여되었다면, 이미지 선택을 진행합니다.
-                selectImage()
-            }
+            requestPermissions.launch(READ_EXTERNAL_STORAGE)
         }
     }
 
