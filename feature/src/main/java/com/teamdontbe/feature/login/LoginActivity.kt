@@ -10,6 +10,7 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingActivity
+import com.teamdontbe.core_ui.util.context.toast
 import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.MainActivity
@@ -104,7 +105,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                 }
 
                 is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
+                is UiState.Failure -> toast(getString(R.string.error_sign_in_mesaage))
             }
         }.launchIn(lifecycleScope)
     }
