@@ -220,10 +220,9 @@ class MyPageFeedFragment :
     private fun initTransparentObserve() {
         myPageFeedViewModel.postTransparent.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
-                is UiState.Loading -> Unit
                 is UiState.Success -> myPageFeedAdapter.refresh()
-                is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
+                is UiState.Failure -> navigateToErrorPage(requireContext())
+                else -> Unit
             }
         }.launchIn(viewLifeCycleScope)
     }
