@@ -11,67 +11,67 @@
 
     <style name="TextAppearance.DontBe.head_semi_24">
         <item name="fontFamily">@font/pretendard_semibold</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">24dp</item>
         <item name="lineHeight">36dp</item>
     </style>
 
     <style name="TextAppearance.DontBe.head_semi_20">
         <item name="fontFamily">@font/pretendard_semibold</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">20dp</item>
         <item name="lineHeight">30dp</item>
     </style>
 
     <style name="TextAppearance.DontBe.head_semi_18">
         <item name="fontFamily">@font/pretendard_semibold</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">18dp</item>
         <item name="lineHeight">27dp</item>
     </style>
 
     <style name="TextAppearance.DontBe.body_semi_16">
         <item name="fontFamily">@font/pretendard_semibold</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">16dp</item>
         <item name="lineHeight">24dp</item>
     </style>
 
     <style name="TextAppearance.DontBe.body_semi_14">
         <item name="fontFamily">@font/pretendard_semibold</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">14dp</item>
         <item name="lineHeight">21dp</item>
     </style>
 
     <style name="TextAppearance.DontBe.cap_semi_13">
         <item name="fontFamily">@font/pretendard_semibold</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">13dp</item>
         <item name="lineHeight">20dp</item>
     </style>
 
     <style name="TextAppearance.DontBe.cap_semi_12">
         <item name="fontFamily">@font/pretendard_semibold</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">12dp</item>
         <item name="lineHeight">18dp</item>
     </style>
 
     <style name="TextAppearance.DontBe.body_regular_16">
         <item name="fontFamily">@font/pretendard_regular</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">16dp</item>
         <item name="lineHeight">24dp</item>
     </style>
 
     <style name="TextAppearance.DontBe.body_regular_14">
         <item name="fontFamily">@font/pretendard_regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">14dp</item>
         <item name="lineHeight">21dp</item>
     </style>
 
     <style name="TextAppearance.DontBe.cap_regular_13">
         <item name="fontFamily">@font/pretendard_regular</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">13dp</item>
         <item name="lineHeight">20dp</item>
     </style>
 
     <style name="TextAppearance.DontBe.cap_regular_12">
         <item name="fontFamily">@font/pretendard_regular</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">12dp</item>
         <item name="lineHeight">18dp</item>
     </style>
 </resources>
