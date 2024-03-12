@@ -9,6 +9,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
@@ -62,6 +63,7 @@ class HomeDetailFragment :
         observePostCommentPosting()
         initBackBtnClickListener()
         initInputEditTextClickListener()
+        initClickHomeBottomIcon()
     }
 
     private fun getHomeDetail() {
@@ -361,6 +363,17 @@ class HomeDetailFragment :
             parentFragmentManager,
             COMMENT,
         )
+    }
+
+    private fun initClickHomeBottomIcon() {
+        val mainActivity = requireActivity() as? MainActivity
+
+        mainActivity?.findViewById<BottomNavigationView>(R.id.bnv_main)
+            ?.setOnItemReselectedListener { item ->
+                if (item.itemId == R.id.fragment_home) {
+                    findNavController().popBackStack()
+                }
+            }
     }
 
     companion object {
