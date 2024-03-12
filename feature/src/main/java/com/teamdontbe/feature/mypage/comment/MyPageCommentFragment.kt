@@ -205,7 +205,7 @@ class MyPageCommentFragment :
     private fun initTransparentObserve(memberId: Int) {
         myPageCommentViewModel.postTransparent.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
-                is UiState.Success -> myPageCommentViewModel.getMyPageCommentList(memberId)
+                is UiState.Success -> myPageCommentAdapter.refresh()
                 is UiState.Failure -> navigateToErrorPage(requireContext())
                 else -> Unit
             }

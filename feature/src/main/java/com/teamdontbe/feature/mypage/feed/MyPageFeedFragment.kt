@@ -221,7 +221,7 @@ class MyPageFeedFragment :
         myPageFeedViewModel.postTransparent.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
-                is UiState.Success -> myPageFeedViewModel.getMyPageFeedList(memberProfile.id)
+                is UiState.Success -> myPageFeedAdapter.refresh()
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
