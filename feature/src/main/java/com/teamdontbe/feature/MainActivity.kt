@@ -92,7 +92,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         initBottomNavPostingClickListener(navController)
         selectedHomeIcon(navController)
-        initLoadingView(navController)
+        setOnBottomNaviSelectedListener(navController)
         setOnBottomNaviReselectedListener(navController)
     }
 
@@ -135,7 +135,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private fun selectedHomeIcon(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.fragment_home, R.id.fragment_home_detail -> {
+                R.id.fragment_home_detail -> {
                     binding.bnvMain.menu.findItem(R.id.fragment_home).isChecked = true
                 }
 
@@ -146,15 +146,17 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private fun initLoadingView(navController: NavController) {
+    private fun setOnBottomNaviSelectedListener(navController: NavController) {
         binding.bnvMain.setOnItemSelectedListener { item ->
-            if (item.itemId == R.id.fragment_home) {
-                startActivity(
-                    Intent(
-                        this,
-                        LoadingActivity::class.java
-                    )
-                )
+            when (item.itemId) {
+                R.id.fragment_home -> startActivity(Intent(this, LoadingActivity::class.java))
+                //my page는 타 유저 프로필 피드 들어갈 때도 있어서
+                R.id.fragment_my_page -> if (navController.currentDestination?.id == R.id.fragment_home_detail) {
+                    navController.navigate(R.id.fragment_my_page)
+                    navController.popBackStack(R.id.fragment_home_detail, true)
+                }
+
+                R.id.fragment_notification -> if (navController.currentDestination?.id == R.id.fragment_home_detail) navController.popBackStack()
             }
             item.onNavDestinationSelected(navController)
         }
