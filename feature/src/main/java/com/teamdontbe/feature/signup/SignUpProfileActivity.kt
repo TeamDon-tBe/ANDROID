@@ -115,9 +115,12 @@ class SignUpProfileActivity :
         initImagePlusBtnClickListener()
     }
 
-    private fun initImagePlusBtnClickListener() {
-        binding.btnSignUpProfilePlus.setOnClickListener {
+    private fun initImagePlusBtnClickListener() = with(binding) {
+        btnSignUpProfilePlus.setOnClickListener {
             // 갤러리 이미지 가져오기
+            getGalleryPermission()
+        }
+        ivSignUpProfile.setOnClickListener {
             getGalleryPermission()
         }
     }
