@@ -1,8 +1,8 @@
 package com.teamdontbe.feature.signup
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.Manifest.permission.READ_MEDIA_IMAGES
-import android.Manifest.permission.READ_MEDIA_VIDEO
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -12,6 +12,8 @@ import android.view.WindowManager
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
@@ -22,6 +24,7 @@ import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.context.openKeyboard
+import com.teamdontbe.core_ui.util.context.toast
 import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.ProfileEditInfoEntity
@@ -53,22 +56,34 @@ class SignUpProfileActivity :
 
     // Permission request handler
     private val requestPermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            if (permissions.all { it.value }) {
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
                 // Permission granted, get images
                 lifecycleScope.launch {
                     try {
                         selectImage()
                     } catch (e: Exception) {
-                        // 오류 처리
+                        navigateToErrorPage(this@SignUpProfileActivity)
                     }
                 }
             } else {
                 Timber.tag("permission").d("권한 거부")
+                toast(getString(R.string.sign_up_profile_permission))
             }
         }
 
-    private val getPictureLauncher =
+    private val getGalleryLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            if (activityResult.resultCode == RESULT_OK) {
+                val imageUri = activityResult.data?.data
+                imageUri?.let {
+                    binding.ivSignUpProfile.load(it)
+                    photoUri = it
+                }
+            }
+        }
+
+    private val getPhotoPickerLauncher =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri: Uri? ->
             imageUri?.let { uri ->
                 binding.ivSignUpProfile.load(uri)
@@ -77,9 +92,16 @@ class SignUpProfileActivity :
         }
 
     private fun selectImage() {
-        getPictureLauncher.launch(
-            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-        )
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            // 티라미슈 미만 버전인 경우 갤러리에서 이미지 선택
+            val getPictureIntent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
+            getGalleryLauncher.launch(getPictureIntent)
+        } else {
+            // 티라미슈 이상 버전인 경우 포토피커 사용
+            getPhotoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        }
     }
 
     override fun initView() {
@@ -102,13 +124,39 @@ class SignUpProfileActivity :
     }
 
     private fun getGalleryPermission() {
-        // api 34 이상인 경우
+        // api 34 (UPSIDE_DOWN_CAKE) 이상인 경우
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             selectImage()
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO))
         } else {
-            requestPermissions.launch(arrayOf(READ_EXTERNAL_STORAGE))
+            // TIRAMISU(버전 33) 이상부터 READ_MEDIA_IMAGES 권한 사용
+            // TIRAMISU 미만 버전에서는 READ_EXTERNAL_STORAGE 권한 사용
+            val permissionToRequest = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Manifest.permission.READ_MEDIA_IMAGES
+            } else {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            }
+            // 사용자가 권한을 거부했는지 확인하고, 거부했다면 다시 권한 요청
+            if (ContextCompat.checkSelfPermission(
+                    this@SignUpProfileActivity,
+                    permissionToRequest
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        this@SignUpProfileActivity,
+                        permissionToRequest
+                    )
+                ) {
+                    // 여기서 사용자에게 권한이 필요한 이유를 설명하는 다이얼로그를 표시할 수도 있습니다.
+                    // 설명 후 권한 요청을 다시 시도합니다.
+                    requestPermissions.launch(permissionToRequest)
+                } else {
+                    // 권한 요청을 직접 수행합니다. 사용자가 이전에 거부했더라도 다시 요청합니다.
+                    requestPermissions.launch(permissionToRequest)
+                }
+            } else {
+                // 이미 권한이 부여되었다면, 이미지 선택을 진행합니다.
+                selectImage()
+            }
         }
     }
 
