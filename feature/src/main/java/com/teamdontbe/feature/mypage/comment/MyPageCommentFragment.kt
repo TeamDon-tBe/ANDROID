@@ -53,7 +53,7 @@ class MyPageCommentFragment :
         initMemberProfile()
         initCommentRecyclerView()
         initDeleteObserve()
-        initTransparentObserve(memberProfile.id)
+        initTransparentObserve()
         stateCommentItemNull()
         scrollRecyclerViewToTop()
     }
@@ -202,10 +202,10 @@ class MyPageCommentFragment :
         tvMyPageCommentNoData.isGone = true
     }
 
-    private fun initTransparentObserve(memberId: Int) {
+    private fun initTransparentObserve() {
         myPageCommentViewModel.postTransparent.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
-                is UiState.Success -> myPageCommentViewModel.getMyPageCommentList(memberId)
+                is UiState.Success -> myPageCommentAdapter.refresh()
                 is UiState.Failure -> navigateToErrorPage(requireContext())
                 else -> Unit
             }

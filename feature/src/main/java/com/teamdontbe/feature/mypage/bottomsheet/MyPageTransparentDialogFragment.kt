@@ -42,7 +42,10 @@ class MyPageTransparentDialogFragment(
             } else {
                 binding.tvTransparentWarning.visibility = View.INVISIBLE
                 myPageViewModel.postTransparent(
-                    alarmTriggerType, targetMemberId, alarmTriggerId, getGhostReason()
+                    alarmTriggerType,
+                    targetMemberId,
+                    alarmTriggerId,
+                    getGhostReason()
                 )
                 dismiss()
             }
@@ -53,11 +56,11 @@ class MyPageTransparentDialogFragment(
         with(binding) {
             return when {
                 rbTransparentContent1.isChecked -> getString(R.string.rb_transparent_reason_content_1)
-                rbTransparentContent1.isChecked -> getString(R.string.rb_transparent_reason_content_2)
-                rbTransparentContent1.isChecked -> getString(R.string.rb_transparent_reason_content_3)
-                rbTransparentContent1.isChecked -> getString(R.string.rb_transparent_reason_content_4)
-                rbTransparentContent1.isChecked -> getString(R.string.rb_transparent_reason_content_5)
-                rbTransparentContent1.isChecked -> getString(R.string.my_page_auth_withdraw_reason_content_7)
+                rbTransparentContent2.isChecked -> getString(R.string.rb_transparent_reason_content_2)
+                rbTransparentContent3.isChecked -> getString(R.string.rb_transparent_reason_content_3)
+                rbTransparentContent4.isChecked -> getString(R.string.rb_transparent_reason_content_4)
+                rbTransparentContent5.isChecked -> getString(R.string.rb_transparent_reason_content_5)
+                rbTransparentContent6.isChecked -> getString(R.string.my_page_auth_withdraw_reason_content_7)
                 else -> ""
             }
         }
