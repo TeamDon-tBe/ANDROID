@@ -2,11 +2,13 @@ package com.teamdontbe.feature.signup
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.READ_MEDIA_IMAGES
-import android.Manifest.permission.READ_MEDIA_VIDEO
+import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.PickVisualMediaRequest
@@ -53,22 +55,34 @@ class SignUpProfileActivity :
 
     // Permission request handler
     private val requestPermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            if (permissions.all { it.value }) {
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
                 // Permission granted, get images
                 lifecycleScope.launch {
                     try {
                         selectImage()
                     } catch (e: Exception) {
-                        // 오류 처리
+                        navigateToErrorPage(this@SignUpProfileActivity)
                     }
                 }
             } else {
                 Timber.tag("permission").d("권한 거부")
+                requestPermissionAppSettings()
             }
         }
 
-    private val getPictureLauncher =
+    private val getGalleryLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            if (activityResult.resultCode == RESULT_OK) {
+                val imageUri = activityResult.data?.data
+                imageUri?.let {
+                    binding.ivSignUpProfile.load(it)
+                    photoUri = it
+                }
+            }
+        }
+
+    private val getPhotoPickerLauncher =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri: Uri? ->
             imageUri?.let { uri ->
                 binding.ivSignUpProfile.load(uri)
@@ -77,9 +91,16 @@ class SignUpProfileActivity :
         }
 
     private fun selectImage() {
-        getPictureLauncher.launch(
-            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-        )
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            // 티라미슈 미만 버전인 경우 갤러리에서 이미지 선택
+            val getPictureIntent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
+            getGalleryLauncher.launch(getPictureIntent)
+        } else {
+            // 티라미슈 이상 버전인 경우 포토피커 사용
+            getPhotoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        }
     }
 
     override fun initView() {
@@ -94,11 +115,36 @@ class SignUpProfileActivity :
         initImagePlusBtnClickListener()
     }
 
-    private fun initImagePlusBtnClickListener() {
-        binding.btnSignUpProfilePlus.setOnClickListener {
+    private fun initImagePlusBtnClickListener() = with(binding) {
+        btnSignUpProfilePlus.setOnClickListener {
             // 갤러리 이미지 가져오기
             getGalleryPermission()
         }
+        ivSignUpProfile.setOnClickListener {
+            getGalleryPermission()
+        }
+    }
+
+    // 앱 설정으로 이동하여 사용자에게 권한을 다시 요청하는 함수
+    private fun requestPermissionAppSettings() {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.sign_up_profile_permission_title))
+            .setMessage(getString(R.string.sign_up_profile_permission_description))
+            .setPositiveButton(getString(R.string.sign_up_profile_permission_move)) { dialog, _ ->
+                navigateToAppSettings()
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.sign_up_profile_permission_cancle)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun navigateToAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivity(intent)
     }
 
     private fun getGalleryPermission() {
@@ -106,9 +152,9 @@ class SignUpProfileActivity :
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             selectImage()
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO))
+            requestPermissions.launch(READ_MEDIA_IMAGES)
         } else {
-            requestPermissions.launch(arrayOf(READ_EXTERNAL_STORAGE))
+            requestPermissions.launch(READ_EXTERNAL_STORAGE)
         }
     }
 

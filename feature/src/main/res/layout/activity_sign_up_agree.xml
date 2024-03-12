@@ -21,13 +21,22 @@
             android:orientation="vertical"
             app:layout_constraintGuide_begin="23dp" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_sign_up_end_23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="23dp" />
+
         <TextView
             android:id="@+id/tv_sign_up_agree"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="46dp"
             android:text="@string/sign_up_agree_title"
+            android:textAlignment="textStart"
             android:textAppearance="@style/TextAppearance.DontBe.head_semi_20"
+            app:layout_constraintEnd_toEndOf="@id/guide_sign_up_end_23"
             app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_23"
             app:layout_constraintTop_toBottomOf="@id/appbar_sign_up" />
 
@@ -37,8 +46,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/sign_up_agree_description"
+            android:textAlignment="textStart"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_16"
             android:textColor="@color/gray_9"
+            app:layout_constraintEnd_toEndOf="@id/guide_sign_up_end_23"
             app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_23"
             app:layout_constraintTop_toBottomOf="@id/tv_sign_up_agree" />
 
@@ -68,9 +79,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="11dp"
             android:text="@string/sign_up_agree_choose_all"
+            android:textAlignment="textStart"
             android:textAppearance="@style/TextAppearance.DontBe.body_semi_16"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@id/cb_sign_up_parent"
+            app:layout_constraintEnd_toEndOf="@id/guide_sign_up_end_23"
             app:layout_constraintStart_toEndOf="@id/cb_sign_up_parent"
             app:layout_constraintTop_toTopOf="@id/cb_sign_up_parent" />
 
@@ -82,36 +95,24 @@
             android:background="@drawable/sel_sign_up_checkbox"
             android:button="@null"
             app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@id/tv_sign_up_child_1"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_23"
             app:layout_constraintTop_toBottomOf="@id/cb_sign_up_parent" />
 
         <TextView
             android:id="@+id/tv_sign_up_child_1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="11dp"
             android:text="@string/sign_up_agree_child_1"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_16"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@id/cb_sign_up_child_1"
+            app:layout_constraintEnd_toStartOf="@id/mcv_sign_up_agree_green_child_1"
             app:layout_constraintStart_toEndOf="@id/cb_sign_up_child_1"
             app:layout_constraintTop_toTopOf="@id/cb_sign_up_child_1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:background="@drawable/shape_6_rect"
-            android:backgroundTint="#59CD9C"
-            android:gravity="center"
-            android:paddingHorizontal="6dp"
-            android:paddingTop="2dp"
-            android:text="@string/sign_up_agree_must"
-            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
-            android:textColor="@color/black"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_child_1"
-            app:layout_constraintStart_toEndOf="@id/tv_sign_up_child_1"
-            app:layout_constraintTop_toTopOf="@id/tv_sign_up_child_1" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/mcv_sign_up_agree_green_child_1"
@@ -121,6 +122,7 @@
             app:cardBackgroundColor="#59CD9C"
             app:cardCornerRadius="6dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_child_1"
+            app:layout_constraintEnd_toStartOf="@id/btn_sign_up_agree_child_1"
             app:layout_constraintStart_toEndOf="@id/tv_sign_up_child_1"
             app:layout_constraintTop_toTopOf="@id/tv_sign_up_child_1"
             app:strokeWidth="0dp">
@@ -148,6 +150,7 @@
             android:src="@drawable/ic_sign_up_next_gray_24"
             app:layout_constraintBottom_toBottomOf="@id/mcv_sign_up_agree_green_child_1"
             app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="@id/guide_sign_up_end_23"
             app:layout_constraintStart_toEndOf="@id/mcv_sign_up_agree_green_child_1"
             app:layout_constraintTop_toTopOf="@id/mcv_sign_up_agree_green_child_1" />
 
@@ -160,18 +163,22 @@
             android:background="@drawable/sel_sign_up_checkbox"
             android:button="@null"
             app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@id/tv_sign_up_child_2"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_23"
             app:layout_constraintTop_toBottomOf="@id/cb_sign_up_child_1" />
 
         <TextView
             android:id="@+id/tv_sign_up_child_2"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="11dp"
             android:text="@string/sign_up_agree_child_2"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_16"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@id/cb_sign_up_child_2"
+            app:layout_constraintEnd_toStartOf="@id/mcv_sign_up_agree_green_child_2"
             app:layout_constraintStart_toEndOf="@id/cb_sign_up_child_2"
             app:layout_constraintTop_toTopOf="@id/cb_sign_up_child_2" />
 
@@ -183,6 +190,7 @@
             app:cardBackgroundColor="#59CD9C"
             app:cardCornerRadius="6dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_child_2"
+            app:layout_constraintEnd_toStartOf="@id/btn_sign_up_agree_child_2"
             app:layout_constraintStart_toEndOf="@id/tv_sign_up_child_2"
             app:layout_constraintTop_toTopOf="@id/tv_sign_up_child_2"
             app:strokeWidth="0dp">
@@ -210,6 +218,7 @@
             android:src="@drawable/ic_sign_up_next_gray_24"
             app:layout_constraintBottom_toBottomOf="@id/mcv_sign_up_agree_green_child_2"
             app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="@id/guide_sign_up_end_23"
             app:layout_constraintStart_toEndOf="@id/mcv_sign_up_agree_green_child_2"
             app:layout_constraintTop_toTopOf="@id/mcv_sign_up_agree_green_child_2" />
 
@@ -221,18 +230,22 @@
             android:background="@drawable/sel_sign_up_checkbox"
             android:button="@null"
             app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toStartOf="@id/tv_sign_up_child_3"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@id/guide_sign_up_start_23"
             app:layout_constraintTop_toBottomOf="@id/cb_sign_up_child_2" />
 
         <TextView
             android:id="@+id/tv_sign_up_child_3"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="11dp"
             android:text="@string/sign_up_agree_child_3"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_16"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@id/cb_sign_up_child_3"
+            app:layout_constraintEnd_toStartOf="@id/mcv_sign_up_agree_green_child_3"
             app:layout_constraintStart_toEndOf="@id/cb_sign_up_child_3"
             app:layout_constraintTop_toTopOf="@id/cb_sign_up_child_3" />
 
@@ -244,6 +257,7 @@
             app:cardBackgroundColor="@color/sign_up_green_must"
             app:cardCornerRadius="6dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_child_3"
+            app:layout_constraintEnd_toEndOf="@id/guide_sign_up_end_23"
             app:layout_constraintStart_toEndOf="@id/tv_sign_up_child_3"
             app:layout_constraintTop_toTopOf="@id/tv_sign_up_child_3"
             app:strokeWidth="0dp">
@@ -272,6 +286,7 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/mcv_sign_up_agree_green_child_3"
             app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="@id/guide_sign_up_end_23"
             app:layout_constraintStart_toEndOf="@id/mcv_sign_up_agree_green_child_3"
             app:layout_constraintTop_toTopOf="@id/mcv_sign_up_agree_green_child_3" />
 
@@ -336,14 +351,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:layout_marginEnd="23dp"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_sign_up_next_gray_24"
             app:layout_constraintBottom_toBottomOf="@id/mcv_sign_up_agree_green_child_4"
             app:layout_constraintDimensionRatio="1"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guide_sign_up_end_23"
             app:layout_constraintStart_toEndOf="@id/mcv_sign_up_agree_green_child_4"
             app:layout_constraintTop_toTopOf="@id/mcv_sign_up_agree_green_child_4" />
 
