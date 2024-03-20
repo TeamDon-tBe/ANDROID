@@ -211,7 +211,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         homeFeedAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
-                binding.rvHome.smoothScrollToPosition(0)
+                if (positionStart == 0) scrollRecyclerViewToTop()
                 homeFeedAdapter.unregisterAdapterDataObserver(this)
             }
         })
