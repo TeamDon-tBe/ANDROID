@@ -51,6 +51,7 @@ constraintlayout = "2.1.4"
 dot-indicator = "5.0"
 kakao = "2.19.0"
 lottie = "5.0.2"
+amplitude = "1.+"
 
 [libraries]
 # kotlin
@@ -115,6 +116,7 @@ dot-indicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dot-indi
 kakao-login = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
 
 lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
+amplitude = { module = "com.amplitude:analytics-android", version.ref = "amplitude" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
