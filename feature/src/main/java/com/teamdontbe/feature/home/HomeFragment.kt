@@ -9,6 +9,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.util.fragment.setScrollTopOnReselect
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
@@ -218,9 +219,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     fun scrollRecyclerViewToTop() {
-        binding.rvHome.post {
-            binding.rvHome.smoothScrollToPosition(0)
-        }
+        setScrollTopOnReselect(R.id.fragment_home, R.id.bnv_main, binding.rvHome)
     }
 
     companion object {
