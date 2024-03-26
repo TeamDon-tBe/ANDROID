@@ -163,27 +163,29 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="28dp"
                 android:layout_marginBottom="14dp"
                 android:background="@drawable/sel_home_heart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_comment_like_num"
                 app:layout_constraintTop_toBottomOf="@id/tv_comment_content" />
 
             <TextView
                 android:id="@+id/tv_comment_like_num"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="14dp"
+                android:ellipsize="end"
                 android:gravity="start"
+                android:maxLines="1"
                 android:text="@{Integer.toString(comment.commentLikedNumber)}"
                 android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
                 android:textColor="@color/gray_11"
                 app:layout_constraintBottom_toBottomOf="@id/btn_comment_heart"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_comment_heart"
                 app:layout_constraintTop_toTopOf="@id/btn_comment_heart"
-                tools:text="54" />
+                tools:text="544" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
