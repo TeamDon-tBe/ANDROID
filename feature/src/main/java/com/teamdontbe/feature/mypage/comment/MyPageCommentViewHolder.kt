@@ -56,8 +56,11 @@ class MyPageCommentViewHolder(
         btnCommentHeart.setOnClickListener {
             onClickLikedBtn(data.commentId, btnCommentHeart.isSelected)
             val likeNumber = tvCommentLikeNum.text.toString()
-            tvCommentLikeNum.text =
-                if (btnCommentHeart.isSelected) (likeNumber.toInt() - 1).toString() else (likeNumber.toInt() + 1).toString()
+            val likeNumberChanged =
+                if (btnCommentHeart.isSelected) (likeNumber.toInt() - 1) else (likeNumber.toInt() + 1)
+            tvCommentLikeNum.text = likeNumberChanged.toString()
+            data.isLiked = !btnCommentHeart.isSelected
+            data.commentLikedNumber = likeNumberChanged
             btnCommentHeart.isSelected = !btnCommentHeart.isSelected
         }
     }

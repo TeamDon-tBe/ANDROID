@@ -295,6 +295,9 @@ class HomeDetailFragment :
 
     private fun handleCommentPostingSuccess() {
         homeDetailCommentAdapter.refresh()
+        binding.rvHomeDetail.post {
+            binding.rvHomeDetail.smoothScrollToPosition(homeDetailCommentAdapter.itemCount + 1)
+        }
         requireContext().hideKeyboard(binding.root)
         (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
             View.VISIBLE

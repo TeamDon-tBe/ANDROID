@@ -29,14 +29,12 @@ import com.teamdontbe.feature.util.pagingSubmitData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
     private lateinit var homeFeedAdapter: HomePagingFeedAdapter
-    private var deleteFeedPosition: Int = -1
 
     override fun initView() {
         statusBarColorOf(R.color.gray_1)
@@ -81,7 +79,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 feedData.memberId == homeViewModel.getMemberId(),
                 it,
             )
-            deleteFeedPosition = position
         }
     }
 
@@ -179,10 +176,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun handleDeleteFeedSuccess() {
-        if (deleteFeedPosition != -1) {
-            homeFeedAdapter.deleteItem(deleteFeedPosition)
-            deleteFeedPosition = -1
-        }
+        homeFeedAdapter.refresh()
         val dialog = DeleteCompleteDialogFragment()
         dialog.show(childFragmentManager, DELETE_POSTING)
     }
@@ -217,7 +211,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         homeFeedAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
-                binding.rvHome.smoothScrollToPosition(0)
+                if (positionStart == 0) scrollRecyclerViewToTop()
                 homeFeedAdapter.unregisterAdapterDataObserver(this)
             }
         })

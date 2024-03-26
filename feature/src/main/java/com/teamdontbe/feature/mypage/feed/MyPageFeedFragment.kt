@@ -56,7 +56,7 @@ class MyPageFeedFragment :
         initDeleteObserve()
         initTransparentObserve()
         stateFeedItemNull()
-        scrollRecyclerViewToTop()
+        //scrollRecyclerViewToTop()
     }
 
     private fun initMemberProfile() {

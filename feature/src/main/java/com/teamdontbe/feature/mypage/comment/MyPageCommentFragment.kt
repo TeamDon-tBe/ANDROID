@@ -55,7 +55,7 @@ class MyPageCommentFragment :
         initDeleteObserve()
         initTransparentObserve()
         stateCommentItemNull()
-        scrollRecyclerViewToTop()
+        //scrollRecyclerViewToTop()
     }
 
     private fun initMemberProfile() {

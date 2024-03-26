@@ -31,8 +31,7 @@ class HomeDetailCommentViewHolder(
             ivCommentGhostFillGreen.isVisible = data.memberId !== userId
             dividerComment.isVisible = data.memberId !== userId
             btnCommentHeart.isSelected = data.isLiked
-
-            dividerCommentDivideBottom.isVisible = (lastPosition !== position)
+            dividerCommentDivideBottom.isVisible = (lastPosition !== absoluteAdapterPosition)
             if (data.isGhost) {
                 setFeedTransparent(-85)
                 binding.tvCommentTransparency.text = context.getString(
@@ -63,8 +62,11 @@ class HomeDetailCommentViewHolder(
             btnCommentHeart.setOnDuplicateBlockClick {
                 onClickLikedBtn(data.commentId, btnCommentHeart.isSelected)
                 val likeNumber = tvCommentLikeNum.text.toString()
-                tvCommentLikeNum.text =
-                    if (btnCommentHeart.isSelected) (likeNumber.toInt() - 1).toString() else (likeNumber.toInt() + 1).toString()
+                val likeNumberChanged =
+                    if (btnCommentHeart.isSelected) (likeNumber.toInt() - 1) else (likeNumber.toInt() + 1)
+                tvCommentLikeNum.text = likeNumberChanged.toString()
+                data.isLiked = !btnCommentHeart.isSelected
+                data.commentLikedNumber = likeNumberChanged
                 btnCommentHeart.isSelected = !btnCommentHeart.isSelected
             }
         }

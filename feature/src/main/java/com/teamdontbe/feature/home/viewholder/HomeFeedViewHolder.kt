@@ -69,8 +69,10 @@ class HomeFeedViewHolder(
                     onClickLikedBtn(contentId, btnHomeHeart.isSelected)
                 }
                 val likeNumber = tvHomeHeartNum.text.toString()
-                tvHomeHeartNum.text =
-                    if (btnHomeHeart.isSelected) (likeNumber.toInt() - 1).toString() else (likeNumber.toInt() + 1).toString()
+                val likeNumberChanged = if (btnHomeHeart.isSelected) (likeNumber.toInt() - 1) else (likeNumber.toInt() + 1)
+                tvHomeHeartNum.text = likeNumberChanged.toString()
+                data.isLiked = !btnHomeHeart.isSelected
+                data.contentLikedNumber = likeNumberChanged
                 btnHomeHeart.isSelected = !btnHomeHeart.isSelected
             }
         }
