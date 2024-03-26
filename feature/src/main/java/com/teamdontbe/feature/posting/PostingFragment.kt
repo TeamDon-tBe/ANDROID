@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.fragment.colorOf
 import com.teamdontbe.core_ui.util.fragment.drawableOf
@@ -22,6 +23,7 @@ import com.teamdontbe.feature.databinding.FragmentPostingBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.dialog.PostingRestrictionDialogFragment
 import com.teamdontbe.feature.snackbar.UploadingSnackBar
+import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_UPLOAD
 import com.teamdontbe.feature.util.Debouncer
 import com.teamdontbe.feature.util.KeyStorage.BAN_POSTING
 import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
@@ -140,6 +142,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun initUploadingActivateBtnClickListener() {
         binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
+            trackEvent(CLICK_POST_UPLOAD)
             postingViewModel.posting(binding.etPostingContent.text.toString())
         }
     }

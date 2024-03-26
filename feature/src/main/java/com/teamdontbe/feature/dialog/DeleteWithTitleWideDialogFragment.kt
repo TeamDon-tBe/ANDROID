@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import com.kakao.sdk.user.UserApiClient
 import com.teamdontbe.core_ui.base.BindingDialogFragment
+import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.context.dialogFragmentResize
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
@@ -18,6 +19,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentDeleteWithTitleWideDialogBinding
 import com.teamdontbe.feature.login.LoginActivity
 import com.teamdontbe.feature.mypage.authwithdraw.MyPageAuthWithdrawViewModel
+import com.teamdontbe.feature.util.AmplitudeTag.CLICK_ACCOUNT_DELETE_DONE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -81,6 +83,7 @@ class DeleteWithTitleWideDialogFragment(
         binding.btnDeleteWithTitleWideDialogDelete.setOnClickListener {
             when (typeIsLogout) {
                 true -> {
+                    trackEvent(CLICK_ACCOUNT_DELETE_DONE)
                     withdrawViewModel.checkLogin(false)
                     navigateToLoginActivity()
                     dismiss()

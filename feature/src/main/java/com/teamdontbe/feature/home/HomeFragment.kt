@@ -9,6 +9,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
@@ -21,6 +22,8 @@ import com.teamdontbe.feature.dialog.DeleteCompleteDialogFragment
 import com.teamdontbe.feature.dialog.TransparentDialogFragment
 import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.ALARM_TRIGGER_TYPE_CONTENT
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
+import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_LIKE
+import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_VIEW
 import com.teamdontbe.feature.util.EventObserver
 import com.teamdontbe.feature.util.FeedItemDecorator
 import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
@@ -53,7 +56,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             onClickLikedBtn = ::onLikedBtnClick,
             onClickTransparentBtn = ::onTransparentBtnClick,
             onClickUserProfileBtn = ::navigateToMyPageFragment,
-            onClickToNavigateToHomeDetail = { feedData -> homeViewModel.openHomeDetail(feedData) },
+            onClickToNavigateToHomeDetail = { feedData ->
+                trackEvent(CLICK_POST_VIEW)
+                homeViewModel.openHomeDetail(feedData)
+            },
             userId = homeViewModel.getMemberId(),
         )
         homeFeedAdapter.apply {
@@ -99,6 +105,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         if (status) {
             homeViewModel.deleteFeedLiked(contentId)
         } else {
+            trackEvent(CLICK_POST_LIKE)
             homeViewModel.postFeedLiked(contentId)
         }
     }

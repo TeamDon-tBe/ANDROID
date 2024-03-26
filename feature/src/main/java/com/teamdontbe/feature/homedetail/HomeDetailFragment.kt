@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
@@ -30,6 +31,8 @@ import com.teamdontbe.feature.home.HomeFragment.Companion.KEY_HOME_DETAIL_FEED
 import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.snackbar.UploadingSnackBar
+import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_LIKE
+import com.teamdontbe.feature.util.AmplitudeTag.CLICK_REPLY_LIKE
 import com.teamdontbe.feature.util.BottomSheetTag.COMMENT
 import com.teamdontbe.feature.util.DialogTag.DELETE_COMPLETE
 import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
@@ -190,6 +193,7 @@ class HomeDetailFragment :
         if (status) {
             homeViewModel.deleteFeedLiked(id)
         } else {
+            trackEvent(CLICK_POST_LIKE)
             homeViewModel.postFeedLiked(id)
         }
     }
@@ -201,6 +205,7 @@ class HomeDetailFragment :
         if (status) {
             homeViewModel.deleteCommentLiked(id)
         } else {
+            trackEvent(CLICK_REPLY_LIKE)
             homeViewModel.postCommentLiked(id)
         }
     }
