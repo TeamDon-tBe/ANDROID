@@ -10,11 +10,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teamdontbe.core_ui.base.BindingFragment
-import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentOnboardingBinding
-import com.teamdontbe.feature.util.AmplitudeTag.CLICK_ACCOUNT_JOIN_DONE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -116,9 +114,6 @@ class OnboardingFragment :
 
     private fun initBtnOnboardingStartClickListener(introduction: String) {
         binding.btnOnboardingStart.setOnClickListener {
-            if ((onboardingViewModel.getIsNewUser()) || !onboardingViewModel.getCheckOnboarding()) trackEvent(
-                CLICK_ACCOUNT_JOIN_DONE
-            )
             val inputNickName = onboardingViewModel.getNickName()
 
             onboardingViewModel.posting(introduction)
