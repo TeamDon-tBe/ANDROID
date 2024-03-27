@@ -83,7 +83,6 @@ class DeleteWithTitleWideDialogFragment(
         binding.btnDeleteWithTitleWideDialogDelete.setOnClickListener {
             when (typeIsLogout) {
                 true -> {
-                    trackEvent(CLICK_ACCOUNT_DELETE_DONE)
                     withdrawViewModel.checkLogin(false)
                     navigateToLoginActivity()
                     dismiss()
@@ -93,6 +92,7 @@ class DeleteWithTitleWideDialogFragment(
                         if (error != null) {
                             Timber.e("연결 끊기 실패", error)
                         } else {
+                            trackEvent(CLICK_ACCOUNT_DELETE_DONE)
                             Timber.i("연결 끊기 성공. SDK에서 토큰 삭제 됨")
                             withdrawViewModel.patchWithdraw(selectedReason)
                         }
