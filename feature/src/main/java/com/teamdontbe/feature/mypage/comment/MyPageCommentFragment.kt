@@ -8,6 +8,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.teamdontbe.core_ui.base.BindingFragment
+import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.fragment.setScrollTopOnReselect
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
@@ -26,6 +27,8 @@ import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
 import com.teamdontbe.feature.mypage.feed.MyPageFeedFragment.Companion.ARG_MEMBER_PROFILE
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
+import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_VIEW
+import com.teamdontbe.feature.util.AmplitudeTag.CLICK_REPLY_LIKE
 import com.teamdontbe.feature.util.FeedItemDecorator
 import com.teamdontbe.feature.util.KeyStorage
 import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
@@ -75,6 +78,7 @@ class MyPageCommentFragment :
                 idFlag = memberProfile.idFlag,
                 onClickKebabBtn = ::clickKebabBtn,
                 onItemClicked = { commentData ->
+                    trackEvent(CLICK_POST_VIEW)
                     navigateToHomeDetailFragment(commentData.contentId ?: -1)
                 },
                 onClickLikedBtn = ::onLikedBtnClick,
@@ -124,6 +128,7 @@ class MyPageCommentFragment :
         if (status) {
             myPageCommentViewModel.deleteCommentLiked(contentId)
         } else {
+            trackEvent(CLICK_REPLY_LIKE)
             myPageCommentViewModel.postCommentLiked(contentId)
         }
     }

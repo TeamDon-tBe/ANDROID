@@ -44,4 +44,5 @@ dependencies {
     implementation(libs.coil.core)
     implementation(libs.bundles.retrofit)
     implementation(libs.kakao.login)
+    implementation(libs.amplitude)
 }

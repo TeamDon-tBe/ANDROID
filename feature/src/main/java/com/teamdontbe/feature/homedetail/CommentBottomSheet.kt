@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
+import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.fragment.colorOf
 import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
@@ -21,6 +22,7 @@ import com.teamdontbe.feature.databinding.BottomsheetCommentBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.posting.AnimateProgressBar
+import com.teamdontbe.feature.util.AmplitudeTag.CLICK_REPLY_UPLOAD
 import com.teamdontbe.feature.util.Debouncer
 import com.teamdontbe.feature.util.DialogTag.DELETE_COMMENT
 import dagger.hilt.android.AndroidEntryPoint
@@ -132,6 +134,7 @@ class CommentBottomSheet(
     private fun initUploadingBtnClickListener(textLength: Int) {
         binding.layoutUploadBar.btnUploadBarUpload.setOnDuplicateBlockClick {
             if (textLength in HomeDetailFragment.MIN_COMMENT_LENGTH until HomeDetailFragment.MAX_COMMENT_LENGTH) {
+                trackEvent(CLICK_REPLY_UPLOAD)
                 homeViewModel.postCommentPosting(
                     contentId,
                     binding.etCommentContent.text.toString(),

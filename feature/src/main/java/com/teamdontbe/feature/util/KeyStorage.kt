@@ -19,3 +19,13 @@ object BottomSheetTag {
     const val COMMENT = "comment"
     const val HOME_DETAIL_BOTTOM_SHEET = "home_detail_bottom_sheet"
 }
+
+object AmplitudeTag {
+    const val CLICK_POST_UPLOAD = "click_post_upload"
+    const val CLICK_REPLY_UPLOAD = "click_reply_upload"
+    const val CLICK_POST_VIEW = "click_post_view"
+    const val CLICK_POST_LIKE = "click_post_like"
+    const val CLICK_REPLY_LIKE = "click_reply_like"
+    const val CLICK_ACCOUNT_JOIN_DONE = "click_account_join_done"
+    const val CLICK_ACCOUNT_DELETE_DONE = "click_account_delete_done"
+}

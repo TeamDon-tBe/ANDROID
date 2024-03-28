@@ -24,12 +24,14 @@ internal fun Project.configureAndroidCommonPlugin() {
         defaultConfig {
             val dontbeBaseUrl = properties["dontbe.base.url"] as? String ?: ""
             val kakaoApiKey = properties["kakao.api.key"] as? String ?: ""
+            val amplitudeApiKey = properties["amplitude.api.key"] as? String ?: ""
 
             manifestPlaceholders["dontbeBaseUrl"] = properties["dontbe.base.url"] as String
             manifestPlaceholders["kakaoApiKey"] = properties["kakao.api.key"] as String
 
             buildConfigField("String", "DONTBE_BASE_URL", "\"${dontbeBaseUrl}\"")
             buildConfigField("String", "KAKAO_APP_KEY", "\"${kakaoApiKey}\"")
+            buildConfigField("String", "AMPLITUDE_API_KEY", "\"${amplitudeApiKey}\"")
         }
         buildFeatures.apply {
             viewBinding = true
