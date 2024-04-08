@@ -31,6 +31,7 @@ accompanist = "0.32.0"
 in-app-update = "2.1.0"
 google-services = "4.4.0"
 admob = "22.4.0"
+google-play-services = "18.3.0"
 
 # test
 junit = "4.13.2"
@@ -51,6 +52,8 @@ constraintlayout = "2.1.4"
 dot-indicator = "5.0"
 kakao = "2.19.0"
 lottie = "5.0.2"
+amplitude = "1.+"
+amplitude-ads = "18.0.1"
 
 [libraries]
 # kotlin
@@ -90,6 +93,7 @@ hilt-testing-compiler = { module = "com.google.dagger:hilt-android-compiler", ve
 # google
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
+google-play-services = { group = "com.google.android.gms", name = "play-services-base", version.ref = "google-play-services" }
 
 # test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -115,6 +119,8 @@ dot-indicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dot-indi
 kakao-login = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
 
 lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
+amplitude = { module = "com.amplitude:analytics-android", version.ref = "amplitude" }
+amplitude-ads = { module = "com.google.android.gms:play-services-ads-identifier", version.ref = "amplitude-ads" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

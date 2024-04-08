@@ -10,6 +10,21 @@ android {
     buildFeatures {
         dataBinding = true
     }
+
+    buildTypes {
+        debug {
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        release {
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
 }
 
 dependencies {
@@ -30,4 +45,6 @@ dependencies {
     implementation(libs.bundles.retrofit)
     implementation(libs.kakao.login)
     implementation(libs.lottie)
+    implementation(libs.amplitude.ads)
+    implementation(libs.google.play.services)
 }

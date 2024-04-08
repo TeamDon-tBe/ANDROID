@@ -21,6 +21,7 @@ import coil.load
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.teamdontbe.core_ui.base.BindingActivity
+import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.context.openKeyboard
@@ -33,6 +34,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.ActivitySignUpProfileBinding
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageBottomSheet.Companion.MY_PAGE_PROFILE
 import com.teamdontbe.feature.signup.SignUpAgreeActivity.Companion.SIGN_UP_AGREE
+import com.teamdontbe.feature.util.AmplitudeTag.CLICK_ACCOUNT_JOIN_DONE
 import com.teamdontbe.feature.util.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -283,12 +285,17 @@ class SignUpProfileActivity :
             val imgUrl = uriToTempFileWithCoil(photoUri)
 
             when (flag) {
-                SIGN_UP_AGREE -> handleSignUpAgree(
-                    nickName = nickName,
-                    optionalAgreement = optionalAgreementInSignUp,
-                    introduce = introduceText,
-                    imgUrl = imgUrl
-                )
+                SIGN_UP_AGREE -> {
+                    trackEvent(
+                        CLICK_ACCOUNT_JOIN_DONE
+                    )
+                    handleSignUpAgree(
+                        nickName = nickName,
+                        optionalAgreement = optionalAgreementInSignUp,
+                        introduce = introduceText,
+                        imgUrl = imgUrl
+                    )
+                }
 
                 MY_PAGE_PROFILE -> handleMyPageProfile(
                     nickName = nickName,
