@@ -21,6 +21,10 @@ class MyPageFeedViewHolder(
         binding.root.setOnClickListener {
             item?.let { onItemClicked(it) }
         }
+        binding.root.setOnLongClickListener {
+            binding.tvHomeFeedContent.setTextIsSelectable(true)
+            false
+        }
         binding.btnHomeKebab.setOnClickListener {
             item?.let { onClickKebabBtn(it, bindingAdapterPosition) }
         }

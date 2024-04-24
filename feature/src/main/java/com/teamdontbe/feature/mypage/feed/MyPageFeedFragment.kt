@@ -27,7 +27,6 @@ import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
-import com.teamdontbe.feature.util.AmplitudeTag
 import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_LIKE
 import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_VIEW
 import com.teamdontbe.feature.util.FeedItemDecorator
@@ -60,7 +59,6 @@ class MyPageFeedFragment :
         initDeleteObserve()
         initTransparentObserve()
         stateFeedItemNull()
-        //scrollRecyclerViewToTop()
     }
 
     private fun initMemberProfile() {
@@ -85,16 +83,18 @@ class MyPageFeedFragment :
                 },
                 onClickLikedBtn = ::onLikedBtnClick,
                 onClickTransparentBtn = ::onTransparentBtnClick,
-
             ).apply {
                 pagingSubmitData(
                     viewLifecycleOwner,
                     myPageFeedViewModel.getMyPageFeedList(memberProfile.id),
-                    pagingAdapter = this
+                    pagingAdapter = this,
                 )
             }
         binding.rvMyPagePosting.adapter =
-            myPageFeedAdapter.withLoadStateFooter(footer = PagingLoadingAdapter())
+            myPageFeedAdapter.withLoadStateHeaderAndFooter(
+                header = PagingLoadingAdapter(),
+                footer = PagingLoadingAdapter(),
+            )
 
         setUpItemDecorator()
     }
@@ -138,7 +138,7 @@ class MyPageFeedFragment :
         val dialog = MyPageTransparentDialogFragment(
             ALARM_TRIGGER_TYPE_CONTENT,
             targetMemberId,
-            alarmTriggerId
+            alarmTriggerId,
         )
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
@@ -251,7 +251,7 @@ class MyPageFeedFragment :
         myPageFeedAdapter.addLoadStateListener { combinedLoadStates ->
             val isEmpty =
                 combinedLoadStates.source.refresh is
-                LoadState.NotLoading && combinedLoadStates.append.endOfPaginationReached && myPageFeedAdapter.itemCount < 1
+                    LoadState.NotLoading && combinedLoadStates.append.endOfPaginationReached && myPageFeedAdapter.itemCount < 1
             when {
                 memberProfile.idFlag && isEmpty -> updateNoFeedUI()
                 !memberProfile.idFlag && isEmpty -> updateOtherUserNoFeedUI()
@@ -265,7 +265,7 @@ class MyPageFeedFragment :
         setScrollTopOnReselect(
             R.id.fragment_my_page,
             R.id.bnv_main,
-            binding.rvMyPagePosting
+            binding.rvMyPagePosting,
         )
     }
 
