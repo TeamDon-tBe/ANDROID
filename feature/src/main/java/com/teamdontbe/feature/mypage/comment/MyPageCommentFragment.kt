@@ -58,7 +58,7 @@ class MyPageCommentFragment :
         initDeleteObserve()
         initTransparentObserve()
         stateCommentItemNull()
-        //scrollRecyclerViewToTop()
+        // scrollRecyclerViewToTop()
     }
 
     private fun initMemberProfile() {
@@ -87,12 +87,15 @@ class MyPageCommentFragment :
                 pagingSubmitData(
                     viewLifecycleOwner,
                     myPageCommentViewModel.getMyPageCommentList(memberProfile.id),
-                    pagingAdapter = this
+                    pagingAdapter = this,
                 )
             }
 
         binding.rvMyPageComment.adapter =
-            myPageCommentAdapter.withLoadStateFooter(footer = PagingLoadingAdapter())
+            myPageCommentAdapter.withLoadStateHeaderAndFooter(
+                header = PagingLoadingAdapter(),
+                footer = PagingLoadingAdapter(),
+            )
 
         setUpItemDecorator()
     }
@@ -181,7 +184,7 @@ class MyPageCommentFragment :
     private fun stateCommentItemNull() {
         myPageCommentAdapter.addLoadStateListener { combinedLoadStates ->
             val isEmpty = combinedLoadStates.source.refresh is
-            LoadState.NotLoading && combinedLoadStates.append.endOfPaginationReached && myPageCommentAdapter.itemCount < 1
+                LoadState.NotLoading && combinedLoadStates.append.endOfPaginationReached && myPageCommentAdapter.itemCount < 1
             if (isEmpty) {
                 updateNoCommentUI()
             } else {
@@ -194,11 +197,14 @@ class MyPageCommentFragment :
         rvMyPageComment.isGone = true
         tvMyPageCommentNoData.apply {
             isVisible = true
-            text = if (memberProfile.idFlag) getString(R.string.my_page_comment_my_not_yet)
-            else getString(
-                R.string.my_page_comment_other_not_yet,
-                memberProfile.nickName
-            )
+            text = if (memberProfile.idFlag) {
+                getString(R.string.my_page_comment_my_not_yet)
+            } else {
+                getString(
+                    R.string.my_page_comment_other_not_yet,
+                    memberProfile.nickName,
+                )
+            }
         }
     }
 
@@ -224,7 +230,7 @@ class MyPageCommentFragment :
         val dialog = MyPageTransparentDialogFragment(
             ALARM_TRIGGER_TYPE_COMMENT,
             targetMemberId,
-            alarmTriggerId
+            alarmTriggerId,
         )
         dialog.show(childFragmentManager, HomeFragment.HOME_TRANSPARENT_DIALOG)
     }
@@ -241,7 +247,7 @@ class MyPageCommentFragment :
         setScrollTopOnReselect(
             R.id.fragment_my_page,
             R.id.bnv_main,
-            binding.rvMyPageComment
+            binding.rvMyPageComment,
         )
     }
 
