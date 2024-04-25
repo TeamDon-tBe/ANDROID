@@ -21,7 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_splash) {
     private val loginViewModel by viewModels<LoginViewModel>()
-    val appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
 
     override fun initView() {
         initSplash()
@@ -55,6 +54,7 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         if (requestCode == REQUEST_CODE_UPDATE) {
             if (resultCode != Activity.RESULT_OK) {
                 toast("업데이트가 취소 되었습니다.")
@@ -104,6 +104,7 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
 
     override fun onResume() {
         super.onResume()
+        val appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         appUpdateManager
             .appUpdateInfo
             .addOnSuccessListener { appUpdateInfo: AppUpdateInfo ->
