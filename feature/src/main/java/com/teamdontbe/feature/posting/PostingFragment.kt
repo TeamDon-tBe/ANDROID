@@ -137,7 +137,8 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private fun initLinkBtnClickListener() = with(binding) {
         layoutUploadBar.ivUploadLink.setOnClickListener {
             if (etPostingLink.isVisible) setLinkErrorMessageValidity(
-                linkValidity = true,
+                linkValidity = WEB_URL_PATTERN.matcher(binding.etPostingLink.text.toString())
+                    .find(),
                 linkCountValidity = true
             )
             handleLinkAndCancelBtnVisible(true)
@@ -150,7 +151,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             handleLinkAndCancelBtnVisible(false)
             etPostingLink.text.clear()
             etPostingContent.requestFocus()
-            setLinkErrorMessageValidity(linkValidity = false, linkCountValidity = false)
+            setLinkErrorMessageValidity(linkValidity = true, linkCountValidity = false)
             handleUploadProgressAndBtn()
         }
     }
@@ -165,8 +166,8 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             binding.etPostingContent.filters =
                 arrayOf(InputFilter.LengthFilter(POSTING_MAX - text.toString().length))
             totalContentLength = (binding.etPostingContent.text.toString() + text.toString()).length
-            handleLinkErrorMessage(WEB_URL_PATTERN.matcher(text.toString()).find())
             handleUploadProgressAndBtn()
+            handleLinkErrorMessage(WEB_URL_PATTERN.matcher(text.toString()).find())
             postingDebouncer.setDelay(text.toString(), POSTING_DEBOUNCE_DELAY) {}
         }
     }
