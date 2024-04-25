@@ -69,7 +69,8 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/layout_upload_bar"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@id/tv_comment_link_count_error"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appbar_comment">
@@ -139,7 +140,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/shape_white_fill_8_rect"
-                    app:layout_constraintBottom_toBottomOf="@id/et_comment_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/view_comment_feed_background" />
@@ -182,25 +183,92 @@
                     android:focusable="true"
                     android:gravity="top|start"
                     android:hint="@{feed.memberNickname + @string/et_comment_hint}"
-                    android:maxLength="500"
+                    android:maxLength="499"
                     android:paddingBottom="24dp"
                     android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
                     app:layout_constraintEnd_toEndOf="@id/view_comment_background"
                     app:layout_constraintStart_toStartOf="@id/tv_comment_profile_nickname"
                     app:layout_constraintTop_toBottomOf="@id/tv_comment_profile_nickname"
-                    tools:text="돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까? 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리를 자극하고 결국에는 돈비 과몰입, 돈비 사용자만 무진장 증가하는 지름길이 되는 것이 아닐까? 참 인생은 그렇네요.돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까? 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리를 자극하고 결국에는 돈비 과몰입, 돈비 사용자만 무진장 증가하는 지름길이 되는 것이 아닐까? 참 인생은 그렇네요.돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까? 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리">
+                    tools:text="@string/dummy">
 
                     <requestFocus />
                 </EditText>
 
+                <EditText
+                    android:id="@+id/et_comment_link"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="2dp"
+                    android:autoLink="web"
+                    android:background="@null"
+                    android:hint="@string/et_posting_link_hint"
+                    android:linksClickable="false"
+                    android:paddingVertical="13dp"
+                    android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+                    android:textColorHint="@color/gray_7"
+                    android:textColorLink="@color/black"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@id/iv_comment_cancel_link"
+                    app:layout_constraintStart_toStartOf="@id/et_comment_content"
+                    app:layout_constraintTop_toBottomOf="@id/et_comment_content" />
+
+                <ImageView
+                    android:id="@+id/iv_comment_cancel_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_complaint_delete_close"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/view_comment_background"
+                    app:layout_constraintTop_toTopOf="@id/et_comment_link" />
+
+                <TextView
+                    android:id="@+id/tv_comment_link_error"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shape_4_rect"
+                    android:backgroundTint="@color/gray_1"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/tv_posting_link_error"
+                    android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+                    android:textColor="@color/gray_12"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/iv_comment_cancel_link"
+                    app:layout_constraintStart_toStartOf="@id/et_comment_link"
+                    app:layout_constraintTop_toBottomOf="@id/et_comment_link" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/tv_comment_link_count_error"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_4_rect"
+            android:backgroundTint="@color/gray_1"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="8dp"
+            android:text="@string/tv_posting_link_count_error"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+            android:textColor="@color/gray_12"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/layout_upload_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <include
             android:id="@+id/layout_upload_bar"
             layout="@layout/view_upload_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
