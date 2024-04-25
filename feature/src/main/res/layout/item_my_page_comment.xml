@@ -63,15 +63,17 @@
             app:layout_constraintTop_toBottomOf="@id/tv_comment_user_name"
             tools:text="3분 전" />
 
-        <TextView
+        <com.teamdontbe.core_ui.view.NoUnderlineTextView
             android:id="@+id/tv_comment_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
             android:layout_marginEnd="11dp"
+            android:autoLink="web"
             android:text="@{feed.contentText}"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/black"
+            android:textColorLink="@color/link_blue"
             android:textIsSelectable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_comment_user_name"
