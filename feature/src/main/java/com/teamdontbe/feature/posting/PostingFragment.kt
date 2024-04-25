@@ -3,8 +3,11 @@ package com.teamdontbe.feature.posting
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
+import android.text.InputFilter
+import android.util.Patterns.WEB_URL
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -31,11 +34,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
+import java.util.regex.Pattern
 
 @AndroidEntryPoint
 class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragment_posting) {
     private val postingDebouncer = Debouncer<String>()
     private val postingViewModel by viewModels<PostingViewModel>()
+    private var totalContentLength = 0
 
     override fun initView() {
         statusBarColorOf(R.color.white)
@@ -49,6 +54,10 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
         initCancelBtnClickListener()
         initObservePost()
+
+        initLinkBtnClickListener()
+        initCancelLinkBtnClickListener()
+        checkLinkValidity()
     }
 
     private fun initObserveUser() {
@@ -125,6 +134,60 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         }.launchIn(lifecycleScope)
     }
 
+    private fun initLinkBtnClickListener() = with(binding) {
+        layoutUploadBar.ivUploadLink.setOnClickListener {
+            if (etPostingLink.isVisible) tvPostingLinkCountError.isVisible = true
+            etPostingLink.isVisible = true
+            ivPostingCancelLink.isVisible = true
+            etPostingLink.requestFocus()
+        }
+    }
+
+    private fun initCancelLinkBtnClickListener() = with(binding) {
+        ivPostingCancelLink.setOnClickListener {
+            etPostingLink.isVisible = false
+            etPostingLink.text.clear()
+            ivPostingCancelLink.isVisible = false
+            tvPostingLinkError.isVisible = false
+            tvPostingLinkCountError.isVisible = false
+            setUploadingBtnValidity(
+                R.color.primary,
+                R.color.black,
+            )
+            initUploadingActivateBtnClickListener()
+        }
+    }
+
+    private fun checkLinkValidity() = with(binding.etPostingLink) {
+        doAfterTextChanged {
+            binding.etPostingContent.filters =
+                arrayOf(InputFilter.LengthFilter(POSTING_MAX - text.toString().length))
+            totalContentLength = (binding.etPostingContent.text.toString() + text.toString()).length
+            handleUploadProgressAndBtn()
+            handleLinkErrorMessage(WEB_URL_PATTERN.matcher(text.toString()).find())
+            if (binding.tvPostingLinkCountError.isVisible) binding.tvPostingLinkCountError.isVisible =
+                false
+            postingDebouncer.setDelay(text.toString(), 1000L) {}
+        }
+    }
+
+    private fun handleLinkErrorMessage(linkValidity: Boolean) {
+        binding.tvPostingLinkError.isVisible = !linkValidity
+        if (linkValidity) {
+            setUploadingBtnValidity(
+                R.color.primary,
+                R.color.black,
+            )
+            initUploadingActivateBtnClickListener()
+        } else {
+            setUploadingBtnValidity(
+                R.color.gray_3,
+                R.color.gray_9
+            )
+            initUploadingDeactivateBtnClickListener()
+        }
+    }
+
     private fun initCancelBtnClickListener() {
         binding.appbarPosting.tvAppbarCancel.setOnClickListener {
             if (binding.etPostingContent.text.isNotEmpty()) {
@@ -143,7 +206,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private fun initUploadingActivateBtnClickListener() {
         binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
             trackEvent(CLICK_POST_UPLOAD)
-            postingViewModel.posting(binding.etPostingContent.text.toString())
+            postingViewModel.posting(binding.etPostingContent.text.toString() + "\n" + binding.etPostingLink.text.toString())
         }
     }
 
@@ -157,51 +220,57 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private fun initEditTextBtn() {
         binding.run {
             etPostingContent.doAfterTextChanged {
-                val animateProgressBar =
-                    AnimateProgressBar(
-                        layoutUploadBar.pbUploadBarInput,
-                        0f,
-                        etPostingContent.text.toString().length.toFloat(),
-                    )
-
-                when {
-                    etPostingContent.text.toString().length in POSTING_MIN..POSTING_MAX -> {
-                        updateProgress(
-                            R.drawable.shape_primary_line_circle,
-                            etPostingContent.text.toString().length,
-                            R.color.primary,
-                            R.color.black,
-                        ) {
-                            initUploadingActivateBtnClickListener()
-                        }
-                    }
-
-                    etPostingContent.text.toString().length >= POSTING_MAX + 1 -> {
-                        updateProgress(
-                            R.drawable.shape_error_line_circle,
-                            etPostingContent.text.toString().length,
-                            R.color.gray_3,
-                            R.color.gray_9,
-                        ) {
-                            initUploadingDeactivateBtnClickListener()
-                        }
-                    }
-
-                    else -> {
-                        updateProgress(
-                            R.drawable.shape_primary_line_circle,
-                            0,
-                            R.color.gray_3,
-                            R.color.gray_9,
-                        ) {
-                            initUploadingDeactivateBtnClickListener()
-                        }
-                    }
-                }
-                layoutUploadBar.pbUploadBarInput.startAnimation(animateProgressBar)
-                postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}
+                etPostingLink.filters =
+                    arrayOf(InputFilter.LengthFilter(POSTING_MAX - etPostingContent.text.toString().length))
+                totalContentLength =
+                    (etPostingContent.text.toString() + etPostingLink.text.toString()).length
+                handleUploadProgressAndBtn()
             }
         }
+    }
+
+    private fun handleUploadProgressAndBtn() = with(binding) {
+        val animateProgressBar = AnimateProgressBar(
+            layoutUploadBar.pbUploadBarInput,
+            0f,
+            totalContentLength.toFloat(),
+        )
+        when {
+            totalContentLength in POSTING_MIN..POSTING_MAX -> {
+                updateProgress(
+                    R.drawable.shape_primary_line_circle,
+                    totalContentLength,
+                    R.color.primary,
+                    R.color.black,
+                ) {
+                    initUploadingActivateBtnClickListener()
+                }
+            }
+
+            totalContentLength >= POSTING_MAX + 1 -> {
+                updateProgress(
+                    R.drawable.shape_error_line_circle,
+                    totalContentLength,
+                    R.color.gray_3,
+                    R.color.gray_9,
+                ) {
+                    initUploadingDeactivateBtnClickListener()
+                }
+            }
+
+            else -> {
+                updateProgress(
+                    R.drawable.shape_primary_line_circle,
+                    0,
+                    R.color.gray_3,
+                    R.color.gray_9,
+                ) {
+                    initUploadingDeactivateBtnClickListener()
+                }
+            }
+        }
+        layoutUploadBar.pbUploadBarInput.startAnimation(animateProgressBar)
+        postingDebouncer.setDelay(etPostingContent.text.toString(), 1000L) {}
     }
 
     private fun FragmentPostingBinding.updateProgress(
@@ -213,20 +282,26 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     ) {
         layoutUploadBar.pbUploadBarInput.progressDrawable = drawableOf(progressDrawableResId)
         layoutUploadBar.pbUploadBarInput.progress = textLength
+        setUploadingBtnValidity(backgroundTintResId, textColorResId)
+        clickListener.invoke()
+    }
 
-        layoutUploadBar.btnUploadBarUpload.backgroundTintList =
-            ColorStateList.valueOf(
-                colorOf(backgroundTintResId),
-            )
-        layoutUploadBar.btnUploadBarUpload.setTextColor(
+    private fun setUploadingBtnValidity(
+        backgroundTintResId: Int,
+        textColorResId: Int,
+    ) {
+        binding.layoutUploadBar.btnUploadBarUpload.backgroundTintList = ColorStateList.valueOf(
+            colorOf(backgroundTintResId),
+        )
+        binding.layoutUploadBar.btnUploadBarUpload.setTextColor(
             colorOf(textColorResId),
         )
-        clickListener.invoke()
     }
 
     companion object {
         const val POSTING_MIN = 1
-        const val POSTING_MAX = 499
+        const val POSTING_MAX = 498
         const val TRANSPARENT_LIMIT = -85
+        val WEB_URL_PATTERN: Pattern = WEB_URL
     }
 }
