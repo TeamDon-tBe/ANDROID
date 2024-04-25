@@ -47,4 +47,5 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.amplitude.ads)
     implementation(libs.google.play.services)
+    implementation(libs.app.update)
 }
