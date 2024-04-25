@@ -98,7 +98,7 @@
     <!-- 답글 -->
     <string name="tv_comment_appbar_title">답글 달기</string>
     <string name="tv_posting_loading">게시 중...</string>
-    <string name="et_comment_hint">님에게 답글 남기기...\n\n\n\n\n\n\n\n\n\n\n\</string>
+    <string name="et_comment_hint">님에게 답글 남기기...</string>
     <string name="tv_home_detail_input">님에게 답글 남기기</string>
     <!-- 마이 페이지 화면 -->
     <string name="my_page_nickname">don’t be master</string>
@@ -205,5 +205,6 @@
         <item>Don\'t be는 누구도 상처 받지 않고\n스트레스 받지 않는 커뮤니티를 만들려고 해요.</item>
         <item>저희는 Don\'t be를 통해 온라인 환경이\n조금 더 온화해지기를 바라요.</item>
     </string-array>
-    <string name="dummy">testte</string>
+    <string name="dummy">돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까? 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리를 자극하고 결국에는 돈비 과몰입, 돈비 사용자만 무진장 증가하는 지름길이 되는 것이 아닐까? 참 인생은 그렇네요.돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까? 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리를 자극하고 결국에는 돈비 과몰입, 돈비 사용자만 무진장 증가하는 지름길이 되는 것이 아닐까? 참 인생은 그렇네요.돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까?
+사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리</string>
 </resources>
