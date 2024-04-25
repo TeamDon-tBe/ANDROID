@@ -58,7 +58,7 @@
     <string name="content_description_iv_onboarding_third">온보딩 세번째 사진입니다.</string>
     <string name="tv_onboarding_fourth_title">DON\'T BE에\n 첫 인사를 남겨볼까요?</string>
     <string name="et_onboarding_fourth_introduction">한문장으로 소개를 남겨주세요!</string>
-    <string name="tv_onboarding_fourth_description">설정한 닉네임, 한 줄 소개는 설정에서 변경 가능해요! \n작성한 한 줄 소개는 게시글로 업로드 돼요.</string>
+    <string name="tv_onboarding_fourth_description">작성한 첫 인사는 한 줄 소개뿐만 아니라\n게시글로 함께 업로드돼요.</string>
     <!-- 약관동의 화면 -->
     <string name="sign_up_agree_title">약관동의</string>
     <string name="sign_up_agree_description">DON’T BE와 함께하기 전\n필요한 약관들을 확인해주세요!</string>
