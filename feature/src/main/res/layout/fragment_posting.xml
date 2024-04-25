@@ -67,7 +67,7 @@
                     android:focusable="true"
                     android:gravity="top|start"
                     android:hint="@string/posting_content_hint"
-                    android:maxLength="500"
+                    android:maxLength="499"
                     android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
