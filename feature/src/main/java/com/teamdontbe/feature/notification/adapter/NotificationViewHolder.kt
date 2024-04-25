@@ -103,20 +103,20 @@ class NotificationViewHolder(
         endIndex: Int = 0,
         data: NotiEntity,
     ): SpannableStringBuilder {
-        val text = data.memberNickname + binding.root.context.getString(resId)
+        val text = data.triggerMemberNickname + binding.root.context.getString(resId)
         val spannableText = SpannableStringBuilder(text)
         if (data.notificationTriggerType == "contentLiked" || data.notificationTriggerType == "comment" || data.notificationTriggerType == "commentLiked") {
             spannableText.setSpan(
                 clickableSpan(data),
                 0,
-                data.memberNickname.length + endIndex,
+                data.triggerMemberNickname.length + endIndex,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
         spannableText.setSpan(
             StyleSpan(R.font.font_pretendard_semibold),
             0,
-            data.memberNickname.length + endIndex,
+            data.triggerMemberNickname.length + endIndex,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
         )
         return spannableText
