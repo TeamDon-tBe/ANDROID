@@ -7,75 +7,148 @@
 
     </data>
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:fillViewport="true">
+        android:background="@color/white">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <include
+            android:id="@+id/appbar_posting"
+            layout="@layout/view_appbar"
+            app:title="@{@string/posting_appbar_title}" />
 
-            <include
-                android:id="@+id/appbar_posting"
-                layout="@layout/view_appbar"
-                app:title="@{@string/posting_appbar_title}" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_posting_profile_img"
+            android:layout_width="40dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="32dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_posting"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+            tools:src="@drawable/img_posting_profile" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_posting_profile_img"
-                android:layout_width="40dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="27dp"
-                android:layout_marginTop="32dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/appbar_posting"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-                tools:src="@drawable/img_posting_profile" />
+        <TextView
+            android:id="@+id/tv_posting_profile_nickname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="30dp"
+            android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_posting_profile_img"
+            app:layout_constraintTop_toTopOf="@id/iv_posting_profile_img"
+            tools:text="뚜비요" />
 
-            <TextView
-                android:id="@+id/tv_posting_profile_nickname"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="7dp"
-                android:layout_marginEnd="30dp"
-                android:textAppearance="@style/TextAppearance.DontBe.body_semi_14"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_posting_profile_img"
-                app:layout_constraintTop_toTopOf="@id/iv_posting_profile_img"
-                tools:text="뚜비요" />
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@id/tv_posting_link_count_error"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_posting_profile_img"
+            app:layout_constraintTop_toBottomOf="@id/tv_posting_profile_nickname">
 
-            <EditText
-                android:id="@+id/et_posting_content"
-                style="@style/EditTextStyle"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="7dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="30dp"
-                android:background="@null"
-                android:focusable="true"
-                android:gravity="top|start"
-                android:hint="@string/posting_content_hint"
-                android:maxLength="500"
-                android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
-                app:layout_constraintBottom_toTopOf="@id/layout_upload_bar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_posting_profile_img"
-                app:layout_constraintTop_toBottomOf="@id/tv_posting_profile_nickname" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <include
-                android:id="@+id/layout_upload_bar"
-                layout="@layout/view_upload_bar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                <EditText
+                    android:id="@+id/et_posting_content"
+                    style="@style/EditTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@null"
+                    android:focusable="true"
+                    android:gravity="top|start"
+                    android:hint="@string/posting_content_hint"
+                    android:maxLength="500"
+                    android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <EditText
+                    android:id="@+id/et_posting_link"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="2dp"
+                    android:autoLink="web"
+                    android:background="@null"
+                    android:hint="@string/et_posting_link_hint"
+                    android:linksClickable="false"
+                    android:paddingVertical="13dp"
+                    android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+                    android:textColorHint="@color/gray_7"
+                    android:textColorLink="@color/black"
+                    android:visibility="gone"
+                    app:background="@null"
+                    app:layout_constraintEnd_toStartOf="@id/iv_posting_cancel_link"
+                    app:layout_constraintStart_toStartOf="@id/et_posting_content"
+                    app:layout_constraintTop_toBottomOf="@id/et_posting_content" />
 
-    </ScrollView>
+                <ImageView
+                    android:id="@+id/iv_posting_cancel_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_complaint_delete_close"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/et_posting_link" />
+
+                <TextView
+                    android:id="@+id/tv_posting_link_error"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/shape_4_rect"
+                    android:backgroundTint="@color/gray_1"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/tv_posting_link_error"
+                    android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+                    android:textColor="@color/gray_12"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/iv_posting_cancel_link"
+                    app:layout_constraintStart_toStartOf="@id/et_posting_link"
+                    app:layout_constraintTop_toBottomOf="@id/et_posting_link" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/tv_posting_link_count_error"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_4_rect"
+            android:backgroundTint="@color/gray_1"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="8dp"
+            android:text="@string/tv_posting_link_count_error"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
+            android:textColor="@color/gray_12"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/layout_upload_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <include
+            android:id="@+id/layout_upload_bar"
+            layout="@layout/view_upload_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
