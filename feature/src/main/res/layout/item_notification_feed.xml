@@ -46,6 +46,7 @@
             android:layout_marginEnd="70dp"
             android:breakStrategy="simple"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
+            android:textColor="@color/gray_12"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_notification_profile"
