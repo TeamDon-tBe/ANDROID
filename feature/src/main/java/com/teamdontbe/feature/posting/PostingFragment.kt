@@ -41,6 +41,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private val postingDebouncer = Debouncer<String>()
     private val postingViewModel by viewModels<PostingViewModel>()
     private var totalContentLength = 0
+    private var linkValidity = true
 
     override fun initView() {
         statusBarColorOf(R.color.white)
@@ -152,6 +153,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             etPostingLink.text.clear()
             etPostingContent.requestFocus()
             setLinkErrorMessageValidity(linkValidity = true, linkCountValidity = false)
+            linkValidity = true
             handleUploadProgressAndBtn()
         }
     }
@@ -173,6 +175,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     }
 
     private fun handleLinkErrorMessage(linkValidity: Boolean) {
+        this.linkValidity = linkValidity
         setLinkErrorMessageValidity(linkValidity, false)
         setUploadingBtnValidity(linkValidity)
     }
@@ -247,7 +250,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             totalContentLength.toFloat(),
         )
         when {
-            totalContentLength in POSTING_MIN..POSTING_MAX_WITH_LINK -> {
+            (totalContentLength in POSTING_MIN..POSTING_MAX_WITH_LINK) && linkValidity -> {
                 updateProgress(
                     R.drawable.shape_primary_line_circle,
                     totalContentLength,

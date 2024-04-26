@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -23,10 +24,12 @@ import com.teamdontbe.feature.databinding.BottomsheetCommentBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.COMMENT_DEBOUNCE_DELAY
-import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.MAX_COMMENT_LENGTH
-import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.MIN_COMMENT_LENGTH
 import com.teamdontbe.feature.posting.AnimateProgressBar
-import com.teamdontbe.feature.posting.PostingFragment
+import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_DEBOUNCE_DELAY
+import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_MAX
+import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_MAX_WITH_LINK
+import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_MIN
+import com.teamdontbe.feature.posting.PostingFragment.Companion.WEB_URL_PATTERN
 import com.teamdontbe.feature.util.AmplitudeTag.CLICK_REPLY_UPLOAD
 import com.teamdontbe.feature.util.Debouncer
 import com.teamdontbe.feature.util.DialogTag.DELETE_COMMENT
@@ -82,7 +85,7 @@ class CommentBottomSheet(
     private fun initLinkBtnClickListener() = with(binding) {
         layoutUploadBar.ivUploadLink.setOnClickListener {
             if (etCommentLink.isVisible) setLinkErrorMessageValidity(
-                linkValidity = PostingFragment.WEB_URL_PATTERN.matcher(binding.etCommentLink.text.toString())
+                linkValidity = WEB_URL_PATTERN.matcher(binding.etCommentLink.text.toString())
                     .find(),
                 linkCountValidity = true
             )
@@ -110,17 +113,17 @@ class CommentBottomSheet(
     private fun checkLinkValidity() = with(binding.etCommentLink) {
         doAfterTextChanged {
             binding.etCommentContent.filters =
-                arrayOf(android.text.InputFilter.LengthFilter(com.teamdontbe.feature.posting.PostingFragment.POSTING_MAX - text.toString().length))
+                arrayOf(InputFilter.LengthFilter(POSTING_MAX - text.toString().length))
             totalCommentLength = (binding.etCommentContent.text.toString() + text.toString()).length
             handleLinkErrorMessage(
-                com.teamdontbe.feature.posting.PostingFragment.WEB_URL_PATTERN.matcher(
+                WEB_URL_PATTERN.matcher(
                     text.toString()
                 ).find()
             )
             setUploadingCommentState(totalCommentLength)
             commentDebouncer.setDelay(
                 text.toString(),
-                com.teamdontbe.feature.posting.PostingFragment.POSTING_DEBOUNCE_DELAY
+                POSTING_DEBOUNCE_DELAY
             ) {}
         }
     }
@@ -138,6 +141,8 @@ class CommentBottomSheet(
 
     private fun initEditText() = with(binding) {
         etCommentContent.doAfterTextChanged { text ->
+            etCommentLink.filters =
+                arrayOf(InputFilter.LengthFilter(POSTING_MAX - text.toString().length))
             totalCommentLength =
                 (etCommentContent.text.toString() + etCommentLink.text.toString()).length
             setUploadingCommentState(totalCommentLength)
@@ -156,10 +161,10 @@ class CommentBottomSheet(
     }
 
     private fun getProgressBarDrawableId(textLength: Int): Int =
-        if (textLength >= MAX_COMMENT_LENGTH) R.drawable.shape_error_line_circle else R.drawable.shape_primary_line_circle
+        if (textLength >= POSTING_MAX_WITH_LINK) R.drawable.shape_error_line_circle else R.drawable.shape_primary_line_circle
 
     private fun getButtonBackgroundTint(textLength: Int): ColorStateList =
-        if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH && linkValidity) {
+        if (textLength in POSTING_MIN..POSTING_MAX_WITH_LINK && linkValidity) {
             ColorStateList.valueOf(
                 colorOf(R.color.primary),
             )
@@ -168,7 +173,7 @@ class CommentBottomSheet(
         }
 
     private fun getButtonTextColor(textLength: Int): Int =
-        if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH && linkValidity) {
+        if (textLength in POSTING_MIN..POSTING_MAX_WITH_LINK && linkValidity) {
             colorOf(R.color.black)
         } else {
             colorOf(
@@ -213,11 +218,11 @@ class CommentBottomSheet(
 
     private fun initUploadingBtnClickListener(textLength: Int, linkValidity: Boolean) {
         binding.layoutUploadBar.btnUploadBarUpload.setOnDuplicateBlockClick {
-            if (textLength in MIN_COMMENT_LENGTH until MAX_COMMENT_LENGTH && linkValidity) {
+            if (textLength in POSTING_MIN..POSTING_MAX_WITH_LINK && linkValidity) {
                 trackEvent(CLICK_REPLY_UPLOAD)
                 homeViewModel.postCommentPosting(
                     contentId,
-                    binding.etCommentContent.text.toString(),
+                    binding.etCommentContent.text.toString() + "\n" + binding.etCommentLink.text.toString()
                 )
                 dismiss()
             }
