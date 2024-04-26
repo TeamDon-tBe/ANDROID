@@ -107,11 +107,17 @@ class NotificationViewHolder(
         val text = data.triggerMemberNickname + binding.root.context.getString(resId)
         val spannableText = SpannableStringBuilder(text)
         when (data.notificationTriggerType) {
-            in listOf("contentLiked", "contentLiked", "commentLiked") -> {
+            in listOf("contentLiked", "comment", "commentLiked") -> {
                 spannableText.setSpan(
-                    clickableSpan(data),
+                    clickableSpan(data, true),
                     0,
                     data.triggerMemberNickname.length + endIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                spannableText.setSpan(
+                    clickableSpan(data, false),
+                    data.triggerMemberNickname.length + endIndex + 1,
+                    spannableText.length,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
                 binding.tvNotificationFeed.movementMethod = LinkMovementMethod.getInstance()
@@ -126,9 +132,12 @@ class NotificationViewHolder(
         return spannableText
     }
 
-    private fun clickableSpan(data: NotiEntity) = object : ClickableSpan() {
+    private fun clickableSpan(data: NotiEntity, isNickname: Boolean) = object : ClickableSpan() {
         override fun onClick(view: View) {
-            if (!data.isDeleted) onClickUserProfileBtn(data.triggerMemberId)
+            if (!data.isDeleted && isNickname) onClickUserProfileBtn(data.triggerMemberId) else click(
+                data,
+                bindingAdapterPosition
+            )
         }
 
         override fun updateDrawState(ds: TextPaint) {
