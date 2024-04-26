@@ -5,6 +5,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.TextPaint
+import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.StyleSpan
 import android.view.View
@@ -105,13 +106,16 @@ class NotificationViewHolder(
     ): SpannableStringBuilder {
         val text = data.triggerMemberNickname + binding.root.context.getString(resId)
         val spannableText = SpannableStringBuilder(text)
-        if (data.notificationTriggerType == "contentLiked" || data.notificationTriggerType == "comment" || data.notificationTriggerType == "commentLiked") {
-            spannableText.setSpan(
-                clickableSpan(data),
-                0,
-                data.triggerMemberNickname.length + endIndex,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
+        when (data.notificationTriggerType) {
+            in listOf("contentLiked", "contentLiked", "commentLiked") -> {
+                spannableText.setSpan(
+                    clickableSpan(data),
+                    0,
+                    data.triggerMemberNickname.length + endIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                binding.tvNotificationFeed.movementMethod = LinkMovementMethod.getInstance()
+            }
         }
         spannableText.setSpan(
             StyleSpan(R.font.font_pretendard_semibold),
