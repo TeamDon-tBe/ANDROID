@@ -83,7 +83,8 @@ class OnboardingFragment :
                             R.string.tv_onboarding_skip,
                         )
                     }
-                checkIsNewUser()
+                if (position in 0..2) checkIsNewUser() else binding.tvOnboardingSkip.isVisible =
+                    true
             }
         }
 

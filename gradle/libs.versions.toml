@@ -94,6 +94,8 @@ hilt-testing-compiler = { module = "com.google.dagger:hilt-android-compiler", ve
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
 google-play-services = { group = "com.google.android.gms", name = "play-services-base", version.ref = "google-play-services" }
+app-update = { module = "com.google.android.play:app-update", version.ref = "in-app-update" }
+app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "in-app-update" }
 
 # test
 junit = { group = "junit", name = "junit", version.ref = "junit" }

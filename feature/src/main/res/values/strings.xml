@@ -15,6 +15,9 @@
     <string name="posting_appbar_title">새로운 글</string>
     <string name="posting_content_hint">무슨 고민이 있나요?</string>
     <string name="posting_btn">게시</string>
+    <string name="et_posting_link_hint">URL</string>
+    <string name="tv_posting_link_error">아직 링크로 인식되지 않아요. 다시 확인해 주세요.</string>
+    <string name="tv_posting_link_count_error">링크는 한 개까지만 삽입할 수 있어요.</string>
     <!-- 노티 화면 -->
     <string name="notification_appbar_title">알림</string>
     <string name="notification_feed_content_liked">님이 회원님의 글을 좋아합니다.</string>
@@ -55,7 +58,7 @@
     <string name="content_description_iv_onboarding_third">온보딩 세번째 사진입니다.</string>
     <string name="tv_onboarding_fourth_title">DON\'T BE에\n 첫 인사를 남겨볼까요?</string>
     <string name="et_onboarding_fourth_introduction">한문장으로 소개를 남겨주세요!</string>
-    <string name="tv_onboarding_fourth_description">설정한 닉네임, 한 줄 소개는 설정에서 변경 가능해요! \n작성한 한 줄 소개는 게시글로 업로드 돼요.</string>
+    <string name="tv_onboarding_fourth_description">작성한 첫 인사는 한 줄 소개뿐만 아니라\n게시글로 함께 업로드돼요.</string>
     <!-- 약관동의 화면 -->
     <string name="sign_up_agree_title">약관동의</string>
     <string name="sign_up_agree_description">DON’T BE와 함께하기 전\n필요한 약관들을 확인해주세요!</string>
@@ -95,7 +98,7 @@
     <!-- 답글 -->
     <string name="tv_comment_appbar_title">답글 달기</string>
     <string name="tv_posting_loading">게시 중...</string>
-    <string name="et_comment_hint">님에게 답글 남기기...\n\n\n\n\n\n\n\n\n\n\n\</string>
+    <string name="et_comment_hint">님에게 답글 남기기...</string>
     <string name="tv_home_detail_input">님에게 답글 남기기</string>
     <!-- 마이 페이지 화면 -->
     <string name="my_page_nickname">don’t be master</string>
@@ -202,4 +205,6 @@
         <item>Don\'t be는 누구도 상처 받지 않고\n스트레스 받지 않는 커뮤니티를 만들려고 해요.</item>
         <item>저희는 Don\'t be를 통해 온라인 환경이\n조금 더 온화해지기를 바라요.</item>
     </string-array>
+    <string name="dummy">돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까? 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리를 자극하고 결국에는 돈비 과몰입, 돈비 사용자만 무진장 증가하는 지름길이 되는 것이 아닐까? 참 인생은 그렇네요.돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까? 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리를 자극하고 결국에는 돈비 과몰입, 돈비 사용자만 무진장 증가하는 지름길이 되는 것이 아닐까? 참 인생은 그렇네요.돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까?
+사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리</string>
 </resources>

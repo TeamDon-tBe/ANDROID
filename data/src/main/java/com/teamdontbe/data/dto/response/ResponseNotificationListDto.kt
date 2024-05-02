@@ -28,6 +28,8 @@ data class ResponseNotificationListDto(
     val isDeleted: Boolean,
     @SerialName("notificationId")
     val notificationId: Int,
+    @SerialName("triggerMemberId")
+    val triggerMemberId: Int,
 ) {
     fun toNotificationEntity() =
         NotiEntity(
@@ -42,5 +44,6 @@ data class ResponseNotificationListDto(
             isNotificationChecked,
             isDeleted,
             notificationId,
+            triggerMemberId,
         )
 }

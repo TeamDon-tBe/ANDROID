@@ -16,6 +16,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentNotificationBinding
 import com.teamdontbe.feature.notification.adapter.NotificationItemDecorator
 import com.teamdontbe.feature.notification.adapter.NotificationPagingAdapter
+import com.teamdontbe.feature.util.KeyStorage.KEY_FEED_DATA
 import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import com.teamdontbe.feature.util.PagingLoadingAdapter
 import com.teamdontbe.feature.util.pagingSubmitData
@@ -28,7 +29,7 @@ import timber.log.Timber
 class NotificationFragment :
     BindingFragment<FragmentNotificationBinding>(R.layout.fragment_notification) {
     private val notiViewModel by viewModels<NotificationViewModel>()
-    private var notiAdapter = NotificationPagingAdapter(click = { notiData, position -> })
+    private var notiAdapter = NotificationPagingAdapter(click = { notiData, position -> }, onClickUserProfileBtn = {})
 
     override fun initView() {
         statusBarColorOf(R.color.white)
@@ -93,7 +94,7 @@ class NotificationFragment :
                         Timber.tag("noti")
                             .e("등록되지 않은 노티가 감지되었습니다 : ${notiData.notificationTriggerType}")
                 }
-            })
+            }, onClickUserProfileBtn = ::navigateToMyPageFragment)
         notiAdapter.apply {
             pagingSubmitData(
                 viewLifecycleOwner,
@@ -130,6 +131,13 @@ class NotificationFragment :
         findNavController().navigate(
             R.id.action_notification_to_home_detail,
             bundleOf(KEY_NOTI_DATA to notiData.notificationTriggerId),
+        )
+    }
+
+    private fun navigateToMyPageFragment(memberId: Int) {
+        findNavController().navigate(
+            R.id.action_notification_to_my_page,
+            bundleOf(KEY_FEED_DATA to memberId),
         )
     }
 }

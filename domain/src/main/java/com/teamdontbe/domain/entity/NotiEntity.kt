@@ -12,4 +12,5 @@ data class NotiEntity(
     val isNotificationChecked: Boolean,
     val isDeleted: Boolean,
     val notificationId: Int,
+    val triggerMemberId: Int,
 )

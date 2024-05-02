@@ -14,11 +14,11 @@ interface NotificationApiService {
         const val NOTIFICATION = "notification"
         const val NUMBER = "number"
         const val NOTIFICATION_CHECK = "notification-check"
-        const val MEMBER_NOTIFICATIONS = "member-notifications"
+        const val NOTIFICATIONS = "notifications"
         const val CURSOR = "cursor"
     }
 
-    @GET("/$API/$V1/$MEMBER_NOTIFICATIONS")
+    @GET("/$API/$V1/$NOTIFICATIONS")
     suspend fun getNotificationList(
         @Query(value = CURSOR) notificationId: Long = -1,
     ): BaseResponse<List<ResponseNotificationListDto>>

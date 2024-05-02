@@ -9,6 +9,7 @@ import com.teamdontbe.feature.databinding.ItemNotificationFeedBinding
 
 class NotificationPagingAdapter(
     private val click: (NotiEntity, Int) -> Unit,
+    private val onClickUserProfileBtn: (Int) -> Unit,
 ) :
     PagingDataAdapter<NotiEntity, NotificationViewHolder>(NotificationAdapterDiffCallback) {
     override fun onCreateViewHolder(
@@ -17,7 +18,7 @@ class NotificationPagingAdapter(
     ): NotificationViewHolder {
         val binding =
             ItemNotificationFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NotificationViewHolder(binding, click)
+        return NotificationViewHolder(binding, click, onClickUserProfileBtn)
     }
 
     override fun onBindViewHolder(

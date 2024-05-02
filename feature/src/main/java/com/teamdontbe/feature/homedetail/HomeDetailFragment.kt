@@ -372,8 +372,6 @@ class HomeDetailFragment :
     }
 
     companion object {
-        const val MAX_COMMENT_LENGTH = 500
-        const val MIN_COMMENT_LENGTH = 1
         const val COMMENT_DEBOUNCE_DELAY = 1000L
         const val ALARM_TRIGGER_TYPE_COMMENT = "commentGhost"
         const val ALARM_TRIGGER_TYPE_CONTENT = "contentGhost"

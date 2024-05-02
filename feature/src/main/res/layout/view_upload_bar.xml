@@ -20,6 +20,16 @@
             android:background="@color/gray_2"
             app:layout_constraintBottom_toTopOf="@id/btn_upload_bar_upload" />
 
+        <ImageView
+            android:id="@+id/iv_upload_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:src="@drawable/ic_link"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ProgressBar
             android:id="@+id/pb_upload_bar_input"
             android:layout_width="0dp"
