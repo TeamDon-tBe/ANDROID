@@ -27,6 +27,7 @@ class NotificationViewHolder(
                 "contentLiked" -> {
                     initProfileBtnClickListener(data)
                     getSpannableText(
+                        data.triggerMemberNickname,
                         R.string.notification_feed_content_liked,
                         data = data
                     )
@@ -35,6 +36,7 @@ class NotificationViewHolder(
                 "comment" -> {
                     initProfileBtnClickListener(data)
                     getSpannableText(
+                        data.triggerMemberNickname,
                         R.string.notification_feed_comment,
                         data = data
                     )
@@ -43,32 +45,38 @@ class NotificationViewHolder(
                 "commentLiked" -> {
                     initProfileBtnClickListener(data)
                     getSpannableText(
+                        data.triggerMemberNickname,
                         R.string.notification_feed_comment_liked,
                         data = data
                     )
                 }
 
                 "actingContinue" -> getSpannableText(
+                    data.memberNickname,
                     R.string.notification_feed_acting_continue,
                     data = data
                 )
 
                 "beGhost" -> getSpannableText(
+                    data.memberNickname,
                     R.string.notification_feed_be_ghost,
                     data = data
                 )
 
                 "contentGhost" -> getSpannableText(
+                    data.memberNickname,
                     R.string.notification_feed_content_ghost,
                     data = data
                 )
 
                 "commentGhost" -> getSpannableText(
+                    data.memberNickname,
                     R.string.notification_feed_comment_ghost,
                     data = data
                 )
 
                 "userBan" -> getSpannableText(
+                    data.memberNickname,
                     R.string.notification_feed_user_ban,
                     36,
                     data = data
@@ -100,18 +108,19 @@ class NotificationViewHolder(
     }
 
     private fun getSpannableText(
+        name: String,
         resId: Int,
         endIndex: Int = 0,
         data: NotiEntity,
     ): SpannableStringBuilder {
-        val text = data.triggerMemberNickname + binding.root.context.getString(resId)
+        val text = name + binding.root.context.getString(resId)
         val spannableText = SpannableStringBuilder(text)
         when (data.notificationTriggerType) {
             in listOf("contentLiked", "comment", "commentLiked") -> {
                 spannableText.setSpan(
                     clickableSpan(data, true),
                     0,
-                    data.triggerMemberNickname.length + endIndex,
+                    name.length + endIndex,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
                 spannableText.setSpan(
@@ -126,7 +135,7 @@ class NotificationViewHolder(
         spannableText.setSpan(
             StyleSpan(R.font.font_pretendard_semibold),
             0,
-            data.triggerMemberNickname.length + endIndex,
+            name.length + endIndex,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
         )
         return spannableText
