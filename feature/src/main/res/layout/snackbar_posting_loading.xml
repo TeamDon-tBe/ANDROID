@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_snackbar_posting_loading"
-        android:layout_width="500dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_gray03_fill_4_rect"
         android:paddingVertical="12dp">
