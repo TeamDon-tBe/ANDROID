@@ -70,7 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:fillViewport="true"
-            app:layout_constraintBottom_toTopOf="@id/tv_comment_link_count_error"
+            app:layout_constraintBottom_toTopOf="@id/layout_upload_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appbar_comment">
@@ -249,25 +249,6 @@
                     app:layout_constraintTop_toBottomOf="@id/et_comment_link" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
-
-        <TextView
-            android:id="@+id/tv_comment_link_count_error"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/shape_4_rect"
-            android:backgroundTint="@color/gray_1"
-            android:paddingHorizontal="15dp"
-            android:paddingVertical="8dp"
-            android:text="@string/tv_posting_link_count_error"
-            android:textAppearance="@style/TextAppearance.DontBe.cap_regular_12"
-            android:textColor="@color/gray_12"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/layout_upload_bar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <include
             android:id="@+id/layout_upload_bar"
