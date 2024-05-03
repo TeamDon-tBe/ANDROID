@@ -28,7 +28,7 @@ class TransparentIsGhostSnackBar(view: View) {
     private fun initView() {
         with(snackbarLayout) {
             removeAllViews()
-            setPadding(0, 0, 0, 0)
+            setPadding(16, 0, 16, 4)
             setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
             addView(binding.root, 0)
         }
