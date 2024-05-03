@@ -52,7 +52,12 @@ class UploadingSnackBar(view: View) {
         }
     }
 
-    fun show(paddingLeft: Int = 0, paddingTop: Int = 0, paddingRight: Int = 0, paddingBottom: Int = 0) {
+    fun show(
+        paddingLeft: Int = 16,
+        paddingTop: Int = 0,
+        paddingRight: Int = 16,
+        paddingBottom: Int = 4
+    ) {
         setSnackbarPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
         snackbar.show()
         Handler(Looper.getMainLooper()).postDelayed({
