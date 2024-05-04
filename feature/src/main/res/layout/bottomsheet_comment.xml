@@ -186,7 +186,6 @@
                     android:hint="@{feed.memberNickname + @string/et_comment_hint}"
                     android:inputType="textNoSuggestions|textVisiblePassword|textMultiLine"
                     android:maxLength="499"
-                    android:paddingBottom="24dp"
                     android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
                     android:textCursorDrawable="@drawable/shape_blue_10_cursor"
                     app:layout_constraintEnd_toEndOf="@id/view_comment_background"
@@ -196,6 +195,11 @@
 
                     <requestFocus />
                 </EditText>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    app:layout_constraintTop_toBottomOf="@id/et_comment_content" />
 
                 <EditText
                     android:id="@+id/et_comment_link"
@@ -247,6 +251,11 @@
                     app:layout_constraintEnd_toEndOf="@id/iv_comment_cancel_link"
                     app:layout_constraintStart_toStartOf="@id/et_comment_link"
                     app:layout_constraintTop_toBottomOf="@id/et_comment_link" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv_comment_link_error" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
