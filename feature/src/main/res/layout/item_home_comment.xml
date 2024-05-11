@@ -119,9 +119,9 @@
 
             <com.google.android.material.divider.MaterialDivider
                 android:id="@+id/divider_comment"
-                android:layout_width="1dp"
+                android:layout_width="2dp"
                 android:layout_height="0dp"
-                app:dividerColor="@color/pale"
+                app:dividerColor="@color/gray_2"
                 app:layout_constraintBottom_toTopOf="@id/iv_comment_ghost_fill_green"
                 app:layout_constraintEnd_toEndOf="@id/iv_comment_profile"
                 app:layout_constraintStart_toStartOf="@id/iv_comment_profile"

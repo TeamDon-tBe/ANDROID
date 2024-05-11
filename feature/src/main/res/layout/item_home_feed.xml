@@ -83,9 +83,9 @@
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/iv_home_line_pale"
-            android:layout_width="1dp"
+            android:layout_width="2dp"
             android:layout_height="0dp"
-            app:dividerColor="@color/pale"
+            app:dividerColor="@color/gray_2"
             app:layout_constraintBottom_toTopOf="@id/iv_home_ghost_fill_green"
             app:layout_constraintEnd_toEndOf="@id/iv_home_profile"
             app:layout_constraintStart_toStartOf="@id/iv_home_profile"
