@@ -1,15 +1,11 @@
 package com.teamdontbe.feature.util
 
 import com.teamdontbe.feature.util.TransparentRange.Companion.HEX_COLOR_PATTERN
-import timber.log.Timber
 
 class Transparent() {
     fun calculateColorWithOpacity(value: Int): String {
         val transparentPercentage = -TransparentRange.getTransparentRange(value).clampedValue
         val alpha = (255 * (transparentPercentage / 100.0)).toInt()
-        Timber.tag("test").d(transparentPercentage.toString())
-        Timber.tag("test").d(alpha.toString())
-        Timber.tag("test").d(String.format(HEX_COLOR_PATTERN, alpha, 252, 252, 253))
         return String.format(HEX_COLOR_PATTERN, alpha, 252, 252, 253)
     }
 }
