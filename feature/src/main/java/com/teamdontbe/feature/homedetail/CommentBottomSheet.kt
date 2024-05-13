@@ -16,7 +16,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
 import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.fragment.colorOf
-import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.R
@@ -24,10 +23,8 @@ import com.teamdontbe.feature.databinding.BottomsheetCommentBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.home.HomeViewModel
 import com.teamdontbe.feature.homedetail.HomeDetailFragment.Companion.COMMENT_DEBOUNCE_DELAY
-import com.teamdontbe.feature.posting.AnimateProgressBar
 import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_DEBOUNCE_DELAY
 import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_MAX
-import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_MAX_WITH_LINK
 import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_MIN
 import com.teamdontbe.feature.posting.PostingFragment.Companion.WEB_URL_PATTERN
 import com.teamdontbe.feature.snackbar.LinkCountErrorSnackBar
@@ -46,6 +43,7 @@ class CommentBottomSheet(
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private var totalCommentLength = 0
     private var linkValidity = true
+    private var linkLength = 0
 
     override fun initView() {
         binding.vm = homeViewModel
@@ -85,10 +83,18 @@ class CommentBottomSheet(
 
     private fun initLinkBtnClickListener() = with(binding) {
         layoutUploadBar.ivUploadLink.setOnClickListener {
-            if (etCommentLink.isVisible) LinkCountErrorSnackBar.make(binding.root).show()
-            handleLinkAndCancelBtnVisible(true)
-            etCommentLink.requestFocus()
+            handleUploadLinkClick()
         }
+    }
+
+    private fun handleUploadLinkClick() = with(binding) {
+        if (totalCommentLength > POSTING_MAX) return@with
+
+        if (etCommentLink.isVisible) LinkCountErrorSnackBar.make(binding.root)
+            .show() else linkValidity = false
+        handleLinkAndCancelBtnVisible(true)
+        etCommentLink.requestFocus()
+        setUploadingCommentState(totalCommentLength + 1)
     }
 
     private fun initCancelLinkBtnClickListener() = with(binding) {
@@ -99,6 +105,7 @@ class CommentBottomSheet(
             setLinkErrorMessageValidity(linkValidity = true)
             linkValidity = true
             setUploadingCommentState(totalCommentLength)
+            setCommentMaxLength(POSTING_MAX - binding.etCommentLink.text.length + 1)
         }
     }
 
@@ -109,9 +116,9 @@ class CommentBottomSheet(
 
     private fun checkLinkValidity() = with(binding.etCommentLink) {
         doAfterTextChanged {
-            binding.etCommentContent.filters =
-                arrayOf(InputFilter.LengthFilter(POSTING_MAX - text.toString().length))
-            totalCommentLength = (binding.etCommentContent.text.toString() + text.toString()).length
+            linkLength = text.takeIf { it.isNotEmpty() }?.length?.plus(1) ?: 0
+            setCommentMaxLength(POSTING_MAX - binding.etCommentLink.text.length)
+            totalCommentLength = binding.etCommentContent.length() + linkLength
             handleLinkErrorMessage(
                 WEB_URL_PATTERN.matcher(
                     text.toString()
@@ -123,6 +130,12 @@ class CommentBottomSheet(
                 POSTING_DEBOUNCE_DELAY
             ) {}
         }
+    }
+
+    private fun setCommentMaxLength(length: Int) {
+        binding.etCommentContent.filters = arrayOf(
+            InputFilter.LengthFilter(length)
+        )
     }
 
     private fun handleLinkErrorMessage(linkValidity: Boolean) {
@@ -138,28 +151,34 @@ class CommentBottomSheet(
         etCommentContent.doAfterTextChanged { text ->
             etCommentLink.filters =
                 arrayOf(InputFilter.LengthFilter(POSTING_MAX - text.toString().length))
-            totalCommentLength =
-                (etCommentContent.text.toString() + etCommentLink.text.toString()).length
+            totalCommentLength = etCommentContent.text.length + linkLength
             setUploadingCommentState(totalCommentLength)
             debounceComment(text.toString())
         }
     }
 
     private fun setUploadingCommentState(totalCommentLength: Int) {
-        val progressBarDrawableId = getProgressBarDrawableId(totalCommentLength)
+        val countTextColorId = getCountTextColorId(totalCommentLength)
         val btnBackgroundTint = getButtonBackgroundTint(totalCommentLength)
         val btnTextColor = getButtonTextColor(totalCommentLength)
 
-        updateUploadBar(totalCommentLength, progressBarDrawableId, btnBackgroundTint, btnTextColor)
+        updateTextCount(totalCommentLength)
+        updateUploadBar(countTextColorId, btnBackgroundTint, btnTextColor)
         initUploadingBtnClickListener(totalCommentLength, linkValidity)
-        startProgressBarAnimation(totalCommentLength)
     }
 
-    private fun getProgressBarDrawableId(textLength: Int): Int =
-        if (textLength >= POSTING_MAX_WITH_LINK) R.drawable.shape_error_line_circle else R.drawable.shape_primary_line_circle
+    private fun updateTextCount(totalCommentLength: Int) {
+        binding.layoutUploadBar.tvPostingTextCount.text = getString(
+            R.string.posting_text_count,
+            totalCommentLength
+        )
+    }
+
+    private fun getCountTextColorId(textLength: Int): Int =
+        if (textLength > POSTING_MAX) R.color.error else R.color.gray_6
 
     private fun getButtonBackgroundTint(textLength: Int): ColorStateList =
-        if (textLength in POSTING_MIN..POSTING_MAX_WITH_LINK && linkValidity) {
+        if (textLength in POSTING_MIN..POSTING_MAX && linkValidity) {
             ColorStateList.valueOf(
                 colorOf(R.color.primary),
             )
@@ -168,7 +187,7 @@ class CommentBottomSheet(
         }
 
     private fun getButtonTextColor(textLength: Int): Int =
-        if (textLength in POSTING_MIN..POSTING_MAX_WITH_LINK && linkValidity) {
+        if (textLength in POSTING_MIN..POSTING_MAX && linkValidity) {
             colorOf(R.color.black)
         } else {
             colorOf(
@@ -177,16 +196,12 @@ class CommentBottomSheet(
         }
 
     private fun updateUploadBar(
-        textLength: Int,
-        progressBarDrawableId: Int,
+        countTextColorResId: Int,
         btnBackgroundTint: ColorStateList,
         btnTextColor: Int,
     ) {
-        with(binding.layoutUploadBar) {
-            pbUploadBarInput.progressDrawable = drawableOf(progressBarDrawableId)
-            pbUploadBarInput.progress = textLength
-            setUploadBtnColor(btnBackgroundTint, btnTextColor)
-        }
+        binding.layoutUploadBar.tvPostingTextCount.setTextColor(colorOf(countTextColorResId))
+        setUploadBtnColor(btnBackgroundTint, btnTextColor)
     }
 
     private fun setUploadBtnColor(
@@ -197,27 +212,18 @@ class CommentBottomSheet(
         btnUploadBarUpload.setTextColor(btnTextColor)
     }
 
-    private fun startProgressBarAnimation(textLength: Int) {
-        val uploadBar = binding.layoutUploadBar
-        val animateProgressBar = AnimateProgressBar(
-            uploadBar.pbUploadBarInput,
-            0f,
-            textLength.toFloat(),
-        )
-        uploadBar.pbUploadBarInput.startAnimation(animateProgressBar)
-    }
-
     private fun debounceComment(commentText: String) {
         commentDebouncer.setDelay(commentText, COMMENT_DEBOUNCE_DELAY) {}
     }
 
     private fun initUploadingBtnClickListener(textLength: Int, linkValidity: Boolean) {
         binding.layoutUploadBar.btnUploadBarUpload.setOnDuplicateBlockClick {
-            if (textLength in POSTING_MIN..POSTING_MAX_WITH_LINK && linkValidity) {
+            if (textLength in POSTING_MIN..POSTING_MAX && linkValidity) {
                 trackEvent(CLICK_REPLY_UPLOAD)
                 homeViewModel.postCommentPosting(
                     contentId,
-                    binding.etCommentContent.text.toString() + "\n" + binding.etCommentLink.text.toString()
+                    binding.etCommentContent.text.toString() + binding.etCommentLink.text.takeIf { it.isNotEmpty() }
+                        ?.let { "\n$it" }
                 )
                 dismiss()
             }

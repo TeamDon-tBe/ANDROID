@@ -18,7 +18,6 @@ import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.fragment.colorOf
-import com.teamdontbe.core_ui.util.fragment.drawableOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.R
@@ -43,6 +42,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private val postingViewModel by viewModels<PostingViewModel>()
     private var totalContentLength = 0
     private var linkValidity = true
+    private var linkLength = 0
 
     override fun initView() {
         statusBarColorOf(R.color.white)
@@ -139,10 +139,23 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun initLinkBtnClickListener() = with(binding) {
         layoutUploadBar.ivUploadLink.setOnClickListener {
-            if (etPostingLink.isVisible) LinkCountErrorSnackBar.make(binding.root).show()
-            handleLinkAndCancelBtnVisible(true)
-            etPostingLink.requestFocus()
+            handleUploadLinkClick()
         }
+    }
+
+    private fun handleUploadLinkClick() = with(binding) {
+        if (totalContentLength > POSTING_MAX) return@with
+
+        if (etPostingLink.isVisible) {
+            LinkCountErrorSnackBar.make(binding.root)
+                .show()
+        } else {
+            handleUploadProgressAndBtn(totalContentLength + 1)
+            setUploadingBtnValidity(false)
+            linkValidity = false
+        }
+        handleLinkAndCancelBtnVisible(true)
+        etPostingLink.requestFocus()
     }
 
     private fun initCancelLinkBtnClickListener() = with(binding) {
@@ -152,7 +165,8 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             etPostingContent.requestFocus()
             setLinkErrorMessageValidity(linkValidity = true)
             linkValidity = true
-            handleUploadProgressAndBtn()
+            handleUploadProgressAndBtn(totalContentLength)
+            setContentMaxLength(POSTING_MAX - binding.etPostingLink.text.length + 1)
         }
     }
 
@@ -163,13 +177,19 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun checkLinkValidity() = with(binding.etPostingLink) {
         doAfterTextChanged {
-            binding.etPostingContent.filters =
-                arrayOf(InputFilter.LengthFilter(POSTING_MAX - text.toString().length))
-            totalContentLength = (binding.etPostingContent.text.toString() + text.toString()).length
-            handleUploadProgressAndBtn()
+            linkLength = text.takeIf { it.isNotEmpty() }?.length?.plus(1) ?: 0
+            setContentMaxLength(POSTING_MAX - binding.etPostingLink.text.length)
+            totalContentLength = binding.etPostingContent.text.length + linkLength
+            handleUploadProgressAndBtn(totalContentLength)
             handleLinkErrorMessage(WEB_URL_PATTERN.matcher(text.toString()).find())
             postingDebouncer.setDelay(text.toString(), POSTING_DEBOUNCE_DELAY) {}
         }
+    }
+
+    private fun setContentMaxLength(length: Int) {
+        binding.etPostingContent.filters = arrayOf(
+            InputFilter.LengthFilter(length)
+        )
     }
 
     private fun handleLinkErrorMessage(linkValidity: Boolean) {
@@ -216,7 +236,10 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private fun initUploadingActivateBtnClickListener() {
         binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
             trackEvent(CLICK_POST_UPLOAD)
-            postingViewModel.posting(binding.etPostingContent.text.toString() + "\n" + binding.etPostingLink.text.toString())
+            postingViewModel.posting(
+                binding.etPostingContent.text.toString() + binding.etPostingLink.text.takeIf { it.isNotEmpty() }
+                    ?.let { "\n$it" }
+            )
         }
     }
 
@@ -231,25 +254,18 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         binding.run {
             etPostingContent.doAfterTextChanged {
                 etPostingLink.filters =
-                    arrayOf(InputFilter.LengthFilter(POSTING_MAX - etPostingContent.text.toString().length))
-                totalContentLength =
-                    (etPostingContent.text.toString() + etPostingLink.text.toString()).length
-                handleUploadProgressAndBtn()
+                    arrayOf(InputFilter.LengthFilter(POSTING_MAX - etPostingContent.text.length))
+                totalContentLength = etPostingContent.text.length + linkLength
+                handleUploadProgressAndBtn(totalContentLength)
             }
         }
     }
 
-    private fun handleUploadProgressAndBtn() = with(binding) {
-        val animateProgressBar = AnimateProgressBar(
-            layoutUploadBar.pbUploadBarInput,
-            0f,
-            totalContentLength.toFloat(),
-        )
+    private fun handleUploadProgressAndBtn(totalContentLength: Int) = with(binding) {
         when {
-            (totalContentLength in POSTING_MIN..POSTING_MAX_WITH_LINK) && linkValidity -> {
+            (totalContentLength in POSTING_MIN..POSTING_MAX) && linkValidity -> {
                 updateProgress(
-                    R.drawable.shape_primary_line_circle,
-                    totalContentLength,
+                    R.color.gray_6,
                     R.color.primary,
                     R.color.black,
                 ) {
@@ -257,10 +273,9 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 }
             }
 
-            totalContentLength >= POSTING_MAX_WITH_LINK + 1 -> {
+            totalContentLength >= POSTING_MAX + 1 -> {
                 updateProgress(
-                    R.drawable.shape_error_line_circle,
-                    totalContentLength,
+                    R.color.error,
                     R.color.gray_3,
                     R.color.gray_9,
                 ) {
@@ -270,8 +285,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
             else -> {
                 updateProgress(
-                    R.drawable.shape_primary_line_circle,
-                    0,
+                    R.color.gray_6,
                     R.color.gray_3,
                     R.color.gray_9,
                 ) {
@@ -279,19 +293,17 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 }
             }
         }
-        layoutUploadBar.pbUploadBarInput.startAnimation(animateProgressBar)
+        updateTextCount(totalContentLength)
         postingDebouncer.setDelay(etPostingContent.text.toString(), POSTING_DEBOUNCE_DELAY) {}
     }
 
-    private fun FragmentPostingBinding.updateProgress(
-        progressDrawableResId: Int,
-        textLength: Int,
+    private fun updateProgress(
+        countTextColorResId: Int,
         backgroundTintResId: Int,
         textColorResId: Int,
         clickListener: () -> Unit,
     ) {
-        layoutUploadBar.pbUploadBarInput.progressDrawable = drawableOf(progressDrawableResId)
-        layoutUploadBar.pbUploadBarInput.progress = textLength
+        binding.layoutUploadBar.tvPostingTextCount.setTextColor(colorOf(countTextColorResId))
         setUploadingBtnColor(backgroundTintResId, textColorResId)
         clickListener.invoke()
     }
@@ -308,10 +320,16 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         )
     }
 
+    private fun updateTextCount(totalCommentLength: Int) {
+        binding.layoutUploadBar.tvPostingTextCount.text = getString(
+            R.string.posting_text_count,
+            totalCommentLength
+        )
+    }
+
     companion object {
         const val POSTING_MIN = 1
         const val POSTING_MAX = 499
-        const val POSTING_MAX_WITH_LINK = 498
         const val TRANSPARENT_LIMIT = -85
         const val POSTING_DEBOUNCE_DELAY = 1000L
         val WEB_URL_PATTERN: Pattern = WEB_URL
