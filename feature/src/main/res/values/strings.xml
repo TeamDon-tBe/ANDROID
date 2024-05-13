@@ -18,6 +18,8 @@
     <string name="et_posting_link_hint">URL</string>
     <string name="tv_posting_link_error">아직 링크로 인식되지 않아요. 다시 확인해 주세요.</string>
     <string name="tv_posting_link_count_error">링크는 한 개까지만 삽입할 수 있어요.</string>
+    <string name="tv_posting_text_count">(0/500)</string>
+    <string name="posting_text_count">(%1$d/500)</string>
     <!-- 노티 화면 -->
     <string name="notification_appbar_title">알림</string>
     <string name="notification_feed_content_liked">님이 회원님의 글을 좋아합니다.</string>
