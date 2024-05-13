@@ -30,6 +30,7 @@ import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_MAX
 import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_MAX_WITH_LINK
 import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_MIN
 import com.teamdontbe.feature.posting.PostingFragment.Companion.WEB_URL_PATTERN
+import com.teamdontbe.feature.snackbar.LinkCountErrorSnackBar
 import com.teamdontbe.feature.util.AmplitudeTag.CLICK_REPLY_UPLOAD
 import com.teamdontbe.feature.util.Debouncer
 import com.teamdontbe.feature.util.DialogTag.DELETE_COMMENT
@@ -84,11 +85,7 @@ class CommentBottomSheet(
 
     private fun initLinkBtnClickListener() = with(binding) {
         layoutUploadBar.ivUploadLink.setOnClickListener {
-            if (etCommentLink.isVisible) setLinkErrorMessageValidity(
-                linkValidity = WEB_URL_PATTERN.matcher(binding.etCommentLink.text.toString())
-                    .find(),
-                linkCountValidity = true
-            )
+            if (etCommentLink.isVisible) LinkCountErrorSnackBar.make(binding.root).show()
             handleLinkAndCancelBtnVisible(true)
             etCommentLink.requestFocus()
         }
@@ -99,7 +96,7 @@ class CommentBottomSheet(
             handleLinkAndCancelBtnVisible(false)
             etCommentLink.text.clear()
             etCommentContent.requestFocus()
-            setLinkErrorMessageValidity(linkValidity = true, linkCountValidity = false)
+            setLinkErrorMessageValidity(linkValidity = true)
             linkValidity = true
             setUploadingCommentState(totalCommentLength)
         }
@@ -130,14 +127,12 @@ class CommentBottomSheet(
 
     private fun handleLinkErrorMessage(linkValidity: Boolean) {
         this.linkValidity = linkValidity
-        setLinkErrorMessageValidity(linkValidity, false)
+        setLinkErrorMessageValidity(linkValidity)
     }
 
-    private fun setLinkErrorMessageValidity(linkValidity: Boolean, linkCountValidity: Boolean) =
-        with(binding) {
-            tvCommentLinkError.isVisible = !linkValidity
-            tvCommentLinkCountError.isVisible = linkCountValidity
-        }
+    private fun setLinkErrorMessageValidity(linkValidity: Boolean) {
+        binding.tvCommentLinkError.isVisible = !linkValidity
+    }
 
     private fun initEditText() = with(binding) {
         etCommentContent.doAfterTextChanged { text ->

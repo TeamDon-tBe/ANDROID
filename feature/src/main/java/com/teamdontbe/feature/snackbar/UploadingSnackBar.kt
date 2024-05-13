@@ -32,7 +32,7 @@ class UploadingSnackBar(view: View) {
     private fun initView() {
         with(snackbarLayout) {
             removeAllViews()
-            setPadding(0, 0, 0, 0)
+            setPadding(16, 0, 16, 4)
             setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
             addView(binding.root, 0)
         }
@@ -52,7 +52,12 @@ class UploadingSnackBar(view: View) {
         }
     }
 
-    fun show(paddingLeft: Int = 0, paddingTop: Int = 0, paddingRight: Int = 0, paddingBottom: Int = 0) {
+    fun show(
+        paddingLeft: Int = 16,
+        paddingTop: Int = 0,
+        paddingRight: Int = 16,
+        paddingBottom: Int = 4
+    ) {
         setSnackbarPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
         snackbar.show()
         Handler(Looper.getMainLooper()).postDelayed({

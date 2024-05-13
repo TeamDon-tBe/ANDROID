@@ -8,6 +8,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="snackbarStyle">@style/CustomSnackBar</item>
     </style>
 
     <style name="Theme.DontBe" parent="Base.Theme.DontBe" />
@@ -28,6 +29,10 @@
         <item name="android:textSelectHandleRight">@drawable/shape_primary_fill_right10_rect</item>
         <item name="android:textSelectHandle">@drawable/shape_primary_fill_circle</item>
         <item name="colorAccent">@color/primary</item>
+    </style>
+
+    <style name="CustomSnackBar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:layout_margin">0dp</item>
     </style>
 
     <style name="NoAnimationTheme" parent="Theme.DontBe">

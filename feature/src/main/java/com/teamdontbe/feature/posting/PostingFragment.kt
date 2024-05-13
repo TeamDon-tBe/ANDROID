@@ -25,6 +25,7 @@ import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentPostingBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
 import com.teamdontbe.feature.dialog.PostingRestrictionDialogFragment
+import com.teamdontbe.feature.snackbar.LinkCountErrorSnackBar
 import com.teamdontbe.feature.snackbar.UploadingSnackBar
 import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_UPLOAD
 import com.teamdontbe.feature.util.Debouncer
@@ -125,7 +126,8 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 is UiState.Success -> {
                     navigateToMainActivity()
                     context?.let { it ->
-                        UploadingSnackBar.make(binding.root).show(0, 0, 0, it.pxToDp(80))
+                        UploadingSnackBar.make(binding.root)
+                            .show(it.pxToDp(16), 0, it.pxToDp(16), it.pxToDp(80))
                     }
                 }
 
@@ -137,11 +139,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun initLinkBtnClickListener() = with(binding) {
         layoutUploadBar.ivUploadLink.setOnClickListener {
-            if (etPostingLink.isVisible) setLinkErrorMessageValidity(
-                linkValidity = WEB_URL_PATTERN.matcher(binding.etPostingLink.text.toString())
-                    .find(),
-                linkCountValidity = true
-            )
+            if (etPostingLink.isVisible) LinkCountErrorSnackBar.make(binding.root).show()
             handleLinkAndCancelBtnVisible(true)
             etPostingLink.requestFocus()
         }
@@ -152,7 +150,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             handleLinkAndCancelBtnVisible(false)
             etPostingLink.text.clear()
             etPostingContent.requestFocus()
-            setLinkErrorMessageValidity(linkValidity = true, linkCountValidity = false)
+            setLinkErrorMessageValidity(linkValidity = true)
             linkValidity = true
             handleUploadProgressAndBtn()
         }
@@ -176,15 +174,13 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun handleLinkErrorMessage(linkValidity: Boolean) {
         this.linkValidity = linkValidity
-        setLinkErrorMessageValidity(linkValidity, false)
+        setLinkErrorMessageValidity(linkValidity)
         setUploadingBtnValidity(linkValidity)
     }
 
-    private fun setLinkErrorMessageValidity(linkValidity: Boolean, linkCountValidity: Boolean) =
-        with(binding) {
-            tvPostingLinkError.isVisible = !linkValidity
-            tvPostingLinkCountError.isVisible = linkCountValidity
-        }
+    private fun setLinkErrorMessageValidity(linkValidity: Boolean) {
+        binding.tvPostingLinkError.isVisible = !linkValidity
+    }
 
     private fun setUploadingBtnValidity(linkValidity: Boolean) {
         if (linkValidity) {
