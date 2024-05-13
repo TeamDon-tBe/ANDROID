@@ -30,22 +30,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ProgressBar
-            android:id="@+id/pb_upload_bar_input"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+        <TextView
+            android:id="@+id/tv_posting_text_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="19dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/shape_gray03_line_circle"
-            android:indeterminateOnly="false"
-            android:max="500"
-            android:progress="0"
-            android:progressDrawable="@drawable/shape_primary_line_circle"
+            android:text="@string/tv_posting_text_count"
+            android:textAppearance="@style/TextAppearance.DontBe.cap_semi_12"
+            android:textColor="@color/gray_6"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toStartOf="@id/btn_upload_bar_upload"
-            app:layout_constraintTop_toBottomOf="@id/view_upload_bar_line"
-            tools:progress="200" />
+            app:layout_constraintTop_toBottomOf="@id/view_upload_bar_line" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_upload_bar_upload"
