@@ -179,9 +179,9 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         doAfterTextChanged {
             linkLength = text.takeIf { it.isNotEmpty() }?.length?.plus(1) ?: 0
             setContentMaxLength(POSTING_MAX - binding.etPostingLink.text.length)
+            handleLinkErrorMessage(WEB_URL_PATTERN.matcher(text.toString()).find())
             totalContentLength = binding.etPostingContent.text.length + linkLength
             handleUploadProgressAndBtn(totalContentLength)
-            handleLinkErrorMessage(WEB_URL_PATTERN.matcher(text.toString()).find())
             postingDebouncer.setDelay(text.toString(), POSTING_DEBOUNCE_DELAY) {}
         }
     }
