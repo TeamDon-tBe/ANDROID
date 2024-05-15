@@ -24,6 +24,7 @@ import com.teamdontbe.core_ui.base.BindingActivity
 import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
+import com.teamdontbe.core_ui.util.context.navigateToAppSettings
 import com.teamdontbe.core_ui.util.context.openKeyboard
 import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.core_ui.view.UiState
@@ -140,13 +141,6 @@ class SignUpProfileActivity :
                 dialog.dismiss()
             }
             .show()
-    }
-
-    private fun navigateToAppSettings() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        val uri = Uri.fromParts("package", packageName, null)
-        intent.data = uri
-        startActivity(intent)
     }
 
     private fun getGalleryPermission() {

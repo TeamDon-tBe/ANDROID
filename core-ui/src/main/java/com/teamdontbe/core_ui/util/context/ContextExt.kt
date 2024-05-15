@@ -2,9 +2,12 @@ package com.teamdontbe.core_ui.util.context
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.provider.Settings
 import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
@@ -82,4 +85,11 @@ fun Context.statusBarColorOf(
     if (this is Activity) {
         window?.statusBarColor = colorOf(resId)
     }
+}
+
+fun Context.navigateToAppSettings() {
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+    val uri = Uri.fromParts("package", packageName, null)
+    intent.data = uri
+    startActivity(intent)
 }
