@@ -44,6 +44,6 @@ data class ResponseMyPageCommentDto(
         commentId,
         isDeleted = null,
         contentId,
-        contentImageUrl = commentImageUrl,
+        commentImageUrl = commentImageUrl,
     )
 }
