@@ -13,4 +13,5 @@ data class CommentEntity(
     val commentId: Int,
     val isDeleted: Boolean? = null,
     val contentId: Int? = null,
+    val contentImageUrl: String? = null,
 )
