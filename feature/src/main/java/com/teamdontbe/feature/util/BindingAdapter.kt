@@ -1,8 +1,9 @@
 package com.teamdontbe.feature.util
 
-import android.content.Context
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.RoundedCornersTransformation
@@ -40,7 +41,7 @@ fun TextView.setTransparencyAndTimeText(data: Any?) {
                 text = context.getString(
                     R.string.tv_transparency,
                     data.memberGhost,
-                    CalculateTime(context).getCalculateTime(data.time)
+                    CalculateTime(context).getCalculateTime(data.time),
                 )
             }
         }
@@ -50,10 +51,19 @@ fun TextView.setTransparencyAndTimeText(data: Any?) {
                 text = context.getString(
                     R.string.tv_transparency,
                     data.memberGhost,
-                    CalculateTime(context).getCalculateTime(data.time)
+                    CalculateTime(context).getCalculateTime(data.time),
                 )
             }
         }
     }
 }
 
+@BindingAdapter("setEmptyImageUrl")
+fun ImageView.setEmptyImageUrl(img: String?) {
+    if (img.isNullOrEmpty()) {
+        this.isGone = true
+    } else {
+        this.isVisible = true
+        load(img)
+    }
+}

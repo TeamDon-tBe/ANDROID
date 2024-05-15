@@ -32,7 +32,7 @@ interface HomeApiService {
         const val V2 = "v2"
     }
 
-    @GET("$API/$V1/$CONTENTS")
+    @GET("$API/$V2/$CONTENTS")
     suspend fun getFeedList(
         @Query(value = CURSOR) contentId: Long = -1,
     ): BaseResponse<List<ResponseFeedDto>>
