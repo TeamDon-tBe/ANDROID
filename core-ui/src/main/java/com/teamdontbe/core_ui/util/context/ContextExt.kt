@@ -1,6 +1,7 @@
 package com.teamdontbe.core_ui.util.context
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
@@ -85,6 +86,20 @@ fun Context.statusBarColorOf(
     if (this is Activity) {
         window?.statusBarColor = colorOf(resId)
     }
+}
+
+fun Context.showPermissionAppSettingsDialog() {
+    AlertDialog.Builder(this)
+        .setTitle("권한이 필요해요")
+        .setMessage("이 앱은 갤러리 접근 권한이 필요해요.\n앱 세팅으로 이동해서 권한을 부여 할 수 있어요.")
+        .setPositiveButton("이동하기") { dialog, _ ->
+            navigateToAppSettings()
+            dialog.dismiss()
+        }
+        .setNegativeButton("취소하기") { dialog, _ ->
+            dialog.dismiss()
+        }
+        .show()
 }
 
 fun Context.navigateToAppSettings() {
