@@ -1,12 +1,20 @@
 package com.teamdontbe.feature.posting
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
+import android.net.Uri
+import android.os.Build
 import android.text.InputFilter
 import android.util.Patterns.WEB_URL
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
@@ -17,9 +25,11 @@ import coil.load
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.context.pxToDp
+import com.teamdontbe.core_ui.util.context.showPermissionAppSettingsDialog
 import com.teamdontbe.core_ui.util.fragment.colorOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
 import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.feature.ErrorActivity.Companion.navigateToErrorPage
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentPostingBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
@@ -33,6 +43,7 @@ import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.regex.Pattern
 
@@ -44,8 +55,27 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private var linkValidity = true
     private var linkLength = 0
 
+    private lateinit var getGalleryLauncher: ActivityResultLauncher<Intent>
+    private lateinit var getPhotoPickerLauncher: ActivityResultLauncher<PickVisualMediaRequest>
+    private val requestPermissions =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                lifecycleScope.launch {
+                    try {
+                        selectImage()
+                    } catch (e: Exception) {
+                        navigateToErrorPage(requireContext())
+                    }
+                }
+            } else {
+                requireContext().showPermissionAppSettingsDialog()
+            }
+        }
+
     override fun initView() {
         statusBarColorOf(R.color.white)
+        initGalleryLauncher()
+        initPhotoPickerLauncher()
 
         showKeyboard()
         initAnimation()
@@ -60,6 +90,9 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         initLinkBtnClickListener()
         initCancelLinkBtnClickListener()
         checkLinkValidity()
+
+        // 이미지 업로드
+        initImageUploadBtnClickListener()
     }
 
     private fun initObserveUser() {
@@ -325,6 +358,56 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             R.string.posting_text_count,
             totalCommentLength
         )
+    }
+
+    private fun initImageUploadBtnClickListener() = with(binding) {
+        layoutUploadBar.ivUploadImage.setOnClickListener {
+            getGalleryPermission()
+        }
+    }
+
+    private fun getGalleryPermission() {
+        // api 34 이상인 경우
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            selectImage()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions.launch(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            requestPermissions.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+    }
+
+    private fun selectImage() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            val getPictureIntent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
+            getGalleryLauncher.launch(getPictureIntent)
+        } else {
+            getPhotoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        }
+    }
+
+    private fun initPhotoPickerLauncher() {
+        getPhotoPickerLauncher =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri: Uri? ->
+                imageUri?.let { uri ->
+                    binding.ivHomeFeedImg.load(uri)
+//                    photoUri = uri
+                }
+            }
+    }
+
+    private fun initGalleryLauncher() {
+        getGalleryLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+                if (activityResult.resultCode == AppCompatActivity.RESULT_OK) {
+                    val imageUri = activityResult.data?.data
+                    imageUri?.let {
+                        binding.ivHomeFeedImg.load(it)
+                    }
+                }
+            }
     }
 
     companion object {
