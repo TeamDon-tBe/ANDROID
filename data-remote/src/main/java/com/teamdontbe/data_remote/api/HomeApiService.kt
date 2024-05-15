@@ -42,7 +42,7 @@ interface HomeApiService {
         @Path(value = CONTENT_ID) contentId: Int,
     ): BaseResponse<ResponseFeedDto>
 
-    @GET("$API/$V1/$CONTENT/{$CONTENT_ID}/$COMMENTS")
+    @GET("$API/$V2/$CONTENT/{$CONTENT_ID}/$COMMENTS")
     suspend fun getCommentList(
         @Path(value = CONTENT_ID) contentId: Int,
         @Query(value = CURSOR) commentId: Long = -1,
