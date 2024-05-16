@@ -30,6 +30,13 @@ constructor(
     val getMyPageUserProfileState: StateFlow<UiState<MyPageUserProfileEntity>> =
         _getMyPageUserProfileState
 
+    private val _photoUri = MutableStateFlow<String?>(null)
+    val photoUri: StateFlow<String?> = _photoUri
+
+    fun setPhotoUri(uri: String?) {
+        _photoUri.value = uri
+    }
+
     fun posting(contentText: String) =
         viewModelScope.launch {
             postingRepository.posting(contentText).collectLatest {

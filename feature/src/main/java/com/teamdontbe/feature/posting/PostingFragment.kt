@@ -15,6 +15,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
@@ -28,6 +29,8 @@ import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.context.showPermissionAppSettingsDialog
 import com.teamdontbe.core_ui.util.fragment.colorOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.ErrorActivity.Companion.navigateToErrorPage
 import com.teamdontbe.feature.R
@@ -93,6 +96,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
         // 이미지 업로드
         initImageUploadBtnClickListener()
+        observePhotoUri()
     }
 
     private fun initObserveUser() {
@@ -270,8 +274,8 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
             trackEvent(CLICK_POST_UPLOAD)
             postingViewModel.posting(
-                binding.etPostingContent.text.toString() + binding.etPostingLink.text.takeIf { it.isNotEmpty() }
-                    ?.let { "\n$it" }
+                (binding.etPostingContent.text.toString() + binding.etPostingLink.text.takeIf { it.isNotEmpty() }
+                    ?.let { "\n$it" })
             )
         }
     }
@@ -295,6 +299,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     }
 
     private fun handleUploadProgressAndBtn(totalContentLength: Int) = with(binding) {
+        Timber.tag("photoUri").d("photoUri : ${postingViewModel.photoUri.value}")
         when {
             (totalContentLength in POSTING_MIN..POSTING_MAX) && linkValidity -> {
                 updateProgress(
@@ -363,6 +368,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private fun initImageUploadBtnClickListener() = with(binding) {
         layoutUploadBar.ivUploadImage.setOnClickListener {
             getGalleryPermission()
+            showKeyboard()
         }
     }
 
@@ -390,11 +396,8 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun initPhotoPickerLauncher() {
         getPhotoPickerLauncher =
-            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri: Uri? ->
-                imageUri?.let { uri ->
-                    binding.ivHomeFeedImg.load(uri)
-//                    photoUri = uri
-                }
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri ->
+                imageUri?.let { uri -> postingViewModel.setPhotoUri(uri.toString()) }
             }
     }
 
@@ -403,11 +406,33 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
                 if (activityResult.resultCode == AppCompatActivity.RESULT_OK) {
                     val imageUri = activityResult.data?.data
-                    imageUri?.let {
-                        binding.ivHomeFeedImg.load(it)
-                    }
+                    imageUri?.let { uri -> postingViewModel.setPhotoUri(uri.toString()) }
                 }
             }
+    }
+
+    private fun observePhotoUri() {
+        postingViewModel.photoUri.flowWithLifecycle(viewLifeCycle).onEach { getUri ->
+            getUri?.let { uri ->
+                handleUploadImageClick(Uri.parse(uri))
+            }
+        }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun handleUploadImageClick(uri: Uri) = with(binding) {
+        ivPostingImg.isVisible = true
+        ivPostingImg.load(uri)
+        ivPostingCancelImage.isVisible = true
+        cancelImageBtnClickListener()
+    }
+
+    private fun cancelImageBtnClickListener() = with(binding) {
+        ivPostingCancelImage.setOnClickListener {
+            postingViewModel.setPhotoUri(null)
+            ivPostingImg.load(null)
+            ivPostingImg.isGone = true
+            ivPostingCancelImage.isGone = true
+        }
     }
 
     companion object {
