@@ -3,7 +3,6 @@ package com.teamdontbe.feature.posting
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Build
@@ -14,13 +13,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.teamdontbe.core_ui.base.BindingFragment
@@ -57,7 +54,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private var linkValidity = true
     private var linkLength = 0
 
-    private lateinit var getGalleryLauncher: ActivityResultLauncher<Intent>
+    private lateinit var getGalleryLauncher: ActivityResultLauncher<String>
     private lateinit var getPhotoPickerLauncher: ActivityResultLauncher<PickVisualMediaRequest>
     private val requestPermissions =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -390,8 +387,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun selectImage() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            val getPictureIntent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-            getGalleryLauncher.launch(getPictureIntent)
+            getGalleryLauncher.launch("image/*")
         } else {
             getPhotoPickerLauncher.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
@@ -402,19 +398,17 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private fun initPhotoPickerLauncher() {
         getPhotoPickerLauncher =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri ->
-                imageUri?.let { uri -> postingViewModel.setPhotoUri(uri.toString()) }
+                imageUri?.let { postingViewModel.setPhotoUri(it.toString()) }
             }
     }
 
     private fun initGalleryLauncher() {
         getGalleryLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-                if (activityResult.resultCode == AppCompatActivity.RESULT_OK) {
-                    val imageUri = activityResult.data?.data
-                    imageUri?.let { uri -> postingViewModel.setPhotoUri(uri.toString()) }
-                }
+            registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri ->
+                imageUri?.let { postingViewModel.setPhotoUri(it.toString()) }
             }
     }
+
 
     private fun observePhotoUri() {
         postingViewModel.photoUri.flowWithLifecycle(viewLifeCycle).onEach { getUri ->
