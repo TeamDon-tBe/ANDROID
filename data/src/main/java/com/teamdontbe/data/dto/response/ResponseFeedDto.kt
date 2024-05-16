@@ -18,6 +18,7 @@ data class ResponseFeedDto(
     @SerialName("likedNumber") val likedNumber: Int,
     @SerialName("commentNumber") val commentNumber: Int,
     @SerialName("isDeleted") val isDeleted: Boolean? = null,
+    @SerialName("contentImageUrl") val contentImageUrl: String? = null,
 ) {
     fun toFeedEntity() =
         FeedEntity(
@@ -33,5 +34,6 @@ data class ResponseFeedDto(
             time,
             contentId,
             isDeleted,
+            contentImageUrl,
         )
 }

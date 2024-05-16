@@ -28,6 +28,8 @@ data class ResponseMyPageCommentDto(
     val commentId: Int,
     @SerialName("contentId")
     val contentId: Int,
+    @SerialName("commentImageUrl")
+    val commentImageUrl: String? = null,
 ) {
     fun toMyPageCommentEntity() = CommentEntity(
         memberId,
@@ -42,5 +44,6 @@ data class ResponseMyPageCommentDto(
         commentId,
         isDeleted = null,
         contentId,
+        commentImageUrl = commentImageUrl,
     )
 }

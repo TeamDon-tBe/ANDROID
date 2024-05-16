@@ -32,17 +32,17 @@ interface HomeApiService {
         const val V2 = "v2"
     }
 
-    @GET("$API/$V1/$CONTENTS")
+    @GET("$API/$V2/$CONTENTS")
     suspend fun getFeedList(
         @Query(value = CURSOR) contentId: Long = -1,
     ): BaseResponse<List<ResponseFeedDto>>
 
-    @GET("/$API/$V2/$CONTENT/{$CONTENT_ID}/$DETAIL")
+    @GET("/$API/$V2/$CONTENT/{$CONTENT_ID}")
     suspend fun getFeedDetail(
         @Path(value = CONTENT_ID) contentId: Int,
     ): BaseResponse<ResponseFeedDto>
 
-    @GET("$API/$V1/$CONTENT/{$CONTENT_ID}/$COMMENTS")
+    @GET("$API/$V2/$CONTENT/{$CONTENT_ID}/$COMMENTS")
     suspend fun getCommentList(
         @Path(value = CONTENT_ID) contentId: Int,
         @Query(value = CURSOR) commentId: Long = -1,

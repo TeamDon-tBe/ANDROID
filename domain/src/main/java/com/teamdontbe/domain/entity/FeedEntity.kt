@@ -13,4 +13,5 @@ data class FeedEntity(
     val time: String,
     val contentId: Int? = null,
     val isDeleted: Boolean? = null,
+    val contentImageUrl: String? = null,
 )
