@@ -37,7 +37,7 @@ interface HomeApiService {
         @Query(value = CURSOR) contentId: Long = -1,
     ): BaseResponse<List<ResponseFeedDto>>
 
-    @GET("/$API/$V2/$CONTENT/{$CONTENT_ID}/$DETAIL")
+    @GET("/$API/$V2/$CONTENT/{$CONTENT_ID}")
     suspend fun getFeedDetail(
         @Path(value = CONTENT_ID) contentId: Int,
     ): BaseResponse<ResponseFeedDto>
