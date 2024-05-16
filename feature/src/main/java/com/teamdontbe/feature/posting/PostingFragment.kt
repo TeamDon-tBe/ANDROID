@@ -236,8 +236,10 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         binding.layoutUploadBar.btnUploadBarUpload.setOnClickListener {
             trackEvent(CLICK_POST_UPLOAD)
             postingViewModel.posting(
-                binding.etPostingContent.text.toString() + binding.etPostingLink.text.takeIf { it.isNotEmpty() }
-                    ?.let { "\n$it" }
+                binding.etPostingContent.text.toString() + (
+                    binding.etPostingLink.text.takeIf { it.isNotEmpty() }
+                        ?.let { "\n$it" }.orEmpty()
+                    )
             )
         }
     }

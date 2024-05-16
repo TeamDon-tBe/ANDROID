@@ -222,7 +222,7 @@ class CommentBottomSheet(
                 homeViewModel.postCommentPosting(
                     contentId,
                     binding.etCommentContent.text.toString() + binding.etCommentLink.text.takeIf { it.isNotEmpty() }
-                        ?.let { "\n$it" }
+                        ?.let { "\n$it" }.orEmpty()
                 )
                 dismiss()
             }
