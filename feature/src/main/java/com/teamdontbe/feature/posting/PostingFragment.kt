@@ -106,7 +106,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun initObserveUser() {
         postingViewModel.getMyPageUserProfileInfo(postingViewModel.getMemberId())
-        postingViewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
+        postingViewModel.getMyPageUserProfileState.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
@@ -122,7 +122,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun hideKeyboard() {
