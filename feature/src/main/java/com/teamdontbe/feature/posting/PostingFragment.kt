@@ -150,7 +150,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             LinkCountErrorSnackBar.make(binding.root)
                 .show()
         } else {
-            handleUploadProgressAndBtn(totalContentLength + 1)
+            handleUploadProgressAndBtn(totalContentLength)
             setUploadingBtnValidity(false)
             linkValidity = false
         }
@@ -177,10 +177,9 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun checkLinkValidity() = with(binding.etPostingLink) {
         doAfterTextChanged {
-            linkLength = text.takeIf { it.isNotEmpty() }?.length?.plus(1) ?: 0
             setContentMaxLength(POSTING_MAX - binding.etPostingLink.text.length)
             handleLinkErrorMessage(WEB_URL_PATTERN.matcher(text.toString()).find())
-            totalContentLength = binding.etPostingContent.text.length + linkLength
+            totalContentLength = binding.etPostingContent.text.length + text.length
             handleUploadProgressAndBtn(totalContentLength)
             postingDebouncer.setDelay(text.toString(), POSTING_DEBOUNCE_DELAY) {}
         }
@@ -254,7 +253,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         binding.run {
             etPostingContent.doAfterTextChanged {
                 etPostingLink.filters =
-                    arrayOf(InputFilter.LengthFilter(POSTING_MAX - etPostingContent.text.length))
+                    arrayOf(InputFilter.LengthFilter(POSTING_MAX - etPostingContent.text.length + 1))
                 totalContentLength = etPostingContent.text.length + linkLength
                 handleUploadProgressAndBtn(totalContentLength)
             }

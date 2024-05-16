@@ -94,7 +94,7 @@ class CommentBottomSheet(
             .show() else linkValidity = false
         handleLinkAndCancelBtnVisible(true)
         etCommentLink.requestFocus()
-        setUploadingCommentState(totalCommentLength + 1)
+        setUploadingCommentState(totalCommentLength)
     }
 
     private fun initCancelLinkBtnClickListener() = with(binding) {
@@ -116,9 +116,8 @@ class CommentBottomSheet(
 
     private fun checkLinkValidity() = with(binding.etCommentLink) {
         doAfterTextChanged {
-            linkLength = text.takeIf { it.isNotEmpty() }?.length?.plus(1) ?: 0
             setCommentMaxLength(POSTING_MAX - binding.etCommentLink.text.length)
-            totalCommentLength = binding.etCommentContent.length() + linkLength
+            totalCommentLength = binding.etCommentContent.length() + text.length
             handleLinkErrorMessage(
                 WEB_URL_PATTERN.matcher(
                     text.toString()
@@ -150,7 +149,7 @@ class CommentBottomSheet(
     private fun initEditText() = with(binding) {
         etCommentContent.doAfterTextChanged { text ->
             etCommentLink.filters =
-                arrayOf(InputFilter.LengthFilter(POSTING_MAX - text.toString().length))
+                arrayOf(InputFilter.LengthFilter(POSTING_MAX - text.toString().length + 1))
             totalCommentLength = etCommentContent.text.length + linkLength
             setUploadingCommentState(totalCommentLength)
             debounceComment(text.toString())
