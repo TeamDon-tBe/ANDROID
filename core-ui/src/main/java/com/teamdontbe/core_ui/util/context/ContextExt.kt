@@ -91,7 +91,7 @@ fun Context.statusBarColorOf(
 fun Context.showPermissionAppSettingsDialog() {
     AlertDialog.Builder(this)
         .setTitle("권한이 필요해요")
-        .setMessage("이 앱은 갤러리 접근 권한이 필요해요.\n앱 세팅으로 이동해서 권한을 부여 할 수 있어요.")
+        .setMessage("이 앱은 파일 및 미디어 접근 권한이 필요해요.\n앱 세팅으로 이동해서 권한을 부여 할 수 있어요.")
         .setPositiveButton("이동하기") { dialog, _ ->
             navigateToAppSettings()
             dialog.dismiss()

@@ -46,7 +46,6 @@ import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.regex.Pattern
 
@@ -62,18 +61,24 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private lateinit var getPhotoPickerLauncher: ActivityResultLauncher<PickVisualMediaRequest>
     private val requestPermissions =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                lifecycleScope.launch {
+            when (isGranted) {
+                true -> {
                     try {
                         selectImage()
                     } catch (e: Exception) {
                         navigateToErrorPage(requireContext())
                     }
                 }
-            } else {
-                requireContext().showPermissionAppSettingsDialog()
+
+                false -> handlePermissionDenied()
             }
         }
+
+    private fun handlePermissionDenied() {
+        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)) {
+            requireContext().showPermissionAppSettingsDialog()
+        }
+    }
 
     override fun initView() {
         statusBarColorOf(R.color.white)
@@ -157,7 +162,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     }
 
     private fun initObservePost() {
-        postingViewModel.postPosting.flowWithLifecycle(lifecycle).onEach {
+        postingViewModel.postPosting.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
@@ -171,7 +176,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun initLinkBtnClickListener() = with(binding) {
