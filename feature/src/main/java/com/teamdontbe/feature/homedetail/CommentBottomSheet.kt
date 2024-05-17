@@ -43,7 +43,6 @@ class CommentBottomSheet(
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private var totalCommentLength = 0
     private var linkValidity = true
-    private var linkLength = 0
 
     override fun initView() {
         binding.vm = homeViewModel
@@ -105,7 +104,6 @@ class CommentBottomSheet(
             setLinkErrorMessageValidity(linkValidity = true)
             linkValidity = true
             setUploadingCommentState(totalCommentLength)
-            setCommentMaxLength(POSTING_MAX - binding.etCommentLink.text.length + 1)
         }
     }
 
@@ -116,7 +114,7 @@ class CommentBottomSheet(
 
     private fun checkLinkValidity() = with(binding.etCommentLink) {
         doAfterTextChanged {
-            setCommentMaxLength(POSTING_MAX - binding.etCommentLink.text.length)
+            setCommentMaxLength(POSTING_MAX - binding.etCommentLink.text.length + 1)
             totalCommentLength = binding.etCommentContent.length() + text.length
             handleLinkErrorMessage(
                 WEB_URL_PATTERN.matcher(
@@ -150,7 +148,7 @@ class CommentBottomSheet(
         etCommentContent.doAfterTextChanged { text ->
             etCommentLink.filters =
                 arrayOf(InputFilter.LengthFilter(POSTING_MAX - text.toString().length + 1))
-            totalCommentLength = etCommentContent.text.length + linkLength
+            totalCommentLength = etCommentContent.text.length + etCommentLink.text.length
             setUploadingCommentState(totalCommentLength)
             debounceComment(text.toString())
         }

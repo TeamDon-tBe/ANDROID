@@ -42,11 +42,9 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private val postingViewModel by viewModels<PostingViewModel>()
     private var totalContentLength = 0
     private var linkValidity = true
-    private var linkLength = 0
 
     override fun initView() {
         statusBarColorOf(R.color.white)
-
         showKeyboard()
         initAnimation()
 
@@ -166,7 +164,6 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             setLinkErrorMessageValidity(linkValidity = true)
             linkValidity = true
             handleUploadProgressAndBtn(totalContentLength)
-            setContentMaxLength(POSTING_MAX - binding.etPostingLink.text.length + 1)
         }
     }
 
@@ -177,7 +174,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
 
     private fun checkLinkValidity() = with(binding.etPostingLink) {
         doAfterTextChanged {
-            setContentMaxLength(POSTING_MAX - binding.etPostingLink.text.length)
+            setContentMaxLength(POSTING_MAX - binding.etPostingLink.text.length + 1)
             handleLinkErrorMessage(WEB_URL_PATTERN.matcher(text.toString()).find())
             totalContentLength = binding.etPostingContent.text.length + text.length
             handleUploadProgressAndBtn(totalContentLength)
@@ -256,7 +253,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             etPostingContent.doAfterTextChanged {
                 etPostingLink.filters =
                     arrayOf(InputFilter.LengthFilter(POSTING_MAX - etPostingContent.text.length + 1))
-                totalContentLength = etPostingContent.text.length + linkLength
+                totalContentLength = etPostingContent.text.length + etPostingLink.text.length
                 handleUploadProgressAndBtn(totalContentLength)
             }
         }
