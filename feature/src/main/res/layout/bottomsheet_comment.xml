@@ -187,7 +187,6 @@
                     android:inputType="textNoSuggestions|textVisiblePassword|textMultiLine"
                     android:maxLength="500"
                     android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
-                    android:textCursorDrawable="@drawable/shape_blue_10_cursor"
                     app:layout_constraintEnd_toEndOf="@id/view_comment_background"
                     app:layout_constraintStart_toStartOf="@id/tv_comment_profile_nickname"
                     app:layout_constraintTop_toBottomOf="@id/tv_comment_profile_nickname"
@@ -203,6 +202,7 @@
 
                 <EditText
                     android:id="@+id/et_comment_link"
+                    style="@style/EditTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -217,7 +217,6 @@
                     android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
                     android:textColorHint="@color/gray_7"
                     android:textColorLink="@color/black"
-                    android:textCursorDrawable="@drawable/shape_blue_10_cursor"
                     android:visibility="gone"
                     app:layout_constraintEnd_toStartOf="@id/iv_comment_cancel_link"
                     app:layout_constraintStart_toStartOf="@id/et_comment_content"
