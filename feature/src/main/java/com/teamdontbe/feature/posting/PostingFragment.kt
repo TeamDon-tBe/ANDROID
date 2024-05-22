@@ -171,7 +171,12 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 }
 
                 is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
+                is UiState.Failure -> {
+                    LinkCountErrorSnackBar.make(binding.root).apply {
+                        setText(it.msg)
+                        show()
+                    }
+                }
             }
         }.launchIn(viewLifeCycleScope)
     }
@@ -277,7 +282,8 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             trackEvent(CLICK_POST_UPLOAD)
             postingViewModel.posting(
                 (binding.etPostingContent.text.toString() + binding.etPostingLink.text.takeIf { it.isNotEmpty() }
-                    ?.let { "\n$it" })
+                    ?.let { "\n$it" }),
+                postingViewModel.photoUri.value
             )
         }
     }
