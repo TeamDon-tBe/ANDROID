@@ -18,6 +18,8 @@ data class ResponseLoginDto(
     val memberProfileUrl: String,
     @SerialName("isNewUser")
     val isNewUser: Boolean,
+    @SerialName("isPushAlarmAllowed")
+    val isPushAlarmAllowed: Boolean?,
 ) {
     fun toLoginDataEntity() =
         LoginEntity(
@@ -27,5 +29,6 @@ data class ResponseLoginDto(
             refreshToken,
             memberProfileUrl,
             isNewUser,
+            isPushAlarmAllowed,
         )
 }
