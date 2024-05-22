@@ -58,7 +58,6 @@ class CommentBottomSheet(
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private var totalCommentLength = 0
     private var linkValidity = true
-    private var linkLength = 0
 
     private lateinit var getGalleryLauncher: ActivityResultLauncher<String>
     private lateinit var getPhotoPickerLauncher: ActivityResultLauncher<PickVisualMediaRequest>
@@ -139,7 +138,7 @@ class CommentBottomSheet(
             .show() else linkValidity = false
         handleLinkAndCancelBtnVisible(true)
         etCommentLink.requestFocus()
-        setUploadingCommentState(totalCommentLength + 1)
+        setUploadingCommentState(totalCommentLength)
     }
 
     private fun initCancelLinkBtnClickListener() = with(binding) {
@@ -150,7 +149,6 @@ class CommentBottomSheet(
             setLinkErrorMessageValidity(linkValidity = true)
             linkValidity = true
             setUploadingCommentState(totalCommentLength)
-            setCommentMaxLength(POSTING_MAX - binding.etCommentLink.text.length + 1)
         }
     }
 
@@ -161,9 +159,8 @@ class CommentBottomSheet(
 
     private fun checkLinkValidity() = with(binding.etCommentLink) {
         doAfterTextChanged {
-            linkLength = text.takeIf { it.isNotEmpty() }?.length?.plus(1) ?: 0
-            setCommentMaxLength(POSTING_MAX - binding.etCommentLink.text.length)
-            totalCommentLength = binding.etCommentContent.length() + linkLength
+            setCommentMaxLength(POSTING_MAX - binding.etCommentLink.text.length + 1)
+            totalCommentLength = binding.etCommentContent.length() + text.length
             handleLinkErrorMessage(
                 WEB_URL_PATTERN.matcher(
                     text.toString()
@@ -195,8 +192,8 @@ class CommentBottomSheet(
     private fun initEditText() = with(binding) {
         etCommentContent.doAfterTextChanged { text ->
             etCommentLink.filters =
-                arrayOf(InputFilter.LengthFilter(POSTING_MAX - text.toString().length))
-            totalCommentLength = etCommentContent.text.length + linkLength
+                arrayOf(InputFilter.LengthFilter(POSTING_MAX - text.toString().length + 1))
+            totalCommentLength = etCommentContent.text.length + etCommentLink.text.length
             setUploadingCommentState(totalCommentLength)
             debounceComment(text.toString())
         }
@@ -268,7 +265,7 @@ class CommentBottomSheet(
                 homeViewModel.postCommentPosting(
                     contentId,
                     binding.etCommentContent.text.toString() + binding.etCommentLink.text.takeIf { it.isNotEmpty() }
-                        ?.let { "\n$it" },
+                        ?.let { "\n$it" }.orEmpty()
                     homeViewModel.photoUri.value
                 )
                 dismiss()
