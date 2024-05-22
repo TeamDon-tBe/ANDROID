@@ -1,10 +1,9 @@
 package com.teamdontbe.data.repositoryimpl
 
 import android.content.ContentResolver
-import android.net.Uri
 import com.teamdontbe.data.datasource.PostingDataSource
 import com.teamdontbe.data.dto.request.RequestPostingDto
-import com.teamdontbe.data.repositoryimpl.utils.ContentUriRequestBody
+import com.teamdontbe.data.repositoryimpl.utils.createImagePart
 import com.teamdontbe.data.repositoryimpl.utils.extractErrorMessage
 import com.teamdontbe.domain.repository.PostingRepository
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -39,7 +37,7 @@ class PostingRepositoryImpl @Inject constructor(
             val textRequestBody = createContentRequestBody(content)
 
             val imagePart = withContext(Dispatchers.IO) {
-                createImagePart(uriString)
+                createImagePart(contentResolver, uriString)
             }
 
             postingDataSource.postingMultiPart(textRequestBody, imagePart).success
@@ -55,17 +53,5 @@ class PostingRepositoryImpl @Inject constructor(
     private fun createContentRequestBody(content: String): RequestBody {
         val contentJson = JSONObject().apply { put("contentText", content) }.toString()
         return contentJson.toRequestBody("application/json".toMediaTypeOrNull())
-    }
-
-    private fun createImagePart(uriString: String?): MultipartBody.Part? {
-        return when (uriString) {
-            null -> null
-            else -> {
-                val uri = Uri.parse(uriString)
-                val imageRequestBody = ContentUriRequestBody(contentResolver, uri)
-
-                imageRequestBody.toFormData("image")
-            }
-        }
     }
 }

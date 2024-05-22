@@ -1,5 +1,8 @@
 package com.teamdontbe.data.repositoryimpl.utils
 
+import android.content.ContentResolver
+import android.net.Uri
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
@@ -19,4 +22,16 @@ fun HttpException.extractErrorMessage(): String {
         }
     }
     return "알수 없는 오류가 발생 했습니다"
+}
+
+fun createImagePart(contentResolver: ContentResolver, uriString: String?): MultipartBody.Part? {
+    return when (uriString) {
+        null -> null
+        else -> {
+            val uri = Uri.parse(uriString)
+            val imageRequestBody = ContentUriRequestBody(contentResolver, uri)
+
+            imageRequestBody.toFormData("image")
+        }
+    }
 }
