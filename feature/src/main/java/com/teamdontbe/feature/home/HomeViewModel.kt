@@ -11,7 +11,9 @@ import com.teamdontbe.domain.repository.UserInfoRepository
 import com.teamdontbe.feature.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,6 +47,13 @@ class HomeViewModel
 
     private val _openHomeDetail = MutableLiveData<Event<FeedEntity>>()
     val openHomeDetail: LiveData<Event<FeedEntity>> = _openHomeDetail
+
+    private val _photoUri = MutableStateFlow<String?>(null)
+    val photoUri: StateFlow<String?> = _photoUri
+
+    fun setPhotoUri(uri: String?) {
+        _photoUri.value = uri
+    }
 
     fun openHomeDetail(feedEntity: FeedEntity) {
         _openHomeDetail.value = Event(feedEntity)
@@ -88,12 +97,18 @@ class HomeViewModel
     fun postCommentPosting(
         contentId: Int,
         commentText: String,
-    ) = viewModelScope.launch {
-        homeRepository.postCommentPosting(contentId, commentText)
-            .fold(
-                { _postCommentPosting.emit(UiState.Success(it)) },
-                { _postCommentPosting.emit(UiState.Failure(it.message.toString())) }
-            )
+        uriString: String?
+    ) {
+        viewModelScope.launch {
+            homeRepository.postCommentPosting(contentId, commentText, uriString)
+                .onSuccess {
+                    if (it) _postCommentPosting.emit(UiState.Success(it))
+                    else _postCommentPosting.emit(UiState.Failure("포스팅 실패"))
+                }
+                .onFailure {
+                    _postCommentPosting.emit(UiState.Failure(it.message.toString()))
+                }
+        }
     }
 
     fun deleteComment(commentId: Int) = viewModelScope.launch {

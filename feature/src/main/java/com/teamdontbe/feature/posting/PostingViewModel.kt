@@ -8,9 +8,11 @@ import com.teamdontbe.domain.repository.MyPageRepository
 import com.teamdontbe.domain.repository.PostingRepository
 import com.teamdontbe.domain.repository.UserInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,8 +24,8 @@ constructor(
     private val userInfoRepository: UserInfoRepository,
     private val myPageRepository: MyPageRepository,
 ) : ViewModel() {
-    private val _postPosting = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
-    val postPosting: StateFlow<UiState<Boolean>> = _postPosting
+    private val _postPosting = MutableSharedFlow<UiState<Boolean>>()
+    val postPosting: SharedFlow<UiState<Boolean>> get() = _postPosting.asSharedFlow()
 
     private val _getMyPageUserProfileState =
         MutableStateFlow<UiState<MyPageUserProfileEntity>>(UiState.Empty)
@@ -37,12 +39,16 @@ constructor(
         _photoUri.value = uri
     }
 
-    fun posting(contentText: String) =
+    fun posting(contentText: String, imageString: String?) =
         viewModelScope.launch {
-            postingRepository.posting(contentText).collectLatest {
-                _postPosting.value = UiState.Success(it)
-            }
-            _postPosting.value = UiState.Loading
+            _postPosting.emit(UiState.Loading)
+            postingRepository.postingMultiPart(contentText, imageString)
+                .onSuccess { isSuccess ->
+                    if (isSuccess) _postPosting.emit(UiState.Success(isSuccess))
+                    else _postPosting.emit(UiState.Failure("포스팅 실패"))
+                }.onFailure {
+                    _postPosting.emit(UiState.Failure(it.message.orEmpty()))
+                }
         }
 
     fun getNickName() = userInfoRepository.getNickName()
