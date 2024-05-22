@@ -6,7 +6,6 @@ import androidx.paging.PagingData
 import com.teamdontbe.data.datasource.HomeDataSource
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.request.RequestCommentLikedDto
-import com.teamdontbe.data.dto.request.RequestCommentPostingDto
 import com.teamdontbe.data.dto.request.RequestTransparentDto
 import com.teamdontbe.data.dto.response.ResponseFeedDto
 import com.teamdontbe.data_remote.api.HomeApiService
@@ -15,6 +14,8 @@ import com.teamdontbe.data_remote.pagingsourceimpl.HomeFeedPagingSourceImpl
 import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class HomeDataSourceImpl
@@ -54,9 +55,10 @@ constructor(
 
     override suspend fun postCommentPosting(
         contentId: Int,
-        commentText: RequestCommentPostingDto,
+        commentText: RequestBody,
+        image: MultipartBody.Part?
     ): BaseResponse<Unit> {
-        return homeApiService.postCommentPosting(contentId, commentText)
+        return homeApiService.postCommentPosting(contentId, commentText, image)
     }
 
     override suspend fun deleteComment(commentId: Int): BaseResponse<Unit> {
