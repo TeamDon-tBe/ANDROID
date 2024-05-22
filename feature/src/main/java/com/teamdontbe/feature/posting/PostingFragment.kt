@@ -438,6 +438,11 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        postingViewModel.setPhotoUri(null)
+    }
+
     companion object {
         const val POSTING_MIN = 1
         const val POSTING_MAX = 499

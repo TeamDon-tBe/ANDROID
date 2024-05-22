@@ -354,4 +354,9 @@ class CommentBottomSheet(
     override fun onDeleteDialogDismissed() {
         dismiss()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        homeViewModel.setPhotoUri(null)
+    }
 }
