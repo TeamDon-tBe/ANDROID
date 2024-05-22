@@ -18,6 +18,7 @@ dependencies {
     // android
     implementation(libs.bundles.room)
     implementation(libs.paging)
+    implementation(libs.androidx.exifinterface)
 
     // Third Party
     implementation(libs.bundles.retrofit)
