@@ -34,6 +34,10 @@ class LinkCountErrorSnackBar(view: View) {
         }
     }
 
+    fun setText(text: String) {
+        binding.tvCommentLinkCountError.text = text
+    }
+
     fun show() {
         snackbar.show()
     }
