@@ -22,15 +22,12 @@ import androidx.lifecycle.flowWithLifecycle
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.snackbar.Snackbar
 import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
 import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
-import com.teamdontbe.core_ui.util.context.pxToDp
 import com.teamdontbe.core_ui.util.context.showPermissionAppSettingsDialog
 import com.teamdontbe.core_ui.util.fragment.colorOf
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
-import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.ErrorActivity
@@ -44,7 +41,6 @@ import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_MAX
 import com.teamdontbe.feature.posting.PostingFragment.Companion.POSTING_MIN
 import com.teamdontbe.feature.posting.PostingFragment.Companion.WEB_URL_PATTERN
 import com.teamdontbe.feature.snackbar.LinkCountErrorSnackBar
-import com.teamdontbe.feature.snackbar.UploadingSnackBar
 import com.teamdontbe.feature.util.AmplitudeTag.CLICK_REPLY_UPLOAD
 import com.teamdontbe.feature.util.Debouncer
 import com.teamdontbe.feature.util.DialogTag.DELETE_COMMENT
