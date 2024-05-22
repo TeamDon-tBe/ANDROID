@@ -7,4 +7,5 @@ data class LoginEntity(
     val refreshToken: String,
     val memberProfileUrl: String,
     val isNewUser: Boolean,
+    val isPushAlarmAllowed: Boolean?,
 )
