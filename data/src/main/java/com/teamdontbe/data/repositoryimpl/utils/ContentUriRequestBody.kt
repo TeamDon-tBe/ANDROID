@@ -4,9 +4,9 @@ import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.provider.MediaStore
-import androidx.exifinterface.media.ExifInterface
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -32,14 +32,13 @@ class ContentUriRequestBody(
             null,
         )?.use { cursor ->
             if (cursor.moveToFirst()) {
-                size =
-                    cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
+                size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
                 fileName =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
             }
         }
 
-        compressBitmap() // 이미지 압축 수행
+        compressBitmap()
     }
 
     private fun compressBitmap() {
@@ -51,39 +50,42 @@ class ContentUriRequestBody(
             exif = ExifInterface(inputStream)
         }
 
+        // 이미지 크기를 계산하여 imageSizeMb 선언
+        val imageSizeMb = size / (1024.0 * 1024.0)
+
         contentResolver.openInputStream(uri).use { inputStream ->
             if (inputStream == null) return
+            // 이미지 크기를 계산하여 3MB를 초과하는 경우에만 inSampleSize 설정
             val option = BitmapFactory.Options().apply {
-                inSampleSize = calculateInSampleSize(this, MAX_WIDTH, MAX_HEIGHT)
+                if (imageSizeMb >= 3) {
+                    inSampleSize = calculateInSampleSize(this, MAX_WIDTH, MAX_HEIGHT)
+                }
             }
             originalBitmap = BitmapFactory.decodeStream(inputStream, null, option)
         }
 
-        originalBitmap?.let {
+        originalBitmap?.let { bitmap ->
             val orientation = exif.getAttributeInt(
                 ExifInterface.TAG_ORIENTATION,
                 ExifInterface.ORIENTATION_NORMAL
             )
             val rotatedBitmap = when (orientation) {
-                ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(it, 90f)
-                ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(it, 180f)
-                ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(it, 270f)
-                else -> it
+                ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(bitmap, 90f)
+                ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(bitmap, 180f)
+                ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(bitmap, 270f)
+                else -> bitmap
             }
 
-            // 회전된 이미지를 사용하도록 originalBitmap을 rotatedBitmap으로 변경
-            originalBitmap = rotatedBitmap
-
-            // 압축 로직 추가
             val outputStream = ByteArrayOutputStream()
-            var quality = 100
+            val compressRate = if (imageSizeMb >= 3) {
+                (300 / imageSizeMb).toInt()
+            } else {
+                75 // 기본 압축률을 더 낮게 설정
+            }
 
-            do {
-                outputStream.reset()
-                originalBitmap?.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
-                quality = (quality * 0.9).toInt() // 퀄리티를 10% 감소
-            } while (outputStream.toByteArray().size > 3 * 1024 * 1024)
-
+            outputStream.use { stream ->
+                rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, compressRate, stream)
+            }
             compressedImage = outputStream.toByteArray()
             size = compressedImage?.size?.toLong() ?: -1L
         }
@@ -127,10 +129,10 @@ class ContentUriRequestBody(
         compressedImage?.let(sink::write)
     }
 
-    fun toFormData(name: String) = MultipartBody.Part.createFormData(name, getFileName(), this)
+    fun toMultiPartData(name: String) = MultipartBody.Part.createFormData(name, getFileName(), this)
 
     companion object {
-        const val MAX_WIDTH = 1024 // 이미지 최대 너비
-        const val MAX_HEIGHT = 1024 // 이미지 최대 높이
+        const val MAX_WIDTH = 1024
+        const val MAX_HEIGHT = 1024
     }
 }

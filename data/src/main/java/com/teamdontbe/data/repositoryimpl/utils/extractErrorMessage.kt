@@ -31,7 +31,7 @@ fun createImagePart(contentResolver: ContentResolver, uriString: String?): Multi
             val uri = Uri.parse(uriString)
             val imageRequestBody = ContentUriRequestBody(contentResolver, uri)
 
-            imageRequestBody.toFormData("image")
+            imageRequestBody.toMultiPartData("image")
         }
     }
 }
