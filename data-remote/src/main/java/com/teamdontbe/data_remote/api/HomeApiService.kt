@@ -26,7 +26,6 @@ interface HomeApiService {
         const val CURSOR = "cursor"
         const val COMMENT = "comment"
         const val COMMENTS = "comments"
-        const val DETAIL = "detail"
         const val CONTENT_ID = "contentId"
         const val LIKED = "liked"
         const val UNLIKED = "unliked"
