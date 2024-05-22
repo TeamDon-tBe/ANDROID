@@ -265,7 +265,7 @@ class CommentBottomSheet(
                 homeViewModel.postCommentPosting(
                     contentId,
                     binding.etCommentContent.text.toString() + binding.etCommentLink.text.takeIf { it.isNotEmpty() }
-                        ?.let { "\n$it" }.orEmpty()
+                        ?.let { "\n$it" }.orEmpty(),
                     homeViewModel.photoUri.value
                 )
                 dismiss()
