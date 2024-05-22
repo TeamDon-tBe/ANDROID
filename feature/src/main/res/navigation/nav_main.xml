@@ -116,4 +116,9 @@
             android:id="@+id/action_fragment_home_detail_to_fragment_my_page"
             app:destination="@id/fragment_my_page" />
     </fragment>
+    <dialog
+        android:id="@+id/fragment_image_detail"
+        android:name="com.teamdontbe.feature.homedetail.imagedetail.ImageDialogFragment"
+        android:label="ImageDialogFragment"
+        tools:layout="@layout/fragment_image_detail" />
 </navigation>
