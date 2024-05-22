@@ -154,6 +154,7 @@ class HomeDetailFragment :
             onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
             userId = homeViewModel.getMemberId(),
             onClickToNavigateToHomeDetail = {},
+            onClickFeedImage = { navigateToImageDetailFragment(it) },
         ).apply {
             submitList(feedListData)
         }
@@ -375,6 +376,13 @@ class HomeDetailFragment :
         CommentBottomSheet(contentId, feed).show(
             parentFragmentManager,
             COMMENT,
+        )
+    }
+
+    private fun navigateToImageDetailFragment(it: String) {
+        findNavController().navigate(
+            R.id.fragment_image_detail,
+            bundleOf(KEY_NOTI_DATA to it),
         )
     }
 

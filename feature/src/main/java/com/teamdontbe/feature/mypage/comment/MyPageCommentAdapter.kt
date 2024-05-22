@@ -15,6 +15,7 @@ class MyPageCommentAdapter(
     private val onItemClicked: (CommentEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
     private val onClickTransparentBtn: (CommentEntity) -> Unit,
+    private val onClickFeedImage: (String) -> Unit,
 ) :
     PagingDataAdapter<CommentEntity, MyPageCommentViewHolder>(ExampleDiffCallback) {
     private val inflater by lazy { LayoutInflater.from(context) }
@@ -31,6 +32,7 @@ class MyPageCommentAdapter(
             onClickLikedBtn = onClickLikedBtn,
             idFlag = idFlag,
             onClickTransparentBtn = onClickTransparentBtn,
+            onClickFeedImage = onClickFeedImage,
         )
     }
 

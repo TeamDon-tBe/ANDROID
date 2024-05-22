@@ -83,6 +83,7 @@ class MyPageCommentFragment :
                 },
                 onClickLikedBtn = ::onLikedBtnClick,
                 onClickTransparentBtn = ::onTransparentBtnClick,
+                onClickFeedImage = { navigateToImageDetailFragment(it) },
             ).apply {
                 pagingSubmitData(
                     viewLifecycleOwner,
@@ -181,7 +182,7 @@ class MyPageCommentFragment :
     private fun stateCommentItemNull() {
         myPageCommentAdapter.addLoadStateListener { combinedLoadStates ->
             val isEmpty = combinedLoadStates.source.refresh is
-            LoadState.NotLoading && combinedLoadStates.append.endOfPaginationReached && myPageCommentAdapter.itemCount < 1
+                    LoadState.NotLoading && combinedLoadStates.append.endOfPaginationReached && myPageCommentAdapter.itemCount < 1
             if (isEmpty) {
                 updateNoCommentUI()
             } else {
@@ -255,6 +256,13 @@ class MyPageCommentFragment :
                     )
             }
         }
+    }
+
+    private fun navigateToImageDetailFragment(it: String) {
+        findNavController().navigate(
+            R.id.fragment_image_detail,
+            bundleOf(KEY_NOTI_DATA to it),
+        )
     }
 
     override fun onResume() {
