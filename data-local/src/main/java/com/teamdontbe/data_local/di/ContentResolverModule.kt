@@ -1,4 +1,4 @@
-package com.teamdontbe.data_local
+package com.teamdontbe.data_local.di
 
 import android.content.ContentResolver
 import android.content.Context
