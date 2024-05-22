@@ -22,11 +22,11 @@ class PostingRepositoryImpl @Inject constructor(
     private val contentResolver: ContentResolver,
     private val postingDataSource: PostingDataSource,
 ) : PostingRepository {
-    override suspend fun posting(contentText: String): Flow<Boolean> {
+    override suspend fun posting(requestPosting: String): Flow<Boolean> {
         return flow {
             val result =
                 runCatching {
-                    postingDataSource.posting(RequestPostingDto(contentText)).success
+                    postingDataSource.posting(RequestPostingDto(requestPosting)).success
                 }
             emit(result.getOrDefault(false))
         }
