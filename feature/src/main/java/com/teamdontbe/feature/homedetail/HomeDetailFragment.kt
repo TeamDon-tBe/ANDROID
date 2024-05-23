@@ -301,6 +301,7 @@ class HomeDetailFragment :
                     }
                 }
 
+                is UiState.Loading -> UploadingSnackBar.make(binding.root).show()
                 else -> Unit
             }
         }.launchIn(viewLifeCycleScope)
@@ -314,7 +315,6 @@ class HomeDetailFragment :
         requireContext().hideKeyboard(binding.root)
         (requireActivity() as MainActivity).findViewById<View>(R.id.bnv_main).visibility =
             View.VISIBLE
-        UploadingSnackBar.make(binding.root).show()
     }
 
     private fun observeDeleteComment() {
