@@ -2,17 +2,20 @@ package com.teamdontbe.data_remote.api
 
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.request.RequestCommentLikedDto
-import com.teamdontbe.data.dto.request.RequestCommentPostingDto
 import com.teamdontbe.data.dto.request.RequestFeedLikedDto
 import com.teamdontbe.data.dto.request.RequestTransparentDto
 import com.teamdontbe.data.dto.response.ResponseCommentDto
 import com.teamdontbe.data.dto.response.ResponseFeedDto
 import com.teamdontbe.data_remote.api.LoginApiService.Companion.API
 import com.teamdontbe.data_remote.api.LoginApiService.Companion.V1
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -23,7 +26,6 @@ interface HomeApiService {
         const val CURSOR = "cursor"
         const val COMMENT = "comment"
         const val COMMENTS = "comments"
-        const val DETAIL = "detail"
         const val CONTENT_ID = "contentId"
         const val LIKED = "liked"
         const val UNLIKED = "unliked"
@@ -64,10 +66,12 @@ interface HomeApiService {
         @Path(value = CONTENT_ID) contentId: Int,
     ): BaseResponse<Unit>
 
-    @POST("/$API/$V1/$CONTENT/{$CONTENT_ID}/$COMMENT")
+    @Multipart
+    @POST("/$API/$V2/$CONTENT/{$CONTENT_ID}/$COMMENT")
     suspend fun postCommentPosting(
         @Path(value = CONTENT_ID) contentId: Int,
-        @Body request: RequestCommentPostingDto,
+        @Part("text") request: RequestBody,
+        @Part file: MultipartBody.Part?,
     ): BaseResponse<Unit>
 
     @DELETE("/$API/$V1/$COMMENT/{$COMMENT_ID}")

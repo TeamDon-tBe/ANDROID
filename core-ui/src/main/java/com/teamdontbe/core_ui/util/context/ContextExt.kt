@@ -1,10 +1,14 @@
 package com.teamdontbe.core_ui.util.context
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.provider.Settings
 import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
@@ -82,4 +86,25 @@ fun Context.statusBarColorOf(
     if (this is Activity) {
         window?.statusBarColor = colorOf(resId)
     }
+}
+
+fun Context.showPermissionAppSettingsDialog() {
+    AlertDialog.Builder(this)
+        .setTitle("권한이 필요해요")
+        .setMessage("이 앱은 파일 및 미디어 접근 권한이 필요해요.\n앱 세팅으로 이동해서 권한을 부여 할 수 있어요.")
+        .setPositiveButton("이동하기") { dialog, _ ->
+            navigateToAppSettings()
+            dialog.dismiss()
+        }
+        .setNegativeButton("취소하기") { dialog, _ ->
+            dialog.dismiss()
+        }
+        .show()
+}
+
+fun Context.navigateToAppSettings() {
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+    val uri = Uri.fromParts("package", packageName, null)
+    intent.data = uri
+    startActivity(intent)
 }

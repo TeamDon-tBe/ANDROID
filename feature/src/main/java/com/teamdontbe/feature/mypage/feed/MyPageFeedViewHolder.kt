@@ -3,6 +3,7 @@ package com.teamdontbe.feature.mypage.feed
 import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.teamdontbe.core_ui.view.setOnShortClickListener
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.feature.databinding.ItemHomeFeedBinding
 import com.teamdontbe.feature.util.Transparent
@@ -14,6 +15,7 @@ class MyPageFeedViewHolder(
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit,
     private val onClickTransparentBtn: (FeedEntity) -> Unit,
+    private val onClickFeedImage: (String) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
     private var item: FeedEntity? = null
 
@@ -26,6 +28,12 @@ class MyPageFeedViewHolder(
         }
         binding.ivHomeGhostFillGreen.setOnClickListener {
             item?.let { onClickTransparentBtn(it) }
+        }
+        binding.tvHomeFeedContent.setOnShortClickListener() {
+            item?.run { onItemClicked(this) }
+        }
+        binding.ivHomeFeedImg.setOnClickListener {
+            item?.contentImageUrl?.run { onClickFeedImage(this) }
         }
     }
 

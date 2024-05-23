@@ -29,6 +29,7 @@ import com.teamdontbe.feature.home.HomeFeedAdapter
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.home.HomeFragment.Companion.KEY_HOME_DETAIL_FEED
 import com.teamdontbe.feature.home.HomeViewModel
+import com.teamdontbe.feature.snackbar.LinkCountErrorSnackBar
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
 import com.teamdontbe.feature.snackbar.UploadingSnackBar
 import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_LIKE
@@ -153,6 +154,7 @@ class HomeDetailFragment :
             onClickUserProfileBtn = { memberId -> navigateToMyPageFragment(memberId) },
             userId = homeViewModel.getMemberId(),
             onClickToNavigateToHomeDetail = {},
+            onClickFeedImage = { navigateToImageDetailFragment(it) },
         ).apply {
             submitList(feedListData)
         }
@@ -292,7 +294,13 @@ class HomeDetailFragment :
         homeViewModel.postCommentPosting.flowWithLifecycle(viewLifeCycle).onEach { result ->
             when (result) {
                 is UiState.Success -> handleCommentPostingSuccess()
-                is UiState.Failure -> navigateToErrorPage()
+                is UiState.Failure -> {
+                    LinkCountErrorSnackBar.make(binding.root).apply {
+                        setText(result.msg)
+                        show()
+                    }
+                }
+
                 else -> Unit
             }
         }.launchIn(viewLifeCycleScope)
@@ -368,6 +376,13 @@ class HomeDetailFragment :
         CommentBottomSheet(contentId, feed).show(
             parentFragmentManager,
             COMMENT,
+        )
+    }
+
+    private fun navigateToImageDetailFragment(it: String) {
+        findNavController().navigate(
+            R.id.fragment_image_detail,
+            bundleOf(KEY_NOTI_DATA to it),
         )
     }
 

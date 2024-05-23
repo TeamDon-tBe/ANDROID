@@ -15,8 +15,8 @@ class MyPageFeedAdapter(
     private val onItemClicked: (FeedEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
     private val onClickTransparentBtn: (FeedEntity) -> Unit,
-) :
-    PagingDataAdapter<FeedEntity, MyPageFeedViewHolder>(myPageFeedItemDiffCallback) {
+    private val onClickFeedImage: (String) -> Unit,
+) : PagingDataAdapter<FeedEntity, MyPageFeedViewHolder>(myPageFeedItemDiffCallback) {
     private val inflater by lazy { LayoutInflater.from(context) }
 
     override fun onCreateViewHolder(
@@ -31,6 +31,7 @@ class MyPageFeedAdapter(
             onItemClicked = onItemClicked,
             onClickLikedBtn = onClickLikedBtn,
             onClickTransparentBtn = onClickTransparentBtn,
+            onClickFeedImage = onClickFeedImage,
         )
     }
 

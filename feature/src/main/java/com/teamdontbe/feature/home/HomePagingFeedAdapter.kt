@@ -10,13 +10,14 @@ import com.teamdontbe.feature.home.HomeFeedAdapter.Companion.HomeAdapterDiffCall
 import com.teamdontbe.feature.home.viewholder.HomeFeedViewHolder
 
 class HomePagingFeedAdapter(
-    private val context : Context,
+    private val context: Context,
     private val userId: Int,
     private val onClickToNavigateToHomeDetail: (FeedEntity) -> Unit,
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
     private val onClickUserProfileBtn: (Int) -> Unit,
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit,
     private val onClickTransparentBtn: (FeedEntity) -> Unit,
+    private val onClickFeedImage: (String) -> Unit,
 ) :
     PagingDataAdapter<FeedEntity, HomeFeedViewHolder>(HomeAdapterDiffCallback) {
     override fun onCreateViewHolder(
@@ -33,9 +34,9 @@ class HomePagingFeedAdapter(
             onClickLikedBtn,
             onClickUserProfileBtn,
             onClickKebabBtn,
-            onClickTransparentBtn
+            onClickTransparentBtn,
+            onClickFeedImage,
         )
-
     }
 
     override fun onBindViewHolder(

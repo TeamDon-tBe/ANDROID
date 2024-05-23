@@ -119,11 +119,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             binding.bnvMain.visibility =
                 if (destination.id in
                     listOf(
-                            R.id.fragment_home,
-                            R.id.fragment_notification,
-                            R.id.fragment_my_page,
-                            R.id.fragment_home_detail,
-                        )
+                        R.id.fragment_home,
+                        R.id.fragment_notification,
+                        R.id.fragment_my_page,
+                        R.id.fragment_home_detail,
+                        R.id.fragment_image_detail,
+                    )
                 ) {
                     View.VISIBLE
                 } else {

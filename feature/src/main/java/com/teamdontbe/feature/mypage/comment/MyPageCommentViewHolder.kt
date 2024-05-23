@@ -3,6 +3,7 @@ package com.teamdontbe.feature.mypage.comment
 import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.teamdontbe.core_ui.view.setOnShortClickListener
 import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.feature.databinding.ItemMyPageCommentBinding
 import com.teamdontbe.feature.util.Transparent
@@ -14,6 +15,7 @@ class MyPageCommentViewHolder(
     private val onClickLikedBtn: (Int, Boolean) -> Unit,
     private val onClickKebabBtn: (CommentEntity, Int) -> Unit,
     private val onClickTransparentBtn: (CommentEntity) -> Unit,
+    private val onClickFeedImage: (String) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
     private var item: CommentEntity? = null
 
@@ -26,6 +28,12 @@ class MyPageCommentViewHolder(
         }
         binding.ivCommentGhostFillGreen.setOnClickListener {
             item?.let { onClickTransparentBtn(it) }
+        }
+        binding.tvCommentContent.setOnShortClickListener {
+            item?.run { onItemClicked(this) }
+        }
+        binding.ivHomeFeedImg.setOnClickListener {
+            item?.commentImageUrl?.run { onClickFeedImage(this) }
         }
     }
 

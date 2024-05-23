@@ -1,25 +1,35 @@
 package com.teamdontbe.feature.posting
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
+import android.net.Uri
+import android.os.Build
 import android.text.InputFilter
 import android.util.Patterns.WEB_URL
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.context.pxToDp
+import com.teamdontbe.core_ui.util.context.showPermissionAppSettingsDialog
 import com.teamdontbe.core_ui.util.fragment.colorOf
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
+import com.teamdontbe.feature.ErrorActivity.Companion.navigateToErrorPage
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentPostingBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
@@ -43,8 +53,34 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private var totalContentLength = 0
     private var linkValidity = true
 
+    private lateinit var getGalleryLauncher: ActivityResultLauncher<String>
+    private lateinit var getPhotoPickerLauncher: ActivityResultLauncher<PickVisualMediaRequest>
+    private val requestPermissions =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            when (isGranted) {
+                true -> {
+                    try {
+                        selectImage()
+                    } catch (e: Exception) {
+                        navigateToErrorPage(requireContext())
+                    }
+                }
+
+                false -> handlePermissionDenied()
+            }
+        }
+
+    private fun handlePermissionDenied() {
+        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)) {
+            requireContext().showPermissionAppSettingsDialog()
+        }
+    }
+
     override fun initView() {
         statusBarColorOf(R.color.white)
+        initGalleryLauncher()
+        initPhotoPickerLauncher()
+
         showKeyboard()
         initAnimation()
 
@@ -58,11 +94,15 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
         initLinkBtnClickListener()
         initCancelLinkBtnClickListener()
         checkLinkValidity()
+
+        // 이미지 업로드
+        initImageUploadBtnClickListener()
+        observePhotoUri()
     }
 
     private fun initObserveUser() {
         postingViewModel.getMyPageUserProfileInfo(postingViewModel.getMemberId())
-        postingViewModel.getMyPageUserProfileState.flowWithLifecycle(lifecycle).onEach {
+        postingViewModel.getMyPageUserProfileState.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
@@ -78,7 +118,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 is UiState.Empty -> Unit
                 is UiState.Failure -> Unit
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun hideKeyboard() {
@@ -118,7 +158,7 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     }
 
     private fun initObservePost() {
-        postingViewModel.postPosting.flowWithLifecycle(lifecycle).onEach {
+        postingViewModel.postPosting.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
                 is UiState.Loading -> Unit
                 is UiState.Success -> {
@@ -130,9 +170,14 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 }
 
                 is UiState.Empty -> Unit
-                is UiState.Failure -> Unit
+                is UiState.Failure -> {
+                    LinkCountErrorSnackBar.make(binding.root).apply {
+                        setText(it.msg)
+                        show()
+                    }
+                }
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun initLinkBtnClickListener() = with(binding) {
@@ -234,9 +279,10 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             trackEvent(CLICK_POST_UPLOAD)
             postingViewModel.posting(
                 binding.etPostingContent.text.toString() + (
-                    binding.etPostingLink.text.takeIf { it.isNotEmpty() }
-                        ?.let { "\n$it" }.orEmpty()
-                    )
+                        binding.etPostingLink.text.takeIf { it.isNotEmpty() }
+                            ?.let { "\n$it" }.orEmpty()
+                        ),
+                postingViewModel.photoUri.value
             )
         }
     }
@@ -323,6 +369,78 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             R.string.posting_text_count,
             totalCommentLength
         )
+    }
+
+    private fun initImageUploadBtnClickListener() = with(binding) {
+        layoutUploadBar.ivUploadImage.setOnClickListener {
+            getGalleryPermission()
+            showKeyboard()
+        }
+    }
+
+    private fun getGalleryPermission() {
+        // api 34 이상인 경우
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            selectImage()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions.launch(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            requestPermissions.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+    }
+
+    private fun selectImage() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            getGalleryLauncher.launch("image/*")
+        } else {
+            getPhotoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        }
+    }
+
+    private fun initPhotoPickerLauncher() {
+        getPhotoPickerLauncher =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri ->
+                imageUri?.let { postingViewModel.setPhotoUri(it.toString()) }
+            }
+    }
+
+    private fun initGalleryLauncher() {
+        getGalleryLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri ->
+                imageUri?.let { postingViewModel.setPhotoUri(it.toString()) }
+            }
+    }
+
+
+    private fun observePhotoUri() {
+        postingViewModel.photoUri.flowWithLifecycle(viewLifeCycle).onEach { getUri ->
+            getUri?.let { uri ->
+                handleUploadImageClick(Uri.parse(uri))
+            }
+        }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun handleUploadImageClick(uri: Uri) = with(binding) {
+        ivPostingImg.isVisible = true
+        ivPostingImg.load(uri)
+        ivPostingCancelImage.isVisible = true
+        cancelImageBtnClickListener()
+    }
+
+    private fun cancelImageBtnClickListener() = with(binding) {
+        ivPostingCancelImage.setOnClickListener {
+            postingViewModel.setPhotoUri(null)
+            ivPostingImg.load(null)
+            ivPostingImg.isGone = true
+            ivPostingCancelImage.isGone = true
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        postingViewModel.setPhotoUri(null)
     }
 
     companion object {

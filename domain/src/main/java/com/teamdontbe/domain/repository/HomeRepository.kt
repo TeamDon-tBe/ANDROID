@@ -21,6 +21,7 @@ interface HomeRepository {
     suspend fun postCommentPosting(
         contentId: Int,
         commentText: String,
+        uriString: String?
     ): Result<Boolean>
 
     suspend fun deleteComment(commentId: Int): Result<Boolean>

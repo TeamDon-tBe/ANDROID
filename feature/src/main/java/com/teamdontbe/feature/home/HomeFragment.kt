@@ -26,6 +26,7 @@ import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_LIKE
 import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_VIEW
 import com.teamdontbe.feature.util.EventObserver
 import com.teamdontbe.feature.util.FeedItemDecorator
+import com.teamdontbe.feature.util.KeyStorage
 import com.teamdontbe.feature.util.KeyStorage.DELETE_POSTING
 import com.teamdontbe.feature.util.PagingLoadingAdapter
 import com.teamdontbe.feature.util.pagingSubmitData
@@ -62,6 +63,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 homeViewModel.openHomeDetail(feedData)
             },
             userId = homeViewModel.getMemberId(),
+            onClickFeedImage = { navigateToImageDetailFragment(it) },
         )
         homeFeedAdapter.apply {
             pagingSubmitData(
@@ -252,6 +254,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 //            }
 //        }
 //    }
+
+    private fun navigateToImageDetailFragment(it: String) {
+        findNavController().navigate(
+            R.id.fragment_image_detail,
+            bundleOf(KeyStorage.KEY_NOTI_DATA to it),
+        )
+    }
 
     companion object {
         const val HOME_BOTTOM_SHEET = "home_bottom_sheet"
