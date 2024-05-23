@@ -302,7 +302,7 @@ class HomeDetailFragment :
                 }
 
                 is UiState.Loading -> UploadingSnackBar.make(binding.root).show()
-                else -> Unit
+                is UiState.Empty -> Unit
             }
         }.launchIn(viewLifeCycleScope)
     }
