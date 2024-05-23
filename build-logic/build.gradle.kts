@@ -35,5 +35,9 @@ gradlePlugin {
             id = "com.teamdontbe.dontbe.test"
             implementationClass = "com.teamdontbe.dontbe.plugin.AndroidTestPlugin"
         }
+        create("google-firebase") {
+            id = "com.teamdontbe.dontbe.firebase"
+            implementationClass = "com.teamdontbe.dontbe.plugin.GoogleFirebasePlugin"
+        }
     }
 }

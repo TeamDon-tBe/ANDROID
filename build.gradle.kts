@@ -13,6 +13,7 @@ buildscript {
         classpath(libs.hilt.plugin)
         classpath(libs.agp)
         classpath(libs.ktlint)
+        classpath(libs.google.services)
     }
 }
 

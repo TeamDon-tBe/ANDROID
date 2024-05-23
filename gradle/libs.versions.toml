@@ -29,9 +29,10 @@ swipe-refresh-layout = "1.1.0"
 material = "1.11.0"
 accompanist = "0.32.0"
 in-app-update = "2.1.0"
-google-services = "4.4.0"
+google-services = "4.4.1"
 admob = "22.4.0"
 google-play-services = "18.3.0"
+google-bom = "33.0.0"
 
 # test
 junit = "4.13.2"
@@ -96,6 +97,9 @@ google-services = { module = "com.google.gms:google-services", version.ref = "go
 google-play-services = { group = "com.google.android.gms", name = "play-services-base", version.ref = "google-play-services" }
 app-update = { module = "com.google.android.play:app-update", version.ref = "in-app-update" }
 app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "in-app-update" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "google-bom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 
 # test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -140,3 +144,4 @@ lifecycle = ["lifecycle", "lifecycle-viewmodel", "lifecycle-livedata"]
 retrofit = ["retrofit", "retrofit-kotlin-serialization-converter", "okhttp-bom", "okhttp", "okhttp-logging-interceptor"]
 androidx-android-test = ["androidx-test-espresso", "androidx-test-junit"]
 room = ["room-runtime", "room-compiler", "room-ktx"]
+firebase = ["firebase-analytics", "firebase-messaging"]

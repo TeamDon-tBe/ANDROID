@@ -33,6 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+
 @AndroidEntryPoint
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val homeViewModel by activityViewModels<HomeViewModel>()
@@ -229,6 +230,28 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             binding.rvHome.smoothScrollToPosition(0)
         }
     }
+//
+//    val deniedPermission = checkPermission()
+//
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        when (requestCode) {
+//            1001 -> {
+//                val deniedPermissionList = mutableListOf<String>()
+//                grantResults.forEachIndexed { index, i ->
+//                    if (i == PackageManager.PERMISSION_DENIED) {
+//                        deniedPermissionList.add(permissions[index])
+//                    }
+//                }
+//                if (deniedPermissionList.size > 0) {
+//                }
+//            }
+//        }
+//    }
 
     companion object {
         const val HOME_BOTTOM_SHEET = "home_bottom_sheet"
