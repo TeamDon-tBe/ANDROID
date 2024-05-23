@@ -27,7 +27,6 @@ import com.teamdontbe.feature.mypage.MyPageViewModel
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageAnotherUserBottomSheet
 import com.teamdontbe.feature.mypage.bottomsheet.MyPageTransparentDialogFragment
 import com.teamdontbe.feature.snackbar.TransparentIsGhostSnackBar
-import com.teamdontbe.feature.util.AmplitudeTag
 import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_LIKE
 import com.teamdontbe.feature.util.AmplitudeTag.CLICK_POST_VIEW
 import com.teamdontbe.feature.util.FeedItemDecorator
@@ -85,7 +84,7 @@ class MyPageFeedFragment :
                 },
                 onClickLikedBtn = ::onLikedBtnClick,
                 onClickTransparentBtn = ::onTransparentBtnClick,
-
+                onClickFeedImage = { navigateToImageDetailFragment(it) },
             ).apply {
                 pagingSubmitData(
                     viewLifecycleOwner,
@@ -251,7 +250,7 @@ class MyPageFeedFragment :
         myPageFeedAdapter.addLoadStateListener { combinedLoadStates ->
             val isEmpty =
                 combinedLoadStates.source.refresh is
-                LoadState.NotLoading && combinedLoadStates.append.endOfPaginationReached && myPageFeedAdapter.itemCount < 1
+                        LoadState.NotLoading && combinedLoadStates.append.endOfPaginationReached && myPageFeedAdapter.itemCount < 1
             when {
                 memberProfile.idFlag && isEmpty -> updateNoFeedUI()
                 !memberProfile.idFlag && isEmpty -> updateOtherUserNoFeedUI()
@@ -266,6 +265,13 @@ class MyPageFeedFragment :
             R.id.fragment_my_page,
             R.id.bnv_main,
             binding.rvMyPagePosting
+        )
+    }
+
+    private fun navigateToImageDetailFragment(it: String) {
+        findNavController().navigate(
+            R.id.fragment_image_detail,
+            bundleOf(KEY_NOTI_DATA to it),
         )
     }
 

@@ -1,23 +1,36 @@
 package com.teamdontbe.feature.homedetail
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.flowWithLifecycle
+import coil.load
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.teamdontbe.core_ui.base.BindingBottomSheetFragment
 import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
+import com.teamdontbe.core_ui.util.context.showPermissionAppSettingsDialog
 import com.teamdontbe.core_ui.util.fragment.colorOf
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
+import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.setOnDuplicateBlockClick
 import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.BottomsheetCommentBinding
 import com.teamdontbe.feature.dialog.DeleteDialogFragment
@@ -32,6 +45,8 @@ import com.teamdontbe.feature.util.AmplitudeTag.CLICK_REPLY_UPLOAD
 import com.teamdontbe.feature.util.Debouncer
 import com.teamdontbe.feature.util.DialogTag.DELETE_COMMENT
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class CommentBottomSheet(
@@ -44,15 +59,45 @@ class CommentBottomSheet(
     private var totalCommentLength = 0
     private var linkValidity = true
 
+    private lateinit var getGalleryLauncher: ActivityResultLauncher<String>
+    private lateinit var getPhotoPickerLauncher: ActivityResultLauncher<PickVisualMediaRequest>
+    private val requestPermissions =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            when (isGranted) {
+                true -> {
+                    try {
+                        selectImage()
+                    } catch (e: Exception) {
+                        ErrorActivity.navigateToErrorPage(requireContext())
+                    }
+                }
+
+                false -> handlePermissionDenied()
+            }
+        }
+
+    private fun handlePermissionDenied() {
+        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)) {
+            requireContext().showPermissionAppSettingsDialog()
+        }
+    }
+
     override fun initView() {
         binding.vm = homeViewModel
         binding.feed = feed
+        initPhotoPickerLauncher()
+        initGalleryLauncher()
+
         setShowKeyboard()
         initEditText()
         initAppbarCancelClickListener()
         initLinkBtnClickListener()
         initCancelLinkBtnClickListener()
         checkLinkValidity()
+
+        // 이미지 업로드
+        initImageUploadBtnClickListener()
+        observePhotoUri()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -220,7 +265,8 @@ class CommentBottomSheet(
                 homeViewModel.postCommentPosting(
                     contentId,
                     binding.etCommentContent.text.toString() + binding.etCommentLink.text.takeIf { it.isNotEmpty() }
-                        ?.let { "\n$it" }.orEmpty()
+                        ?.let { "\n$it" }.orEmpty(),
+                    homeViewModel.photoUri.value
                 )
                 dismiss()
             }
@@ -239,7 +285,78 @@ class CommentBottomSheet(
         }
     }
 
+    private fun initImageUploadBtnClickListener() = with(binding) {
+        layoutUploadBar.ivUploadImage.setOnClickListener {
+            getGalleryPermission()
+        }
+    }
+
+    private fun getGalleryPermission() {
+        // api 34 이상인 경우
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            selectImage()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions.launch(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            requestPermissions.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+    }
+
+    private fun selectImage() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            getGalleryLauncher.launch("image/*")
+        } else {
+            getPhotoPickerLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        }
+    }
+
+    private fun initPhotoPickerLauncher() {
+        getPhotoPickerLauncher =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri ->
+                imageUri?.let { homeViewModel.setPhotoUri(it.toString()) }
+            }
+    }
+
+    private fun initGalleryLauncher() {
+        getGalleryLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri ->
+                imageUri?.let { homeViewModel.setPhotoUri(it.toString()) }
+            }
+    }
+
+
+    private fun observePhotoUri() {
+        homeViewModel.photoUri.flowWithLifecycle(viewLifeCycle).onEach { getUri ->
+            getUri?.let { uri ->
+                handleUploadImageClick(Uri.parse(uri))
+            }
+        }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun handleUploadImageClick(uri: Uri) = with(binding) {
+        ivPostingImg.isVisible = true
+        ivPostingImg.load(uri)
+        ivPostingCancelImage.isVisible = true
+        cancelImageBtnClickListener()
+    }
+
+    private fun cancelImageBtnClickListener() = with(binding) {
+        ivPostingCancelImage.setOnClickListener {
+            homeViewModel.setPhotoUri(null)
+            ivPostingImg.load(null)
+            ivPostingImg.isGone = true
+            ivPostingCancelImage.isGone = true
+        }
+    }
+
     override fun onDeleteDialogDismissed() {
         dismiss()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        homeViewModel.setPhotoUri(null)
     }
 }

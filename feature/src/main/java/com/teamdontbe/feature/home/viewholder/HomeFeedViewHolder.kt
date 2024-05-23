@@ -21,6 +21,7 @@ class HomeFeedViewHolder(
     private val onClickUserProfileBtn: (Int) -> Unit,
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit,
     private val onClickTransparentBtn: (FeedEntity) -> Unit,
+    private val onClickFeedImage: (String) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FeedEntity) {
         with(binding) {
@@ -45,6 +46,9 @@ class HomeFeedViewHolder(
             }
             binding.tvHomeFeedContent.setOnShortClickListener {
                 onClickToNavigateToHomeDetail(data)
+            }
+            binding.ivHomeFeedImg.setOnClickListener {
+                data.contentImageUrl?.run { onClickFeedImage(this) }
             }
             initLikedBtnCLickListener(data)
             initProfileBtnClickListener(data)

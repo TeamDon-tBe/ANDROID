@@ -17,6 +17,7 @@ class HomeFeedAdapter(
     private val onClickUserProfileBtn: (Int) -> Unit,
     private val onClickKebabBtn: (FeedEntity, Int) -> Unit,
     private val onClickTransparentBtn: (FeedEntity) -> Unit,
+    private val onClickFeedImage: (String) -> Unit,
 ) : ListAdapter<FeedEntity, HomeFeedViewHolder>(
     HomeAdapterDiffCallback,
 ) {
@@ -34,7 +35,8 @@ class HomeFeedAdapter(
             onClickLikedBtn,
             onClickUserProfileBtn,
             onClickKebabBtn,
-            onClickTransparentBtn
+            onClickTransparentBtn,
+            onClickFeedImage,
         )
 
     }

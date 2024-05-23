@@ -1,16 +1,27 @@
 package com.teamdontbe.data.repositoryimpl
 
+import android.content.ContentResolver
 import androidx.paging.PagingData
 import com.teamdontbe.data.datasource.HomeDataSource
-import com.teamdontbe.data.dto.request.RequestCommentPostingDto
+import com.teamdontbe.data.repositoryimpl.utils.createImagePart
+import com.teamdontbe.data.repositoryimpl.utils.extractErrorMessage
 import com.teamdontbe.domain.entity.CommentEntity
 import com.teamdontbe.domain.entity.FeedEntity
 import com.teamdontbe.domain.repository.HomeRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 
 class HomeRepositoryImpl
 @Inject constructor(
+    private val contentResolver: ContentResolver,
     private val homeDataSource: HomeDataSource,
 ) : HomeRepository {
     override fun getFeedList(): Flow<PagingData<FeedEntity>> = homeDataSource.getFeedList()
@@ -21,7 +32,8 @@ class HomeRepositoryImpl
         }
     }
 
-    override fun getCommentList(contentId: Int): Flow<PagingData<CommentEntity>> = homeDataSource.getCommentList(contentId)
+    override fun getCommentList(contentId: Int): Flow<PagingData<CommentEntity>> =
+        homeDataSource.getCommentList(contentId)
 
     override suspend fun deleteFeed(contentId: Int): Result<Boolean> {
         return runCatching {
@@ -38,18 +50,6 @@ class HomeRepositoryImpl
     override suspend fun deleteFeedLiked(contentId: Int): Result<Boolean> {
         return runCatching {
             homeDataSource.deleteFeedLiked(contentId).success
-        }
-    }
-
-    override suspend fun postCommentPosting(
-        contentId: Int,
-        commentText: String,
-    ): Result<Boolean> {
-        return runCatching {
-            homeDataSource.postCommentPosting(
-                contentId,
-                RequestCommentPostingDto(commentText, "comment"),
-            ).success
         }
     }
 
@@ -87,5 +87,43 @@ class HomeRepositoryImpl
                 ghostReason
             ).success
         }
+    }
+
+    override suspend fun postCommentPosting(
+        contentId: Int,
+        commentText: String,
+        uriString: String?
+    ): Result<Boolean> {
+        return runCatching {
+
+            val infoRequestBody = createCommentRequestBody(commentText)
+            val imagePart = withContext(Dispatchers.IO) {
+                createImagePart(contentResolver, uriString)
+            }
+
+            homeDataSource.postCommentPosting(
+                contentId,
+                infoRequestBody,
+                imagePart
+            ).success
+        }.onFailure { throwable ->
+            return when (throwable) {
+                is HttpException -> Result.failure(IOException(throwable.extractErrorMessage()))
+                else -> Result.failure(throwable)
+            }
+        }
+    }
+
+    private fun createCommentRequestBody(commentText: String): RequestBody {
+        val infoJson = JSONObject().apply {
+            put("commentText", commentText)
+            put("notificationTriggerType", COMMENT_VALUE)
+        }.toString()
+
+        return infoJson.toRequestBody("application/json".toMediaTypeOrNull())
+    }
+
+    companion object {
+        private const val COMMENT_VALUE = "comment"
     }
 }

@@ -2,13 +2,11 @@ package com.teamdontbe.feature.signup
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.READ_MEDIA_IMAGES
-import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
-import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.PickVisualMediaRequest
@@ -25,6 +23,7 @@ import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.core_ui.util.context.hideKeyboard
 import com.teamdontbe.core_ui.util.context.openKeyboard
+import com.teamdontbe.core_ui.util.context.showPermissionAppSettingsDialog
 import com.teamdontbe.core_ui.util.intent.navigateTo
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.ProfileEditInfoEntity
@@ -69,7 +68,7 @@ class SignUpProfileActivity :
                 }
             } else {
                 Timber.tag("permission").d("권한 거부")
-                requestPermissionAppSettings()
+                showPermissionAppSettingsDialog()
             }
         }
 
@@ -125,28 +124,6 @@ class SignUpProfileActivity :
         ivSignUpProfile.setOnClickListener {
             getGalleryPermission()
         }
-    }
-
-    // 앱 설정으로 이동하여 사용자에게 권한을 다시 요청하는 함수
-    private fun requestPermissionAppSettings() {
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.sign_up_profile_permission_title))
-            .setMessage(getString(R.string.sign_up_profile_permission_description))
-            .setPositiveButton(getString(R.string.sign_up_profile_permission_move)) { dialog, _ ->
-                navigateToAppSettings()
-                dialog.dismiss()
-            }
-            .setNegativeButton(getString(R.string.sign_up_profile_permission_cancle)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
-
-    private fun navigateToAppSettings() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        val uri = Uri.fromParts("package", packageName, null)
-        intent.data = uri
-        startActivity(intent)
     }
 
     private fun getGalleryPermission() {
@@ -352,7 +329,7 @@ class SignUpProfileActivity :
         nickName: String,
         optionalAgreement: Boolean,
         introduce: String,
-        imgUrl: File?
+        imgUrl: File?,
     ) {
         viewModel.patchUserProfileUri(
             ProfileEditInfoEntity(
