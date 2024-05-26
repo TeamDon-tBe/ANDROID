@@ -81,6 +81,22 @@
             tools:text="돈비를 사용하면 진짜 돈비를 맞을 수 있나요?
 저 돈비 맞고 싶어요 돈벼락이 최고입니다. 그나저나 돈비 정말 흥미로운 서비스인 것 같아요 어떻게 이런 기획을 ? 대박 ㄷ ㄷ ㄷ돈비를 사용하면 진짜 돈비를 맞을 수 있나요?" />
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_home_feed_img"
+            setEmptyImageUrl="@{feed.commentImageUrl}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/iv_comment_ghost_fill_green"
+            app:layout_constraintDimensionRatio="270:330"
+            app:layout_constraintEnd_toEndOf="@id/tv_comment_content"
+            app:layout_constraintStart_toStartOf="@id/tv_comment_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_content"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerRadius4"
+            tools:background="@color/primary" />
+
         <View
             android:id="@+id/view_home_transparent_bg"
             android:layout_width="0dp"
@@ -151,21 +167,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/btn_comment_heart"
             tools:text="54" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_home_feed_img"
-            setEmptyImageUrl="@{feed.commentImageUrl}"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="centerCrop"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@id/iv_comment_ghost_fill_green"
-            app:layout_constraintDimensionRatio="270:330"
-            app:layout_constraintEnd_toEndOf="@id/tv_comment_content"
-            app:layout_constraintStart_toStartOf="@id/tv_comment_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_comment_content"
-            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerRadius4"
-            tools:background="@color/primary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
