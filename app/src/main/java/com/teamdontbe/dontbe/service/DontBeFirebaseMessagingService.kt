@@ -35,7 +35,7 @@ class DontBeFirebaseMessagingService : FirebaseMessagingService() {
         val body = message.data["data"]
         val contentId = message.data["relatedContentId"]
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(com.teamdontbe.feature.R.drawable.ic_appbar_logo)
+            .setSmallIcon(com.teamdontbe.feature.R.drawable.ic_login_symbol)
             .setContentTitle(title)
             .setContentText(body)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
