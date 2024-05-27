@@ -32,16 +32,19 @@ class DontBeFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.createNotificationChannel(channel)
 
         val title = message.data["title"]
-        val body = message.data["data"]
+        val body = message.data["body"]
         val contentId = message.data["relatedContentId"]
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(com.teamdontbe.feature.R.drawable.ic_login_symbol)
             .setContentTitle(title)
-            .setContentText(body)
+            .setContentText(contentId)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
 
         notificationManager.notify(1, notificationBuilder.build())
+
+        Timber.tag("fcm").d(title)
+        Timber.tag("fcm").d(body)
     }
 
     companion object {

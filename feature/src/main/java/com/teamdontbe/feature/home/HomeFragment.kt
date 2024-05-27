@@ -8,6 +8,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
@@ -33,7 +35,7 @@ import com.teamdontbe.feature.util.pagingSubmitData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-
+import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -42,6 +44,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private lateinit var homeFeedAdapter: HomePagingFeedAdapter
 
     override fun initView() {
+        getFcmToken()
         statusBarColorOf(R.color.gray_1)
         initHomeFeedAdapter()
         observeOpenHomeDetail()
@@ -76,6 +79,21 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         binding.rvHome.adapter = homeFeedAdapter.withLoadStateHeaderAndFooter(
             header = PagingLoadingAdapter(),
             footer = PagingLoadingAdapter()
+        )
+    }
+
+    private fun getFcmToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(
+            OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Timber.w("tag", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+                // Get new FCM registration token
+                val token = task.result
+                // Log
+                Timber.tag("fcm").d("token is $token")
+            }
         )
     }
 
