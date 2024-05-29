@@ -19,6 +19,8 @@ class MyPageDeleteDialogFragment(
     contentId: Int,
     commentId: Int,
     whereFrom: String,
+    private val reportTargetNickname: String,
+    private val relateText: String,
 ) : BindingDialogFragment<FragmentDeleteWithTitleDialogBinding>(R.layout.fragment_delete_with_title_dialog) {
     private val myPageViewModel by activityViewModels<MyPageViewModel>()
 
@@ -71,7 +73,10 @@ class MyPageDeleteDialogFragment(
 
     private fun initDeclareBtnClickListener() {
         binding.btnDeleteWithTitleDialogDelete.setOnDuplicateBlockClick {
-            if (isMember) deleteFeedOrComment() else navigateToComplaintWeb()
+            if (isMember) deleteFeedOrComment() else {
+                myPageViewModel.postComplaint(reportTargetNickname, relateText)
+                navigateToComplaintWeb()
+            }
             dismiss()
         }
     }

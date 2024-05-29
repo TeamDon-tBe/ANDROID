@@ -105,6 +105,8 @@ class MyPageCommentFragment :
                 contentId = it.contentId ?: -1,
                 commentId = it.commentId,
                 whereFrom = FROM_COMMENT,
+                commentEntity.memberNickname,
+                commentEntity.contentText,
             )
             deleteCommentPosition = position
         }
@@ -115,8 +117,10 @@ class MyPageCommentFragment :
         contentId: Int,
         commentId: Int,
         whereFrom: String,
+        reportTargetNickname: String,
+        relateText: String,
     ) {
-        MyPageAnotherUserBottomSheet(isMember, contentId, commentId, whereFrom).show(
+        MyPageAnotherUserBottomSheet(isMember, contentId, commentId, whereFrom, reportTargetNickname, relateText).show(
             childFragmentManager,
             MY_PAGE_BOTTOM_SHEET,
         )

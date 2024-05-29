@@ -181,6 +181,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     contentId = memberProfile.id,
                     commentId = -1,
                     whereFrom = FROM_FEED,
+                    reportTargetNickname = memberProfile.nickName
                 ).show(childFragmentManager, MY_PAGE_ANOTHER_BOTTOM_SHEET)
             }
         }
