@@ -22,17 +22,28 @@ internal fun Project.configureAndroidCommonPlugin() {
 
     extensions.getByType<BaseExtension>().apply {
         defaultConfig {
-            val dontbeBaseUrl = properties["dontbe.base.url"] as? String ?: ""
             val kakaoApiKey = properties["kakao.api.key"] as? String ?: ""
             val amplitudeApiKey = properties["amplitude.api.key"] as? String ?: ""
 
-            manifestPlaceholders["dontbeBaseUrl"] = properties["dontbe.base.url"] as String
             manifestPlaceholders["kakaoApiKey"] = properties["kakao.api.key"] as String
 
-            buildConfigField("String", "DONTBE_BASE_URL", "\"${dontbeBaseUrl}\"")
             buildConfigField("String", "KAKAO_APP_KEY", "\"${kakaoApiKey}\"")
             buildConfigField("String", "AMPLITUDE_API_KEY", "\"${amplitudeApiKey}\"")
         }
+
+        buildTypes {
+            getByName("debug") {
+                val dontbeDevBaseUrl = properties["dontbe.dev.base.url"] as? String ?: ""
+                buildConfigField("String", "DONTBE_BASE_URL", "\"${dontbeDevBaseUrl}\"")
+                manifestPlaceholders["dontbeBaseUrl"] = properties["dontbe.dev.base.url"] as String
+            }
+            getByName("release") {
+                val dontbeRelBaseUrl = properties["dontbe.rel.base.url"] as? String ?: ""
+                buildConfigField("String", "DONTBE_BASE_URL", "\"${dontbeRelBaseUrl}\"")
+                manifestPlaceholders["dontbeBaseUrl"] = properties["dontbe.rel.base.url"] as String
+            }
+        }
+
         buildFeatures.apply {
             viewBinding = true
             buildConfig = true

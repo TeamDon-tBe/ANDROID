@@ -100,6 +100,7 @@ class HomeViewModel
         uriString: String?
     ) {
         viewModelScope.launch {
+            _postCommentPosting.emit(UiState.Loading)
             homeRepository.postCommentPosting(contentId, commentText, uriString)
                 .onSuccess {
                     if (it) _postCommentPosting.emit(UiState.Success(it))
