@@ -29,7 +29,8 @@ import timber.log.Timber
 class NotificationFragment :
     BindingFragment<FragmentNotificationBinding>(R.layout.fragment_notification) {
     private val notiViewModel by viewModels<NotificationViewModel>()
-    private var notiAdapter = NotificationPagingAdapter(click = { notiData, position -> }, onClickUserProfileBtn = {})
+    private var notiAdapter =
+        NotificationPagingAdapter(click = { notiData, position -> }, onClickUserProfileBtn = {})
 
     override fun initView() {
         statusBarColorOf(R.color.white)
@@ -89,6 +90,8 @@ class NotificationFragment :
                     "contentGhost" -> navigateToHomeDetailFragment(notiData)
                     "commentGhost" -> navigateToHomeDetailFragment(notiData)
                     "userBan" -> Unit
+                    "popularWriter" -> navigateToHomeDetailFragment(notiData)
+                    "popularContent" -> navigateToHomeDetailFragment(notiData)
 
                     else ->
                         Timber.tag("noti")
