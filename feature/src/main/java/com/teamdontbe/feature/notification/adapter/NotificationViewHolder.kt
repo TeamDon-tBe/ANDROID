@@ -172,7 +172,7 @@ class NotificationViewHolder(
         spannablePopularText.setSpan(
             StyleSpan(R.font.font_pretendard_semibold),
             0,
-            name.length,
+            name.replace("\n: ", "").length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         return spannablePopularText
