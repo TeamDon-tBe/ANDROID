@@ -4,4 +4,6 @@ data class ProfileEditInfoEntity(
     val nickname: String,
     val isAlarmAllowed: Boolean?,
     val memberIntro: String,
+    val isPushAlarmAllowed: Boolean? = null,
+    val fcmToken: String? = null
 )

@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.domain.entity.ProfileEditInfoEntity
 import com.teamdontbe.domain.repository.HomeRepository
+import com.teamdontbe.domain.repository.LoginRepository
 import com.teamdontbe.domain.repository.UserInfoRepository
 import com.teamdontbe.feature.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +17,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +26,7 @@ class HomeViewModel
 @Inject constructor(
     private val homeRepository: HomeRepository,
     private val userInfoRepository: UserInfoRepository,
+    private val loginRepository: LoginRepository,
 ) : ViewModel() {
 
     private val _getFeedDetail = MutableSharedFlow<UiState<FeedEntity>>()
@@ -50,6 +55,9 @@ class HomeViewModel
 
     private val _photoUri = MutableStateFlow<String?>(null)
     val photoUri: StateFlow<String?> = _photoUri
+
+    private var _profileEditSuccess = MutableStateFlow<Boolean>(false)
+    val profileEditSuccess: SharedFlow<Boolean> get() = _profileEditSuccess
 
     fun setPhotoUri(uri: String?) {
         _photoUri.value = uri
@@ -85,6 +93,8 @@ class HomeViewModel
     fun getUserNickname() = userInfoRepository.getNickName()
 
     fun getUserProfile() = userInfoRepository.getMemberProfileUrl()
+
+    fun saveUserNickname(nickName: String) = userInfoRepository.saveNickName(nickName)
 
     fun postFeedLiked(contentId: Int) = viewModelScope.launch {
         homeRepository.postFeedLiked(contentId).fold({ }, {})
@@ -141,5 +151,21 @@ class HomeViewModel
         ).fold({
             _postTransparent.emit(UiState.Success(true))
         }, { _postTransparent.emit(UiState.Failure(it.message.toString())) })
+    }
+
+    fun patchUserProfileUri(info: ProfileEditInfoEntity, url: File?) {
+        viewModelScope.launch {
+            loginRepository.patchProfileUriEdit(
+                info,
+                url
+            ).onSuccess { patchSuccess ->
+                _profileEditSuccess.value = patchSuccess
+                if (patchSuccess) {
+                    saveUserNickname(info.nickname)
+                }
+            }.onFailure {
+                Timber.d("fail", it.message.toString())
+            }
+        }
     }
 }

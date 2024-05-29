@@ -257,6 +257,8 @@ class SignUpProfileActivity :
         val nickName = viewModel.nickName.value.orEmpty()
         val optionalAgreementInSignUp = intent.getBooleanExtra(SIGN_UP_AGREE, false)
         val introduceText = viewModel.introduceText.value.orEmpty()
+        val fcmToken = viewModel.getUserFcmToken()
+        val isPushAlarmAllowed = viewModel.getIsPushAlarmAllowed()
 
         lifecycleScope.launch {
             val imgUrl = uriToTempFileWithCoil(photoUri)
@@ -277,7 +279,9 @@ class SignUpProfileActivity :
                 MY_PAGE_PROFILE -> handleMyPageProfile(
                     nickName = nickName,
                     introduce = introduceText,
-                    imgUrl = imgUrl
+                    imgUrl = imgUrl,
+                    fcmToken = fcmToken,
+                    isPushAlarmAllowed = isPushAlarmAllowed,
                 )
             }
         }
@@ -354,12 +358,20 @@ class SignUpProfileActivity :
         }
     }
 
-    private suspend fun handleMyPageProfile(nickName: String, introduce: String, imgUrl: File?) {
+    private suspend fun handleMyPageProfile(
+        nickName: String,
+        introduce: String,
+        imgUrl: File?,
+        fcmToken: String?,
+        isPushAlarmAllowed: Boolean?
+    ) {
         viewModel.patchUserProfileUri(
             ProfileEditInfoEntity(
                 nickName,
                 null,
                 introduce,
+                isPushAlarmAllowed,
+                fcmToken,
             ),
             imgUrl
         )
