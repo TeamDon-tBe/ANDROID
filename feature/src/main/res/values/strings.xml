@@ -33,7 +33,7 @@
     <string name="notification_empty_non">아직 받은 알림이 없어요.</string>
     <string name="notification_empty_new">새로운 소식이 도착하면 알려드릴게요.</string>
     <string name="notification_feed_popular_writer">"님이 작성하신 글이 인기글로 선정되었어요.\uD83E\uDD73\uD83E\uDD73"</string>
-    <string name="notification_feed_popular_content">"어제 가장 인기있었던 글이에요.\n"</string>
+    <string name="notification_feed_popular_content">"어제 가장 인기있었던 글이에요.\n: "</string>
     <!-- 홈, 노티, 마이페이지 화면 -->
     <string name="feed_time_now">지금</string>
     <string name="feed_time_minute">분 전</string>
