@@ -21,6 +21,8 @@ class DeleteWithTitleDialogFragment(
     private val contentId: Int,
     private val isComment: Boolean,
     private val commentId: Int,
+    private val reportTargetNickname: String = "",
+    private val relateText: String = "",
 ) : BindingDialogFragment<FragmentDeleteWithTitleDialogBinding>(R.layout.fragment_delete_with_title_dialog) {
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
@@ -63,6 +65,7 @@ class DeleteWithTitleDialogFragment(
     }
 
     private fun navigateToComplaintWeb() {
+        homeViewModel.postComplaint(reportTargetNickname, relateText)
         val urlIntentComplaint = Intent(
             Intent.ACTION_VIEW,
             Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLSdjhidNLgk_99uHZ24pCIZX5V0Tn0CQ2sqpW4Aqahr3azQYyA/viewform"),

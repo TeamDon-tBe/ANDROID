@@ -126,6 +126,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             initBottomSheet(
                 feedData.memberId == homeViewModel.getMemberId(),
                 it,
+                feedData.memberNickname,
+                feedData.contentText
             )
         }
     }
@@ -133,8 +135,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initBottomSheet(
         isMember: Boolean,
         contentId: Int,
+        reportTargetNickname: String,
+        relateText: String,
     ) {
-        HomeBottomSheet(isMember, contentId, false, -1).show(
+        HomeBottomSheet(isMember, contentId, false, -1, reportTargetNickname, relateText).show(
             parentFragmentManager,
             HOME_BOTTOM_SHEET,
         )

@@ -14,6 +14,8 @@ class HomeBottomSheet(
     private val contentId: Int,
     private val isComment: Boolean,
     private val commentId: Int,
+    private val reportTargetNickname: String,
+    private val relateText: String,
 ) : BindingBottomSheetFragment<BottomsheetComplaintDeleteBinding>(R.layout.bottomsheet_complaint_delete) {
     override fun initView() {
         setBottomSheetType()
@@ -42,6 +44,8 @@ class HomeBottomSheet(
                     contentId,
                     true,
                     commentId,
+                    reportTargetNickname,
+                    relateText,
                 ).show(parentFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
             } else {
                 DeleteWithTitleDialogFragment(
@@ -51,6 +55,8 @@ class HomeBottomSheet(
                     contentId,
                     false,
                     commentId,
+                    reportTargetNickname,
+                    relateText,
                 ).show(parentFragmentManager, HOME_DETAIL_BOTTOM_SHEET)
             }
         }

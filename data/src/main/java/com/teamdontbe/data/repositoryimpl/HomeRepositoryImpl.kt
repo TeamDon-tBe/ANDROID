@@ -89,13 +89,26 @@ class HomeRepositoryImpl
         }
     }
 
+    override suspend fun postComplaint(
+        reportTargetNickname: String,
+        relateText: String
+    ): Result<Boolean> {
+        return runCatching {
+            homeDataSource.postComplaint(reportTargetNickname, relateText).success
+        }.onFailure { throwable ->
+            return when (throwable) {
+                is HttpException -> Result.failure(IOException(throwable.extractErrorMessage()))
+                else -> Result.failure(throwable)
+            }
+        }
+    }
+
     override suspend fun postCommentPosting(
         contentId: Int,
         commentText: String,
         uriString: String?
     ): Result<Boolean> {
         return runCatching {
-
             val infoRequestBody = createCommentRequestBody(commentText)
             val imagePart = withContext(Dispatchers.IO) {
                 createImagePart(contentResolver, uriString)

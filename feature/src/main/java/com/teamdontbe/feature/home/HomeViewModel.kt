@@ -59,6 +59,9 @@ class HomeViewModel
     private var _profileEditSuccess = MutableStateFlow<Boolean>(false)
     val profileEditSuccess: SharedFlow<Boolean> get() = _profileEditSuccess
 
+    private val _postComplaint = MutableSharedFlow<Boolean>()
+    val postComplaint: SharedFlow<Boolean> get() = _postComplaint
+
     fun setPhotoUri(uri: String?) {
         _photoUri.value = uri
     }
@@ -166,6 +169,18 @@ class HomeViewModel
             }.onFailure {
                 Timber.d("fail", it.message.toString())
             }
+        }
+    }
+
+    fun postComplaint(
+        reportTargetNickname: String,
+        relateText: String
+    ) {
+        viewModelScope.launch {
+            homeRepository.postComplaint(
+                reportTargetNickname,
+                relateText
+            ).fold({ _postComplaint.emit(true) }, { _postComplaint.emit(false) })
         }
     }
 }
