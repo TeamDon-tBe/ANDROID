@@ -1,8 +1,11 @@
 package com.teamdontbe.feature.home
 
+import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -13,6 +16,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
+import com.teamdontbe.core_ui.util.fragment.toast
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
@@ -43,7 +47,17 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private lateinit var homeFeedAdapter: HomePagingFeedAdapter
 
+    private val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        when (it) {
+            true -> toast("권한 허가")
+            false -> toast("권한 거부")
+        }
+    }
+
     override fun initView() {
+        initNotificationPermission()
         getFcmToken()
         statusBarColorOf(R.color.gray_1)
         initHomeFeedAdapter()
@@ -52,6 +66,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         observeDeleteFeedStatus()
         initSwipeRefreshData()
         scrollRecyclerViewToTop()
+    }
+
+    private fun initNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val permissionList = Manifest.permission.POST_NOTIFICATIONS
+            requestPermission.launch(permissionList)
+        }
     }
 
     private fun initHomeFeedAdapter() {
@@ -143,8 +164,11 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog =
-            TransparentDialogFragment(ALARM_TRIGGER_TYPE_CONTENT, targetMemberId, alarmTriggerId)
+        val dialog = TransparentDialogFragment(
+            ALARM_TRIGGER_TYPE_CONTENT,
+            targetMemberId,
+            alarmTriggerId
+        )
         dialog.show(childFragmentManager, HOME_TRANSPARENT_DIALOG)
     }
 
@@ -213,7 +237,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         binding.swipeRefreshLayout.setOnRefreshListener {
             val slideDown =
                 AnimationUtils.loadAnimation(context, R.anim.anim_swipe_refresh_slide_down)
-            val slideUp = AnimationUtils.loadAnimation(context, R.anim.anim_swipe_refresh_slide_up)
+            val slideUp =
+                AnimationUtils.loadAnimation(context, R.anim.anim_swipe_refresh_slide_up)
 
             slideDown.setAnimationListener(
                 object : Animation.AnimationListener {
@@ -236,13 +261,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun scrollRecyclerViewToTopWhenObserveDataRefresh() {
-        homeFeedAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                if (positionStart == 0) scrollRecyclerViewToTop()
-                homeFeedAdapter.unregisterAdapterDataObserver(this)
-            }
-        })
+        homeFeedAdapter.registerAdapterDataObserver(object :
+                RecyclerView.AdapterDataObserver() {
+                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                    super.onItemRangeInserted(positionStart, itemCount)
+                    if (positionStart == 0) scrollRecyclerViewToTop()
+                    homeFeedAdapter.unregisterAdapterDataObserver(this)
+                }
+            })
     }
 
     fun scrollRecyclerViewToTop() {
