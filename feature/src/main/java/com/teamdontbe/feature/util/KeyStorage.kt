@@ -31,5 +31,8 @@ object AmplitudeTag {
 }
 
 object FcmTag {
-    const val RELATED_CONTENT_ID = "relatedContentId"
+    const val RELATED_CONTENT_ID = "relateContentId"
+    const val CHANNEL_NAME = "FCM_CHANNEL"
+    const val CHANNEL_ID = "FCM_CHANNEL_ID"
+    const val NOTIFICATION_ID = 1
 }
