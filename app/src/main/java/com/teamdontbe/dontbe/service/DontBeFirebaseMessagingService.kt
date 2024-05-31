@@ -1,5 +1,6 @@
 package com.teamdontbe.dontbe.service
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,13 +10,13 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.teamdontbe.feature.MainActivity
+import com.teamdontbe.feature.util.FcmTag
+import com.teamdontbe.feature.util.FcmTag.CHANNEL_ID
+import com.teamdontbe.feature.util.FcmTag.NOTIFICATION_ID
 import com.teamdontbe.feature.util.FcmTag.RELATED_CONTENT_ID
 import timber.log.Timber
 
 class DontBeFirebaseMessagingService : FirebaseMessagingService() {
-
-    private val notificationManager =
-        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -24,46 +25,57 @@ class DontBeFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        sendPushAlarm(message.data)
+        sendPushAlarm(
+            title = message.notification?.title.orEmpty(),
+            body = message.notification?.body.orEmpty(),
+            contentId = message.data[RELATED_CONTENT_ID] ?: "-1"
+        )
     }
 
-    private fun sendPushAlarm(data: MutableMap<String, String>) {
-        createPushAlarmChannel()
+    private fun sendPushAlarm(title: String, body: String, contentId: String) {
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+        createNotificationChannel(notificationManager)
+        val notification = buildNotification(title, body, contentId)
+        notificationManager?.notify(NOTIFICATION_ID, notification)
+    }
 
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            Intent(this, MainActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                putExtra(RELATED_CONTENT_ID, data[RELATED_CONTENT_ID])
-            },
-            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_MUTABLE
-        )
-
-        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+    private fun buildNotification(
+        title: String,
+        body: String,
+        contentId: String
+    ): Notification {
+        val pendingIntent = createPendingIntent(contentId)
+        return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(com.teamdontbe.feature.R.drawable.ic_login_symbol)
-            .setContentTitle(data[TITLE])
-            .setContentText(data[BODY]).setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
-
-        notificationManager.notify(1, notificationBuilder.build())
+            .setShowWhen(true)
+            .build()
     }
 
-    private fun createPushAlarmChannel() {
+    private fun createPendingIntent(contentId: String): PendingIntent {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            putExtra(RELATED_CONTENT_ID, contentId)
+        }
+        return PendingIntent.getActivity(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_MUTABLE
+        )
+    }
+
+    private fun createNotificationChannel(notificationManager: NotificationManager?) {
         val channel = NotificationChannel(
             CHANNEL_ID,
-            CHANNEL_NAME,
+            FcmTag.CHANNEL_NAME,
             NotificationManager.IMPORTANCE_HIGH
         )
-
-        notificationManager.createNotificationChannel(channel)
-    }
-
-    companion object {
-        private const val CHANNEL_NAME = "FCM_CHANNEL"
-        private const val CHANNEL_ID = "FCM_CHANNEL_ID"
-        private const val TITLE = "title"
-        private const val BODY = "body"
+        notificationManager?.createNotificationChannel(channel)
     }
 }
