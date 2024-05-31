@@ -213,6 +213,7 @@
 
     <!-- 푸시 알림 -->
     <string name="tv_push_alarm_label">푸시 알림</string>
-    <string name="tv_push_alarm_setting">on</string>
+    <string name="tv_push_alarm_setting_on">on</string>
     <string name="tv_push_alarm_appbar_title">알림</string>
+    <string name="tv_push_alarm_setting_off">off</string>
 </resources>

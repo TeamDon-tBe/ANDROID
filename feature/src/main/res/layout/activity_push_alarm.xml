@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
             android:paddingBottom="1dp"
-            android:text="@string/tv_push_alarm_setting"
+            android:text="@string/tv_push_alarm_setting_on"
             android:textAppearance="@style/TextAppearance.DontBe.body_regular_14"
             android:textColor="@color/gray_7"
             app:layout_constraintBottom_toBottomOf="@id/tv_push_alarm_label"
