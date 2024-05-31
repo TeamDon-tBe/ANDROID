@@ -1,8 +1,6 @@
 package com.teamdontbe.feature.mypage.authinfo
 
 import android.Manifest
-import android.app.NotificationManager
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.viewModels
@@ -50,8 +48,6 @@ class MyPagePushAlarmActivity :
     }
 
     private fun checkIsPushAlarmAllowed(): Boolean {
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(
                 this,
