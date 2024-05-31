@@ -38,7 +38,13 @@ class SharedPreferenceDataSourceImpl
         set(value) = sharedPreferences.edit { putBoolean("IsOnboardingFirst", value) }
 
     override var isPushAlarmAllowed: Boolean?
-        get() = sharedPreferences.getBoolean("IsPushAlarmAllowed", true)
+        get() {
+            return if (!sharedPreferences.contains("IsPushAlarmAllowed")) {
+                null
+            } else {
+                sharedPreferences.getBoolean("IsPushAlarmAllowed", true)
+            }
+        }
         set(value) = sharedPreferences.edit { value?.let { putBoolean("IsPushAlarmAllowed", it) } }
 
     override var fcmToken: String?
