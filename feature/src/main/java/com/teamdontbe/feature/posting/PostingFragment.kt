@@ -160,15 +160,12 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
     private fun initObservePost() {
         postingViewModel.postPosting.flowWithLifecycle(viewLifeCycle).onEach {
             when (it) {
-                is UiState.Loading -> Unit
-                is UiState.Success -> {
-                    navigateToMainActivity()
-                    context?.let { it ->
-                        UploadingSnackBar.make(binding.root)
-                            .show(it.pxToDp(16), 0, it.pxToDp(16), it.pxToDp(80))
-                    }
+                is UiState.Loading -> context?.let { it ->
+                    UploadingSnackBar.make(binding.root)
+                        .show(it.pxToDp(16), 0, it.pxToDp(16), it.pxToDp(80))
                 }
 
+                is UiState.Success -> navigateToMainActivity()
                 is UiState.Empty -> Unit
                 is UiState.Failure -> {
                     LinkCountErrorSnackBar.make(binding.root).apply {
@@ -279,9 +276,9 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
             trackEvent(CLICK_POST_UPLOAD)
             postingViewModel.posting(
                 binding.etPostingContent.text.toString() + (
-                        binding.etPostingLink.text.takeIf { it.isNotEmpty() }
-                            ?.let { "\n$it" }.orEmpty()
-                        ),
+                    binding.etPostingLink.text.takeIf { it.isNotEmpty() }
+                        ?.let { "\n$it" }.orEmpty()
+                    ),
                 postingViewModel.photoUri.value
             )
         }
@@ -412,7 +409,6 @@ class PostingFragment : BindingFragment<FragmentPostingBinding>(R.layout.fragmen
                 imageUri?.let { postingViewModel.setPhotoUri(it.toString()) }
             }
     }
-
 
     private fun observePhotoUri() {
         postingViewModel.photoUri.flowWithLifecycle(viewLifeCycle).onEach { getUri ->

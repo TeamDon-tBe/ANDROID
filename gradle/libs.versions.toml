@@ -2,8 +2,8 @@
 compileSdk = "34"
 minSdk = "28"
 targetSdk = "34"
-appVersion = "1.1.0"
-versionCode = "7"
+appVersion = "1.2.0"
+versionCode = "8"
 
 # kotlin
 kotlin = "1.9.10"

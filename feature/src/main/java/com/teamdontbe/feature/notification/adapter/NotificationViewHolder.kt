@@ -82,6 +82,17 @@ class NotificationViewHolder(
                     data = data
                 )
 
+                "popularWriter" -> getSpannableText(
+                    data.memberNickname,
+                    R.string.notification_feed_popular_writer,
+                    data = data
+                )
+
+                "popularContent" -> getSpannablePopularText(
+                    binding.root.context.getString(R.string.notification_feed_popular_content),
+                    data = data
+                )
+
                 else -> {
                     Timber.tag("noti").e("등록되지 않은 노티가 감지되었습니다 : ${data.notificationTriggerType}")
                     SpannableString("")
@@ -116,7 +127,7 @@ class NotificationViewHolder(
         val text = name + binding.root.context.getString(resId)
         val spannableText = SpannableStringBuilder(text)
         when (data.notificationTriggerType) {
-            in listOf("contentLiked", "comment", "commentLiked") -> {
+            in listOf("contentLiked", "comment", "commentLiked", "popularWriter") -> {
                 spannableText.setSpan(
                     clickableSpan(data, true),
                     0,
@@ -153,5 +164,29 @@ class NotificationViewHolder(
             ds.isUnderlineText = false
             ds.color = Color.parseColor("#FF49494C")
         }
+    }
+
+    private fun getSpannablePopularText(name: String, data: NotiEntity): SpannableStringBuilder {
+        val popularText = name + getPopularContent(data.notificationText)
+        val spannablePopularText = SpannableStringBuilder(popularText)
+        spannablePopularText.setSpan(
+            StyleSpan(R.font.font_pretendard_semibold),
+            0,
+            name.replace("\n: ", "").length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        return spannablePopularText
+    }
+
+    private fun getPopularContent(notificationText: String): String {
+        return if (notificationText.length > MAX_LEN) {
+            notificationText.substring(0, MAX_LEN)
+        } else {
+            notificationText
+        }
+    }
+
+    companion object {
+        const val MAX_LEN = 80
     }
 }
