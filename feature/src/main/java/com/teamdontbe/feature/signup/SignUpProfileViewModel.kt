@@ -48,10 +48,6 @@ class SignUpProfileViewModel
     private var _myPageUserInfo = MutableLiveData<MyPageUserProfileEntity>()
     val myPageUserInfo: LiveData<MyPageUserProfileEntity> get() = _myPageUserInfo
 
-    fun getUserFcmToken() = userInfoRepository.getFcmToken()
-
-    fun getIsPushAlarmAllowed() = userInfoRepository.getIsPushAlarmAllowed()
-
     fun getUserNickName() = userInfoRepository.getNickName()
 
     private fun saveUserNickNameInLocal(nickName: String) {
