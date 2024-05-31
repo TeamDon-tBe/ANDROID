@@ -56,11 +56,16 @@ class HomeViewModel
     private val _photoUri = MutableStateFlow<String?>(null)
     val photoUri: StateFlow<String?> = _photoUri
 
-    private var _profileEditSuccess = MutableStateFlow<Boolean>(false)
-    val profileEditSuccess: SharedFlow<Boolean> get() = _profileEditSuccess
+    private var _pushAlarmAllowedStatus = MutableStateFlow(false)
+    val pushAlarmAllowedStatus: StateFlow<Boolean> get() = _pushAlarmAllowedStatus
 
     private val _postComplaint = MutableSharedFlow<Boolean>()
     val postComplaint: SharedFlow<Boolean> get() = _postComplaint
+
+    fun saveIsPushAlarmAllowed(isPushAlarmAllowed: Boolean) =
+        userInfoRepository.saveIsPushAlarmAllowed(isPushAlarmAllowed)
+
+    fun getIsPushAlarmAllowed() = userInfoRepository.getIsPushAlarmAllowed()
 
     fun setPhotoUri(uri: String?) {
         _photoUri.value = uri
@@ -96,8 +101,6 @@ class HomeViewModel
     fun getUserNickname() = userInfoRepository.getNickName()
 
     fun getUserProfile() = userInfoRepository.getMemberProfileUrl()
-
-    fun saveUserNickname(nickName: String) = userInfoRepository.saveNickName(nickName)
 
     fun postFeedLiked(contentId: Int) = viewModelScope.launch {
         homeRepository.postFeedLiked(contentId).fold({ }, {})
@@ -156,16 +159,13 @@ class HomeViewModel
         }, { _postTransparent.emit(UiState.Failure(it.message.toString())) })
     }
 
-    fun patchUserProfileUri(info: ProfileEditInfoEntity, url: File?) {
+    fun patchUserProfileUri(info: ProfileEditInfoEntity, url: File? = null) {
         viewModelScope.launch {
             loginRepository.patchProfileUriEdit(
                 info,
                 url
-            ).onSuccess { patchSuccess ->
-                _profileEditSuccess.value = patchSuccess
-                if (patchSuccess) {
-                    saveUserNickname(info.nickname)
-                }
+            ).onSuccess {
+                info.isPushAlarmAllowed?.let { _pushAlarmAllowedStatus.value = it }
             }.onFailure {
                 Timber.d("fail", it.message.toString())
             }

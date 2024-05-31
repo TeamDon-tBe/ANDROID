@@ -16,11 +16,11 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
-import com.teamdontbe.core_ui.util.fragment.toast
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.domain.entity.ProfileEditInfoEntity
 import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
@@ -47,19 +47,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private lateinit var homeFeedAdapter: HomePagingFeedAdapter
 
-    private val requestPermission = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) {
-        when (it) {
-            true -> toast("권한 허가")
-            false -> toast("권한 거부")
-        }
-    }
-
     override fun initView() {
-        initNotificationPermission()
-        getFcmToken()
         statusBarColorOf(R.color.gray_1)
+        initPushAlarmPermissionAlert()
+        observePatchUserPushAlarmInfo()
         initHomeFeedAdapter()
         observeOpenHomeDetail()
         observePostTransparentStatus()
@@ -68,11 +59,53 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         scrollRecyclerViewToTop()
     }
 
-    private fun initNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val permissionList = Manifest.permission.POST_NOTIFICATIONS
-            requestPermission.launch(permissionList)
+    private val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        when (it) {
+            true -> handlePushAlarmPermissionGranted()
+            false -> handlePushAlarmPermissionDenied()
         }
+    }
+
+    private fun initPushAlarmPermissionAlert() {
+        if (homeViewModel.getIsPushAlarmAllowed() == null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val permissionList = Manifest.permission.POST_NOTIFICATIONS
+                requestPermission.launch(permissionList)
+            } else {
+                handlePushAlarmPermissionGranted()
+            }
+        }
+    }
+
+    private fun handlePushAlarmPermissionGranted() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(
+            OnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    homeViewModel.patchUserProfileUri(
+                        ProfileEditInfoEntity(
+                            isPushAlarmAllowed = true,
+                            fcmToken = task.result
+                        )
+                    )
+                    Timber.tag("fcm").d("fcm token: $task.result")
+                } else {
+                    Timber.d(task.exception)
+                    return@OnCompleteListener
+                }
+            }
+        )
+    }
+
+    private fun handlePushAlarmPermissionDenied() {
+        homeViewModel.patchUserProfileUri(ProfileEditInfoEntity(isPushAlarmAllowed = false))
+    }
+
+    private fun observePatchUserPushAlarmInfo() {
+        homeViewModel.pushAlarmAllowedStatus.flowWithLifecycle(viewLifeCycle).onEach {
+            homeViewModel.saveIsPushAlarmAllowed(it)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun initHomeFeedAdapter() {
@@ -100,21 +133,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         binding.rvHome.adapter = homeFeedAdapter.withLoadStateHeaderAndFooter(
             header = PagingLoadingAdapter(),
             footer = PagingLoadingAdapter()
-        )
-    }
-
-    private fun getFcmToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(
-            OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Timber.w("tag", "Fetching FCM registration token failed", task.exception)
-                    return@OnCompleteListener
-                }
-                // Get new FCM registration token
-                val token = task.result
-                // Log
-                Timber.tag("fcm").d("token is $token")
-            }
         )
     }
 
@@ -280,28 +298,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             binding.rvHome.smoothScrollToPosition(0)
         }
     }
-//
-//    val deniedPermission = checkPermission()
-//
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        when (requestCode) {
-//            1001 -> {
-//                val deniedPermissionList = mutableListOf<String>()
-//                grantResults.forEachIndexed { index, i ->
-//                    if (i == PackageManager.PERMISSION_DENIED) {
-//                        deniedPermissionList.add(permissions[index])
-//                    }
-//                }
-//                if (deniedPermissionList.size > 0) {
-//                }
-//            }
-//        }
-//    }
 
     private fun navigateToImageDetailFragment(it: String) {
         findNavController().navigate(
