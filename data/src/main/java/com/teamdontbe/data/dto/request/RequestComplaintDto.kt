@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RequestComplaintDto(
-    @SerialName("reportTargerNickname") val reportTargetNickname: String,
+    @SerialName("reportTargetNickname") val reportTargetNickname: String,
     @SerialName("relateText") val relateText: String,
 )
