@@ -45,5 +45,4 @@ dependencies {
     implementation(libs.bundles.retrofit)
     implementation(libs.kakao.login)
     implementation(libs.amplitude)
-    implementation("com.google.firebase:firebase-messaging-ktx:24.0.0")
 }
