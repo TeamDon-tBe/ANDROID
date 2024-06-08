@@ -12,6 +12,7 @@ import com.google.firebase.messaging.Constants.MessageNotificationKeys.NOTIFICAT
 import com.google.firebase.messaging.Constants.MessageNotificationKeys.NOTIFICATION_PREFIX_OLD
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.util.FcmTag
 import com.teamdontbe.feature.util.FcmTag.CHANNEL_ID
@@ -78,9 +79,10 @@ class DontBeFirebaseMessagingService : FirebaseMessagingService() {
     ): Notification {
         val pendingIntent = createPendingIntent(contentId)
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(com.teamdontbe.feature.R.drawable.ic_login_symbol)
+            .setSmallIcon(com.teamdontbe.feature.R.drawable.img_fcm_app_logo)
             .setContentTitle(title)
             .setContentText(body)
+            .setColor(colorOf(com.teamdontbe.feature.R.color.white))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
