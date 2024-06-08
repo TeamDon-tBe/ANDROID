@@ -19,13 +19,6 @@
         android:theme="@style/Theme.DontBe"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_login_symbol" />
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/primary" />
-
         <service
             android:name=".service.DontBeFirebaseMessagingService"
             android:exported="false">
