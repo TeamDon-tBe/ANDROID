@@ -1,7 +1,6 @@
 package com.teamdontbe.dontbe.service
 
 import android.app.Notification
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
@@ -14,7 +13,6 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.feature.MainActivity
-import com.teamdontbe.feature.util.FcmTag
 import com.teamdontbe.feature.util.FcmTag.CHANNEL_ID
 import com.teamdontbe.feature.util.FcmTag.NOTIFICATION_BODY
 import com.teamdontbe.feature.util.FcmTag.NOTIFICATION_ID
@@ -44,7 +42,6 @@ class DontBeFirebaseMessagingService : FirebaseMessagingService() {
     private fun sendPushAlarm(title: String, body: String, contentId: String) {
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
-        createNotificationChannel(notificationManager)
         val notification = buildNotification(title, body, contentId)
         notificationManager?.notify(NOTIFICATION_ID, notification)
     }
@@ -101,14 +98,5 @@ class DontBeFirebaseMessagingService : FirebaseMessagingService() {
             intent,
             PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_MUTABLE
         )
-    }
-
-    private fun createNotificationChannel(notificationManager: NotificationManager?) {
-        val channel = NotificationChannel(
-            CHANNEL_ID,
-            FcmTag.CHANNEL_NAME,
-            NotificationManager.IMPORTANCE_HIGH
-        )
-        notificationManager?.createNotificationChannel(channel)
     }
 }
