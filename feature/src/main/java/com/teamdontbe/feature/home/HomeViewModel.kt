@@ -67,6 +67,8 @@ class HomeViewModel
 
     fun getIsPushAlarmAllowed() = userInfoRepository.getIsPushAlarmAllowed()
 
+    fun checkLogin() = userInfoRepository.checkLogin()
+
     fun setPhotoUri(uri: String?) {
         _photoUri.value = uri
     }

@@ -69,7 +69,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun initPushAlarmPermissionAlert() {
-        if (homeViewModel.getIsPushAlarmAllowed() == null) {
+        if (homeViewModel.getIsPushAlarmAllowed() == null && homeViewModel.checkLogin()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 val permissionList = Manifest.permission.POST_NOTIFICATIONS
                 requestPermission.launch(permissionList)
