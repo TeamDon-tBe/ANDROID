@@ -35,4 +35,6 @@ object FcmTag {
     const val CHANNEL_NAME = "FCM_CHANNEL"
     const val CHANNEL_ID = "FCM_CHANNEL_ID"
     const val NOTIFICATION_ID = 1
+    const val NOTIFICATION_TITLE = "gcm.notification.title"
+    const val NOTIFICATION_BODY = "gcm.notification.body"
 }
