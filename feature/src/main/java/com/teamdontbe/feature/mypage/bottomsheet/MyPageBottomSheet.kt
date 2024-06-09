@@ -9,6 +9,7 @@ import com.teamdontbe.feature.databinding.BottomSheetMyPageHambergerBinding
 import com.teamdontbe.feature.dialog.DeleteWithTitleWideDialogFragment
 import com.teamdontbe.feature.mypage.MyPageFragment
 import com.teamdontbe.feature.mypage.authinfo.MyPageAuthInfoActivity
+import com.teamdontbe.feature.mypage.authinfo.MyPagePushAlarmActivity
 import com.teamdontbe.feature.signup.SignUpProfileActivity
 import com.teamdontbe.feature.util.DialogTag.LOGOUT_AUTH
 
@@ -20,6 +21,7 @@ class MyPageBottomSheet :
         navigateToMyPageAuthInfoFragment()
         initCustomerCenterClickListener()
         initLogoutClickListener()
+        navigateToMyPagePushAlarmActivity()
     }
 
     private fun initBottomSheetCloseClickListener() {
@@ -70,6 +72,14 @@ class MyPageBottomSheet :
                     "",
                 )
             dialog.show(childFragmentManager, LOGOUT_AUTH)
+        }
+    }
+
+    private fun navigateToMyPagePushAlarmActivity() {
+        binding.tvMyPageBottomSheetPushAlarm.setOnClickListener {
+            Intent(requireContext(), MyPagePushAlarmActivity::class.java).apply {
+                startActivity(this)
+            }
         }
     }
 

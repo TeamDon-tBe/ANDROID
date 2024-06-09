@@ -1,13 +1,18 @@
 package com.teamdontbe.feature.home
 
+import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.teamdontbe.core_ui.base.BindingFragment
 import com.teamdontbe.core_ui.util.AmplitudeUtil.trackEvent
 import com.teamdontbe.core_ui.util.fragment.statusBarColorOf
@@ -15,6 +20,7 @@ import com.teamdontbe.core_ui.util.fragment.viewLifeCycle
 import com.teamdontbe.core_ui.util.fragment.viewLifeCycleScope
 import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.domain.entity.FeedEntity
+import com.teamdontbe.domain.entity.ProfileEditInfoEntity
 import com.teamdontbe.feature.ErrorActivity
 import com.teamdontbe.feature.R
 import com.teamdontbe.feature.databinding.FragmentHomeBinding
@@ -33,6 +39,7 @@ import com.teamdontbe.feature.util.pagingSubmitData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -42,12 +49,63 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     override fun initView() {
         statusBarColorOf(R.color.gray_1)
+        initPushAlarmPermissionAlert()
+        observePatchUserPushAlarmInfo()
         initHomeFeedAdapter()
         observeOpenHomeDetail()
         observePostTransparentStatus()
         observeDeleteFeedStatus()
         initSwipeRefreshData()
         scrollRecyclerViewToTop()
+    }
+
+    private val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        when (it) {
+            true -> handlePushAlarmPermissionGranted()
+            false -> handlePushAlarmPermissionDenied()
+        }
+    }
+
+    private fun initPushAlarmPermissionAlert() {
+        if (homeViewModel.getIsPushAlarmAllowed() == null && homeViewModel.checkLogin()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val permissionList = Manifest.permission.POST_NOTIFICATIONS
+                requestPermission.launch(permissionList)
+            } else {
+                handlePushAlarmPermissionGranted()
+            }
+        }
+    }
+
+    private fun handlePushAlarmPermissionGranted() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(
+            OnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    homeViewModel.patchUserProfileUri(
+                        ProfileEditInfoEntity(
+                            isPushAlarmAllowed = true,
+                            fcmToken = task.result
+                        )
+                    )
+                    Timber.tag("fcm").d("fcm token: $task.result")
+                } else {
+                    Timber.d(task.exception)
+                    return@OnCompleteListener
+                }
+            }
+        )
+    }
+
+    private fun handlePushAlarmPermissionDenied() {
+        homeViewModel.patchUserProfileUri(ProfileEditInfoEntity(isPushAlarmAllowed = false))
+    }
+
+    private fun observePatchUserPushAlarmInfo() {
+        homeViewModel.pushAlarmAllowedStatus.flowWithLifecycle(viewLifeCycle).onEach {
+            homeViewModel.saveIsPushAlarmAllowed(it)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun initHomeFeedAdapter() {
@@ -86,6 +144,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             initBottomSheet(
                 feedData.memberId == homeViewModel.getMemberId(),
                 it,
+                feedData.memberNickname,
+                feedData.contentText
             )
         }
     }
@@ -93,8 +153,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initBottomSheet(
         isMember: Boolean,
         contentId: Int,
+        reportTargetNickname: String,
+        relateText: String,
     ) {
-        HomeBottomSheet(isMember, contentId, false, -1).show(
+        HomeBottomSheet(isMember, contentId, false, -1, reportTargetNickname, relateText).show(
             parentFragmentManager,
             HOME_BOTTOM_SHEET,
         )
@@ -124,8 +186,11 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         targetMemberId: Int,
         alarmTriggerId: Int,
     ) {
-        val dialog =
-            TransparentDialogFragment(ALARM_TRIGGER_TYPE_CONTENT, targetMemberId, alarmTriggerId)
+        val dialog = TransparentDialogFragment(
+            ALARM_TRIGGER_TYPE_CONTENT,
+            targetMemberId,
+            alarmTriggerId
+        )
         dialog.show(childFragmentManager, HOME_TRANSPARENT_DIALOG)
     }
 
@@ -194,7 +259,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         binding.swipeRefreshLayout.setOnRefreshListener {
             val slideDown =
                 AnimationUtils.loadAnimation(context, R.anim.anim_swipe_refresh_slide_down)
-            val slideUp = AnimationUtils.loadAnimation(context, R.anim.anim_swipe_refresh_slide_up)
+            val slideUp =
+                AnimationUtils.loadAnimation(context, R.anim.anim_swipe_refresh_slide_up)
 
             slideDown.setAnimationListener(
                 object : Animation.AnimationListener {
@@ -217,13 +283,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun scrollRecyclerViewToTopWhenObserveDataRefresh() {
-        homeFeedAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                if (positionStart == 0) scrollRecyclerViewToTop()
-                homeFeedAdapter.unregisterAdapterDataObserver(this)
-            }
-        })
+        homeFeedAdapter.registerAdapterDataObserver(object :
+                RecyclerView.AdapterDataObserver() {
+                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                    super.onItemRangeInserted(positionStart, itemCount)
+                    if (positionStart == 0) scrollRecyclerViewToTop()
+                    homeFeedAdapter.unregisterAdapterDataObserver(this)
+                }
+            })
     }
 
     fun scrollRecyclerViewToTop() {

@@ -277,7 +277,7 @@ class SignUpProfileActivity :
                 MY_PAGE_PROFILE -> handleMyPageProfile(
                     nickName = nickName,
                     introduce = introduceText,
-                    imgUrl = imgUrl
+                    imgUrl = imgUrl,
                 )
             }
         }
@@ -354,7 +354,11 @@ class SignUpProfileActivity :
         }
     }
 
-    private suspend fun handleMyPageProfile(nickName: String, introduce: String, imgUrl: File?) {
+    private suspend fun handleMyPageProfile(
+        nickName: String,
+        introduce: String,
+        imgUrl: File?,
+    ) {
         viewModel.patchUserProfileUri(
             ProfileEditInfoEntity(
                 nickName,

@@ -36,4 +36,9 @@ interface HomeRepository {
         alarmTriggerId: Int,
         ghostReason: String
     ): Result<Boolean>
+
+    suspend fun postComplaint(
+        reportTargetNickname: String,
+        relateText: String
+    ): Result<Boolean>
 }

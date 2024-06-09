@@ -29,3 +29,12 @@ object AmplitudeTag {
     const val CLICK_ACCOUNT_JOIN_DONE = "click_account_join_done"
     const val CLICK_ACCOUNT_DELETE_DONE = "click_account_delete_done"
 }
+
+object FcmTag {
+    const val RELATED_CONTENT_ID = "relateContentId"
+    const val CHANNEL_NAME = "FCM_CHANNEL"
+    const val CHANNEL_ID = "FCM_CHANNEL_ID"
+    const val NOTIFICATION_ID = 1
+    const val NOTIFICATION_TITLE = "gcm.notification.title"
+    const val NOTIFICATION_BODY = "gcm.notification.body"
+}

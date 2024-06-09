@@ -16,6 +16,8 @@ import com.teamdontbe.feature.databinding.ActivitySplashBinding
 import com.teamdontbe.feature.login.LoginActivity
 import com.teamdontbe.feature.login.LoginViewModel
 import com.teamdontbe.feature.signup.SignUpAgreeActivity
+import com.teamdontbe.feature.util.FcmTag
+import com.teamdontbe.feature.util.FcmTag.RELATED_CONTENT_ID
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +25,20 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
     private val loginViewModel by viewModels<LoginViewModel>()
 
     override fun initView() {
-        initSplash()
+        if (intent.getStringExtra(RELATED_CONTENT_ID) != null) {
+            handlePushAlarmNavigate()
+        } else {
+            initSplash()
+        }
+    }
+
+    private fun handlePushAlarmNavigate() {
+        Intent(this, MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            putExtra(FcmTag.RELATED_CONTENT_ID, intent?.getStringExtra(RELATED_CONTENT_ID))
+            startActivity(this)
+            finish()
+        }
     }
 
     private fun initSplash() {

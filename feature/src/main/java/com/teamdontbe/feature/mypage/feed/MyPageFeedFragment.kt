@@ -105,6 +105,8 @@ class MyPageFeedFragment :
                 contentId = it,
                 commentId = -1,
                 whereFrom = FROM_FEED,
+                feedEntity.memberNickname,
+                feedEntity.contentText,
             )
             deleteFeedPosition = position
         }
@@ -147,8 +149,10 @@ class MyPageFeedFragment :
         contentId: Int,
         commentId: Int,
         whereFrom: String,
+        reportTargetNickname: String,
+        relateText: String,
     ) {
-        MyPageAnotherUserBottomSheet(isMember, contentId, commentId, whereFrom).show(
+        MyPageAnotherUserBottomSheet(isMember, contentId, commentId, whereFrom, reportTargetNickname, relateText).show(
             parentFragmentManager,
             MY_PAGE_ANOTHER_BOTTOM_SHEET,
         )

@@ -81,7 +81,7 @@ class SignUpProfileViewModel
             ).onSuccess { patchSuccess ->
                 _profileEditSuccess.value = patchSuccess
                 if (patchSuccess) {
-                    saveUserNickNameInLocal(info.nickname)
+                    info.nickname?.let { saveUserNickNameInLocal(it) }
                 }
             }.onFailure {
                 Timber.d("fail", it.message.toString())

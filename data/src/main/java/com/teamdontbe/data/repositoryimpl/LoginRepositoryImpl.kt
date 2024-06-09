@@ -70,6 +70,8 @@ class LoginRepositoryImpl
                 put("nickname", info.nickname)
                 put("isAlarmAllowed", info.isAlarmAllowed)
                 put("memberIntro", info.memberIntro)
+                put("isPushAlarmAllowed", info.isPushAlarmAllowed)
+                put("fcmToken", info.fcmToken)
             }.toString()
 
             // ProfileEditInfoEntity를 RequestBody로 변환

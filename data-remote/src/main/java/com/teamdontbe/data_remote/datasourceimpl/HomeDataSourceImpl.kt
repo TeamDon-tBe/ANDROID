@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.teamdontbe.data.datasource.HomeDataSource
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.request.RequestCommentLikedDto
+import com.teamdontbe.data.dto.request.RequestComplaintDto
 import com.teamdontbe.data.dto.request.RequestTransparentDto
 import com.teamdontbe.data.dto.response.ResponseFeedDto
 import com.teamdontbe.data_remote.api.HomeApiService
@@ -76,19 +77,26 @@ constructor(
         return homeApiService.deleteCommentLiked(commentId)
     }
 
-        override suspend fun postTransparent(
-            alarmTriggerType: String,
-            targetMemberId: Int,
-            alarmTriggerId: Int,
-            ghostReason: String
-        ): BaseResponse<Unit> {
-            return homeApiService.postTransparent(
-                RequestTransparentDto(
-                    alarmTriggerType,
-                    targetMemberId,
-                    alarmTriggerId,
-                    ghostReason
-                ),
-            )
-        }
+    override suspend fun postTransparent(
+        alarmTriggerType: String,
+        targetMemberId: Int,
+        alarmTriggerId: Int,
+        ghostReason: String
+    ): BaseResponse<Unit> {
+        return homeApiService.postTransparent(
+            RequestTransparentDto(
+                alarmTriggerType,
+                targetMemberId,
+                alarmTriggerId,
+                ghostReason
+            ),
+        )
     }
+
+    override suspend fun postComplaint(
+        reportTargetNickname: String,
+        relateText: String
+    ): BaseResponse<Unit> {
+        return homeApiService.postComplaint(RequestComplaintDto(reportTargetNickname, relateText))
+    }
+}
