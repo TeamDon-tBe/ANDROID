@@ -124,4 +124,19 @@ class MyPageViewModel
             _postTransparent.emit(UiState.Success(true))
         }, { _postTransparent.emit(UiState.Failure(it.message.toString())) })
     }
+
+    private val _postComplaint = MutableSharedFlow<Boolean>()
+    val postComplaint: SharedFlow<Boolean> get() = _postComplaint
+
+    fun postComplaint(
+        reportTargetNickname: String,
+        relateText: String
+    ) {
+        viewModelScope.launch {
+            homeRepository.postComplaint(
+                reportTargetNickname,
+                relateText
+            ).fold({ _postComplaint.emit(true) }, { _postComplaint.emit(false) })
+        }
+    }
 }

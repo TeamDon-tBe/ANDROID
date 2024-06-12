@@ -37,6 +37,20 @@ class SharedPreferenceDataSourceImpl
         get() = sharedPreferences.getBoolean("IsOnboardingFirst", false)
         set(value) = sharedPreferences.edit { putBoolean("IsOnboardingFirst", value) }
 
+    override var isPushAlarmAllowed: Boolean?
+        get() {
+            return if (!sharedPreferences.contains("IsPushAlarmAllowed")) {
+                null
+            } else {
+                sharedPreferences.getBoolean("IsPushAlarmAllowed", true)
+            }
+        }
+        set(value) = sharedPreferences.edit { value?.let { putBoolean("IsPushAlarmAllowed", it) } }
+
+    override var fcmToken: String?
+        get() = sharedPreferences.getString("FcmToken", null)
+        set(value) = sharedPreferences.edit { putString("FcmToken", value) }
+
     override fun clear() {
         sharedPreferences.edit {
             remove("AccessToken")
@@ -47,6 +61,7 @@ class SharedPreferenceDataSourceImpl
             remove("MemberProfileUrl")
             remove("IsNewUser")
             remove("IsOnboardingFirst")
+            remove("IsPushAlarmAllowed")
         }
     }
 

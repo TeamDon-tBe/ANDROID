@@ -33,5 +33,13 @@ interface UserInfoRepository {
 
     fun saveCheckOnboarding(checkOnboarding: Boolean)
 
+    fun saveIsPushAlarmAllowed(isPushAlarmAllowed: Boolean)
+
+    fun getIsPushAlarmAllowed(): Boolean?
+
+    fun saveFcmToken(fcmToken: String)
+
+    fun getFcmToken(): String?
+
     fun clear()
 }

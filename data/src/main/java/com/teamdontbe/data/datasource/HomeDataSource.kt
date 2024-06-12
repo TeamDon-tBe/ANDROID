@@ -40,4 +40,6 @@ interface HomeDataSource {
         alarmTriggerId: Int,
         ghostReason: String
     ): BaseResponse<Unit>
+
+    suspend fun postComplaint(reportTargetNickname: String, relateText: String): BaseResponse<Unit>
 }

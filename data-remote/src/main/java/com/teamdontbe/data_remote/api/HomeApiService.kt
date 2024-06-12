@@ -2,6 +2,7 @@ package com.teamdontbe.data_remote.api
 
 import com.teamdontbe.data.dto.BaseResponse
 import com.teamdontbe.data.dto.request.RequestCommentLikedDto
+import com.teamdontbe.data.dto.request.RequestComplaintDto
 import com.teamdontbe.data.dto.request.RequestFeedLikedDto
 import com.teamdontbe.data.dto.request.RequestTransparentDto
 import com.teamdontbe.data.dto.response.ResponseCommentDto
@@ -32,6 +33,8 @@ interface HomeApiService {
         const val COMMENT_ID = "commentId"
         const val GHOST = "ghost2"
         const val V2 = "v2"
+        const val REPORT = "report"
+        const val SLACK = "slack"
     }
 
     @GET("$API/$V2/$CONTENTS")
@@ -93,5 +96,10 @@ interface HomeApiService {
     @POST("/$API/$V1/$GHOST")
     suspend fun postTransparent(
         @Body request: RequestTransparentDto,
+    ): BaseResponse<Unit>
+
+    @POST("/$API/$V1/$REPORT/$SLACK")
+    suspend fun postComplaint(
+        @Body request: RequestComplaintDto,
     ): BaseResponse<Unit>
 }

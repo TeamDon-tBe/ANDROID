@@ -159,6 +159,7 @@
     <string name="transparency_info_5_description">투명도는 최근 5일 동안 버튼이 적용된 내용을 반영해요. 5일이 지나면 적용되었던 투명도가 다시 회복돼요.</string>
     <string name="tv_onboarding_skip_introduction">한 줄 소개 나중에 작성하기</string>
     <!-- 마이페이지 바텀 시트 화면 -->
+    <string name="bottom_sheet_my_page_push_alarm">알림 설정</string>
     <string name="bottom_sheet_my_page_account_info">계정 정보</string>
     <string name="bottom_sheet_my_page_feedback">피드백 남기기</string>
     <string name="bottom_sheet_my_page_customer_service">고객센터</string>
@@ -211,4 +212,10 @@
     </string-array>
     <string name="dummy">돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까? 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리를 자극하고 결국에는 돈비 과몰입, 돈비 사용자만 무진장 증가하는 지름길이 되는 것이 아닐까? 참 인생은 그렇네요.돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까? 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리를 자극하고 결국에는 돈비 과몰입, 돈비 사용자만 무진장 증가하는 지름길이 되는 것이 아닐까? 참 인생은 그렇네요.돈비를 이용하면 돈비 맞을 가능성이 높아질까요? 하지만 저는 그렇게 생각해요. 이게 정말 가능할까?
 사실 그렇잖아요. 돈비..서비스를 쓴다고 정말 돈벼락을 맞는다는것이 가능한지? 이런 소문이 사람들의 무의식을 자극하고 심리</string>
+
+    <!-- 푸시 알림 -->
+    <string name="tv_push_alarm_label">푸시 알림</string>
+    <string name="tv_push_alarm_setting_on">on</string>
+    <string name="tv_push_alarm_appbar_title">알림</string>
+    <string name="tv_push_alarm_setting_off">off</string>
 </resources>

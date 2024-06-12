@@ -75,6 +75,22 @@ constructor(
         sharedPreferenceDataSource.isOnboardingFirst = checkOnboarding
     }
 
+    override fun saveIsPushAlarmAllowed(isPushAlarmAllowed: Boolean) {
+        sharedPreferenceDataSource.isPushAlarmAllowed = isPushAlarmAllowed
+    }
+
+    override fun getIsPushAlarmAllowed(): Boolean? {
+        return sharedPreferenceDataSource.isPushAlarmAllowed
+    }
+
+    override fun saveFcmToken(fcmToken: String) {
+        sharedPreferenceDataSource.fcmToken = fcmToken
+    }
+
+    override fun getFcmToken(): String? {
+        return sharedPreferenceDataSource.fcmToken
+    }
+
     override fun clear() {
         sharedPreferenceDataSource.clear()
     }

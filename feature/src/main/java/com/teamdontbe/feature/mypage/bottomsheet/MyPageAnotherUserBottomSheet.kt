@@ -10,6 +10,8 @@ class MyPageAnotherUserBottomSheet(
     private val contentId: Int,
     private val commentId: Int,
     private val whereFrom: String,
+    private val reportTargetNickname: String,
+    private val relateText: String,
 ) : BindingBottomSheetFragment<BottomsheetComplaintDeleteBinding>(R.layout.bottomsheet_complaint_delete) {
 
     override fun initView() {
@@ -45,6 +47,8 @@ class MyPageAnotherUserBottomSheet(
             contentId,
             commentId,
             whereFrom,
+            reportTargetNickname,
+            relateText,
         ).show(
             parentFragmentManager,
             DECLARE_DIALOG,

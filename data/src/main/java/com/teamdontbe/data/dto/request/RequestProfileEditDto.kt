@@ -10,4 +10,5 @@ data class RequestProfileEditDto(
     @SerialName("member_intro") val memberIntro: String,
     @SerialName("profile_url") val profileUrl: String?,
     @SerialName("isPushAlarmAllowed") val isPushAlarmAllowed: Boolean? = null,
+    @SerialName("fcmToken") val fcmToken: String? = null,
 )

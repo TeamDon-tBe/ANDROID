@@ -9,6 +9,8 @@ interface SharedPreferenceDataSource {
     var memberProfileUrl: String?
     var isNewUser: Boolean
     var isOnboardingFirst: Boolean
+    var isPushAlarmAllowed: Boolean?
+    var fcmToken: String?
 
     fun clear()
     fun clearForRefreshToken()

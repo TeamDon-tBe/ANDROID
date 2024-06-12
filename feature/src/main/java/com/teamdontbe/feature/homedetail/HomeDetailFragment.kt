@@ -102,6 +102,8 @@ class HomeDetailFragment :
                     commentData.commentId,
                     true,
                     position,
+                    commentData.memberNickname,
+                    commentData.contentText
                 )
             },
             onClickLikedBtn = ::onCommentLikedBtnClick,
@@ -140,6 +142,8 @@ class HomeDetailFragment :
                     -1,
                     false,
                     position,
+                    feedData.memberNickname,
+                    feedData.contentText
                 )
             },
             onClickLikedBtn = ::onFeedLikedBtnClick,
@@ -166,12 +170,16 @@ class HomeDetailFragment :
         commentId: Int,
         isComment: Boolean,
         position: Int,
+        reportTargetNickname: String,
+        relateText: String,
     ) {
         initBottomSheet(
             memberId == homeViewModel.getMemberId(),
             contentId,
             isComment,
             commentId,
+            reportTargetNickname,
+            relateText
         )
         if (isComment) deleteCommentPosition = position
     }
@@ -181,8 +189,17 @@ class HomeDetailFragment :
         contentId: Int,
         isComment: Boolean,
         commentId: Int,
+        reportTargetNickname: String,
+        relateText: String,
     ) {
-        HomeBottomSheet(isMember, contentId, isComment, commentId).show(
+        HomeBottomSheet(
+            isMember,
+            contentId,
+            isComment,
+            commentId,
+            reportTargetNickname,
+            relateText
+        ).show(
             parentFragmentManager,
             HomeFragment.HOME_BOTTOM_SHEET,
         )

@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Intent
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -17,6 +18,8 @@ import com.teamdontbe.core_ui.view.UiState
 import com.teamdontbe.feature.databinding.ActivityMainBinding
 import com.teamdontbe.feature.home.HomeFragment
 import com.teamdontbe.feature.notification.NotificationViewModel
+import com.teamdontbe.feature.util.FcmTag.RELATED_CONTENT_ID
+import com.teamdontbe.feature.util.KeyStorage.KEY_NOTI_DATA
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -28,10 +31,22 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     override fun initView() {
         setOnBoardingNavigate()
+        handlePushAlarmNavigate()
         initKakaoUser()
         initMainBottomNavigation()
         notiViewModel.getNotificationCount()
         initObserve()
+    }
+
+    private fun handlePushAlarmNavigate() {
+        intent.getStringExtra(RELATED_CONTENT_ID)?.let {
+            val navController =
+                (supportFragmentManager.findFragmentById(R.id.fcv_main) as NavHostFragment).findNavController()
+            navController.navigate(
+                R.id.action_home_to_home_detail,
+                bundleOf(KEY_NOTI_DATA to it.toInt())
+            )
+        }
     }
 
     private fun setOnBoardingNavigate() {
@@ -119,12 +134,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             binding.bnvMain.visibility =
                 if (destination.id in
                     listOf(
-                        R.id.fragment_home,
-                        R.id.fragment_notification,
-                        R.id.fragment_my_page,
-                        R.id.fragment_home_detail,
-                        R.id.fragment_image_detail,
-                    )
+                            R.id.fragment_home,
+                            R.id.fragment_notification,
+                            R.id.fragment_my_page,
+                            R.id.fragment_home_detail,
+                            R.id.fragment_image_detail,
+                        )
                 ) {
                     View.VISIBLE
                 } else {
@@ -151,7 +166,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         binding.bnvMain.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.fragment_home -> startActivity(Intent(this, LoadingActivity::class.java))
-                //my page는 타 유저 프로필 피드 들어갈 때도 있어서
+                // my page는 타 유저 프로필 피드 들어갈 때도 있어서
                 R.id.fragment_my_page -> if (navController.currentDestination?.id == R.id.fragment_home_detail) {
                     navController.navigate(R.id.fragment_my_page)
                     navController.popBackStack(R.id.fragment_home_detail, true)

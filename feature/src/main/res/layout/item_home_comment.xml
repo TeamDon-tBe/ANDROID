@@ -148,7 +148,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/shape_white_fill_8_rect"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/iv_comment_ghost_fill_green"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -162,6 +162,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintStart_toStartOf="@id/guide_comment_start_10"
+                app:layout_constraintTop_toBottomOf="@id/iv_home_feed_img"
                 app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
             <androidx.appcompat.widget.AppCompatImageButton
