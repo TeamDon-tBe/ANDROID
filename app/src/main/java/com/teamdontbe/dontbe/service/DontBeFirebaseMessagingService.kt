@@ -15,7 +15,6 @@ import com.teamdontbe.core_ui.util.context.colorOf
 import com.teamdontbe.feature.MainActivity
 import com.teamdontbe.feature.util.FcmTag.CHANNEL_ID
 import com.teamdontbe.feature.util.FcmTag.NOTIFICATION_BODY
-import com.teamdontbe.feature.util.FcmTag.NOTIFICATION_ID
 import com.teamdontbe.feature.util.FcmTag.NOTIFICATION_TITLE
 import com.teamdontbe.feature.util.FcmTag.RELATED_CONTENT_ID
 import timber.log.Timber
@@ -35,7 +34,7 @@ class DontBeFirebaseMessagingService : FirebaseMessagingService() {
         sendPushAlarm(
             title = if (::title.isInitialized) title else "",
             body = if (::body.isInitialized) body else "",
-            contentId = message.data[RELATED_CONTENT_ID] ?: "-1"
+            contentId = message.data[RELATED_CONTENT_ID] ?: return
         )
     }
 
@@ -43,7 +42,7 @@ class DontBeFirebaseMessagingService : FirebaseMessagingService() {
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
         val notification = buildNotification(title, body, contentId)
-        notificationManager?.notify(NOTIFICATION_ID, notification)
+        notificationManager?.notify((System.currentTimeMillis()).toInt(), notification)
     }
 
     override fun handleIntent(intent: Intent?) {
@@ -94,7 +93,7 @@ class DontBeFirebaseMessagingService : FirebaseMessagingService() {
         }
         return PendingIntent.getActivity(
             this,
-            0,
+            (System.currentTimeMillis()).toInt(),
             intent,
             PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_MUTABLE
         )
